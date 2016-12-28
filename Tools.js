@@ -1,10 +1,12 @@
 "use strict"
 
-// ============================================================================================== //
+const config = require('./config.json')
+const moment = require('moment-timezone')
+    // ============================================================================================== //
 var exports = module.exports = {}
 
 // ========================== Standard Embeds Function ========================================== //
-exports.embeds = function(msg, args, title, desc, thumbn) {
+exports.embeds = function(msg, args, title, desc, thumbn, bot) {
     let rolrray = msg.channel.guild.members.get(bot.user.id).roles.map(r => msg.channel.guild.roles.get(r).position)
     let toprole = rolrray.indexOf(Math.max.apply(Math, rolrray))
     bot.createMessage(msg.channel.id, {
@@ -33,10 +35,10 @@ exports.messageIs = function(msg, str) {
 }
 
 // ========================== NotificationChannel Embeds Function =============================== //
-exports.notificationEmbeds = function(channel, title, desc, thumbn) {
+exports.notificationEmbeds = function(channel, title, desc, thumbn, bot) {
     let rolrray = channel.guild.members.get(bot.user.id).roles.map(r => channel.guild.roles.get(r).position)
     let toprole = rolrray.indexOf(Math.max.apply(Math, rolrray))
-    bot.createMessage(channel.id, {
+    bot.createMessage(config.notificationChannel, {
         content: ' ',
         embed: {
             title: title,
@@ -49,9 +51,16 @@ exports.notificationEmbeds = function(channel, title, desc, thumbn) {
                 url: bot.avatarURL,
                 icon_url: bot.avatarURL
             },
-            color: channel.guild.members.get(bot.user.id).roles.map(r => channel.guild.roles.get(r).color)[toprole]
+            color: 16007990
         }
     })
+
+    console.log('test')
+    console.log(channel.guild.members.get(bot.user.id).roles.map(r => channel.guild.roles.get(r).color)[toprole])
+}
+
+exports.getFormattedTimestamp = function() {
+    return moment().tz(config.defaultTimezone).format('HH:mm:ss MM/DD/YYYY')
 }
 
 // ========================== Puppet the Bot =================================================== //
