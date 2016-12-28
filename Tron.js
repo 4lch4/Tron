@@ -1,11 +1,11 @@
+#!node - Tron.js
+
+// ========================================================================================= //
 /**
  *	TODO: Account for leveling up and assigning skill points.
  *  TODO: Properly time the catch command since it's only a 30 second timer, not 300 seconds.
  *  TODO: Add handlers for the following events:
- *  CHANNEL_CREATE
  *  CHANNEL_UPDATE
- *  GUILD_BAN_ADD
- *  GUILD_BAN_REMOVE
  *  GUILD_CREATE
  *  GUILD_DELETE
  *  GUILD_MEMBER_ADD
@@ -34,7 +34,7 @@ const info = require('./package.json')
 const readline = require('readline')
 const _ = require('lodash')
 const moment = require('moment-timezone')
-const tools = require('./utilities/Tools.js')
+const tools = require('./Tools.js')
 
 // ========================== Bot Declaration =================================================== //
 const bot = new Eris.CommandClient(config.token, {}, {
@@ -68,7 +68,7 @@ bot.registerCommand('ping', (msg, args) => {
 bot.on("ready", () => {
     console.log('Tron is ready!')
     if (!isNaN(config.notificationChannel)) {
-        bot.createMessage(config.notificationChannel, config.notificationMessage + ' > ' + moment().tz(config.defaultTimezone).format('h:mm A'))
+        bot.createMessage(config.notificationChannel, config.notificationMessage + ' > ' + tools.getFormattedTimestamp())
     }
 
     bot.editStatus('busy', {
@@ -80,21 +80,67 @@ bot.on("ready", () => {
 
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on("messageCreate", (msg) => {
-    if (messageIs(msg, 'why')) {
-        embeds(msg, null, 'Witty Remark', 'Because you touch yourself at night.', null)
-    } else if (messageIs(msg, 'hello')) {
-        embeds(msg, null, 'Witty Remark', 'New fone who dis?', null)
-    } else if (messageIs(msg, 'bye')) {
-        embeds(msg, null, 'Witty Remark', 'https://cdn.discordapp.com/attachments/238466589362487306/258896018354077697/byefelicia.png', null)
+    if (msg.content.includes('@everyone')) {
+        let everyoneMention = ":mega: ``[" + tools.getFormattedTimestamp() + "]``" +
+            "<@" + msg.author.id + "> has used the ``@everyone`` mention in the <#" + msg.channel.id + "> channel."
+
+        bot.createMessage(config.notificationChannel, everyoneMention)
+    } else if (msg.content.includes('@here')) {
+        let hereMention = ":mega: ``[" + tools.getFormattedTimestamp() + "]``" +
+            "<@" + msg.author.id + "> has used the ``@here`` mention in the <#" + msg.channel.id + "> channel."
+
+        bot.createMessage(config.notificationChannel, hereMention)
+    } else if (tools.messageIs(msg, 'why')) {
+        bot.createMessage(msg.channel.id, 'Because you touch yourself at night.')
+    } else if (tools.messageIs(msg, 'hello')) {
+        bot.createMessage(msg.channel.id, 'New fone who dis?')
+    } else if (tools.messageIs(msg, 'bye')) {
+        bot.createMessage(msg.channel.id, 'https://cdn.discordapp.com/attachments/238466589362487306/258896018354077697/byefelicia.png')
     }
+})
+
+// ========================== onChannelCreate Event Handler ===================================== //
+bot.on("channelCreate", (channel) => {
+    if (channel.guild) {
+        let createMessage = ":white_check_mark: ``[" + tools.getFormattedTimestamp() + "]`` " +
+            "Channel: **" + channel.name + "** has been created."
+
+        bot.createMessage(config.notificationChannel, createMessage)
+    }
+}, {
+    description: 'Log channel creation.',
+    fullDescription: 'If a channel is created, it is logged in the notificationChannel'
 })
 
 // ========================== onChannelDelete Event Handler ===================================== //
 bot.on("channelDelete", (channel) => {
-    bot.createMessage(config.notificationChannel, 'Channel deleted - ' + channel.name)
+    if (channel.guild) {
+        let deleteMessage = ":x: ``[" + tools.getFormattedTimestamp() + "]`` " +
+            "Channel: **" + channel.name + "** has been deleted."
+
+        bot.createMessage(config.notificationChannel, deleteMessage)
+    }
 }, {
     description: 'Log channel deletion.',
     fullDescription: 'If a channel is deleted, it is logged in the notificationChannel'
+})
+
+// ========================== onGuildBanAdd Event Handler ===================================== //
+bot.on("guildBanAdd", (guild, user) => {
+    bot.createMessage(config.notificationChannel, ":hammer: ``[" + tools.getFormattedTimestamp() + "]`` " +
+        "User: <@" + user.id + "> has been banned.")
+}, {
+    description: 'Log user ban.',
+    fullDescription: 'If a user is banned, it is logged in the notificationChannel.'
+})
+
+// ========================== onGuildBanRemove Event Handler ===================================== //
+bot.on("guildBanRemove", (guild, user) => {
+    bot.createMessage(config.notificationChannel, ":x::hammer: ``[" + tools.getFormattedTimestamp() + "]`` " +
+        "User: <@" + user.id + "> has been unbanned.")
+}, {
+    description: 'Log user unban.',
+    fullDescription: 'If a user is unbanned, it is logged in the notificationChannel.'
 })
 
 // ========================== Connect Bot ======================================================= //
