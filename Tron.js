@@ -80,22 +80,24 @@ bot.on("ready", () => {
 
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on("messageCreate", (msg) => {
-    if (msg.content.includes('@everyone')) {
-        let everyoneMention = ":mega: ``[" + tools.getFormattedTimestamp() + "]``" +
-            "<@" + msg.author.id + "> has used the ``@everyone`` mention in the <#" + msg.channel.id + "> channel."
+    if (!isNaN(msg.author.id)) {
+        if (msg.content.includes('@everyone')) {
+            let everyoneMention = ":mega: ``[" + tools.getFormattedTimestamp() + "]``" +
+                "<@" + msg.author.id + "> has used the ``@everyone`` mention in the <#" + msg.channel.id + "> channel."
 
-        bot.createMessage(config.notificationChannel, everyoneMention)
-    } else if (msg.content.includes('@here')) {
-        let hereMention = ":mega: ``[" + tools.getFormattedTimestamp() + "]``" +
-            "<@" + msg.author.id + "> has used the ``@here`` mention in the <#" + msg.channel.id + "> channel."
+            bot.createMessage(config.notificationChannel, everyoneMention)
+        } else if (msg.content.includes('@here')) {
+            let hereMention = ":mega: ``[" + tools.getFormattedTimestamp() + "]``" +
+                "<@" + msg.author.id + "> has used the ``@here`` mention in the <#" + msg.channel.id + "> channel."
 
-        bot.createMessage(config.notificationChannel, hereMention)
-    } else if (tools.messageIs(msg, 'why')) {
-        bot.createMessage(msg.channel.id, 'Because you touch yourself at night.')
-    } else if (tools.messageIs(msg, 'hello')) {
-        bot.createMessage(msg.channel.id, 'New fone who dis?')
-    } else if (tools.messageIs(msg, 'bye')) {
-        bot.createMessage(msg.channel.id, 'https://cdn.discordapp.com/attachments/238466589362487306/258896018354077697/byefelicia.png')
+            bot.createMessage(config.notificationChannel, hereMention)
+        } else if (tools.messageIsWhyCmd(msg)) {
+            bot.createMessage(msg.channel.id, 'Because you touch yourself at night.')
+        } else if (tools.messageIs(msg, 'hello')) {
+            bot.createMessage(msg.channel.id, 'New fone who dis?')
+        } else if (tools.messageIs(msg, 'bye')) {
+            bot.createMessage(msg.channel.id, 'https://cdn.discordapp.com/attachments/238466589362487306/258896018354077697/byefelicia.png')
+        }
     }
 })
 
