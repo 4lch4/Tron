@@ -56,6 +56,43 @@ bot.registerCommand('change', (msg, args) => {
     fullDescription: 'Used to change the notification channel.'
 })
 
+bot.registerCommand('mika', (msg, args) => {
+    let mikaImage = tools.pickMikaImage();
+
+    bot.createMessage(msg.channel.id, {
+        embed: {
+            image: mikaImage
+        }
+    })
+})
+
+bot.registerCommand('invite', (msg, args) => {
+    if (msg.channel.guild != null) {
+        let comparison = args[0].toLowerCase();
+        let members = msg.channel.guild.members;
+
+        members.forEach(function(value, key, mapObj) {
+            if (value.user != undefined) {
+                let username = value.user.username.toLowerCase();
+
+                if (value.nick != undefined) {
+                    username = value.nick.toLowerCase();
+                }
+
+                if (username == comparison) {
+                    console.log('Match found = ' + username);
+                    msg.channel.editPermission(value.user.id, 1024, null, 'member');
+                }
+            }
+        });
+    } else {
+        console.log('In isNan else loop.');
+    }
+}, {
+    description: 'Invite a user to your channel.',
+    fullDescription: 'Gives a user permission to view messages in the channel the command was received from.'
+});
+
 // ========================== Ping Command ====================================================== //
 bot.registerCommand('ping', (msg, args) => {
     return 'Pong!'
