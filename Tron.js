@@ -134,6 +134,59 @@ bot.on("messageCreate", (msg) => {
             bot.createMessage(msg.channel.id, 'New fone who dis?')
         } else if (tools.messageIs(msg, 'bye')) {
             bot.createMessage(msg.channel.id, 'https://cdn.discordapp.com/attachments/238466589362487306/258896018354077697/byefelicia.png')
+        } else if (tools.messageStartsWith(msg, '+kms')) {
+            // Jova's requested KMS command
+            bot.createMessage(msg.channel.id, {
+                content: '',
+                embed: {
+                    image: {
+                        url: 'https://i.imgur.com/rC0Yx6S.gif',
+                        height: 498,
+                        width: 286
+                    }
+                }
+            })
+        } else if (tools.messageStartsWith(msg, '+killme')) {
+            let killMeImage = tools.pickKillImage()
+
+            // Mika's requested killme command
+            bot.createMessage(msg.channel.id, {
+                embed: {
+                    image: killMeImage
+                }
+            })
+        } else if (tools.messageStartsWith(msg, '+bite')) {
+            var biteImage = tools.pickBiteImage()
+            var message = ''
+
+            if (msg.content.length > 7) {
+                var user = msg.mentions[0].username
+                message = "**" + user + "**, you've been bitten by **" + msg.author.username + "**."
+            }
+
+            bot.createMessage(msg.channel.id, {
+                content: message,
+                embed: {
+                    image: biteImage
+                }
+            })
+        } else if (tools.messageStartsWith(msg, '+jova')) {
+            bot.createMessage(msg.channel.id, 'Who is <@78694002332803072>? Does <@78694002332803072> is gay?');
+        } else if (tools.messageStartsWith(msg, '+kick')) {
+            var kickImage = tools.pickKickImage()
+            var message = ''
+
+            if (msg.content.length > 7) {
+                var user = msg.mentions[0].username
+                message = "**" + user + "**, you've been kicked by **" + msg.author.username + "**."
+            }
+
+            bot.createMessage(msg.channel.id, {
+                content: message,
+                embed: {
+                    image: kickImage
+                }
+            })
         }
     }
 })
