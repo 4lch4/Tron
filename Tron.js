@@ -180,6 +180,13 @@ bot.on("ready", () => {
     })
 })
 
+bot.registerCommand('git', (msg, args) => {
+    bot.createMessage(msg.channel.id, 'You can find the git repo for Tron here: https://github.com/Alcha/Tron')
+}, {
+    description: 'Display link to git repository.',
+    fullDescription: 'Displays the link to the git repository on GitHub.'
+})
+
 bot.registerCommand('blush', (msg, args) => {
     let blushImage = tools.pickBlushImage()
 
