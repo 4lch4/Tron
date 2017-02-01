@@ -56,8 +56,28 @@ bot.registerCommand('change', (msg, args) => {
     fullDescription: 'Used to change the notification channel.'
 })
 
+bot.registerCommand('kick', (msg, args) => {
+    var kickImage = tools.pickKickImage()
+    var message = ''
+
+    if (msg.content.length > 7) {
+        var user = msg.mentions[0].username
+        message = "**" + user + "**, you've been kicked by **" + msg.author.username + "**."
+    }
+
+    bot.createMessage(msg.channel.id, {
+        content: message,
+        embed: {
+            image: kickImage
+        }
+    })
+}, {
+    description: 'Displays random kick gif',
+    fullDescription: 'Displays a random kick gif and the name of the person you mention.'
+})
+
 bot.registerCommand('mika', (msg, args) => {
-    let mikaImage = tools.pickMikaImage();
+    let mikaImage = tools.pickMikaImage()
 
     bot.createMessage(msg.channel.id, {
         embed: {
@@ -68,30 +88,30 @@ bot.registerCommand('mika', (msg, args) => {
 
 bot.registerCommand('invite', (msg, args) => {
     if (msg.channel.guild != null) {
-        let comparison = args[0].toLowerCase();
-        let members = msg.channel.guild.members;
+        let comparison = args[0].toLowerCase()
+        let members = msg.channel.guild.members
 
         members.forEach(function(value, key, mapObj) {
             if (value.user != undefined) {
-                let username = value.user.username.toLowerCase();
+                let username = value.user.username.toLowerCase()
 
                 if (value.nick != undefined) {
-                    username = value.nick.toLowerCase();
+                    username = value.nick.toLowerCase()
                 }
 
                 if (username == comparison) {
-                    console.log('Match found = ' + username);
-                    msg.channel.editPermission(value.user.id, 1024, null, 'member');
+                    console.log('Match found = ' + username)
+                    msg.channel.editPermission(value.user.id, 1024, null, 'member')
                 }
             }
-        });
+        })
     } else {
-        console.log('In isNan else loop.');
+        console.log('In isNan else loop.')
     }
 }, {
     description: 'Invite a user to your channel.',
     fullDescription: 'Gives a user permission to view messages in the channel the command was received from.'
-});
+})
 
 // ========================== Ping Command ====================================================== //
 bot.registerCommand('ping', (msg, args) => {
@@ -99,6 +119,51 @@ bot.registerCommand('ping', (msg, args) => {
 }, {
     description: 'Pong!',
     fullDescription: 'Used to check if the bot is up.'
+})
+
+bot.registerCommand('kms', (msg, args) => {
+    bot.createMessage(msg.channel.id, {
+        content: '',
+        embed: {
+            image: {
+                url: 'https://i.imgur.com/rC0Yx6S.gif',
+                height: 498,
+                width: 286
+            }
+        }
+    })
+})
+
+bot.registerCommand('killme', (msg, args) => {
+    let killMeImage = tools.pickKillImage()
+
+    // Mika's requested killme command
+    bot.createMessage(msg.channel.id, {
+        embed: {
+            image: killMeImage
+        }
+    })
+})
+
+bot.registerCommand('bite' (msg, args) => {
+    var biteImage = tools.pickBiteImage()
+    var message = ''
+
+    if (msg.content.length > 7) {
+        var user = msg.mentions[0].username
+        message = "**" + user + "**, you've been bitten by **" + msg.author.username + "**."
+    }
+
+    bot.createMessage(msg.channel.id, {
+        content: message,
+        embed: {
+            image: biteImage
+        }
+    })
+})
+
+bot.registerCommand('jova', (msg, args) => {
+    bot.createMessage(msg.channel.id, 'Who is <@78694002332803072>? Does <@78694002332803072> is gay?')
 })
 
 // ========================== onReady Event Handler ============================================= //
@@ -134,59 +199,6 @@ bot.on("messageCreate", (msg) => {
             bot.createMessage(msg.channel.id, 'New fone who dis?')
         } else if (tools.messageIs(msg, 'bye')) {
             bot.createMessage(msg.channel.id, 'https://cdn.discordapp.com/attachments/238466589362487306/258896018354077697/byefelicia.png')
-        } else if (tools.messageStartsWith(msg, '+kms')) {
-            // Jova's requested KMS command
-            bot.createMessage(msg.channel.id, {
-                content: '',
-                embed: {
-                    image: {
-                        url: 'https://i.imgur.com/rC0Yx6S.gif',
-                        height: 498,
-                        width: 286
-                    }
-                }
-            })
-        } else if (tools.messageStartsWith(msg, '+killme')) {
-            let killMeImage = tools.pickKillImage()
-
-            // Mika's requested killme command
-            bot.createMessage(msg.channel.id, {
-                embed: {
-                    image: killMeImage
-                }
-            })
-        } else if (tools.messageStartsWith(msg, '+bite')) {
-            var biteImage = tools.pickBiteImage()
-            var message = ''
-
-            if (msg.content.length > 7) {
-                var user = msg.mentions[0].username
-                message = "**" + user + "**, you've been bitten by **" + msg.author.username + "**."
-            }
-
-            bot.createMessage(msg.channel.id, {
-                content: message,
-                embed: {
-                    image: biteImage
-                }
-            })
-        } else if (tools.messageStartsWith(msg, '+jova')) {
-            bot.createMessage(msg.channel.id, 'Who is <@78694002332803072>? Does <@78694002332803072> is gay?');
-        } else if (tools.messageStartsWith(msg, '+kick')) {
-            var kickImage = tools.pickKickImage()
-            var message = ''
-
-            if (msg.content.length > 7) {
-                var user = msg.mentions[0].username
-                message = "**" + user + "**, you've been kicked by **" + msg.author.username + "**."
-            }
-
-            bot.createMessage(msg.channel.id, {
-                content: message,
-                embed: {
-                    image: kickImage
-                }
-            })
         }
     }
 })
