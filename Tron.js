@@ -145,7 +145,7 @@ bot.registerCommand('killme', (msg, args) => {
     })
 })
 
-bot.registerCommand('bite' (msg, args) => {
+bot.registerCommand('bite', (msg, args) => {
     var biteImage = tools.pickBiteImage()
     var message = ''
 
@@ -177,6 +177,16 @@ bot.on("ready", () => {
         name: config.defaultgame,
         type: 1,
         url: ''
+    })
+})
+
+bot.registerCommand('blush', (msg, args) => {
+    let blushImage = tools.pickBlushImage()
+
+    bot.createMessage(msg.channel.id, {
+        embed: {
+            image: blushImage
+        }
     })
 })
 
