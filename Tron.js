@@ -197,6 +197,60 @@ bot.registerCommand('blush', (msg, args) => {
     })
 })
 
+bot.registerCommand('addr', (msg, args) => {
+    if (msg.channel.guild != null) {
+        if (tools.memberIsMod(msg)) {
+            let comparison = tools.concatArgs(args)
+
+            console.log("comparison = " + comparison);
+
+            let roles = msg.channel.guild.roles
+
+            roles.forEach(function(value, key, mapObj) {
+                if (value.name != null) {
+                    let name = value.name.toLowerCase();
+                    console.log("Name = " + name + "; Comparison = " + comparison + ";");
+
+                    if (name == comparison) {
+                        roleNames.push(value.name)
+                        bot.createMessage(msg.channel.id, "Added " + value.name + " to list of available roles.");
+                    }
+                }
+            })
+        }
+    }
+})
+
+bot.registerCommand('listr', (msg, args) => {
+    let message = "List of currently available roles:\n"
+
+    roleNames.forEach(function(curr, index, arr) {
+        message += "- **" + curr + "**\n";
+    })
+
+    bot.createMessage(msg.channel.id, message);
+}, {
+    description: 'List roles that are available to join.',
+    fullDescription: 'Lists the roles that have been added by an administrator that are available.'
+})
+
+bot.registerCommand('joinr', (msg, args) => {
+    let comparison = tools.concatArgs(args);
+
+    if(msg.guild != null) {
+        let userId = msg.author.id;
+        let roleId = tools.getRoleId(msg, comparison);
+
+        if(roleId.length > 1) {
+            if(tools.allowedRole(comparison)) {
+                msg.guild.addMemberRole(userId, roleId);
+                bot.createMessage(msg.channel.id, "You've successfully been added to your requested group.");
+                msg.delete();
+            }
+        }
+    }
+})
+
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on("messageCreate", (msg) => {
     if (!isNaN(msg.author.id)) {

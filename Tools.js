@@ -1,6 +1,7 @@
 "use strict"
 
 const config = require('./config.json')
+const roleNames = config.roleNames;
 const moment = require('moment-timezone')
 const whyCmds = [
     "y",
@@ -71,6 +72,63 @@ exports.messageStartsWith = function(msg, str) {
     }
     let comparison = str.toUpperCase()
     return input.startsWith(comparison)
+}
+
+exports.allowedRole = function(comparison) {
+    let allowed = false;
+    roleNames.forEach(function(curr, index, arr) {
+        if(curr != null && curr.toLowerCase() == comparison) {
+            allowed = true;
+        }
+    })
+
+    return allowed;
+}
+
+exports.getRoleId = function(msg, comparison) {
+    let id = "";
+
+    msg.guild.roles.forEach(function(curr, index, values) {
+        if (curr.name.toLowerCase() == comparison) {
+            id = curr.id;
+        }
+    })
+
+    return id;
+}
+
+exports.concatArgs = function(args) {
+    let str = "";
+
+    if (args.length > 1) {
+        args.forEach(function(curr, index, arr) {
+            if (str.length > 1) {
+                str += " " + curr.toLowerCase();
+            } else {
+                str += curr.toLowerCase();
+            }
+        })
+    } else {
+        str = args[0].toLowerCase()
+    }
+
+    return str;
+}
+
+exports.memberIsMod = function(msg) {
+    let roles = msg.channel.guild.members.get(msg.author.id).roles;
+    let found = false;
+
+    roles.forEach(function(curr, index, arr) {
+        console.log('curr = ' + curr);
+        if (curr == '254970225642962949') {
+            found = true;
+        } else if (curr == '254970606565588992') {
+            found = true;
+        }
+    })
+
+    return found;
 }
 
 // ========================== NotificationChannel Embeds Function =============================== //
