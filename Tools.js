@@ -77,7 +77,7 @@ exports.messageStartsWith = function(msg, str) {
 exports.allowedRole = function(comparison) {
     let allowed = false;
     roleNames.forEach(function(curr, index, arr) {
-        if(curr != null && curr.toLowerCase() == comparison) {
+        if (curr != null && curr.toLowerCase() == comparison) {
             allowed = true;
         }
     })
@@ -85,6 +85,29 @@ exports.allowedRole = function(comparison) {
     return allowed;
 }
 
+function getRoleId(msg, comparison) {
+    let id = "";
+
+    msg.guild.roles.forEach(function(curr, index, values) {
+        if (curr.name.toLowerCase() == comparison) {
+            id = curr.id;
+        }
+    })
+
+    return id;
+}
+
+exports.addAllRoles = function(userId, msg, bot) {
+    let roleIds = [""]
+    console.log(msg.content);
+    for(var x = 0; x < roleNames.length; x++) {
+        let roleId = getRoleId(msg, roleNames[x].toLowerCase());
+        msg.guild.addMemberRole(userId, roleId);
+    }
+
+    bot.createMessage(msg.channel.id, "You've been added to all the roles available to you.");
+    msg.delete();
+}
 exports.getRoleId = function(msg, comparison) {
     let id = "";
 

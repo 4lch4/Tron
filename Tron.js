@@ -239,15 +239,20 @@ bot.registerCommand('joinr', (msg, args) => {
 
     if(msg.guild != null) {
         let userId = msg.author.id;
-        let roleId = tools.getRoleId(msg, comparison);
 
-        if(roleId.length > 1) {
-            if(tools.allowedRole(comparison)) {
-                msg.guild.addMemberRole(userId, roleId);
-                bot.createMessage(msg.channel.id, "You've successfully been added to your requested group.");
-                msg.delete();
+        if(comparison == "all") {
+            tools.addAllRoles(userId, msg, bot);
+        } else {
+            let roleId = tools.getRoleId(msg, comparison);
+
+            if(roleId.length > 1) {
+                if(tools.allowedRole(comparison)) {
+                    msg.guild.addMemberRole(userId, roleId);
+                    bot.createMessage(msg.channel.id, "You've successfully been added to your requested group.");
+                    msg.delete();
+                }
             }
-        }
+        }        
     }
 })
 
