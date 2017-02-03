@@ -234,6 +234,28 @@ bot.registerCommand('listr', (msg, args) => {
     fullDescription: 'Lists the roles that have been added by an administrator that are available.'
 })
 
+bot.registerCommand('leaver', (msg, args) => {
+    let comparison = tools.concatArgs(args);
+
+    if(msg.guild != null) {
+        let userId = msg.author.id;
+
+        if(comparison == "all") {
+            tools.removeAllRoles(userId, msg, bot);
+        } else {
+            let roleId = tools.getRoleId(msg, comparison);
+
+            if(roleId.length > 1) {
+                if(tools.allowedRole(comparison)) {
+                    msg.guild.removeMemberRole(userId, roleId);
+                    bot.createMessage(msg.channel.id, "You've successfully been removed from your requested group.");
+                    msg.delete();
+                }
+            }
+        }
+    }
+})
+
 bot.registerCommand('joinr', (msg, args) => {
     let comparison = tools.concatArgs(args);
 
@@ -252,7 +274,7 @@ bot.registerCommand('joinr', (msg, args) => {
                     msg.delete();
                 }
             }
-        }        
+        }
     }
 })
 

@@ -97,10 +97,18 @@ function getRoleId(msg, comparison) {
     return id;
 }
 
+exports.removeAllRoles = function(userId, msg, bot) {
+    for (var x = 0; x < roleNames.length; x++) {
+        let roleId = getRoleId(msg, roleNames[x].toLowerCase());
+        msg.guild.removeMemberRole(userId, roleId);
+    }
+
+    bot.createMessage(msg.channel.id, "You've been removed from all the roles available to you.");
+    msg.delete();
+}
+
 exports.addAllRoles = function(userId, msg, bot) {
-    let roleIds = [""]
-    console.log(msg.content);
-    for(var x = 0; x < roleNames.length; x++) {
+    for (var x = 0; x < roleNames.length; x++) {
         let roleId = getRoleId(msg, roleNames[x].toLowerCase());
         msg.guild.addMemberRole(userId, roleId);
     }
