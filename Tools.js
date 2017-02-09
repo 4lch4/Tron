@@ -20,7 +20,7 @@ const whyCmds = [
 var exports = module.exports = {}
 
 // ========================== Standard Embeds Function ========================================== //
-exports.embeds = function(msg, args, title, desc, thumbn, bot) {
+exports.embeds = function (msg, args, title, desc, thumbn, bot) {
     let rolrray = msg.channel.guild.members.get(bot.user.id).roles.map(r => msg.channel.guild.roles.get(r).position)
     let toprole = rolrray.indexOf(Math.max.apply(Math, rolrray))
     bot.createMessage(msg.channel.id, {
@@ -45,7 +45,7 @@ function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min)
 }
 // ========================== MessageIs Function ================================================ //
-exports.messageIs = function(msg, str) {
+exports.messageIs = function (msg, str) {
     let input = ""
 
     if (msg.content != undefined) {
@@ -62,7 +62,7 @@ exports.messageIs = function(msg, str) {
     }
 }
 
-exports.messageStartsWith = function(msg, str) {
+exports.messageStartsWith = function (msg, str) {
     let input = ""
 
     if (msg.content != undefined) {
@@ -74,9 +74,9 @@ exports.messageStartsWith = function(msg, str) {
     return input.startsWith(comparison)
 }
 
-exports.allowedRole = function(comparison) {
+exports.allowedRole = function (comparison) {
     let allowed = false;
-    roleNames.forEach(function(curr, index, arr) {
+    roleNames.forEach(function (curr, index, arr) {
         if (curr != null && curr.toLowerCase() == comparison) {
             allowed = true;
         }
@@ -88,7 +88,7 @@ exports.allowedRole = function(comparison) {
 function getRoleId(msg, comparison) {
     let id = "";
 
-    msg.guild.roles.forEach(function(curr, index, values) {
+    msg.guild.roles.forEach(function (curr, index, values) {
         if (curr.name.toLowerCase() == comparison) {
             id = curr.id;
         }
@@ -97,7 +97,7 @@ function getRoleId(msg, comparison) {
     return id;
 }
 
-exports.removeAllRoles = function(userId, msg, bot) {
+exports.removeAllRoles = function (userId, msg, bot) {
     for (var x = 0; x < roleNames.length; x++) {
         let roleId = getRoleId(msg, roleNames[x].toLowerCase());
         msg.guild.removeMemberRole(userId, roleId);
@@ -107,7 +107,7 @@ exports.removeAllRoles = function(userId, msg, bot) {
     msg.delete();
 }
 
-exports.addAllRoles = function(userId, msg, bot) {
+exports.addAllRoles = function (userId, msg, bot) {
     for (var x = 0; x < roleNames.length; x++) {
         let roleId = getRoleId(msg, roleNames[x].toLowerCase());
         msg.guild.addMemberRole(userId, roleId);
@@ -116,10 +116,10 @@ exports.addAllRoles = function(userId, msg, bot) {
     bot.createMessage(msg.channel.id, "You've been added to all the roles available to you.");
     msg.delete();
 }
-exports.getRoleId = function(msg, comparison) {
+exports.getRoleId = function (msg, comparison) {
     let id = "";
 
-    msg.guild.roles.forEach(function(curr, index, values) {
+    msg.guild.roles.forEach(function (curr, index, values) {
         if (curr.name.toLowerCase() == comparison) {
             id = curr.id;
         }
@@ -128,11 +128,11 @@ exports.getRoleId = function(msg, comparison) {
     return id;
 }
 
-exports.concatArgs = function(args) {
+exports.concatArgs = function (args) {
     let str = "";
 
     if (args.length > 1) {
-        args.forEach(function(curr, index, arr) {
+        args.forEach(function (curr, index, arr) {
             if (str.length > 1) {
                 str += " " + curr.toLowerCase();
             } else {
@@ -146,11 +146,11 @@ exports.concatArgs = function(args) {
     return str;
 }
 
-exports.memberIsMod = function(msg) {
+exports.memberIsMod = function (msg) {
     let roles = msg.channel.guild.members.get(msg.author.id).roles;
     let found = false;
 
-    roles.forEach(function(curr, index, arr) {
+    roles.forEach(function (curr, index, arr) {
         console.log('curr = ' + curr);
         if (curr == '254970225642962949') {
             found = true;
@@ -163,7 +163,7 @@ exports.memberIsMod = function(msg) {
 }
 
 // ========================== NotificationChannel Embeds Function =============================== //
-exports.notificationEmbeds = function(channel, title, desc, thumbn, bot) {
+exports.notificationEmbeds = function (channel, title, desc, thumbn, bot) {
     let rolrray = channel.guild.members.get(bot.user.id).roles.map(r => channel.guild.roles.get(r).position)
     let toprole = rolrray.indexOf(Math.max.apply(Math, rolrray))
     bot.createMessage(config.notificationChannel, {
@@ -187,11 +187,11 @@ exports.notificationEmbeds = function(channel, title, desc, thumbn, bot) {
     console.log(channel.guild.members.get(bot.user.id).roles.map(r => channel.guild.roles.get(r).color)[toprole])
 }
 
-exports.getFormattedTimestamp = function() {
+exports.getFormattedTimestamp = function () {
     return moment().tz(config.defaultTimezone).format('HH:mm:ss MM/DD/YYYY')
 }
 
-exports.messageIsWhyCmd = function(msg) {
+exports.messageIsWhyCmd = function (msg) {
     let content = msg.content
     let found = false
 
@@ -199,7 +199,7 @@ exports.messageIsWhyCmd = function(msg) {
         content = content.substring(0, content.indexOf("?"))
     }
 
-    whyCmds.forEach(function(cmd) {
+    whyCmds.forEach(function (cmd) {
         if (exports.messageIs(content, cmd)) {
             found = true
         }
@@ -208,179 +208,72 @@ exports.messageIsWhyCmd = function(msg) {
     return found
 }
 
-exports.pickKillImage = function() {
+exports.pickKillImage = function () {
+    let images = [
+        "https://i.imgur.com/Db0ghmE.gif", "https://i.imgur.com/rBYOkZq.gif",
+        "https://i.imgur.com/gMylE3v.gif", "https://i.imgur.com/NeD9pVR.gif"
+    ];
+
     let random = getRandom(0, 4);
 
-    switch (random) {
-        case 0:
-            return {
-                url: 'https://i.imgur.com/Db0ghmE.gif',
-                height: 500,
-                width: 250
-            }
-        case 1:
-            return {
-                url: 'https://i.imgur.com/rBYOkZq.gif',
-                height: 500,
-                width: 281
-            }
-        case 2:
-            return {
-                url: 'https://i.imgur.com/gMylE3v.gif',
-                height: 500,
-                width: 273
-            }
-        case 3:
-            return {
-                url: 'https://i.imgur.com/NeD9pVR.gif',
-                height: 500,
-                width: 297
-            }
+    return {
+        url: images[random]
     }
 };
 
-exports.pickBiteImage = function() {
-    let random = getRandom(0, 11)
+exports.pickBiteImage = function () {
+    let images = [
+        "https://i.imgur.com/2t4yRJL.gif", "https://i.imgur.com/pCRB4bm.gif",
+        "https://i.imgur.com/A1UWYE0.gif", "https://i.imgur.com/TmUUJzF.gif",
+        "https://i.imgur.com/T88sRvd.gif", "https://i.imgur.com/GV4mBag.gif",
+        "https://i.imgur.com/wpQmQag.gif", "https://i.imgur.com/Yr6uo41.gif",
+        "https://i.imgur.com/66aDTjt.gif", "https://i.imgur.com/DtMIIRp.gif",
+        "https://i.imgur.com/CJ1kNDg.gif"
+    ];
 
-    switch (random) {
-        case 0:
-            return {
-                url: 'https://i.imgur.com/2t4yRJL.gif',
-                height: 500,
-                width: 301
-            }
-        case 1:
-            return {
-                url: 'https://i.imgur.com/pCRB4bm.gif',
-                height: 500,
-                width: 248
-            }
-        case 2:
-            return {
-                url: 'https://i.imgur.com/A1UWYE0.gif',
-                height: 500,
-                width: 281
-            }
-        case 3:
-            return {
-                url: 'https://i.imgur.com/TmUUJzF.gif',
-                height: 500,
-                width: 281
-            }
-        case 4:
-            return {
-                url: 'https://i.imgur.com/T88sRvd.gif',
-                height: 427,
-                width: 240
-            }
-        case 5:
-            return {
-                url: 'https://i.imgur.com/GV4mBag.gif',
-                height: 540,
-                width: 304
-            }
-        case 6:
-            return {
-                url: 'https://i.imgur.com/66aDTjt.gif',
-                height: 500,
-                width: 281
-            }
-        case 7:
-            return {
-                url: 'https://i.imgur.com/CJ1kNDg.gif',
-                height: 500,
-                width: 281
-            }
-        case 8:
-            return {
-                url: 'https://i.imgur.com/DtMIIRp.gif',
-                height: 444,
-                width: 250
-            }
-        case 9:
-            return {
-                url: 'https://i.imgur.com/Yr6uo41.gif',
-                height: 500,
-                width: 378
-            }
-        case 10:
-            return {
-                url: 'https://i.imgur.com/wpQmQag.gif',
-                height: 397,
-                width: 223
-            }
+    let random = getRandom(0, 11);
+
+    return {
+        url: images[random]
     }
 };
 
-exports.pickMikaImage = function() {
-    let random = getRandom(0, 1);
+exports.pickMikaImage = function () {
+    let images = ["https://i.imgur.com/WtdWRrt.png"];
 
-    switch (random) {
-        case 0:
-            return {
-                url: 'https://i.imgur.com/WtdWRrt.png',
-                height: 585,
-                width: 585
-            }
-    }
-}
-
-exports.pickKickImage = function() {
-    let random = getRandom(0, 6)
-
-    switch (random) {
-        case 0:
-            return {
-                url: 'https://i.imgur.com/B0EvFzc.gif',
-                height: 500,
-                width: 280
-            }
-        case 1:
-            return {
-                url: 'https://i.imgur.com/5oZkxax.gif',
-                height: 500,
-                width: 240
-            }
-        case 2:
-            return {
-                url: 'https://i.imgur.com/955TDwD.gif',
-                height: 500,
-                width: 257
-            }
-        case 3:
-            return {
-                url: 'https://i.imgur.com/8X13K1z.gif',
-                height: 460,
-                width: 260
-            }
-        case 4:
-            return {
-                url: 'https://i.imgur.com/lP0kfb7.gif',
-                height: 768,
-                width: 432
-            }
-        case 5:
-            return {
-                url: 'https://i.imgur.com/4vcwdhp.gif',
-                height: 498,
-                width: 280
-            }
-    }
-}
-
-exports.pickRektImage = function() {
-    let random = getRandom(0, 1);
-
-    let images = ["https://media.giphy.com/media/vSR0fhtT5A9by/giphy.gif"]
+    let random = getRandom(0, images.length);
 
     return {
         url: images[random]
     }
 }
 
-exports.pickBlushImage = function() {
-    let random = getRandom(0, 47)
-exports.pickHugImage = function() {
+exports.pickKickImage = function () {
+    let images = [
+        "https://i.imgur.com/B0EvFzc.gif", "https://i.imgur.com/5oZkxax.gif",
+        "https://i.imgur.com/5oZkxax.gif", "https://i.imgur.com/5oZkxax.gif",
+        "https://i.imgur.com/955TDwD.gif", "https://i.imgur.com/8X13K1z.gif",
+        "https://i.imgur.com/lP0kfb7.gif", "https://i.imgur.com/4vcwdhp.gif"
+    ];
+
+    let random = getRandom(0, images.length);
+
+    return {
+        url: images[random]
+    }
+}
+
+exports.pickRektImage = function () {
+    let images = ["https://media.giphy.com/media/vSR0fhtT5A9by/giphy.gif"]
+
+    let random = getRandom(0, images.length);
+
+    return {
+        url: images[random]
+    }
+}
+
+exports.pickHugImage = function () {
     let images = [
         "http://i.imgur.com/Lz2E3KQ.gif", "http://i.imgur.com/EjZ3EZF.gif",
         "http://i.imgur.com/9JkgObE.gif", "http://i.imgur.com/znBb48H.gif",
@@ -388,7 +281,7 @@ exports.pickHugImage = function() {
         "http://i.imgur.com/cJ2UgeJ.gif", "http://i.imgur.com/Uv61Pc1.gif",
         "http://i.imgur.com/MdqyZwH.gif", "http://i.imgur.com/Zg7JRkI.gif",
         "http://i.imgur.com/MdqyZwH.gif", "http://i.imgur.com/PeGeJHx.gif",
-        "http://i.imgur.com/UZKKA1p.gif", "http://i.imgur.com/3P9iz7F.gif", 
+        "http://i.imgur.com/UZKKA1p.gif", "http://i.imgur.com/3P9iz7F.gif",
         "http://i.imgur.com/zn43njB.gif", "http://i.imgur.com/RcE4Q39.gif",
         "http://i.imgur.com/gU4GyQW.gif", "http://i.imgur.com/1eijPRd.gif",
         "http://i.imgur.com/1eijPRd.gif", "http://i.imgur.com/qe9rhLw.gif",
@@ -415,6 +308,7 @@ exports.pickHugImage = function() {
     }
 }
 
+exports.pickBlushImage = function () {
     let images = [
         'https://i.imgur.com/TeK0xVr.gif', 'https://i.imgur.com/O85hPMc.gif', 'https://i.imgur.com/bLMZFxX.gif',
         'https://i.imgur.com/Bi2NBuI.gif', 'https://i.imgur.com/ns6jCfe.gif', 'https://i.imgur.com/ryThkzW.gif',
@@ -434,26 +328,27 @@ exports.pickHugImage = function() {
         'https://i.imgur.com/yZi3E90.gif', 'https://i.imgur.com/3DYcQfC.gif'
     ]
 
+    let random = getRandom(0, images.length)
     return {
         url: images[random]
     }
 }
 
 // ========================== Puppet the Bot =================================================== //
-// const readline = require('readline')
-// const rl = readline.createInterface({
-//     input: process.stdin,
-//     output: process.stdout
-// })
-//
-// rl.on('line', (input) => {
-//     let intake = input.split(' ')
-//     switch (intake[0]) {
-//         case 'morty':
-//             bot.createMessage(mortysRoomId, intake[1])
-//             break;
-//         case 'secret':
-//             bot.createMessage(secretStuffRoomId, intake[1])
-//             break;
-//     }
-// })
+const readline = require('readline')
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+})
+
+rl.on('line', (input) => {
+    let intake = input.split(' ')
+    switch (intake[0]) {
+        case 'morty':
+            bot.createMessage(mortysRoomId, intake[1])
+            break;
+        case 'secret':
+            bot.createMessage(secretStuffRoomId, intake[1])
+            break;
+    }
+})
