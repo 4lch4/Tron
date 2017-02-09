@@ -198,6 +198,16 @@ bot.registerCommand('blush', (msg, args) => {
     })
 })
 
+bot.registerCommand('rawr', (msg, args) => {
+    bot.createMessage(msg.channel.id, {
+        embed: {
+            image: {
+                url: 'https://cdn.discordapp.com/attachments/254496813552238594/278798600505393152/raw.gif'
+            }
+        }
+    })
+})
+
 bot.registerCommand('addr', (msg, args) => {
     if (msg.channel.guild != null) {
         if (tools.memberIsMod(msg)) {
@@ -238,16 +248,16 @@ bot.registerCommand('listr', (msg, args) => {
 bot.registerCommand('leaver', (msg, args) => {
     let comparison = tools.concatArgs(args);
 
-    if(msg.guild != null) {
+    if (msg.guild != null) {
         let userId = msg.author.id;
 
-        if(comparison == "all") {
+        if (comparison == "all") {
             tools.removeAllRoles(userId, msg, bot);
         } else {
             let roleId = tools.getRoleId(msg, comparison);
 
-            if(roleId.length > 1) {
-                if(tools.allowedRole(comparison)) {
+            if (roleId.length > 1) {
+                if (tools.allowedRole(comparison)) {
                     msg.guild.removeMemberRole(userId, roleId);
                     bot.createMessage(msg.channel.id, "You've successfully been removed from your requested group.");
                     msg.delete();
@@ -260,16 +270,16 @@ bot.registerCommand('leaver', (msg, args) => {
 bot.registerCommand('joinr', (msg, args) => {
     let comparison = tools.concatArgs(args);
 
-    if(msg.guild != null) {
+    if (msg.guild != null) {
         let userId = msg.author.id;
 
-        if(comparison == "all") {
+        if (comparison == "all") {
             tools.addAllRoles(userId, msg, bot);
         } else {
             let roleId = tools.getRoleId(msg, comparison);
 
-            if(roleId.length > 1) {
-                if(tools.allowedRole(comparison)) {
+            if (roleId.length > 1) {
+                if (tools.allowedRole(comparison)) {
                     msg.guild.addMemberRole(userId, roleId);
                     bot.createMessage(msg.channel.id, "You've successfully been added to your requested group.");
                     msg.delete();
