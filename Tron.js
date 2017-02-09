@@ -208,6 +208,16 @@ bot.registerCommand('rawr', (msg, args) => {
     })
 })
 
+bot.registerCommand('rekt', (msg, args) => {
+    let rektImage = tools.pickRektImage()
+
+    bot.createMessage(msg.channel.id, {
+        embed: {
+            image: rektImage
+        }
+    })
+})
+
 bot.registerCommand('addr', (msg, args) => {
     if (msg.channel.guild != null) {
         if (tools.memberIsMod(msg)) {

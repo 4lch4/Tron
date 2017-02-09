@@ -368,6 +368,16 @@ exports.pickKickImage = function() {
     }
 }
 
+exports.pickRektImage = function() {
+    let random = getRandom(0, 1);
+
+    let images = ["https://media.giphy.com/media/vSR0fhtT5A9by/giphy.gif"]
+
+    return {
+        url: images[random]
+    }
+}
+
 exports.pickBlushImage = function() {
     let random = getRandom(0, 47)
 
