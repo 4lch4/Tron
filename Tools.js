@@ -380,6 +380,40 @@ exports.pickRektImage = function() {
 
 exports.pickBlushImage = function() {
     let random = getRandom(0, 47)
+exports.pickHugImage = function() {
+    let images = [
+        "http://i.imgur.com/Lz2E3KQ.gif", "http://i.imgur.com/EjZ3EZF.gif",
+        "http://i.imgur.com/9JkgObE.gif", "http://i.imgur.com/znBb48H.gif",
+        "http://i.imgur.com/1DrVOy9.gif", "http://i.imgur.com/WisHWD1.gif",
+        "http://i.imgur.com/cJ2UgeJ.gif", "http://i.imgur.com/Uv61Pc1.gif",
+        "http://i.imgur.com/MdqyZwH.gif", "http://i.imgur.com/Zg7JRkI.gif",
+        "http://i.imgur.com/MdqyZwH.gif", "http://i.imgur.com/PeGeJHx.gif",
+        "http://i.imgur.com/UZKKA1p.gif", "http://i.imgur.com/3P9iz7F.gif", 
+        "http://i.imgur.com/zn43njB.gif", "http://i.imgur.com/RcE4Q39.gif",
+        "http://i.imgur.com/gU4GyQW.gif", "http://i.imgur.com/1eijPRd.gif",
+        "http://i.imgur.com/1eijPRd.gif", "http://i.imgur.com/qe9rhLw.gif",
+        "http://i.imgur.com/VJrLyEK.gif", "http://i.imgur.com/SFfDubn.gif",
+        "http://i.imgur.com/bwap4d8.gif", "http://i.imgur.com/C9ta1Sa.gif",
+        "http://i.imgur.com/uJFvpy8.gif", "http://i.imgur.com/LE9wpHg.gif",
+        "http://i.imgur.com/HN7xy34.gif", "http://i.imgur.com/Wlzh53b.gif",
+        "http://i.imgur.com/0tFzfoS.gif", "http://i.imgur.com/toGIV2F.gif",
+        "http://i.imgur.com/Hc4a4qy.gif", "http://i.imgur.com/t7jkk6Z.gif",
+        "http://i.imgur.com/NTomm7O.gif", "http://i.imgur.com/qIRjVY5.gif",
+        "http://i.imgur.com/Y2kcaZT.gif", "http://i.imgur.com/m8Dogv7.gif",
+        "http://i.imgur.com/GaLRCro.gif", "http://i.imgur.com/hjLZk23.gif",
+        "http://i.imgur.com/b9eQ6ZN.gif", "http://i.imgur.com/F34uEVD.gif",
+        "http://i.imgur.com/QEvMlAf.gif", "http://i.imgur.com/fkDph6U.gif",
+        "http://i.imgur.com/LQj1kvn.gif", "http://i.imgur.com/tcjdQI8.gif",
+        "http://i.imgur.com/EnmebIW.gif", "http://i.imgur.com/RaCDnpI.gif",
+        "http://i.imgur.com/5OWXPFe.gif"
+    ];
+
+    let random = getRandom(0, images.length);
+
+    return {
+        url: images[random]
+    }
+}
 
     let images = [
         'https://i.imgur.com/TeK0xVr.gif', 'https://i.imgur.com/O85hPMc.gif', 'https://i.imgur.com/bLMZFxX.gif',

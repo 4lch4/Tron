@@ -146,6 +146,23 @@ bot.registerCommand('killme', (msg, args) => {
     })
 })
 
+bot.registerCommand('hugs', (msg, args) => {
+    let hugImage = tools.pickHugImage();
+    var message = ''
+
+    if (msg.content.length > 7) {
+        var user = msg.mentions[0].username
+        message = "**" + user + "**, has received hugs from **" + msg.author.username + "**."
+    }
+
+    bot.createMessage(msg.channel.id, {
+        content: message,
+        embed: {
+            image: hugImage
+        }
+    })
+})
+
 bot.registerCommand('bite', (msg, args) => {
     var biteImage = tools.pickBiteImage()
     var message = ''
