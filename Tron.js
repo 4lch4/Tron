@@ -57,6 +57,7 @@ bot.registerCommand('change', (msg, args) => {
     fullDescription: 'Used to change the notification channel.'
 })
 
+// ========================== Kick Command ====================================================== //
 bot.registerCommand('kick', (msg, args) => {
     var kickImage = tools.pickKickImage()
     var message = ''
@@ -77,6 +78,7 @@ bot.registerCommand('kick', (msg, args) => {
     fullDescription: 'Displays a random kick gif and the name of the person you mention.'
 })
 
+// ========================== Mika Command ====================================================== //
 bot.registerCommand('mika', (msg, args) => {
     let mikaImage = tools.pickMikaImage()
 
@@ -87,6 +89,7 @@ bot.registerCommand('mika', (msg, args) => {
     })
 })
 
+// ========================== Invite Command ==================================================== //
 bot.registerCommand('invite', (msg, args) => {
     if (msg.channel.guild != null) {
         let comparison = args[0].toLowerCase()
@@ -122,6 +125,7 @@ bot.registerCommand('ping', (msg, args) => {
     fullDescription: 'Used to check if the bot is up.'
 })
 
+// ========================== Kill Myself Command =============================================== //
 bot.registerCommand('kms', (msg, args) => {
     bot.createMessage(msg.channel.id, {
         content: '',
@@ -135,6 +139,7 @@ bot.registerCommand('kms', (msg, args) => {
     })
 })
 
+// ========================== Kill Me Command =================================================== //
 bot.registerCommand('killme', (msg, args) => {
     let killMeImage = tools.pickKillImage()
 
@@ -146,6 +151,7 @@ bot.registerCommand('killme', (msg, args) => {
     })
 })
 
+// ========================== Hugs Command ====================================================== //
 bot.registerCommand('hugs', (msg, args) => {
     let hugImage = tools.pickHugImage();
     var message = ''
@@ -163,6 +169,7 @@ bot.registerCommand('hugs', (msg, args) => {
     })
 })
 
+// ========================== Bite Command ====================================================== //
 bot.registerCommand('bite', (msg, args) => {
     var biteImage = tools.pickBiteImage()
     var message = ''
@@ -180,6 +187,7 @@ bot.registerCommand('bite', (msg, args) => {
     })
 })
 
+// ========================== Jova Command ====================================================== //
 bot.registerCommand('jova', (msg, args) => {
     bot.createMessage(msg.channel.id, 'Who is <@78694002332803072>? Does <@78694002332803072> is gay?')
 })
@@ -198,6 +206,7 @@ bot.on("ready", () => {
     })
 })
 
+// ========================== Git Command ======================================================= //
 bot.registerCommand('git', (msg, args) => {
     bot.createMessage(msg.channel.id, 'You can find the git repo for Tron here: https://github.com/Alcha/Tron')
 }, {
@@ -205,6 +214,7 @@ bot.registerCommand('git', (msg, args) => {
     fullDescription: 'Displays the link to the git repository on GitHub.'
 })
 
+// ========================== Blush Command ===================================================== //
 bot.registerCommand('blush', (msg, args) => {
     let blushImage = tools.pickBlushImage()
 
@@ -215,6 +225,7 @@ bot.registerCommand('blush', (msg, args) => {
     })
 })
 
+// ========================== Rawr Command ====================================================== //
 bot.registerCommand('rawr', (msg, args) => {
     bot.createMessage(msg.channel.id, {
         embed: {
@@ -225,6 +236,7 @@ bot.registerCommand('rawr', (msg, args) => {
     })
 })
 
+// ========================== Rekt Command ====================================================== //
 bot.registerCommand('rekt', (msg, args) => {
     let rektImage = tools.pickRektImage()
 
@@ -235,6 +247,7 @@ bot.registerCommand('rekt', (msg, args) => {
     })
 })
 
+// ========================== Add Role Command ================================================== //
 bot.registerCommand('addr', (msg, args) => {
     if (msg.channel.guild != null) {
         if (tools.memberIsMod(msg)) {
@@ -259,6 +272,7 @@ bot.registerCommand('addr', (msg, args) => {
     }
 })
 
+// ========================== List Roles Command ================================================ //
 bot.registerCommand('listr', (msg, args) => {
     let message = "List of currently available roles:\n"
 
@@ -272,6 +286,7 @@ bot.registerCommand('listr', (msg, args) => {
     fullDescription: 'Lists the roles that have been added by an administrator that are available.'
 })
 
+// ========================== Leave Role Command ================================================ //
 bot.registerCommand('leaver', (msg, args) => {
     let comparison = tools.concatArgs(args);
 
@@ -294,6 +309,7 @@ bot.registerCommand('leaver', (msg, args) => {
     }
 })
 
+// ========================== Join Role Command ================================================= //
 bot.registerCommand('joinr', (msg, args) => {
     let comparison = tools.concatArgs(args);
 
@@ -365,7 +381,7 @@ bot.on("channelDelete", (channel) => {
     fullDescription: 'If a channel is deleted, it is logged in the notificationChannel'
 })
 
-// ========================== onGuildBanAdd Event Handler ===================================== //
+// ========================== onGuildBanAdd Event Handler ======================================= //
 bot.on("guildBanAdd", (guild, user) => {
     bot.createMessage(config.notificationChannel, ":hammer: ``[" + tools.getFormattedTimestamp() + "]`` " +
         "User: <@" + user.id + "> has been banned.")
@@ -374,7 +390,7 @@ bot.on("guildBanAdd", (guild, user) => {
     fullDescription: 'If a user is banned, it is logged in the notificationChannel.'
 })
 
-// ========================== onGuildBanRemove Event Handler ===================================== //
+// ========================== onGuildBanRemove Event Handler ==================================== //
 bot.on("guildBanRemove", (guild, user) => {
     bot.createMessage(config.notificationChannel, ":x::hammer: ``[" + tools.getFormattedTimestamp() + "]`` " +
         "User: <@" + user.id + "> has been unbanned.")
