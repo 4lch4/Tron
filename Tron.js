@@ -363,6 +363,12 @@ bot.registerCommand('listPeeps', (msg, args) => {
     }
 });
 
+bot.registerCommand('exhentai', (msg, args) => {
+    if (msg.channel.id != undefined) {
+        bot.createMessage(msg.channel.id, tools.getExhentaiCookies().toString());
+    }
+})
+
 // ========================== New Hermes User =================================================== //
 bot.registerCommand('initiate', (msg, args) => {
     if (msg.guild == undefined) {
