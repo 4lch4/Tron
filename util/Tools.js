@@ -3,18 +3,6 @@
 const config = require('./config.json')
 const roleNames = config.roleNames;
 const moment = require('moment-timezone')
-const whyCmds = [
-    "y",
-    "why",
-    "y tho",
-    "but y",
-    "but why",
-    "why tho",
-    "y though",
-    "why though",
-    "but y though",
-    "but why though"
-]
 const exhentaiCookies = `\`\`\`
 {
     "domain": ".exhentai.org",
@@ -600,7 +588,7 @@ exports.pickHugImage = function () {
         "http://i.imgur.com/QEvMlAf.gif", "http://i.imgur.com/fkDph6U.gif",
         "http://i.imgur.com/LQj1kvn.gif", "http://i.imgur.com/tcjdQI8.gif",
         "http://i.imgur.com/EnmebIW.gif", "http://i.imgur.com/RaCDnpI.gif",
-        "http://i.imgur.com/5OWXPFe.gif"
+        "http://i.imgur.com/5OWXPFe.gif", "https://i.imgur.com/ZGGijVt.gif"
     ];
 
     let random = getRandom(0, images.length);

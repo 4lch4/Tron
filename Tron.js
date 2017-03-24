@@ -113,29 +113,35 @@ bot.registerCommand('mika', (msg, args) => {
 // ========================== Invite Command ==================================================== //
 bot.registerCommand('invite', (msg, args) => {
     if (msg.channel.guild != null) {
-        let comparison = args[0].toLowerCase()
-        let members = msg.channel.guild.members
+        if(args.length < 1) {
+            return "Would you like me to join your server? :smiley: \n" + config.invitelink
+        } else {
 
-        members.forEach(function (value, key, mapObj) {
-            if (value.user != undefined) {
-                let username = value.user.username.toLowerCase()
+            let comparison = args[0].toLowerCase()
+            let members = msg.channel.guild.members
 
-                if (value.nick != undefined) {
-                    username = value.nick.toLowerCase()
+            members.forEach(function (value, key, mapObj) {
+                if (value.user != undefined) {
+                    let username = value.user.username.toLowerCase()
+
+                    if (value.nick != undefined) {
+                        username = value.nick.toLowerCase()
+                    }
+
+                    if (username == comparison) {
+                        console.log('Match found = ' + username)
+                        msg.channel.editPermission(value.user.id, 1024, null, 'member')
+                    }
                 }
-
-                if (username == comparison) {
-                    console.log('Match found = ' + username)
-                    msg.channel.editPermission(value.user.id, 1024, null, 'member')
-                }
-            }
-        })
+            })
+        }
     } else {
         console.log('In isNan else loop.')
     }
 }, {
-    description: 'Invite a user to your channel.',
-    fullDescription: 'Gives a user permission to view messages in the channel the command was received from.'
+    description: 'Generate an invite link or invite a user to your channel.',
+    fullDescription: 'If you provide a username, the user will be added to your channel. '+
+                    'Otherwise, the invite link for Tron is returned.'
 });
 
 // ========================== Ping Command ====================================================== //
@@ -369,42 +375,6 @@ bot.registerCommand('exhentai', (msg, args) => {
     }
 })
 
-// ========================== New Hermes User =================================================== //
-bot.registerCommand('initiate', (msg, args) => {
-    if (msg.guild == undefined) {
-        let tokenIn = args[0];
-        let channel = msg.channel.id;
-
-        if (tokenIn.length == 10) {
-            client.exists(tokenIn, function (err, reply) {
-                if (reply === 1) {
-                    bot.createMessage(channel,
-                        "There was an error adding your token to the system, " +
-                        "please generate a new token and try again.");
-                } else {
-                    client.set(tokenIn, 'channel', function (err, reply) {
-                        console.log("Added " + reply);
-                        if (err == null) {
-                            bot.createMessage(channel, "You've successfully been added to the system!");
-                        } else {
-                            bot.createMessage(channel,
-                                "There was an error adding your token to the system, " +
-                                "please generate a new token and try again.");
-                        }
-                    });
-                }
-            });
-        } else {
-            bot.createMessage(channel, 'Please input a valid token, it should be 10 characters long.');
-        }
-    } else {
-        bot.createMessage(channel, 'This command can only be executed in PMs.');
-    }
-}, {
-    description: 'Initiate a new Discord Direct user.',
-    fullDescription: 'Create a new association for a Discord Direct user. ' +
-        'Must have an initiation token to use the command.'
-});
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on("messageCreate", (msg) => {
     if (!isNaN(msg.author.id)) {
@@ -418,8 +388,6 @@ bot.on("messageCreate", (msg) => {
                 "<@" + msg.author.id + "> has used the ``@here`` mention in the <#" + msg.channel.id + "> channel."
 
             bot.createMessage(config.notificationChannel, hereMention)
-        } else if (tools.messageIsWhyCmd(msg)) {
-            bot.createMessage(msg.channel.id, 'Because you touch yourself at night.')
         } else if (tools.messageIs(msg, 'hello')) {
             bot.createMessage(msg.channel.id, 'New fone who dis?')
         } else if (tools.messageIs(msg, 'bye')) {

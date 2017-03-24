@@ -49,3 +49,5 @@ Tron.service
 TronStartup.sh
 config.json
 package.json
+
+debug\.log
