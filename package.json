@@ -9,6 +9,6 @@
     "eris": "github:abalabahaha/eris"
   },
   "scripts": {
-    "start": "nodemon Tron.js"
+    "start": "npm start"
   }
 }
