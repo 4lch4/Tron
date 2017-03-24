@@ -1,0 +1,14 @@
+{
+  "name": "Tron",
+  "version": "1.2.1",
+  "description": "My personal Tron bot.",
+  "main": "Tron.js",
+  "author": "Alcha",
+  "license": "GPL",
+  "dependencies": {
+    "eris": "github:abalabahaha/eris"
+  },
+  "scripts": {
+    "start": "nodemon Tron.js"
+  }
+}
