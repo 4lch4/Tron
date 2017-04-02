@@ -92,7 +92,7 @@ const exhentaiCookies = `\`\`\`
 // ============================================================================================== //
 var exports = module.exports = {}
 
-exports.getExhentaiCookies = function() {
+exports.getExhentaiCookies = function () {
     return exhentaiCookies;
 };
 

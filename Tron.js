@@ -30,7 +30,7 @@
 // ============================================================================================== //
 const Eris = require("eris");
 const config = require('./util/config.json');
-const info = require('./package.json');
+const info = require('./util/package.json');
 const readline = require('readline');
 const _ = require('lodash');
 const moment = require('moment-timezone');
@@ -113,7 +113,7 @@ bot.registerCommand('mika', (msg, args) => {
 // ========================== Invite Command ==================================================== //
 bot.registerCommand('invite', (msg, args) => {
     if (msg.channel.guild != null) {
-        if(args.length < 1) {
+        if (args.length < 1) {
             return "Would you like me to join your server? :smiley: \n" + config.invitelink
         } else {
 
@@ -140,8 +140,8 @@ bot.registerCommand('invite', (msg, args) => {
     }
 }, {
     description: 'Generate an invite link or invite a user to your channel.',
-    fullDescription: 'If you provide a username, the user will be added to your channel. '+
-                    'Otherwise, the invite link for Tron is returned.'
+    fullDescription: 'If you provide a username, the user will be added to your channel. ' +
+        'Otherwise, the invite link for Tron is returned.'
 });
 
 // ========================== Ping Command ====================================================== //
@@ -392,6 +392,8 @@ bot.on("messageCreate", (msg) => {
             bot.createMessage(msg.channel.id, 'New fone who dis?')
         } else if (tools.messageIs(msg, 'bye')) {
             bot.createMessage(msg.channel.id, 'https://cdn.discordapp.com/attachments/238466589362487306/258896018354077697/byefelicia.png')
+        } else if (tools.messageIs(msg, 'god damn')) {
+            bot.createMessage(msg.channel.id, "https://i.imgur.com/ULUZMtV.gifv")
         }
     }
 });
