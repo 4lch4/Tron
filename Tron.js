@@ -375,6 +375,14 @@ bot.registerCommand('exhentai', (msg, args) => {
     }
 })
 
+bot.registerCommand('Utah', (msg, args) => {
+    if (msg.guild.id == 254496813552238594) {
+        bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:256668458480041985>");
+    }
+});
+
+bot.registerCommandAlias('utah', 'Utah');
+
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on("messageCreate", (msg) => {
     if (!isNaN(msg.author.id)) {
