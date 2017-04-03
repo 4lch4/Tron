@@ -378,6 +378,11 @@ bot.registerCommand('exhentai', (msg, args) => {
 bot.registerCommand('Utah', (msg, args) => {
     if (msg.guild.id == 254496813552238594) {
         bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:256668458480041985>");
+    } else if (msg.guild.id == 197846974408556544) {
+        bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:298313391444066305>");
+    } else {
+        console.log("Guild = " + msg.guild.name);
+        console.log("id = " + msg.guild.id);
     }
 });
 
