@@ -548,14 +548,8 @@ exports.pickCryImage = function() {
     }
 }
 
-exports.pickKickImage = function () {
-    let images = [
-        "https://i.imgur.com/B0EvFzc.gif", "https://i.imgur.com/5oZkxax.gif",
-        "https://i.imgur.com/955TDwD.gif", "https://i.imgur.com/8X13K1z.gif",
-        "https://i.imgur.com/lP0kfb7.gif", "https://i.imgur.com/4vcwdhp.gif",
-        "https://media.giphy.com/media/ewp6KdCOEMSTm/giphy.gif",
-        "https://media3.giphy.com/media/l3V0j3ytFyGHqiV7W/giphy.gif"
-    ];
+exports.pickRektImage = function () {
+    let images = ["https://media.giphy.com/media/vSR0fhtT5A9by/giphy.gif"]
 
     let random = getRandom(0, images.length);
 
@@ -564,8 +558,14 @@ exports.pickKickImage = function () {
     }
 }
 
-exports.pickRektImage = function () {
-    let images = ["https://media.giphy.com/media/vSR0fhtT5A9by/giphy.gif"]
+exports.pickKickImage = function () {
+    let images = [
+        "https://i.imgur.com/B0EvFzc.gif", "https://i.imgur.com/5oZkxax.gif",
+        "https://i.imgur.com/955TDwD.gif", "https://i.imgur.com/8X13K1z.gif",
+        "https://i.imgur.com/lP0kfb7.gif", "https://i.imgur.com/4vcwdhp.gif",
+        "https://media.giphy.com/media/ewp6KdCOEMSTm/giphy.gif",
+        "https://media3.giphy.com/media/l3V0j3ytFyGHqiV7W/giphy.gif"
+    ];
 
     let random = getRandom(0, images.length);
 

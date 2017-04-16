@@ -80,7 +80,7 @@ bot.registerCommand('change', (msg, args) => {
 
 // ========================== Cry Command ======================================================= //
 bot.registerCommand('cry', (msg, args) => {
-    if(msg.guild != undefined) {
+    if (msg.guild != undefined) {
         var cryImage = tools.pickCryImage();
 
         bot.createMessage(msg.channel.id, {
@@ -96,11 +96,11 @@ bot.registerCommand('cry', (msg, args) => {
 
 // ========================== Love Command ====================================================== //
 bot.registerCommand('love', (msg, args) => {
-    if(msg.guild != undefined) {
+    if (msg.guild != undefined) {
         let loveImage = tools.pickLoveImage();
         let message = '';
 
-        if(msg.content.length > 7) {
+        if (msg.content.length > 7) {
             let user = msg.mentions[0].username
             message = "**" + user + "**, you've been loved by **" + msg.author.username + "**."
         }
@@ -116,33 +116,6 @@ bot.registerCommand('love', (msg, args) => {
     description: 'Displays random love gif.',
     fullDescription: 'Displays a random love gif and the name of the person you mention.'
 });
-
-bot.registerCommandAlias('love', 'Love');
-
-// ========================== Kick Command ====================================================== //
-bot.registerCommand('kick', (msg, args) => {
-    if (msg.author.id != mikaId) {
-        var kickImage = tools.pickKickImage()
-        var message = ''
-
-        if (msg.content.length > 7) {
-            var user = msg.mentions[0].username
-            message = "**" + user + "**, you've been kicked by **" + msg.author.username + "**."
-        }
-
-        bot.createMessage(msg.channel.id, {
-            content: message,
-            embed: {
-                image: kickImage
-            }
-        })
-    }
-}, {
-    description: 'Displays random kick gif',
-    fullDescription: 'Displays a random kick gif and the name of the person you mention.'
-});
-
-bot.registerCommandAlias('kick', 'Kick');
 
 // ========================== Invite Command ==================================================== //
 bot.registerCommand('invite', (msg, args) => {
@@ -228,6 +201,25 @@ bot.registerCommand('hugs', (msg, args) => {
             image: hugImage
         }
     })
+});
+
+// ========================== Kick Command ====================================================== //
+bot.registerCommand('kick', (msg, args) => {
+    if (msg.author.id != mikaId && msg.content.length > 7) {
+        let kickImage = tools.pickKickImage();
+        let user = msg.mentions[0].username;
+        let message = "**" + user + "**, you've been kicked by **" + msg.author.username + "**.";
+
+        bot.createMessage(msg.channel.id, {
+            content: message,
+            embed: {
+                image: kickImage
+            }
+        });
+    }
+}, {
+    description: 'Displays random kick gif',
+    fullDescription: 'Displays a random kick gif and the name of the person you mention.'
 });
 
 // ========================== Bite Command ====================================================== //
@@ -415,7 +407,7 @@ bot.registerCommand('exhentai', (msg, args) => {
 })
 
 // ========================== Utah Command ====================================================== //
-bot.registerCommand('Utah', (msg, args) => {
+bot.registerCommand('utah', (msg, args) => {
     if (msg.guild.id == 254496813552238594) {
         bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:256668458480041985>");
     } else if (msg.guild.id == 197846974408556544) {
@@ -425,11 +417,14 @@ bot.registerCommand('Utah', (msg, args) => {
         console.log("id = " + msg.guild.id);
     }
 }, {
-    description: 'A command to poke fun at a friend.'
+    description: 'A command to poke fun at a good friend.',
+    fullDescription: 'Used to poke fun at a good friend. -Alcha'
 });
 
+bot.registerCommandAlias('Utah', 'utah');
+
 // ========================== Alex Command ====================================================== //
-bot.registerCommand('Alex', (msg, args) => {
+bot.registerCommand('alex', (msg, args) => {
     if (msg.guild.id == 254496813552238594) {
         bot.createMessage(msg.channel.id, "<@!191316261299290112> 🖕")
     }
@@ -438,8 +433,7 @@ bot.registerCommand('Alex', (msg, args) => {
     fullDescription: 'Used to show my love for a good friend. -Alcha'
 });
 
-bot.registerCommandAlias('utah', 'Utah');
-bot.registerCommandAlias('alex', 'Alex');
+bot.registerCommandAlias('Alex', 'alex');
 
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on("messageCreate", (msg) => {
