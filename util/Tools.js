@@ -114,7 +114,7 @@ exports.getGiveawayBot = function () {
         raw_emoji: ent.decodeHTML("&#x1F381;"), // Leave this alone pls
         new_topic: "Current Giveaway: {GAME}", // Topic format
         timeout: 300000, // Giveaway length in milliseconds
-        gtimeout: 120000 // Claim Prize length in milliseconds
+        gtimeout: 1500000 // Claim Prize length in milliseconds
     };
 
     // No! don't touch that!
@@ -528,8 +528,18 @@ exports.pickBiteImage = function () {
     }
 };
 
-exports.pickMikaImage = function () {
-    let images = ["https://i.imgur.com/WtdWRrt.png"];
+exports.pickCryImage = function() {
+    let images = [
+        "https://68.media.tumblr.com/56fea5a4d682cd26178c17d80f7ee82a/tumblr_ofedni0ELT1vztiw8o1_500.gif",
+        "http://media1.giphy.com/media/yarJ7WfdKiAkE/giphy.gif", "https://media.tenor.co/images/15dd673b469356e2129a0be61c81c3e1/tenor.gif",
+        "https://i.imgur.com/TCcBFhE.gif", "https://i.imgur.com/7fzgc54.gif",
+        "https://i.imgur.com/nIquddi.gif", "https://i.imgur.com/i1Lff9D.gif",
+        "https://i.imgur.com/hklN1Id.gif", "https://i.imgur.com/BKeoOk9.gif",
+        "https://i.imgur.com/juYztHy.gif", "https://i.imgur.com/syTVAq2.gif",
+        "https://i.imgur.com/fcwc3yf.gif", "https://i.imgur.com/tEcGeLo.gif",
+        "https://i.imgur.com/LohoFnT.gif", "https://i.imgur.com/Mp24EZO.gif",
+        "https://i.imgur.com/Ru8Lchl.gif", "https://i.imgur.com/msKl4QH.gif"
+        ];
 
     let random = getRandom(0, images.length);
 
@@ -541,9 +551,10 @@ exports.pickMikaImage = function () {
 exports.pickKickImage = function () {
     let images = [
         "https://i.imgur.com/B0EvFzc.gif", "https://i.imgur.com/5oZkxax.gif",
-        "https://i.imgur.com/5oZkxax.gif", "https://i.imgur.com/5oZkxax.gif",
         "https://i.imgur.com/955TDwD.gif", "https://i.imgur.com/8X13K1z.gif",
-        "https://i.imgur.com/lP0kfb7.gif", "https://i.imgur.com/4vcwdhp.gif"
+        "https://i.imgur.com/lP0kfb7.gif", "https://i.imgur.com/4vcwdhp.gif",
+        "https://media.giphy.com/media/ewp6KdCOEMSTm/giphy.gif",
+        "https://media3.giphy.com/media/l3V0j3ytFyGHqiV7W/giphy.gif"
     ];
 
     let random = getRandom(0, images.length);
@@ -619,6 +630,27 @@ exports.pickBlushImage = function () {
     ]
 
     let random = getRandom(0, images.length)
+    return {
+        url: images[random]
+    }
+}
+
+exports.pickLoveImage = function() {
+    let images =[
+        "https://i.imgur.com/588uYNB.gif", "https://i.imgur.com/hRUtMFz.gif",
+        "https://i.imgur.com/Ph5N1xu.gif", "https://i.imgur.com/V3ba8a4.gif",
+        "https://i.imgur.com/H9udxcZ.gif", "https://i.imgur.com/54JH1zA.gif",
+        "https://i.imgur.com/l8cN0la.gif", "https://i.imgur.com/qxiFrH4.gif",
+        "https://i.imgur.com/8Ey8xUy.gif", "https://i.imgur.com/n3BBfHk.gif",
+        "https://i.imgur.com/zA2osmF.gif", "https://i.imgur.com/8elTnrB.gif",
+        "https://i.imgur.com/pyZsB3o.gif", "https://i.imgur.com/mW7tRTA.gif",
+        "https://i.imgur.com/qtauKz9.gif", "https://i.imgur.com/FYbmDhY.gif",
+        "https://i.imgur.com/PrJ36Qe.gif", "https://i.imgur.com/Wf6lwwv.gif",
+        "https://i.imgur.com/dX1ytFf.gif", "https://i.imgur.com/jFcU1AA.gif"
+    ];
+
+    let random = getRandom(0, images.length);
+
     return {
         url: images[random]
     }

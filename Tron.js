@@ -78,41 +78,75 @@ bot.registerCommand('change', (msg, args) => {
     fullDescription: 'Used to change the notification channel.'
 });
 
+// ========================== Cry Command ======================================================= //
+bot.registerCommand('cry', (msg, args) => {
+    if(msg.guild != undefined) {
+        var cryImage = tools.pickCryImage();
+
+        bot.createMessage(msg.channel.id, {
+            embed: {
+                image: cryImage
+            }
+        })
+    }
+}, {
+    description: 'Displays random cry gif.',
+    fullDescription: 'Displays a random cry gif.'
+});
+
+// ========================== Love Command ====================================================== //
+bot.registerCommand('love', (msg, args) => {
+    if(msg.guild != undefined) {
+        let loveImage = tools.pickLoveImage();
+        let message = '';
+
+        if(msg.content.length > 7) {
+            let user = msg.mentions[0].username
+            message = "**" + user + "**, you've been loved by **" + msg.author.username + "**."
+        }
+
+        bot.createMessage(msg.channel.id, {
+            content: message,
+            embed: {
+                image: loveImage
+            }
+        });
+    }
+}, {
+    description: 'Displays random love gif.',
+    fullDescription: 'Displays a random love gif and the name of the person you mention.'
+});
+
+bot.registerCommandAlias('love', 'Love');
+
 // ========================== Kick Command ====================================================== //
 bot.registerCommand('kick', (msg, args) => {
-    var kickImage = tools.pickKickImage()
-    var message = ''
+    if (msg.author.id != mikaId) {
+        var kickImage = tools.pickKickImage()
+        var message = ''
 
-    if (msg.content.length > 7) {
-        var user = msg.mentions[0].username
-        message = "**" + user + "**, you've been kicked by **" + msg.author.username + "**."
-    }
-
-    bot.createMessage(msg.channel.id, {
-        content: message,
-        embed: {
-            image: kickImage
+        if (msg.content.length > 7) {
+            var user = msg.mentions[0].username
+            message = "**" + user + "**, you've been kicked by **" + msg.author.username + "**."
         }
-    })
+
+        bot.createMessage(msg.channel.id, {
+            content: message,
+            embed: {
+                image: kickImage
+            }
+        })
+    }
 }, {
     description: 'Displays random kick gif',
     fullDescription: 'Displays a random kick gif and the name of the person you mention.'
 });
 
-// ========================== Mika Command ====================================================== //
-bot.registerCommand('mika', (msg, args) => {
-    let mikaImage = tools.pickMikaImage()
-
-    bot.createMessage(msg.channel.id, {
-        embed: {
-            image: mikaImage
-        }
-    })
-});
+bot.registerCommandAlias('kick', 'Kick');
 
 // ========================== Invite Command ==================================================== //
 bot.registerCommand('invite', (msg, args) => {
-    if (msg.channel.guild != null) {
+    if (msg.channel.guild != undefined) {
         if (args.length < 1) {
             return "Would you like me to join your server? :smiley: \n" + config.invitelink
         } else {
@@ -357,8 +391,12 @@ bot.registerCommand('joinr', (msg, args) => {
             }
         }
     }
+}, {
+    description: 'Places you into the requested server role.',
+    fullDescription: 'Server admins are able to add select roles to the bot so that anyone can join the role with this command.'
 });
 
+// ========================== List Peeps (Not for public) ======================================= //
 bot.registerCommand('listPeeps', (msg, args) => {
     if (msg.author.id == config.owner) {
         if (args[0] != null) {
@@ -369,12 +407,14 @@ bot.registerCommand('listPeeps', (msg, args) => {
     }
 });
 
+// ========================== Exhentai Command ====================================================== //
 bot.registerCommand('exhentai', (msg, args) => {
     if (msg.channel.id != undefined) {
         bot.createMessage(msg.channel.id, tools.getExhentaiCookies().toString());
     }
 })
 
+// ========================== Utah Command ====================================================== //
 bot.registerCommand('Utah', (msg, args) => {
     if (msg.guild.id == 254496813552238594) {
         bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:256668458480041985>");
@@ -384,9 +424,22 @@ bot.registerCommand('Utah', (msg, args) => {
         console.log("Guild = " + msg.guild.name);
         console.log("id = " + msg.guild.id);
     }
+}, {
+    description: 'A command to poke fun at a friend.'
+});
+
+// ========================== Alex Command ====================================================== //
+bot.registerCommand('Alex', (msg, args) => {
+    if (msg.guild.id == 254496813552238594) {
+        bot.createMessage(msg.channel.id, "<@!191316261299290112> 🖕")
+    }
+}, {
+    description: 'A command for a good friend of the developer.',
+    fullDescription: 'Used to show my love for a good friend. -Alcha'
 });
 
 bot.registerCommandAlias('utah', 'Utah');
+bot.registerCommandAlias('alex', 'Alex');
 
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on("messageCreate", (msg) => {
