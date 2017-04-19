@@ -92,11 +92,11 @@ const exhentaiCookies = `\`\`\`
 // ============================================================================================== //
 var exports = module.exports = {}
 
-exports.getExhentaiCookies = function () {
+exports.getExhentaiCookies = () => {
     return exhentaiCookies;
 };
 
-exports.getGiveawayBot = function () {
+exports.getGiveawayBot = () => {
     const Discord = require('discord.js');
     let ent = require("entities");
     const Helper = require("./Helper.js");
@@ -173,7 +173,7 @@ exports.getGiveawayBot = function () {
         process.exit(0);
     });
 
-    let switchUser = function () {
+    let switchUser = () => {
         if (tempGiveaway.started) {
             giveawayBot.users.get(tempGiveaway.current_user).sendMessage(`You failed to claim the prize.`);
             giveawayBot.guilds.get(giveawayValues.guild_id).channels.get(giveawayValues.channel_id).messages.get(tempGiveaway.message_id).clearReactions();
@@ -197,7 +197,7 @@ exports.getGiveawayBot = function () {
         }
     }
 
-    giveawayBot.on("ready", function () {
+    giveawayBot.on("ready", () => {
         console.log('GiveawayBot ready.');
     });
 
@@ -310,7 +310,7 @@ exports.getGiveawayBot = function () {
 };
 
 // ========================== Standard Embeds Function ========================================== //
-exports.embeds = function (msg, args, title, desc, thumbn, bot) {
+exports.embeds = (msg, args, title, desc, thumbn, bot) => {
     let rolrray = msg.channel.guild.members.get(bot.user.id).roles.map(r => msg.channel.guild.roles.get(r).position)
     let toprole = rolrray.indexOf(Math.max.apply(Math, rolrray))
     bot.createMessage(msg.channel.id, {
@@ -334,8 +334,9 @@ exports.embeds = function (msg, args, title, desc, thumbn, bot) {
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min) + min)
 }
+
 // ========================== MessageIs Function ================================================ //
-exports.messageIs = function (msg, str) {
+exports.messageIs = (msg, str) => {
     let input = ""
 
     if (msg.content != undefined) {
@@ -352,7 +353,7 @@ exports.messageIs = function (msg, str) {
     }
 }
 
-exports.messageStartsWith = function (msg, str) {
+exports.messageStartsWith = (msg, str) => {
     let input = ""
 
     if (msg.content != undefined) {
@@ -364,9 +365,9 @@ exports.messageStartsWith = function (msg, str) {
     return input.startsWith(comparison)
 }
 
-exports.allowedRole = function (comparison) {
+exports.allowedRole = (comparison) => {
     let allowed = false;
-    roleNames.forEach(function (curr, index, arr) {
+    roleNames.forEach((curr, index, arr) => {
         if (curr != null && curr.toLowerCase() == comparison) {
             allowed = true;
         }
@@ -378,7 +379,7 @@ exports.allowedRole = function (comparison) {
 function getRoleId(msg, comparison) {
     let id = "";
 
-    msg.guild.roles.forEach(function (curr, index, values) {
+    msg.guild.roles.forEach((curr, index, values) => {
         if (curr.name.toLowerCase() == comparison) {
             id = curr.id;
         }
@@ -387,7 +388,7 @@ function getRoleId(msg, comparison) {
     return id;
 }
 
-exports.removeAllRoles = function (userId, msg, bot) {
+exports.removeAllRoles = (userId, msg, bot) => {
     for (var x = 0; x < roleNames.length; x++) {
         let roleId = getRoleId(msg, roleNames[x].toLowerCase());
         msg.guild.removeMemberRole(userId, roleId);
@@ -397,7 +398,7 @@ exports.removeAllRoles = function (userId, msg, bot) {
     msg.delete();
 }
 
-exports.addAllRoles = function (userId, msg, bot) {
+exports.addAllRoles = (userId, msg, bot) => {
     for (var x = 0; x < roleNames.length; x++) {
         let roleId = getRoleId(msg, roleNames[x].toLowerCase());
         msg.guild.addMemberRole(userId, roleId);
@@ -406,10 +407,10 @@ exports.addAllRoles = function (userId, msg, bot) {
     bot.createMessage(msg.channel.id, "You've been added to all the roles available to you.");
     msg.delete();
 }
-exports.getRoleId = function (msg, comparison) {
+exports.getRoleId = (msg, comparison) => {
     let id = "";
 
-    msg.guild.roles.forEach(function (curr, index, values) {
+    msg.guild.roles.forEach((curr, index, values) => {
         if (curr.name.toLowerCase() == comparison) {
             id = curr.id;
         }
@@ -418,11 +419,11 @@ exports.getRoleId = function (msg, comparison) {
     return id;
 }
 
-exports.concatArgs = function (args) {
+exports.concatArgs = (args) => {
     let str = "";
 
     if (args.length > 1) {
-        args.forEach(function (curr, index, arr) {
+        args.forEach((curr, index, arr) => {
             if (str.length > 1) {
                 str += " " + curr.toLowerCase();
             } else {
@@ -436,11 +437,11 @@ exports.concatArgs = function (args) {
     return str;
 }
 
-exports.memberIsMod = function (msg) {
+exports.memberIsMod = (msg) => {
     let roles = msg.channel.guild.members.get(msg.author.id).roles;
     let found = false;
 
-    roles.forEach(function (curr, index, arr) {
+    roles.forEach((curr, index, arr) => {
         console.log('curr = ' + curr);
         if (curr == '254970225642962949') {
             found = true;
@@ -453,7 +454,7 @@ exports.memberIsMod = function (msg) {
 }
 
 // ========================== NotificationChannel Embeds Function =============================== //
-exports.notificationEmbeds = function (channel, title, desc, thumbn, bot) {
+exports.notificationEmbeds = (channel, title, desc, thumbn, bot) => {
     let rolrray = channel.guild.members.get(bot.user.id).roles.map(r => channel.guild.roles.get(r).position)
     let toprole = rolrray.indexOf(Math.max.apply(Math, rolrray))
     bot.createMessage(config.notificationChannel, {
@@ -477,11 +478,11 @@ exports.notificationEmbeds = function (channel, title, desc, thumbn, bot) {
     console.log(channel.guild.members.get(bot.user.id).roles.map(r => channel.guild.roles.get(r).color)[toprole])
 }
 
-exports.getFormattedTimestamp = function () {
+exports.getFormattedTimestamp = () => {
     return moment().tz(config.defaultTimezone).format('HH:mm:ss MM/DD/YYYY')
 }
 
-exports.messageIsWhyCmd = function (msg) {
+exports.messageIsWhyCmd = (msg) => {
     let content = msg.content
     let found = false
 
@@ -489,7 +490,7 @@ exports.messageIsWhyCmd = function (msg) {
         content = content.substring(0, content.indexOf("?"))
     }
 
-    whyCmds.forEach(function (cmd) {
+    whyCmds.forEach((cmd) => {
         if (exports.messageIs(content, cmd)) {
             found = true
         }
@@ -498,7 +499,7 @@ exports.messageIsWhyCmd = function (msg) {
     return found
 }
 
-exports.pickKillImage = function () {
+exports.pickKillImage = (callback) => {
     let images = [
         "https://i.imgur.com/Db0ghmE.gif", "https://i.imgur.com/rBYOkZq.gif",
         "https://i.imgur.com/gMylE3v.gif", "https://i.imgur.com/NeD9pVR.gif"
@@ -506,12 +507,12 @@ exports.pickKillImage = function () {
 
     let random = getRandom(0, 4);
 
-    return {
+    callback({
         url: images[random]
-    }
+    });
 };
 
-exports.pickBiteImage = function () {
+exports.pickBiteImage = (callback) => {
     let images = [
         "https://i.imgur.com/2t4yRJL.gif", "https://i.imgur.com/pCRB4bm.gif",
         "https://i.imgur.com/A1UWYE0.gif", "https://i.imgur.com/TmUUJzF.gif",
@@ -523,12 +524,12 @@ exports.pickBiteImage = function () {
 
     let random = getRandom(0, 11);
 
-    return {
+    callback({
         url: images[random]
-    }
+    });
 };
 
-exports.pickCryImage = function() {
+exports.pickCryImage = (callback) => {
     let images = [
         "https://68.media.tumblr.com/56fea5a4d682cd26178c17d80f7ee82a/tumblr_ofedni0ELT1vztiw8o1_500.gif",
         "http://media1.giphy.com/media/yarJ7WfdKiAkE/giphy.gif", "https://media.tenor.co/images/15dd673b469356e2129a0be61c81c3e1/tenor.gif",
@@ -539,26 +540,26 @@ exports.pickCryImage = function() {
         "https://i.imgur.com/fcwc3yf.gif", "https://i.imgur.com/tEcGeLo.gif",
         "https://i.imgur.com/LohoFnT.gif", "https://i.imgur.com/Mp24EZO.gif",
         "https://i.imgur.com/Ru8Lchl.gif", "https://i.imgur.com/msKl4QH.gif"
-        ];
+    ];
 
     let random = getRandom(0, images.length);
 
-    return {
+    callback({
         url: images[random]
-    }
+    });
 }
 
-exports.pickRektImage = function () {
+exports.pickRektImage = (callback) => {
     let images = ["https://media.giphy.com/media/vSR0fhtT5A9by/giphy.gif"]
 
     let random = getRandom(0, images.length);
 
-    return {
+    callback({
         url: images[random]
-    }
+    });
 }
 
-exports.pickKickImage = function () {
+exports.pickKickImage = (callback) => {
     let images = [
         "https://i.imgur.com/B0EvFzc.gif", "https://i.imgur.com/5oZkxax.gif",
         "https://i.imgur.com/955TDwD.gif", "https://i.imgur.com/8X13K1z.gif",
@@ -569,12 +570,35 @@ exports.pickKickImage = function () {
 
     let random = getRandom(0, images.length);
 
-    return {
+    callback({
         url: images[random]
-    }
+    });
 }
 
-exports.pickHugImage = function () {
+exports.getImageFromUrl = (url, callback) => {
+    var http = require('http');
+    var Canvas = require('canvas');
+    http.get(url).on('response', (res) => {
+            // http://stackoverflow.com/a/14269536/478603
+
+            var chunks = [];
+            res.on('data', (data) => {
+                chunks.push(data);
+            })
+
+            res.on('end', () => {
+                var img = new Canvas.Image();
+                img.src = Buffer.concat(chunks);
+                callback(img);
+            })
+
+        })
+        .on('error', (err) => {
+            callback(err);
+        });
+}
+
+exports.pickHugImage = (callback) => {
     let images = [
         "http://i.imgur.com/Lz2E3KQ.gif", "http://i.imgur.com/EjZ3EZF.gif",
         "http://i.imgur.com/9JkgObE.gif", "http://i.imgur.com/znBb48H.gif",
@@ -604,12 +628,12 @@ exports.pickHugImage = function () {
 
     let random = getRandom(0, images.length);
 
-    return {
+    callback({
         url: images[random]
-    }
+    });
 }
 
-exports.pickBlushImage = function () {
+exports.pickBlushImage = (callback) => {
     let images = [
         'https://i.imgur.com/TeK0xVr.gif', 'https://i.imgur.com/O85hPMc.gif', 'https://i.imgur.com/bLMZFxX.gif',
         'https://i.imgur.com/Bi2NBuI.gif', 'https://i.imgur.com/ns6jCfe.gif', 'https://i.imgur.com/ryThkzW.gif',
@@ -627,16 +651,17 @@ exports.pickBlushImage = function () {
         'https://i.imgur.com/HUYn6IX.gif', 'https://i.imgur.com/XqQviel.gif', 'https://i.imgur.com/ob9W3gT.gif',
         'https://i.imgur.com/mlBpkZK.gif', 'https://i.imgur.com/jKluGnJ.gif', 'https://i.imgur.com/xQaAA6G.gif',
         'https://i.imgur.com/yZi3E90.gif', 'https://i.imgur.com/3DYcQfC.gif'
-    ]
+    ];
 
-    let random = getRandom(0, images.length)
-    return {
+    let random = getRandom(0, images.length);
+
+    callback({
         url: images[random]
-    }
+    });
 }
 
-exports.pickLoveImage = function() {
-    let images =[
+exports.pickLoveImage = (callback) => {
+    let images = [
         "https://i.imgur.com/588uYNB.gif", "https://i.imgur.com/hRUtMFz.gif",
         "https://i.imgur.com/Ph5N1xu.gif", "https://i.imgur.com/V3ba8a4.gif",
         "https://i.imgur.com/H9udxcZ.gif", "https://i.imgur.com/54JH1zA.gif",
@@ -651,9 +676,9 @@ exports.pickLoveImage = function() {
 
     let random = getRandom(0, images.length);
 
-    return {
+    callback({
         url: images[random]
-    }
+    });
 }
 
 // ========================== Puppet the Bot =================================================== //

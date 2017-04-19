@@ -80,15 +80,13 @@ bot.registerCommand('change', (msg, args) => {
 
 // ========================== Cry Command ======================================================= //
 bot.registerCommand('cry', (msg, args) => {
-    if (msg.guild != undefined) {
-        var cryImage = tools.pickCryImage();
-
+    tools.pickCryImage((cryImage) => {
         bot.createMessage(msg.channel.id, {
             embed: {
                 image: cryImage
             }
-        })
-    }
+        });
+    });
 }, {
     description: 'Displays random cry gif.',
     fullDescription: 'Displays a random cry gif.'
@@ -96,20 +94,21 @@ bot.registerCommand('cry', (msg, args) => {
 
 // ========================== Love Command ====================================================== //
 bot.registerCommand('love', (msg, args) => {
-    if (msg.guild != undefined) {
-        let loveImage = tools.pickLoveImage();
-        let message = '';
+    if (msg.channel.guild != undefined) {
+        tools.pickLoveImage((loveImage) => {
+            let message = '';
 
-        if (msg.content.length > 7) {
-            let user = msg.mentions[0].username
-            message = "**" + user + "**, you've been loved by **" + msg.author.username + "**."
-        }
-
-        bot.createMessage(msg.channel.id, {
-            content: message,
-            embed: {
-                image: loveImage
+            if (msg.mentions[0] != undefined) {
+                let user = msg.mentions[0].username;
+                message = "**" + user + "**, you've been loved by **" + msg.author.username + "**.";
             }
+
+            bot.createMessage(msg.channel.id, {
+                content: message,
+                embed: {
+                    image: loveImage
+                }
+            });
         });
     }
 }, {
@@ -121,29 +120,28 @@ bot.registerCommand('love', (msg, args) => {
 bot.registerCommand('invite', (msg, args) => {
     if (msg.channel.guild != undefined) {
         if (args.length < 1) {
-            return "Would you like me to join your server? :smiley: \n" + config.invitelink
+            return "Would you like me to join your server? :smiley: \n" + config.invitelink;
         } else {
+            let comparison = args[0].toLowerCase();
+            let members = msg.channel.guild.members;
 
-            let comparison = args[0].toLowerCase()
-            let members = msg.channel.guild.members
-
-            members.forEach(function (value, key, mapObj) {
+            members.forEach((value, key, mapObj) => {
                 if (value.user != undefined) {
-                    let username = value.user.username.toLowerCase()
+                    let username = value.user.username.toLowerCase();
 
                     if (value.nick != undefined) {
-                        username = value.nick.toLowerCase()
+                        username = value.nick.toLowerCase();
                     }
 
                     if (username == comparison) {
-                        console.log('Match found = ' + username)
-                        msg.channel.editPermission(value.user.id, 1024, null, 'member')
+                        console.log('Match found = ' + username);
+                        msg.channel.editPermission(value.user.id, 1024, null, 'member');
                     }
                 }
             })
         }
     } else {
-        console.log('In isNan else loop.')
+        console.log('In isNan else loop.');
     }
 }, {
     description: 'Generate an invite link or invite a user to your channel.',
@@ -153,7 +151,7 @@ bot.registerCommand('invite', (msg, args) => {
 
 // ========================== Ping Command ====================================================== //
 bot.registerCommand('ping', (msg, args) => {
-    return 'Pong!'
+    return 'Pong!';
 }, {
     description: 'Pong!',
     fullDescription: 'Used to check if the bot is up.'
@@ -165,9 +163,7 @@ bot.registerCommand('kms', (msg, args) => {
         content: '',
         embed: {
             image: {
-                url: 'https://i.imgur.com/rC0Yx6S.gif',
-                height: 498,
-                width: 286
+                url: 'https://i.imgur.com/rC0Yx6S.gif'
             }
         }
     })
@@ -175,47 +171,52 @@ bot.registerCommand('kms', (msg, args) => {
 
 // ========================== Kill Me Command =================================================== //
 bot.registerCommand('killme', (msg, args) => {
-    let killMeImage = tools.pickKillImage()
-
-    // Mika's requested killme command
-    bot.createMessage(msg.channel.id, {
-        embed: {
-            image: killMeImage
-        }
-    })
+    tools.pickKillImage((killMeImage) => {
+        // Mika's requested killme command
+        bot.createMessage(msg.channel.id, {
+            embed: {
+                image: killMeImage
+            }
+        });
+    });
 });
 
 // ========================== Hugs Command ====================================================== //
 bot.registerCommand('hugs', (msg, args) => {
-    let hugImage = tools.pickHugImage();
-    var message = ''
+    if (msg.mentions[0] != undefined) {
+        tools.pickHugImage((hugImage) => {
+            var message = '';
+            var user = msg.mentions[0].username;
+            message = "**" + user + "**, has received hugs from **" + msg.author.username + "**.";
 
-    if (msg.content.length > 7) {
-        var user = msg.mentions[0].username
-        message = "**" + user + "**, has received hugs from **" + msg.author.username + "**."
+            bot.createMessage(msg.channel.id, {
+                content: message,
+                embed: {
+                    image: hugImage
+                }
+            });
+        });
+    } else {
+        return "Invalid input, please make sure to mention a user.";
     }
-
-    bot.createMessage(msg.channel.id, {
-        content: message,
-        embed: {
-            image: hugImage
-        }
-    })
 });
 
 // ========================== Kick Command ====================================================== //
 bot.registerCommand('kick', (msg, args) => {
-    if (msg.author.id != mikaId && msg.content.length > 7) {
-        let kickImage = tools.pickKickImage();
-        let user = msg.mentions[0].username;
-        let message = "**" + user + "**, you've been kicked by **" + msg.author.username + "**.";
+    if (msg.author.id != mikaId && msg.mentions[0] != undefined) {
+        tools.pickKickImage((kickImage) => {
+            let user = msg.mentions[0].username;
+            let message = "**" + user + "**, you've been kicked by **" + msg.author.username + "**.";
 
-        bot.createMessage(msg.channel.id, {
-            content: message,
-            embed: {
-                image: kickImage
-            }
+            bot.createMessage(msg.channel.id, {
+                content: message,
+                embed: {
+                    image: kickImage
+                }
+            });
         });
+    } else {
+        return "Invalid input, please make sure to mention a user.";
     }
 }, {
     description: 'Displays random kick gif',
@@ -224,32 +225,33 @@ bot.registerCommand('kick', (msg, args) => {
 
 // ========================== Bite Command ====================================================== //
 bot.registerCommand('bite', (msg, args) => {
-    var biteImage = tools.pickBiteImage()
-    var message = ''
+    tools.pickBiteImage((biteImage) => {
+        var message = '';
 
-    if (msg.content.length > 7) {
-        var user = msg.mentions[0].username
-        message = "**" + user + "**, you've been bitten by **" + msg.author.username + "**."
-    }
-
-    bot.createMessage(msg.channel.id, {
-        content: message,
-        embed: {
-            image: biteImage
+        if (msg.mentions[0] != undefined) {
+            var user = msg.mentions[0].username;
+            message = "**" + user + "**, you've been bitten by **" + msg.author.username + "**.";
         }
-    })
+
+        bot.createMessage(msg.channel.id, {
+            content: message,
+            embed: {
+                image: biteImage
+            }
+        });
+    });
 });
 
 // ========================== Jova Command ====================================================== //
 bot.registerCommand('jova', (msg, args) => {
-    bot.createMessage(msg.channel.id, 'Who is <@78694002332803072>? Does <@78694002332803072> is gay?')
+    bot.createMessage(msg.channel.id, 'Who is <@78694002332803072>? Does <@78694002332803072> is gay?');
 });
 
 // ========================== onReady Event Handler ============================================= //
 bot.on("ready", () => {
-    console.log('Tron is ready!')
+    console.log('Tron is ready!');
     if (!isNaN(config.notificationChannel)) {
-        bot.createMessage(config.notificationChannel, config.notificationMessage + ' > ' + tools.getFormattedTimestamp())
+        bot.createMessage(config.notificationChannel, config.notificationMessage + ' > ' + tools.getFormattedTimestamp());
     }
 
     bot.editStatus('busy', {
@@ -261,7 +263,7 @@ bot.on("ready", () => {
 
 // ========================== Git Command ======================================================= //
 bot.registerCommand('git', (msg, args) => {
-    bot.createMessage(msg.channel.id, 'You can find the git repo for Tron here: https://github.com/Alcha/Tron')
+    bot.createMessage(msg.channel.id, 'You can find the git repo for Tron here: https://github.com/Alcha/Tron');
 }, {
     description: 'Display link to git repository.',
     fullDescription: 'Displays the link to the git repository on GitHub.'
@@ -269,13 +271,13 @@ bot.registerCommand('git', (msg, args) => {
 
 // ========================== Blush Command ===================================================== //
 bot.registerCommand('blush', (msg, args) => {
-    let blushImage = tools.pickBlushImage()
-
-    bot.createMessage(msg.channel.id, {
-        embed: {
-            image: blushImage
-        }
-    })
+    tools.pickBlushImage((blushImage) => {
+        bot.createMessage(msg.channel.id, {
+            embed: {
+                image: blushImage
+            }
+        });
+    });
 });
 
 // ========================== Rawr Command ====================================================== //
@@ -291,32 +293,32 @@ bot.registerCommand('rawr', (msg, args) => {
 
 // ========================== Rekt Command ====================================================== //
 bot.registerCommand('rekt', (msg, args) => {
-    let rektImage = tools.pickRektImage()
-
-    bot.createMessage(msg.channel.id, {
-        embed: {
-            image: rektImage
-        }
-    })
+    tools.pickRektImage((rektImage) => {
+        bot.createMessage(msg.channel.id, {
+            embed: {
+                image: rektImage
+            }
+        });
+    });
 });
 
 // ========================== Add Role Command ================================================== //
 bot.registerCommand('addr', (msg, args) => {
     if (msg.channel.guild != null) {
         if (tools.memberIsMod(msg)) {
-            let comparison = tools.concatArgs(args)
+            let comparison = tools.concatArgs(args);
 
             console.log("comparison = " + comparison);
 
-            let roles = msg.channel.guild.roles
+            let roles = msg.channel.guild.roles;
 
-            roles.forEach(function (value, key, mapObj) {
+            roles.forEach((value, key, mapObj) => {
                 if (value.name != null) {
                     let name = value.name.toLowerCase();
                     console.log("Name = " + name + "; Comparison = " + comparison + ";");
 
                     if (name == comparison) {
-                        roleNames.push(value.name)
+                        roleNames.push(value.name);
                         bot.createMessage(msg.channel.id, "Added " + value.name + " to list of available roles.");
                     }
                 }
@@ -329,7 +331,7 @@ bot.registerCommand('addr', (msg, args) => {
 bot.registerCommand('listr', (msg, args) => {
     let message = "List of currently available roles:\n"
 
-    roleNames.forEach(function (curr, index, arr) {
+    roleNames.forEach((curr, index, arr) => {
         message += "- **" + curr + "**\n";
     })
 
@@ -408,13 +410,15 @@ bot.registerCommand('exhentai', (msg, args) => {
 
 // ========================== Utah Command ====================================================== //
 bot.registerCommand('utah', (msg, args) => {
-    if (msg.guild.id == 254496813552238594) {
-        bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:256668458480041985>");
-    } else if (msg.guild.id == 197846974408556544) {
-        bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:298313391444066305>");
-    } else {
-        console.log("Guild = " + msg.guild.name);
-        console.log("id = " + msg.guild.id);
+    if (msg.channel.guild != undefined) {
+        if (msg.channel.guild.id == 254496813552238594) {
+            bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:256668458480041985>");
+        } else if (msg.channel.guild.id == 197846974408556544) {
+            bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:298313391444066305>");
+        } else {
+            console.log("Guild = " + msg.guild.name);
+            console.log("id = " + msg.guild.id);
+        }
     }
 }, {
     description: 'A command to poke fun at a good friend.',
@@ -425,8 +429,10 @@ bot.registerCommandAlias('Utah', 'utah');
 
 // ========================== Alex Command ====================================================== //
 bot.registerCommand('alex', (msg, args) => {
-    if (msg.guild.id == 254496813552238594) {
-        bot.createMessage(msg.channel.id, "<@!191316261299290112> 🖕")
+    if (msg.channel.guild != undefined) {
+        if (msg.channel.guild.id == 254496813552238594) {
+            bot.createMessage(msg.channel.id, "<@!191316261299290112> 🖕")
+        }
     }
 }, {
     description: 'A command for a good friend of the developer.',
