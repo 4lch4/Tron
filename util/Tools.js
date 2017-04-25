@@ -1,8 +1,9 @@
 "use strict"
 
-const config = require('./config.json')
+const config = require('./config.json');
 const roleNames = config.roleNames;
-const moment = require('moment-timezone')
+const moment = require('moment-timezone');
+const fs = require('fs');
 const exhentaiCookies = `\`\`\`
 {
     "domain": ".exhentai.org",
@@ -88,6 +89,8 @@ const exhentaiCookies = `\`\`\`
     "value": "1487307036-1487393875",
     "id": 6
 }\`\`\``;
+
+let killImages = [];
 
 // ============================================================================================== //
 var exports = module.exports = {}
@@ -499,7 +502,53 @@ exports.messageIsWhyCmd = (msg) => {
     return found
 }
 
+function readFiles(dirname, onFileContent, onError, onComplete) {
+    let processNum = 0;
+
+    fs.readdir(dirname, (err, filenames) => {
+        if (err) {
+            onError(err);
+            return;
+        }
+
+        filenames.forEach((filename, index, array) => {
+            fs.readFile(dirname + filename, (err, content) => {
+                if (err) {
+                    onError(err);
+                    return;
+                }
+
+                onFileContent(filename, content);
+
+                processNum++;
+                if (processNum == array.length) {
+                    onComplete();
+                }
+            })
+        });
+    });
+}
+
 exports.pickKillImage = (callback) => {
+    if (killImages.length == 0) {
+        readFiles('./images/kill/', (filename, content) => {
+            killImages.push(content);
+        }, (err) => {
+            console.log("Error occured.");
+            console.log(err);
+        }, () => {
+            let random = getRandom(0, killImages.length);
+
+            callback(killImages[random]);
+        });
+    } else {
+        let random = getRandom(0, killImages.length);
+
+        callback(killImages[random]);
+    }
+}
+
+exports.pickKillMeImage = (callback) => {
     let images = [
         "https://i.imgur.com/Db0ghmE.gif", "https://i.imgur.com/rBYOkZq.gif",
         "https://i.imgur.com/gMylE3v.gif", "https://i.imgur.com/NeD9pVR.gif"

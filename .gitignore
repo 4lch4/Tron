@@ -50,3 +50,5 @@ TronStartup.sh
 config.json
 
 debug\.log
+
+node_modules/*
