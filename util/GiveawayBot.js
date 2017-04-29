@@ -90,8 +90,8 @@ class GiveawayBot {
                 tempGiveaway.current_user = tempGiveaway.users[Math.floor(Math.random() * tempGiveaway.users.length)];
                 tempGiveaway.users = tempGiveaway.users.filter(f => f !== tempGiveaway.current_user);
                 giveawayBot.fetchUser(tempGiveaway.current_user).then(u => {
-                    giveawayBot.users.get(tempGiveaway.current_user).sendMessage(`To claim the prize ${tempGiveaway.game}, please type \`claim\` in this chat. (Case sensitive!). You have 2 minutes.`);
-                    giveawayBot.guilds.get(giveawayValues.guild_id).channels.get(giveawayValues.channel_id).messages.get(tempGiveaway.message_id).edit(`@here\n**Giveaway:** ${tempGiveaway.game}\n**Host:** <@${tempGiveaway.host}>\n**Entrees:** ${tempGiveaway.count}\n**Chance of winning:** ${100 / tempGiveaway.count}%\n\n***Giveaway is over.***\n<@${tempGiveaway.current_user}> has 2 minutes to claim the prize.`);
+                    giveawayBot.users.get(tempGiveaway.current_user).sendMessage(`To claim the prize ${tempGiveaway.game}, please type \`claim\` in this chat. (Case sensitive!). You have 25 minutes.`);
+                    giveawayBot.guilds.get(giveawayValues.guild_id).channels.get(giveawayValues.channel_id).messages.get(tempGiveaway.message_id).edit(`@here\n**Giveaway:** ${tempGiveaway.game}\n**Host:** <@${tempGiveaway.host}>\n**Entrees:** ${tempGiveaway.count}\n**Chance of winning:** ${100 / tempGiveaway.count}%\n\n***Giveaway is over.***\n<@${tempGiveaway.current_user}> has 25 minutes to claim the prize.`);
                     giveawayBot.setTimeout(switchUser, giveawayValues.gtimeout)
                 }).catch(() => {
                     giveawayBot.guilds.get(giveawayValues.guild_id).channels.get(giveawayValues.channel_id).messages.get(tempGiveaway.message_id).edit(`@here\n**Giveaway:** ${tempGiveaway.game}\n**Host:** <@${tempGiveaway.host}>\n**Entrees:** ${tempGiveaway.count}\n**Chance of winning:** ${100 / tempGiveaway.count}%\n\nNo one claimed the prize.`);
@@ -164,7 +164,7 @@ class GiveawayBot {
                             tempGiveaway.users = tempGiveaway.users.filter(f => f !== tempGiveaway.current_user);
                             giveawayBot.fetchUser(tempGiveaway.current_user).then(u => {
                                 u.sendMessage(`To claim the prize ${tempGiveaway.game}, please type \`claim\` in this chat. (Case sensitive!)`);
-                                giveawayBot.guilds.get(giveawayValues.guild_id).channels.get(giveawayValues.channel_id).messages.get(tempGiveaway.message_id).edit(`@here\n**Giveaway:** ${tempGiveaway.game}\n**Host:** <@${tempGiveaway.host}>\n**Entrees:** ${tempGiveaway.count}\n**Chance of winning:** ${100 / tempGiveaway.count}%\n\n***Giveaway is over.***\n<@${tempGiveaway.current_user}> has 2 minutes to claim the prize.`);
+                                giveawayBot.guilds.get(giveawayValues.guild_id).channels.get(giveawayValues.channel_id).messages.get(tempGiveaway.message_id).edit(`@here\n**Giveaway:** ${tempGiveaway.game}\n**Host:** <@${tempGiveaway.host}>\n**Entrees:** ${tempGiveaway.count}\n**Chance of winning:** ${100 / tempGiveaway.count}%\n\n***Giveaway is over.***\n<@${tempGiveaway.current_user}> has 25 minutes to claim the prize.`);
                                 giveawayBot.setTimeout(switchUser, giveawayValues.gtimeout)
                             }).catch(() => {
                                 giveawayBot.guilds.get(giveawayValues.guild_id).channels.get(giveawayValues.channel_id).messages.get(tempGiveaway.message_id).edit(`@here\n**Giveaway:** ${tempGiveaway.game}\n**Host:** <@${tempGiveaway.host}>\n**Entrees:** ${tempGiveaway.count}\n**Chance of winning:** ${100 / tempGiveaway.count}%\n\nNo one claimed the prize.`);

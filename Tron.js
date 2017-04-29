@@ -42,22 +42,8 @@ const roleNames = config.roleNames;
 const GiveawayBot = require('./util/GiveawayBot.js');
 const giveawayBot = new GiveawayBot().getGiveawayBot();
 const fs = require('fs');
-const mysql = require('mysql');
-const connection = mysql.createConnection({
-    host: config.mysql.host,
-    user: config.mysql.user,
-    password: config.mysql.password,
-    database: config.mysql.database
-});
 
-connection.connect();
 
-function incrementCommandUse(commandName) {
-    let queryString = "UPDATE commands SET `COMMAND_USE_COUNT` = `COMMAND_USE_COUNT` + 1 WHERE `COMMAND_NAME` = '" + commandName + "'";
-    connection.query(queryString, (err, res, fields) => {
-        if (err) throw err;
-    });
-}
 
 // ============================================================================================== //
 const redis = require('redis');
@@ -107,7 +93,7 @@ bot.registerCommand('cry', (msg, args) => {
             }
         });
 
-        incrementCommandUse('cry');
+        tools.incrementCommandUse('cry');
     });
 }, {
     description: 'Displays random cry gif.',
@@ -133,7 +119,7 @@ bot.registerCommand('love', (msg, args) => {
             });
         });
 
-        incrementCommandUse('love');
+        tools.incrementCommandUse('love');
     }
 }, {
     description: 'Displays random love gif.',
@@ -192,7 +178,7 @@ bot.registerCommand('kms', (msg, args) => {
         }
     });
 
-    incrementCommandUse('kms');
+    tools.incrementCommandUse('kms');
 });
 
 // ========================== Kill Command ====================================================== //
@@ -207,7 +193,7 @@ bot.registerCommand('kill', (msg, args) => {
             name: 'Temp.gif'
         });
 
-        incrementCommandUse('kill');
+        tools.incrementCommandUse('kill');
     });
 }, {
     description: 'Displays a random killing gif.',
@@ -228,7 +214,7 @@ bot.registerCommand('spank', (msg, args) => {
             name: 'Spank.gif'
         });
 
-        incrementCommandUse('spank');
+        tools.incrementCommandUse('spank');
     })
 });
 
@@ -245,7 +231,7 @@ bot.registerCommand('killme', (msg, args) => {
         });
     });
 
-    incrementCommandUse('killme');
+    tools.incrementCommandUse('killme');
 });
 
 // ========================== Hugs Command ====================================================== //
@@ -263,7 +249,7 @@ bot.registerCommand('hugs', (msg, args) => {
                 }
             });
 
-            incrementCommandUse('hugs');
+            tools.incrementCommandUse('hugs');
         });
     } else {
         return "Invalid input, please make sure to mention a user.";
@@ -284,7 +270,7 @@ bot.registerCommand('kick', (msg, args) => {
                 }
             });
 
-            incrementCommandUse('kick');
+            tools.incrementCommandUse('kick');
         });
     } else {
         return "Invalid input, please make sure to mention a user.";
@@ -311,7 +297,7 @@ bot.registerCommand('bite', (msg, args) => {
             }
         });
 
-        incrementCommandUse('bite');
+        tools.incrementCommandUse('bite');
     });
 });
 
@@ -319,7 +305,7 @@ bot.registerCommand('bite', (msg, args) => {
 bot.registerCommand('jova', (msg, args) => {
     bot.createMessage(msg.channel.id, 'Who is <@78694002332803072>? Does <@78694002332803072> is gay?');
 
-    incrementCommandUse('jova');
+    tools.incrementCommandUse('jova');
 });
 
 // ========================== onReady Event Handler ============================================= //
@@ -339,7 +325,7 @@ bot.on("ready", () => {
 // ========================== Git Command ======================================================= //
 bot.registerCommand('git', (msg, args) => {
     bot.createMessage(msg.channel.id, 'You can find the git repo for Tron here: https://github.com/Alcha/Tron');
-    incrementCommandUse('git');
+    tools.incrementCommandUse('git');
 }, {
     description: 'Display link to git repository.',
     fullDescription: 'Displays the link to the git repository on GitHub.'
@@ -353,7 +339,7 @@ bot.registerCommand('blush', (msg, args) => {
                 image: blushImage
             }
         });
-        incrementCommandUse('blush');
+        tools.incrementCommandUse('blush');
     });
 });
 
@@ -366,7 +352,7 @@ bot.registerCommand('rawr', (msg, args) => {
             }
         }
     });
-    incrementCommandUse('rawr');
+    tools.incrementCommandUse('rawr');
 });
 
 // ========================== Rekt Command ====================================================== //
@@ -378,7 +364,7 @@ bot.registerCommand('rekt', (msg, args) => {
             }
         });
     });
-    incrementCommandUse('rekt');
+    tools.incrementCommandUse('rekt');
 });
 
 // ========================== Add Role Command ================================================== //
@@ -437,7 +423,7 @@ bot.registerCommand('leaver', (msg, args) => {
                     msg.guild.removeMemberRole(userId, roleId);
                     bot.createMessage(msg.channel.id, "You've successfully been removed from your requested group.");
                     msg.delete();
-                    incrementCommandUse('leaver');
+                    tools.incrementCommandUse('leaver');
                 }
             }
         }
@@ -461,7 +447,7 @@ bot.registerCommand('joinr', (msg, args) => {
                     msg.guild.addMemberRole(userId, roleId);
                     bot.createMessage(msg.channel.id, "You've successfully been added to your requested group.");
                     msg.delete();
-                    incrementCommandUse('joinr');
+                    tools.incrementCommandUse('joinr');
                 }
             }
         }
@@ -494,10 +480,10 @@ bot.registerCommand('utah', (msg, args) => {
     if (msg.channel.guild != undefined) {
         if (msg.channel.guild.id == 254496813552238594) {
             bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:256668458480041985>");
-            incrementCommandUse('utah');
+            tools.incrementCommandUse('utah');
         } else if (msg.channel.guild.id == 197846974408556544) {
             bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:298313391444066305>");
-            incrementCommandUse('utah');
+            tools.incrementCommandUse('utah');
         } else {
             console.log("Guild = " + msg.guild.name);
             console.log("id = " + msg.guild.id);
@@ -515,7 +501,7 @@ bot.registerCommand('alex', (msg, args) => {
     if (msg.channel.guild != undefined) {
         if (msg.channel.guild.id == 254496813552238594) {
             bot.createMessage(msg.channel.id, "<@!191316261299290112> 🖕")
-            incrementCommandUse('alex');
+            tools.incrementCommandUse('alex');
         }
     }
 }, {
