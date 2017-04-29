@@ -30,7 +30,6 @@ const info = require('./package.json');
 const readline = require('readline');
 const _ = require('lodash');
 const moment = require('moment-timezone');
-const tools = require('./util/Tools.js');
 const Tools = require('./util/Tools.js');
 const tools = new Tools();
 const roleNames = config.roleNames;
@@ -251,7 +250,7 @@ bot.registerCommand('hugs', (msg, args) => {
 
 // ========================== Kick Command ====================================================== //
 bot.registerCommand('kick', (msg, args) => {
-    if (msg.author.id != mikaId && msg.mentions[0] != undefined) {
+    if (msg.author.id != config.mika && msg.mentions[0] != undefined) {
         tools.pickKickImage((kickImage) => {
             let user = msg.mentions[0].username;
             let message = "**" + user + "**, you've been kicked by **" + msg.author.username + "**.";
