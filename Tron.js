@@ -35,8 +35,12 @@ const readline = require('readline');
 const _ = require('lodash');
 const moment = require('moment-timezone');
 const tools = require('./util/Tools.js');
+const Tools = require('./util/Tools.js');
+const tools = new Tools();
 const roleNames = config.roleNames;
 
+const GiveawayBot = require('./util/GiveawayBot.js');
+const giveawayBot = new GiveawayBot().getGiveawayBot();
 const fs = require('fs');
 const mysql = require('mysql');
 const connection = mysql.createConnection({
@@ -55,13 +59,14 @@ function incrementCommandUse(commandName) {
     });
 }
 
-// =============================Dmth2m2GGhmypbd@3430zd============================================================ //
+// ============================================================================================== //
 const redis = require('redis');
 const client = redis.createClient();
 
 client.on('error', err => {
     console.log(err)
 });
+
 // ========================== Bot Declaration =================================================== //
 const bot = new Eris.CommandClient(config.token, {}, {
     description: info.description,
@@ -70,14 +75,11 @@ const bot = new Eris.CommandClient(config.token, {}, {
 });
 
 // ========================== GiveawayBot Code Begins =========================================== //
-let giveawayBot = tools.getGiveawayBot();
-
 giveawayBot.login(config.token).then(() => {
     console.log("Logged in");
 }).catch((e) => {
     throw e;
 });
-//=========================== GiveawayBot Code Ends ============================================= //
 
 // ========================== Change Command ==================================================== //
 bot.registerCommand('change', (msg, args) => {
