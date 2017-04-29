@@ -1,9 +1,5 @@
-#!node - Tron.js
-
-// ========================================================================================= //
+// ============================================================================================== //
 /**
- *	TODO: Account for leveling up and assigning skill points.
- *  TODO: Properly time the catch command since it's only a 30 second timer, not 300 seconds.
  *  TODO: Add handlers for the following events:
  *  CHANNEL_UPDATE
  *  GUILD_CREATE
@@ -30,7 +26,7 @@
 // ============================================================================================== //
 const Eris = require("eris");
 const config = require('./util/config.json');
-const info = require('./util/package.json');
+const info = require('./package.json');
 const readline = require('readline');
 const _ = require('lodash');
 const moment = require('moment-timezone');
@@ -43,12 +39,9 @@ const GiveawayBot = require('./util/GiveawayBot.js');
 const giveawayBot = new GiveawayBot().getGiveawayBot();
 const fs = require('fs');
 
-
-
 // ============================================================================================== //
 const redis = require('redis');
 const client = redis.createClient();
-
 client.on('error', err => {
     console.log(err)
 });
@@ -394,11 +387,11 @@ bot.registerCommand('addr', (msg, args) => {
 
 // ========================== List Roles Command ================================================ //
 bot.registerCommand('listr', (msg, args) => {
-    let message = "List of currently available roles:\n"
+    let message = "List of currently available roles:\n";
 
     roleNames.forEach((curr, index, arr) => {
         message += "- **" + curr + "**\n";
-    })
+    });
 
     bot.createMessage(msg.channel.id, message);
 }, {
@@ -513,7 +506,7 @@ bot.registerCommandAlias('Alex', 'alex');
 
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on("messageCreate", (msg) => {
-    if (!isNaN(msg.author.id)) {
+    if (!isNaN(msg.author.id) && msg.channel.guild.id == config.ownerServer) {
         if (msg.content.includes('@everyone')) {
             let everyoneMention = ":mega: ``[" + tools.getFormattedTimestamp() + "]``" +
                 "<@" + msg.author.id + "> has used the ``@everyone`` mention in the <#" + msg.channel.id + "> channel."
