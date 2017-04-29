@@ -213,6 +213,25 @@ bot.registerCommand('kill', (msg, args) => {
 });
 
 bot.registerCommandAlias('Kill', 'kill');
+// ========================== Spank Command ===================================================== //
+
+bot.registerCommand('spank', (msg, args) => {
+    tools.pickSpankImage((img) => {
+        var message = '';
+        var user = msg.mentions[0].username;
+        message = "**" + user + "**, you've been spanked by **" + msg.author.username + "**.";
+
+        bot.createMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Spank.gif'
+        });
+
+        incrementCommandUse('spank');
+    })
+});
+
+bot.registerCommandAlias('Spank', 'spank');
+
 // ========================== Kill Me Command =================================================== //
 bot.registerCommand('killme', (msg, args) => {
     tools.pickKillMeImage((killMeImage) => {
