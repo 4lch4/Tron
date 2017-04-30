@@ -101,6 +101,7 @@ const connection = mysql.createConnection({
 connection.connect();
 
 let killImages = [];
+let kissImages = [];
 let spankImages = [];
 // ============================================================================================== //
 class Tools {
@@ -281,6 +282,25 @@ class Tools {
                 })
             });
         });
+    }
+
+    pickKissImage(callback) {
+        if (kissImages.length == 0) {
+            this.readFiles('./images/kiss/', (filename, content) => {
+                kissImages.push(content);
+            }, (err) => {
+                console.log("Error occured.");
+                console.log(err);
+            }, () => {
+                let random = this.getRandom(0, kissImages.length);
+
+                callback(kissImages[random]);
+            });
+        } else {
+            let random = this.getRandom(0, kissImages.length);
+
+            callback(kissImages[random]);
+        }
     }
 
     pickKillImage(callback) {

@@ -180,6 +180,24 @@ bot.registerCommand('kms', (msg, args) => {
     tools.incrementCommandUse('kms');
 });
 
+// ========================== Kiss Command ====================================================== //
+bot.registerCommand('kiss', (msg, args) => {
+    tools.pickKissImage((img) => {
+        var message = '';
+        var user = msg.mentions[0].username;
+        message = "**" + user + "**, you've received a kiss from **" + msg.author.username + "**.";
+
+        bot.createMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Kiss.gif'
+        });
+
+        tools.incrementCommandUse('kiss');
+    });
+}, {
+    description: 'Displays a random kiss gif.',
+    fullDescription: 'Displays a random kissing reaction gif and the name of the individual mentioned.'
+})
 // ========================== Kill Command ====================================================== //
 bot.registerCommand('kill', (msg, args) => {
     tools.pickKillImage((img) => {
@@ -189,7 +207,7 @@ bot.registerCommand('kill', (msg, args) => {
 
         bot.createMessage(msg.channel.id, message, {
             file: img,
-            name: 'Temp.gif'
+            name: 'Kill.gif'
         });
 
         tools.incrementCommandUse('kill');
