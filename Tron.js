@@ -36,9 +36,6 @@ const Tools = require('./util/Tools.js');
 const tools = new Tools();
 const roleNames = config.roleNames;
 
-const GiveawayBot = require('./util/GiveawayBot.js');
-const giveawayBot = new GiveawayBot().getGiveawayBot();
-
 const fs = require('fs');
 
 // ============================================================================================== //
@@ -60,6 +57,9 @@ const Ship = require('./cmds/Ship.js');
 const ship = new Ship();
 
 // ========================== GiveawayBot Code Begins =========================================== //
+const GiveawayBot = require('./util/GiveawayBot.js');
+const giveawayBot = new GiveawayBot().getGiveawayBot();
+
 giveawayBot.login(config.token).then(() => {
     console.log("Logged in");
 }).catch((e) => {
