@@ -24,26 +24,21 @@
 "use strict"
 
 // ============================================================================================== //
-const Eris = require("eris");
-const Canvas = require("canvas");
-const Image = Canvas.Image;
 const config = require('./util/config.json');
-const info = require('./package.json');
-const readline = require('readline');
-const _ = require('lodash');
+const IOTools = require('./util/IOTools.js');
 const moment = require('moment-timezone');
 const Tools = require('./util/Tools.js');
+const info = require('./package.json');
+const readline = require('readline');
+const Canvas = require("canvas");
+const _ = require('lodash');
+const Image = Canvas.Image;
+
+const ioTools = new IOTools();
 const tools = new Tools();
+
 const roleNames = config.roleNames;
-
-const fs = require('fs');
-
-// ============================================================================================== //
-const redis = require('redis');
-const client = redis.createClient();
-client.on('error', err => {
-    console.log(err)
-});
+const Eris = require("eris");
 
 // ========================== Bot Declaration =================================================== //
 const bot = new Eris.CommandClient(config.token, {}, {
@@ -58,6 +53,24 @@ const ship = new Ship();
 
 const Reactions = require('./cmds/Reactions.js');
 const reactions = new Reactions();
+
+// ========================== RSS Reader ======================================================== //
+const RSSReader = require('./util/RSSReader.js');
+
+let xkcdReader;
+
+function setupRssReaders() {
+    xkcdReader = new RSSReader({
+        url: 'https://xkcd.com/rss.xml',
+        feedName: 'xkcd'
+    }).parseFeed((comic) => {
+        ioTools.storeComic(comic, (success) => {
+            if (success) {
+                bot.createMessage(config.crComics, "New " + comic.feedName.toUpperCase() + " comic!\n" + comic.url);
+            }
+        });
+    });
+}
 
 // ========================== GiveawayBot Code Begins =========================================== //
 const GiveawayBot = require('./util/GiveawayBot.js');
@@ -342,7 +355,9 @@ bot.on("ready", () => {
         name: config.defaultgame,
         type: 1,
         url: ''
-    })
+    });
+
+    setupRssReaders();
 })
 
 // ========================== Git Command ======================================================= //
@@ -519,9 +534,6 @@ bot.registerCommand('joinr', (msg, args) => {
 bot.registerCommand('listPeeps', (msg, args) => {
     if (msg.author.id == config.owner) {
         if (args[0] != null) {
-            client.get(args[0], function (err, reply) {
-                console.log("reply = " + reply);
-            });
         }
     }
 });
@@ -634,7 +646,7 @@ bot.on("guildBanRemove", (guild, user) => {
 }, {
     description: 'Log user unban.',
     fullDescription: 'If a user is unbanned, it is logged in the notificationChannel.'
-})
+});
 
 // ========================== Connect Bot ======================================================= //
-bot.connect()
+bot.connect();
