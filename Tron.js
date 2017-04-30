@@ -228,7 +228,7 @@ bot.registerCommand('spank', (msg, args) => {
     reactions.pickSpankImage((img) => {
         var message = '';
         var user = msg.mentions[0].username;
-        message = "**" + user + "**, you've been spanked by **" + msg.author.username + "**. :clap:";
+        message = "**" + user + "**, you've been spanked by **" + msg.author.username + "**. :wave:";
 
         bot.createMessage(msg.channel.id, message, {
             file: img,
