@@ -185,10 +185,10 @@ bot.registerCommand('kms', (msg, args) => {
 
 // ========================== Kiss Command ====================================================== //
 bot.registerCommand('kiss', (msg, args) => {
-    tools.pickKissImage((img) => {
+    reactions.pickKissImage((img) => {
         var message = '';
         var user = msg.mentions[0].username;
-        message = "**" + user + "**, you've received a kiss from **" + msg.author.username + "**.";
+        message = "**" + user + "**, you've been kissed by **" + msg.author.username + "**.";
 
         bot.createMessage(msg.channel.id, message, {
             file: img,
