@@ -110,7 +110,7 @@ bot.registerCommand('love', (msg, args) => {
 
             if (msg.mentions[0] != undefined) {
                 let user = msg.mentions[0].username;
-                message = "**" + user + "**, you've been loved by **" + msg.author.username + "**.";
+                message = "**" + user + "**, you've been loved by **" + msg.author.username + "**. :heart:";
             }
 
             bot.createMessage(msg.channel.id, {
@@ -188,7 +188,7 @@ bot.registerCommand('kiss', (msg, args) => {
     reactions.pickKissImage((img) => {
         var message = '';
         var user = msg.mentions[0].username;
-        message = "**" + user + "**, you've been kissed by **" + msg.author.username + "**.";
+        message = "**" + user + "**, you've been kissed by **" + msg.author.username + "**. :kiss:";
 
         bot.createMessage(msg.channel.id, message, {
             file: img,
@@ -200,13 +200,14 @@ bot.registerCommand('kiss', (msg, args) => {
 }, {
     description: 'Displays a random kiss gif.',
     fullDescription: 'Displays a random kissing reaction gif and the name of the individual mentioned.'
-})
+});
+
 // ========================== Kill Command ====================================================== //
 bot.registerCommand('kill', (msg, args) => {
     reactions.pickKillImage((img) => {
         var message = '';
         var user = msg.mentions[0].username;
-        message = "**" + user + "**, you've been killed by **" + msg.author.username + "**.";
+        message = "**" + user + "**, you've been killed by **" + msg.author.username + "**. :knife:";
 
         bot.createMessage(msg.channel.id, message, {
             file: img,
@@ -227,7 +228,7 @@ bot.registerCommand('spank', (msg, args) => {
     reactions.pickSpankImage((img) => {
         var message = '';
         var user = msg.mentions[0].username;
-        message = "**" + user + "**, you've been spanked by **" + msg.author.username + "**.";
+        message = "**" + user + "**, you've been spanked by **" + msg.author.username + "**. :clap:";
 
         bot.createMessage(msg.channel.id, message, {
             file: img,
@@ -260,7 +261,7 @@ bot.registerCommand('hugs', (msg, args) => {
         reactions.pickHugImage((hugImage) => {
             var message = '';
             var user = msg.mentions[0].username;
-            message = "**" + user + "**, has received hugs from **" + msg.author.username + "**.";
+            message = "**" + user + "**, has received hugs from **" + msg.author.username + "**. :hugging:";
 
             bot.createMessage(msg.channel.id, {
                 content: message,
@@ -374,6 +375,7 @@ bot.registerCommand('rawr', (msg, args) => {
             }
         }
     });
+
     tools.incrementCommandUse('rawr');
 });
 
@@ -477,7 +479,7 @@ bot.registerCommand('leaver', (msg, args) => {
             if (roleId.length > 1) {
                 if (tools.allowedRole(comparison)) {
                     msg.guild.removeMemberRole(userId, roleId);
-                    bot.createMessage(msg.channel.id, "You've successfully been removed from your requested group.");
+                    bot.createMessage(msg.channel.id, ":outbox_tray: You've successfully been removed from your requested group.");
                     msg.delete();
                     tools.incrementCommandUse('leaver');
                 }
@@ -501,7 +503,7 @@ bot.registerCommand('joinr', (msg, args) => {
             if (roleId.length > 1) {
                 if (tools.allowedRole(comparison)) {
                     msg.guild.addMemberRole(userId, roleId);
-                    bot.createMessage(msg.channel.id, "You've successfully been added to your requested group.");
+                    bot.createMessage(msg.channel.id, ":inbox_tray: You've successfully been added to your requested group.");
                     msg.delete();
                     tools.incrementCommandUse('joinr');
                 }
@@ -547,7 +549,7 @@ bot.registerCommand('utah', (msg, args) => {
     }
 }, {
     description: 'A command to poke fun at a good friend.',
-    fullDescription: 'Used to poke fun at a good friend. -Alcha'
+    fullDescription: 'A command used to poke fun at a good friend. -Alcha'
 });
 
 bot.registerCommandAlias('Utah', 'utah');
@@ -561,8 +563,8 @@ bot.registerCommand('alex', (msg, args) => {
         }
     }
 }, {
-    description: 'A command for a good friend of the developer.',
-    fullDescription: 'Used to show my love for a good friend. -Alcha'
+    description: 'A command to show my love for a good friend.',
+    fullDescription: 'A command used to show my love for a good friend. -Alcha'
 });
 
 bot.registerCommandAlias('Alex', 'alex');
