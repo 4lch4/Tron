@@ -7,9 +7,10 @@ const Tools = require('../util/Tools.js');
 const tools = new Tools();
 const ioTools = new IOTools();
 
-let killImages = [];
 let spankImages = [];
+let killImages = [];
 let kissImages = [];
+let patImages = [];
 
 class Reactions {
     constructor(options) {
@@ -45,6 +46,22 @@ class Reactions {
             let random = tools.getRandom(0, killImages.length);
 
             callback(killImages[random]);
+        }
+    }
+
+    pickPatImage(callback) {
+        if (patImages.length == 0) {
+            ioTools.getImages('pat', (images) => {
+                let random = tools.getRandom(0, images.length);
+
+                patImages = patImages.concat(images);
+
+                callback(patImages[random]);
+            })
+        } else {
+            let random = tools.getRandom(0, patImages.length);
+
+            callback(patImages[random]);
         }
     }
 

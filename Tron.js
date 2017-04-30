@@ -215,6 +215,25 @@ bot.registerCommand('kiss', (msg, args) => {
     fullDescription: 'Displays a random kissing reaction gif and the name of the individual mentioned.'
 });
 
+// ========================== Pat Command ======================================================= //
+bot.registerCommand('pat', (msg, args) => {
+    if (msg.mentions.length == 1) {
+        reactions.pickPatImage((img) => {
+            let user = msg.mentions[0].username;
+            let message = "**" + user + "**, you got a pat from **" + msg.author.username + "**.";
+
+            bot.createMessage(msg.channel.id, message, {
+                file: img,
+                name: 'Pat.gif'
+            })
+        });
+    }
+});
+
+bot.registerCommandAlias('Pat', 'pat');
+bot.registerCommandAlias('Pats', 'pat');
+bot.registerCommandAlias('pats', 'pat');
+
 // ========================== Kill Command ====================================================== //
 bot.registerCommand('kill', (msg, args) => {
     reactions.pickKillImage((img) => {
@@ -533,8 +552,7 @@ bot.registerCommand('joinr', (msg, args) => {
 // ========================== List Peeps (Not for public) ======================================= //
 bot.registerCommand('listPeeps', (msg, args) => {
     if (msg.author.id == config.owner) {
-        if (args[0] != null) {
-        }
+        if (args[0] != null) {}
     }
 });
 

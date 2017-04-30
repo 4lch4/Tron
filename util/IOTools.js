@@ -1,6 +1,8 @@
 "use strict"
 
 const config = require('./config.json');
+const Tools = require('./Tools.js');
+const tools = new Tools();
 const fs = require('fs');
 
 class IOTools {
@@ -8,8 +10,12 @@ class IOTools {
         this.options = options || {};
     }
 
+    fileExists(filename) {
+        return fs.existsSync(filename);
+    }
+
     getImages(dirnameIn, onComplete) {
-        let dirname = "./images/" + dirnameIn + "/";
+        let dirname = "/root/tron/images/" + dirnameIn + "/";
         let images = [];
 
         this.readFiles(dirname, (filename, content) => {
@@ -47,7 +53,24 @@ class IOTools {
                 })
             });
         });
+    }
 
+    removeFile(filename, callback) {
+        if (fs.existsSync(filename)) {
+            fs.unlink(filename, callback);
+        }
+    }
+
+    saveFile(filename, content, callback) {
+        fs.writeFile(filename, content, (err) => {
+            if (err) return console.log(err);
+
+            console.log('File saved!');
+
+            if (callback != undefined) {
+                callback();
+            }
+        });
     }
 }
 
