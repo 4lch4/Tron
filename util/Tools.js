@@ -120,6 +120,10 @@ class Tools {
         return exhentaiCookies;
     }
 
+    formatTimeString(string) {
+        return moment(string).tz(config.defaultTimezone).format("YYYY-MM-DD_HH:mm:ss");
+    }
+
     getFormattedTimestamp() {
         return moment().tz(config.defaultTimezone).format('HH:mm:ss MM/DD/YYYY')
     }

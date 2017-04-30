@@ -28,6 +28,26 @@ class IOTools {
         })
     }
 
+    storeComic(comic, callback) {
+        let date = tools.formatTimeString(comic.date);
+        let filename = "/root/tron/feeds/" +
+            comic.feedName + "/" +
+            date + ".json";
+
+        console.log('filename = ' + filename);
+
+        if (fs.existsSync(filename)) {
+            callback(false);
+        } else {
+            fs.writeFile(filename, JSON.stringify(comic), (err) => {
+                if (err) return err;
+                else {
+                    callback(true);
+                }
+            });
+        }
+    }
+
     readFiles(dirname, onFileContent, onError, onComplete) {
         let processNum = 0;
 
