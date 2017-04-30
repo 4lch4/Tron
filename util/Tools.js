@@ -114,12 +114,18 @@ class Tools {
             if (err) throw err;
         });
     }
+
     getExhentaiCookies() {
         return exhentaiCookies;
     }
 
     getFormattedTimestamp() {
         return moment().tz(config.defaultTimezone).format('HH:mm:ss MM/DD/YYYY')
+    }
+
+    upperFirstC(string) {
+        let temp = string.toLowerCase();
+        return temp.charAt(0).toUpperCase() + temp.slice(1);
     }
 
     getRandom(min, max) {

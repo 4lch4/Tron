@@ -25,6 +25,8 @@
 
 // ============================================================================================== //
 const Eris = require("eris");
+const Canvas = require("canvas");
+const Image = Canvas.Image;
 const config = require('./util/config.json');
 const info = require('./package.json');
 const readline = require('readline');
@@ -36,6 +38,7 @@ const roleNames = config.roleNames;
 
 const GiveawayBot = require('./util/GiveawayBot.js');
 const giveawayBot = new GiveawayBot().getGiveawayBot();
+
 const fs = require('fs');
 
 // ============================================================================================== //
@@ -51,6 +54,10 @@ const bot = new Eris.CommandClient(config.token, {}, {
     owner: info.author,
     prefix: config.prefix
 });
+
+// ========================== External Cmd Files ================================================ //
+const Ship = require('./cmds/Ship.js');
+const ship = new Ship();
 
 // ========================== GiveawayBot Code Begins =========================================== //
 giveawayBot.login(config.token).then(() => {
@@ -248,6 +255,8 @@ bot.registerCommand('hugs', (msg, args) => {
     }
 });
 
+bot.registerCommandAlias('hug', 'hugs');
+bot.registerCommandAlias('Hug', 'hugs');
 // ========================== Kick Command ====================================================== //
 bot.registerCommand('kick', (msg, args) => {
     if (msg.author.id != config.mika && msg.mentions[0] != undefined) {
@@ -396,6 +405,39 @@ bot.registerCommand('listr', (msg, args) => {
 }, {
     description: 'List roles that are available to join.',
     fullDescription: 'Lists the roles that have been added by an administrator that are available.'
+});
+
+// ========================== Ship Command ====================================================== //
+bot.registerCommand('ship', (msg, args) => {
+    if (msg.channel.guild != undefined && msg.mentions.length == 2) {
+        const urls = [msg.mentions[0].avatarURL, msg.mentions[1].avatarURL];
+
+        ship.getShipImages(urls, (images) => {
+            let avatarCanvas = new Canvas(384, 128);
+            let ctx = avatarCanvas.getContext('2d');
+
+            for (let i = 0; i < 3; i++) {
+                ctx.drawImage(images[i], (i * 128), 0, 128, 128);
+
+                if (i == 2) {
+                    ship.getShipName(msg, (shipName) => {
+                        let shipMsg = 'Lovely shipping!\n' +
+                            'Ship name: **' + shipName + '**';
+
+                        bot.createMessage(msg.channel.id, shipMsg, {
+                            file: avatarCanvas.toBuffer(),
+                            name: shipName + '.png'
+                        });
+                    });
+                }
+            }
+        });
+
+        tools.incrementCommandUse('ship');
+    }
+}, {
+    description: 'Ship two users.',
+    fullDescription: 'Takes the two mentioned users and mashes their names into a lovely mess.'
 });
 
 // ========================== Leave Role Command ================================================ //
