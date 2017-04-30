@@ -56,6 +56,9 @@ const bot = new Eris.CommandClient(config.token, {}, {
 const Ship = require('./cmds/Ship.js');
 const ship = new Ship();
 
+const Reactions = require('./cmds/Reactions.js');
+const reactions = new Reactions();
+
 // ========================== GiveawayBot Code Begins =========================================== //
 const GiveawayBot = require('./util/GiveawayBot.js');
 const giveawayBot = new GiveawayBot().getGiveawayBot();
@@ -85,7 +88,7 @@ bot.registerCommand('change', (msg, args) => {
 
 // ========================== Cry Command ======================================================= //
 bot.registerCommand('cry', (msg, args) => {
-    tools.pickCryImage((cryImage) => {
+    reactions.pickCryImage((cryImage) => {
         bot.createMessage(msg.channel.id, {
             embed: {
                 image: cryImage
@@ -102,7 +105,7 @@ bot.registerCommand('cry', (msg, args) => {
 // ========================== Love Command ====================================================== //
 bot.registerCommand('love', (msg, args) => {
     if (msg.channel.guild != undefined) {
-        tools.pickLoveImage((loveImage) => {
+        reactions.pickLoveImage((loveImage) => {
             let message = '';
 
             if (msg.mentions[0] != undefined) {
@@ -200,7 +203,7 @@ bot.registerCommand('kiss', (msg, args) => {
 })
 // ========================== Kill Command ====================================================== //
 bot.registerCommand('kill', (msg, args) => {
-    tools.pickKillImage((img) => {
+    reactions.pickKillImage((img) => {
         var message = '';
         var user = msg.mentions[0].username;
         message = "**" + user + "**, you've been killed by **" + msg.author.username + "**.";
@@ -221,7 +224,7 @@ bot.registerCommandAlias('Kill', 'kill');
 // ========================== Spank Command ===================================================== //
 
 bot.registerCommand('spank', (msg, args) => {
-    tools.pickSpankImage((img) => {
+    reactions.pickSpankImage((img) => {
         var message = '';
         var user = msg.mentions[0].username;
         message = "**" + user + "**, you've been spanked by **" + msg.author.username + "**.";
@@ -239,7 +242,7 @@ bot.registerCommandAlias('Spank', 'spank');
 
 // ========================== Kill Me Command =================================================== //
 bot.registerCommand('killme', (msg, args) => {
-    tools.pickKillMeImage((killMeImage) => {
+    reactions.pickKillMeImage((killMeImage) => {
         // Mika's requested killme command
         bot.createMessage(msg.channel.id, {
             embed: {
@@ -254,7 +257,7 @@ bot.registerCommand('killme', (msg, args) => {
 // ========================== Hugs Command ====================================================== //
 bot.registerCommand('hugs', (msg, args) => {
     if (msg.mentions[0] != undefined) {
-        tools.pickHugImage((hugImage) => {
+        reactions.pickHugImage((hugImage) => {
             var message = '';
             var user = msg.mentions[0].username;
             message = "**" + user + "**, has received hugs from **" + msg.author.username + "**.";
@@ -278,7 +281,7 @@ bot.registerCommandAlias('Hug', 'hugs');
 // ========================== Kick Command ====================================================== //
 bot.registerCommand('kick', (msg, args) => {
     if (msg.author.id != config.mika && msg.mentions[0] != undefined) {
-        tools.pickKickImage((kickImage) => {
+        reactions.pickKickImage((kickImage) => {
             let user = msg.mentions[0].username;
             let message = "**" + user + "**, you've been kicked by **" + msg.author.username + "**.";
 
@@ -301,7 +304,7 @@ bot.registerCommand('kick', (msg, args) => {
 
 // ========================== Bite Command ====================================================== //
 bot.registerCommand('bite', (msg, args) => {
-    tools.pickBiteImage((biteImage) => {
+    reactions.pickBiteImage((biteImage) => {
         var message = '';
 
         if (msg.mentions[0] != undefined) {
@@ -352,7 +355,7 @@ bot.registerCommand('git', (msg, args) => {
 
 // ========================== Blush Command ===================================================== //
 bot.registerCommand('blush', (msg, args) => {
-    tools.pickBlushImage((blushImage) => {
+    reactions.pickBlushImage((blushImage) => {
         bot.createMessage(msg.channel.id, {
             embed: {
                 image: blushImage
@@ -376,13 +379,14 @@ bot.registerCommand('rawr', (msg, args) => {
 
 // ========================== Rekt Command ====================================================== //
 bot.registerCommand('rekt', (msg, args) => {
-    tools.pickRektImage((rektImage) => {
+    reactions.pickRektImage((rektImage) => {
         bot.createMessage(msg.channel.id, {
             embed: {
                 image: rektImage
             }
         });
     });
+
     tools.incrementCommandUse('rekt');
 });
 
