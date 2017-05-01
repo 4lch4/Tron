@@ -10,6 +10,7 @@ const ioTools = new IOTools();
 let spankImages = [];
 let killImages = [];
 let kissImages = [];
+let kickImages = [];
 let patImages = [];
 
 class Reactions {
@@ -69,7 +70,6 @@ class Reactions {
         if (spankImages.length == 0) {
             ioTools.getImages('spank', (images) => {
                 let random = tools.getRandom(0, images.length);
-
                 spankImages = spankImages.concat(images);
 
                 callback(spankImages[random]);
@@ -78,6 +78,21 @@ class Reactions {
             let random = tools.getRandom(0, spankImages.length);
 
             callback(spankImages[random]);
+        }
+    }
+
+    pickKickImage(callback) {
+        if (kickImages.length == 0) {
+            ioTools.getImages('kick', (images) => {
+                let random = tools.getRandom(0, images.length);
+                kickImages = kickImages.concat(images);
+
+                callback(kickImages[random]);
+            })
+        } else {
+            let random = tools.getRandom(0, kickImages.length);
+
+            callback(kickImages[random]);
         }
     }
 
@@ -133,22 +148,6 @@ class Reactions {
 
     pickRektImage(callback) {
         let images = ["https://media.giphy.com/media/vSR0fhtT5A9by/giphy.gif"]
-
-        let random = tools.getRandom(0, images.length);
-
-        callback({
-            url: images[random]
-        });
-    }
-
-    pickKickImage(callback) {
-        let images = [
-            "https://i.imgur.com/B0EvFzc.gif", "https://i.imgur.com/5oZkxax.gif",
-            "https://i.imgur.com/955TDwD.gif", "https://i.imgur.com/8X13K1z.gif",
-            "https://i.imgur.com/lP0kfb7.gif", "https://i.imgur.com/4vcwdhp.gif",
-            "https://media.giphy.com/media/ewp6KdCOEMSTm/giphy.gif",
-            "https://media3.giphy.com/media/l3V0j3ytFyGHqiV7W/giphy.gif"
-        ];
 
         let random = tools.getRandom(0, images.length);
 

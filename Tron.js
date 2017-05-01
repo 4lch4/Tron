@@ -259,7 +259,7 @@ bot.registerCommandAlias('Kill', 'kill');
 bot.registerCommand('spank', (msg, args) => {
     reactions.pickSpankImage((img) => {
         let user = msg.mentions[0].username;
-        let message= "**" + user + "**, you've been spanked by **" + msg.author.username + "**. :wave:";
+        let message = "**" + user + "**, you've been spanked by **" + msg.author.username + "**. :wave:";
 
         bot.createMessage(msg.channel.id, message, {
             file: img,
@@ -313,15 +313,13 @@ bot.registerCommandAlias('Hug', 'hugs');
 // ========================== Kick Command ====================================================== //
 bot.registerCommand('kick', (msg, args) => {
     if (msg.author.id != config.mika && msg.mentions[0] != undefined) {
-        reactions.pickKickImage((kickImage) => {
+        reactions.pickKickImage((img) => {
             let user = msg.mentions[0].username;
             let message = "**" + user + "**, you've been kicked by **" + msg.author.username + "**.";
 
-            bot.createMessage(msg.channel.id, {
-                content: message,
-                embed: {
-                    image: kickImage
-                }
+            bot.createMessage(msg.channel.id, message, {
+                file: img,
+                name: 'Kick.gif'
             });
 
             tools.incrementCommandUse('kick');

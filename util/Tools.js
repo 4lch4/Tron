@@ -136,7 +136,7 @@ class Tools {
     }
 
     getRandom(min, max) {
-        return chance.random({
+        return chance.integer({
             min: min,
             max: max
         });
