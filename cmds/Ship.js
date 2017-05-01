@@ -1,11 +1,13 @@
 "use strict"
 
 const download = require('image-downloader');
-const fs = require('fs');
 const Canvas = require("canvas");
-const Image = Canvas.Image;
 const Tools = require('../util/Tools.js');
+const Chance = require('chance');
+const chance = new Chance();
+const Image = Canvas.Image;
 const tools = new Tools();
+const fs = require('fs');
 
 class Ship {
     constructor(options) {
@@ -118,9 +120,8 @@ class Ship {
             msg.mentions[1].username
         ];
 
-        let limit0 = tools.getRandom(1, usernames[0].length);
-        let limit1 = tools.getRandom(1, usernames[1].length);
-
+        let limit0 = tools.getRandom(0, usernames[0].length);
+        let limit1 = tools.getRandom(0, usernames[1].length);
         let firstChoice = tools.getRandom(0, 1);
         let start = tools.getRandom(0, 1);
         let shipName = '';

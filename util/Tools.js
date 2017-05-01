@@ -1,8 +1,10 @@
 "use strict"
 
+const moment = require('moment-timezone');
 const config = require('./config.json');
 const roleNames = config.roleNames;
-const moment = require('moment-timezone');
+const Chance = require('chance');
+const chance = new Chance();
 const fs = require('fs');
 const exhentaiCookies = `\`\`\`
 {
@@ -134,7 +136,10 @@ class Tools {
     }
 
     getRandom(min, max) {
-        return Math.floor(Math.random() * (max - min) + min);
+        return chance.random({
+            min: min,
+            max: max
+        });
     }
 
     messageIs(msg, str) {

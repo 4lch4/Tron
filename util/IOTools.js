@@ -34,8 +34,6 @@ class IOTools {
             comic.feedName + "/" +
             date + ".json";
 
-        console.log('filename = ' + filename);
-
         if (fs.existsSync(filename)) {
             callback(false);
         } else {

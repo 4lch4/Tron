@@ -199,9 +199,8 @@ bot.registerCommand('kms', (msg, args) => {
 // ========================== Kiss Command ====================================================== //
 bot.registerCommand('kiss', (msg, args) => {
     reactions.pickKissImage((img) => {
-        var message = '';
-        var user = msg.mentions[0].username;
-        message = "**" + user + "**, you've been kissed by **" + msg.author.username + "**. :kiss:";
+        let user = msg.mentions[0].username;
+        let message = "**" + user + "**, you've been kissed by **" + msg.author.username + "**. :kiss:";
 
         bot.createMessage(msg.channel.id, message, {
             file: img,
@@ -225,7 +224,9 @@ bot.registerCommand('pat', (msg, args) => {
             bot.createMessage(msg.channel.id, message, {
                 file: img,
                 name: 'Pat.gif'
-            })
+            });
+
+            tools.incrementCommandUse('pat');
         });
     }
 });
@@ -237,9 +238,8 @@ bot.registerCommandAlias('pats', 'pat');
 // ========================== Kill Command ====================================================== //
 bot.registerCommand('kill', (msg, args) => {
     reactions.pickKillImage((img) => {
-        var message = '';
-        var user = msg.mentions[0].username;
-        message = "**" + user + "**, you've been killed by **" + msg.author.username + "**. :knife:";
+        let user = msg.mentions[0].username;
+        let message = "**" + user + "**, you've been killed by **" + msg.author.username + "**. :knife:";
 
         bot.createMessage(msg.channel.id, message, {
             file: img,
@@ -258,9 +258,8 @@ bot.registerCommandAlias('Kill', 'kill');
 
 bot.registerCommand('spank', (msg, args) => {
     reactions.pickSpankImage((img) => {
-        var message = '';
-        var user = msg.mentions[0].username;
-        message = "**" + user + "**, you've been spanked by **" + msg.author.username + "**. :wave:";
+        let user = msg.mentions[0].username;
+        let message= "**" + user + "**, you've been spanked by **" + msg.author.username + "**. :wave:";
 
         bot.createMessage(msg.channel.id, message, {
             file: img,
@@ -291,9 +290,8 @@ bot.registerCommand('killme', (msg, args) => {
 bot.registerCommand('hugs', (msg, args) => {
     if (msg.mentions[0] != undefined) {
         reactions.pickHugImage((hugImage) => {
-            var message = '';
-            var user = msg.mentions[0].username;
-            message = "**" + user + "**, has received hugs from **" + msg.author.username + "**. :hugging:";
+            let user = msg.mentions[0].username;
+            let message = "**" + user + "**, has received hugs from **" + msg.author.username + "**. :hugging:";
 
             bot.createMessage(msg.channel.id, {
                 content: message,
@@ -311,6 +309,7 @@ bot.registerCommand('hugs', (msg, args) => {
 
 bot.registerCommandAlias('hug', 'hugs');
 bot.registerCommandAlias('Hug', 'hugs');
+
 // ========================== Kick Command ====================================================== //
 bot.registerCommand('kick', (msg, args) => {
     if (msg.author.id != config.mika && msg.mentions[0] != undefined) {
