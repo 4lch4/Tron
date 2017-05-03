@@ -135,10 +135,17 @@ class Tools {
         return temp.charAt(0).toUpperCase() + temp.slice(1);
     }
 
+    /**
+     * I subtract one from the max because of how most of my commands use this function. Instead of
+     * modifying all of them to not include the last digit, I changed this for the time being.
+     * 
+     * @param {*} min 
+     * @param {*} max 
+     */
     getRandom(min, max) {
         return chance.integer({
             min: min,
-            max: max
+            max: (max - 1)
         });
     }
 
