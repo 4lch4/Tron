@@ -286,6 +286,28 @@ bot.registerCommand('killme', (msg, args) => {
     tools.incrementCommandUse('killme');
 });
 
+// ========================== Rate Waifu Command (Requested by Bella and Kayla) ================= //
+bot.registerCommand('ratewaifu', (msg, args) => {
+    if (msg.channel.guild != undefined && msg.mentions.length == 1) {
+        if (msg.mentions[0].id == 219270060936527873) {
+            // Alcha
+            return "**" + msg.mentions[0].username + "**-senpai, I'd rate you 11/10. \n\n_notice me_";
+        } else {
+            let random = tools.getRandom(0, 11);
+            let message = "**" + msg.mentions[0].username + "**, I'd rate you " + random + "/10 waifu.";
+
+            return message;
+        }
+    }
+}, {
+    description: 'Randomly rates a mentioned user 0 - 10.',
+    fullDescription: 'Generates a random number to rate the mentioned user on a scale of 0 to 10.'
+});
+
+bot.registerCommandAlias('rate', 'ratewaifu');
+bot.registerCommandAlias('Rate', 'ratewaifu');
+bot.registerCommandAlias('Ratewaifu', 'ratewaifu');
+
 // ========================== Hugs Command ====================================================== //
 bot.registerCommand('hugs', (msg, args) => {
     if (msg.mentions[0] != undefined) {
