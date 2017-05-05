@@ -324,6 +324,31 @@ bot.registerCommand('hugs', (msg, args) => {
 bot.registerCommandAlias('hug', 'hugs');
 bot.registerCommandAlias('Hug', 'hugs');
 
+bot.registerCommand('stats', (msg, args) => {
+    ioTools.getCommandUsage((results) => {
+        let fields = [];
+
+        for (let i = 0; i < results.length; i++) {
+            fields[i] = {
+                name: results[i].COMMAND_NAME,
+                value: results[i].COMMAND_USE_COUNT,
+                inline: true
+            }
+        }
+
+        bot.createMessage(msg.channel.id, {
+            embed: {
+                title: "Command Stats", // Title of the embed
+                description: "Here's a list of the commands available and how many times they've been used.",
+                color: 0x008000, // Color, either in hex (show), or a base-10 integer
+                fields: fields
+            }
+        });
+    });
+}, {
+    description: 'Display commands and how much list of use count',
+    fullDescription: "Displays a list of available commands and how many times they've been used."
+});
 // ========================== Kick Command ====================================================== //
 bot.registerCommand('kick', (msg, args) => {
     if (msg.author.id != config.mika && msg.mentions[0] != undefined) {
