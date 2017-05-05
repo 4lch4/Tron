@@ -435,6 +435,36 @@ bot.registerCommand('rekt', (msg, args) => {
     tools.incrementCommandUse('rekt');
 });
 
+// ========================== Trump Commands ==================================================== //
+let trumpCmd = bot.registerCommand('trump', (msg, args) => {
+    if (args.length === 0) {
+        return "Invalid input, arguments required.";
+    }
+});
+
+trumpCmd.registerSubcommand('fake', (msg, args) => {
+    ioTools.getImage('/trump/Fake.gif', (img) => {
+        bot.createMessage(msg.channel.id, '', {
+            file: img,
+            name: 'Fake.gif'
+        });
+    });
+
+    tools.incrementCommandUse('trump-fake');
+});
+
+trumpCmd.registerSubcommand('wrong', (msg, args) => {
+    ioTools.getImage('/trump/Wrong.gif', (img) => {
+        bot.createMessage(msg.channel.id, '', {
+            file: img,
+            name: 'Wrong.gif'
+        });
+    });
+
+    tools.incrementCommandUse('trump-wrong');
+});
+
+
 // ========================== Add Role Command ================================================== //
 bot.registerCommand('addr', (msg, args) => {
     if (msg.channel.guild != null) {
