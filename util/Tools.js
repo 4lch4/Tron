@@ -118,6 +118,16 @@ class Tools {
         });
     }
 
+    getCommandUsage(callback) {
+        let queryString = "SELECT * FROM commands;";
+
+        connection.query(queryString, (err, res, fields) => {
+            if (err) throw err;
+
+            callback(res);
+        });
+    };
+
     getExhentaiCookies() {
         return exhentaiCookies;
     }
