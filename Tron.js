@@ -102,10 +102,9 @@ bot.registerCommand('change', (msg, args) => {
 // ========================== Cry Command ======================================================= //
 bot.registerCommand('cry', (msg, args) => {
     reactions.pickCryImage((cryImage) => {
-        bot.createMessage(msg.channel.id, {
-            embed: {
-                image: cryImage
-            }
+        bot.createMessage(msg.channel.id, '', {
+            file: cryImage,
+            name: 'Cry.gif'
         });
 
         tools.incrementCommandUse('cry');
@@ -126,11 +125,9 @@ bot.registerCommand('love', (msg, args) => {
                 message = "**" + user + "**, you've been loved by **" + msg.author.username + "**. :heart:";
             }
 
-            bot.createMessage(msg.channel.id, {
-                content: message,
-                embed: {
-                    image: loveImage
-                }
+            bot.createMessage(msg.channel.id, message, {
+                file: loveImage,
+                name: 'Love.gif'
             });
         });
 
@@ -184,16 +181,14 @@ bot.registerCommand('ping', (msg, args) => {
 
 // ========================== Kill Myself Command =============================================== //
 bot.registerCommand('kms', (msg, args) => {
-    bot.createMessage(msg.channel.id, {
-        content: '',
-        embed: {
-            image: {
-                url: 'https://i.imgur.com/rC0Yx6S.gif'
-            }
-        }
-    });
+    reactions.pickKillMeImage((img) => {
+        bot.createMessage(msg.channel.id, '', {
+            file: img,
+            name: 'Kms.gif'
+        });
 
-    tools.incrementCommandUse('kms');
+        tools.incrementCommandUse('kms');
+    });
 });
 
 // ========================== Kiss Command ====================================================== //
@@ -276,10 +271,9 @@ bot.registerCommandAlias('Spank', 'spank');
 bot.registerCommand('killme', (msg, args) => {
     reactions.pickKillMeImage((killMeImage) => {
         // Mika's requested killme command
-        bot.createMessage(msg.channel.id, {
-            embed: {
-                image: killMeImage
-            }
+        bot.createMessage(msg.channel.id, '', {
+            file: killMeImage,
+            name: 'KillMe.gif'
         });
     });
 
@@ -315,11 +309,9 @@ bot.registerCommand('hugs', (msg, args) => {
             let user = msg.mentions[0].username;
             let message = "**" + user + "**, has received hugs from **" + msg.author.username + "**. :hugging:";
 
-            bot.createMessage(msg.channel.id, {
-                content: message,
-                embed: {
-                    image: hugImage
-                }
+            bot.createMessage(msg.channel.id, message, {
+                file: hugImage,
+                name: 'Hugs.gif'
             });
 
             tools.incrementCommandUse('hugs');
@@ -364,11 +356,9 @@ bot.registerCommand('bite', (msg, args) => {
             message = "**" + user + "**, you've been bitten by **" + msg.author.username + "**.";
         }
 
-        bot.createMessage(msg.channel.id, {
-            content: message,
-            embed: {
-                image: biteImage
-            }
+        bot.createMessage(msg.channel.id, message, {
+            file: biteImage,
+            name: 'Bite.gif'
         });
 
         tools.incrementCommandUse('bite');
@@ -401,6 +391,7 @@ bot.on("ready", () => {
 // ========================== Git Command ======================================================= //
 bot.registerCommand('git', (msg, args) => {
     bot.createMessage(msg.channel.id, 'You can find the git repo for Tron here: https://github.com/Alcha/Tron');
+
     tools.incrementCommandUse('git');
 }, {
     description: 'Display link to git repository.',
@@ -410,11 +401,11 @@ bot.registerCommand('git', (msg, args) => {
 // ========================== Blush Command ===================================================== //
 bot.registerCommand('blush', (msg, args) => {
     reactions.pickBlushImage((blushImage) => {
-        bot.createMessage(msg.channel.id, {
-            embed: {
-                image: blushImage
-            }
+        bot.createMessage(msg.channel.id, '', {
+            file: blushImage,
+            name: 'Blush.gif'
         });
+
         tools.incrementCommandUse('blush');
     });
 });
@@ -435,10 +426,9 @@ bot.registerCommand('rawr', (msg, args) => {
 // ========================== Rekt Command ====================================================== //
 bot.registerCommand('rekt', (msg, args) => {
     reactions.pickRektImage((rektImage) => {
-        bot.createMessage(msg.channel.id, {
-            embed: {
-                image: rektImage
-            }
+        bot.createMessage(msg.channel.id, '', {
+            file: rektImage,
+            name: 'Rekt.gif'
         });
     });
 

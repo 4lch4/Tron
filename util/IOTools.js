@@ -14,6 +14,14 @@ class IOTools {
         return fs.existsSync(filename);
     }
 
+    getImage(path, onComplete) {
+        path = "/root/tron/images/" + path;
+
+        fs.readFile(path, (filename, content) => {
+            onComplete(content);
+        });
+    }
+
     getImages(dirnameIn, onComplete) {
         let dirname = "/root/tron/images/" + dirnameIn + "/";
         let images = [];
