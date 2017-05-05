@@ -107,7 +107,7 @@ bot.registerCommand('cry', (msg, args) => {
             name: 'Cry.gif'
         });
 
-        tools.incrementCommandUse('cry');
+        ioTools.incrementCommandUse('cry');
     });
 }, {
     description: 'Displays random cry gif.',
@@ -131,7 +131,7 @@ bot.registerCommand('love', (msg, args) => {
             });
         });
 
-        tools.incrementCommandUse('love');
+        ioTools.incrementCommandUse('love');
     }
 }, {
     description: 'Displays random love gif.',
@@ -187,7 +187,7 @@ bot.registerCommand('kms', (msg, args) => {
             name: 'Kms.gif'
         });
 
-        tools.incrementCommandUse('kms');
+        ioTools.incrementCommandUse('kms');
     });
 });
 
@@ -202,7 +202,7 @@ bot.registerCommand('kiss', (msg, args) => {
             name: 'Kiss.gif'
         });
 
-        tools.incrementCommandUse('kiss');
+        ioTools.incrementCommandUse('kiss');
     });
 }, {
     description: 'Displays a random kiss gif.',
@@ -221,7 +221,7 @@ bot.registerCommand('pat', (msg, args) => {
                 name: 'Pat.gif'
             });
 
-            tools.incrementCommandUse('pat');
+            ioTools.incrementCommandUse('pat');
         });
     }
 });
@@ -241,7 +241,7 @@ bot.registerCommand('kill', (msg, args) => {
             name: 'Kill.gif'
         });
 
-        tools.incrementCommandUse('kill');
+        ioTools.incrementCommandUse('kill');
     });
 }, {
     description: 'Displays a random killing gif.',
@@ -261,7 +261,7 @@ bot.registerCommand('spank', (msg, args) => {
             name: 'Spank.gif'
         });
 
-        tools.incrementCommandUse('spank');
+        ioTools.incrementCommandUse('spank');
     })
 });
 
@@ -277,7 +277,7 @@ bot.registerCommand('killme', (msg, args) => {
         });
     });
 
-    tools.incrementCommandUse('killme');
+    ioTools.incrementCommandUse('killme');
 });
 
 // ========================== Rate Waifu Command (Requested by Bella and Kayla) ================= //
@@ -314,7 +314,7 @@ bot.registerCommand('hugs', (msg, args) => {
                 name: 'Hugs.gif'
             });
 
-            tools.incrementCommandUse('hugs');
+            ioTools.incrementCommandUse('hugs');
         });
     } else {
         return "Invalid input, please make sure to mention a user.";
@@ -336,7 +336,7 @@ bot.registerCommand('kick', (msg, args) => {
                 name: 'Kick.gif'
             });
 
-            tools.incrementCommandUse('kick');
+            ioTools.incrementCommandUse('kick');
         });
     } else {
         return "Invalid input, please make sure to mention a user.";
@@ -361,7 +361,7 @@ bot.registerCommand('bite', (msg, args) => {
             name: 'Bite.gif'
         });
 
-        tools.incrementCommandUse('bite');
+        ioTools.incrementCommandUse('bite');
     });
 });
 
@@ -369,7 +369,7 @@ bot.registerCommand('bite', (msg, args) => {
 bot.registerCommand('jova', (msg, args) => {
     bot.createMessage(msg.channel.id, 'Who is <@78694002332803072>? Does <@78694002332803072> is gay?');
 
-    tools.incrementCommandUse('jova');
+    ioTools.incrementCommandUse('jova');
 });
 
 // ========================== onReady Event Handler ============================================= //
@@ -392,7 +392,7 @@ bot.on("ready", () => {
 bot.registerCommand('git', (msg, args) => {
     bot.createMessage(msg.channel.id, 'You can find the git repo for Tron here: https://github.com/Alcha/Tron');
 
-    tools.incrementCommandUse('git');
+    ioTools.incrementCommandUse('git');
 }, {
     description: 'Display link to git repository.',
     fullDescription: 'Displays the link to the git repository on GitHub.'
@@ -406,7 +406,7 @@ bot.registerCommand('blush', (msg, args) => {
             name: 'Blush.gif'
         });
 
-        tools.incrementCommandUse('blush');
+        ioTools.incrementCommandUse('blush');
     });
 });
 
@@ -420,7 +420,7 @@ bot.registerCommand('rawr', (msg, args) => {
         }
     });
 
-    tools.incrementCommandUse('rawr');
+    ioTools.incrementCommandUse('rawr');
 });
 
 // ========================== Rekt Command ====================================================== //
@@ -432,7 +432,7 @@ bot.registerCommand('rekt', (msg, args) => {
         });
     });
 
-    tools.incrementCommandUse('rekt');
+    ioTools.incrementCommandUse('rekt');
 });
 
 // ========================== Trump Commands ==================================================== //
@@ -450,7 +450,7 @@ trumpCmd.registerSubcommand('fake', (msg, args) => {
         });
     });
 
-    tools.incrementCommandUse('trump-fake');
+    ioTools.incrementCommandUse('trump-fake');
 });
 
 trumpCmd.registerSubcommand('wrong', (msg, args) => {
@@ -461,7 +461,7 @@ trumpCmd.registerSubcommand('wrong', (msg, args) => {
         });
     });
 
-    tools.incrementCommandUse('trump-wrong');
+    ioTools.incrementCommandUse('trump-wrong');
 });
 
 
@@ -530,7 +530,7 @@ bot.registerCommand('ship', (msg, args) => {
             }
         });
 
-        tools.incrementCommandUse('ship');
+        ioTools.incrementCommandUse('ship');
     }
 }, {
     description: 'Ship two users.',
@@ -554,7 +554,7 @@ bot.registerCommand('leaver', (msg, args) => {
                     msg.guild.removeMemberRole(userId, roleId);
                     bot.createMessage(msg.channel.id, ":outbox_tray: You've successfully been removed from your requested group.");
                     msg.delete();
-                    tools.incrementCommandUse('leaver');
+                    ioTools.incrementCommandUse('leaver');
                 }
             }
         }
@@ -578,7 +578,7 @@ bot.registerCommand('joinr', (msg, args) => {
                     msg.guild.addMemberRole(userId, roleId);
                     bot.createMessage(msg.channel.id, ":inbox_tray: You've successfully been added to your requested group.");
                     msg.delete();
-                    tools.incrementCommandUse('joinr');
+                    ioTools.incrementCommandUse('joinr');
                 }
             }
         }
@@ -607,10 +607,10 @@ bot.registerCommand('utah', (msg, args) => {
     if (msg.channel.guild != undefined) {
         if (msg.channel.guild.id == 254496813552238594) {
             bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:256668458480041985>");
-            tools.incrementCommandUse('utah');
+            ioTools.incrementCommandUse('utah');
         } else if (msg.channel.guild.id == 197846974408556544) {
             bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:298313391444066305>");
-            tools.incrementCommandUse('utah');
+            ioTools.incrementCommandUse('utah');
         } else {
             console.log("Guild = " + msg.guild.name);
             console.log("id = " + msg.guild.id);
@@ -628,7 +628,7 @@ bot.registerCommand('alex', (msg, args) => {
     if (msg.channel.guild != undefined) {
         if (msg.channel.guild.id == 254496813552238594) {
             bot.createMessage(msg.channel.id, "<@!191316261299290112> 🖕")
-            tools.incrementCommandUse('alex');
+            ioTools.incrementCommandUse('alex');
         }
     }
 }, {

@@ -5,6 +5,16 @@ const Tools = require('./Tools.js');
 const tools = new Tools();
 const fs = require('fs');
 
+const mysql = require('mysql');
+const connection = mysql.createConnection({
+    host: config.mysql.host,
+    user: config.mysql.user,
+    password: config.mysql.password,
+    database: config.mysql.database
+});
+
+connection.connect();
+
 class IOTools {
     constructor(options) {
         this.options = options || {};
@@ -12,6 +22,13 @@ class IOTools {
 
     fileExists(filename) {
         return fs.existsSync(filename);
+    }
+
+    incrementCommandUse(commandName) {
+        let queryString = "UPDATE commands SET `COMMAND_USE_COUNT` = `COMMAND_USE_COUNT` + 1 WHERE `COMMAND_NAME` = '" + commandName + "'";
+        connection.query(queryString, (err, res, fields) => {
+            if (err) throw err;
+        });
     }
 
     getImage(path, onComplete) {

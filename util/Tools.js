@@ -92,30 +92,10 @@ const exhentaiCookies = `\`\`\`
     "id": 6
 }\`\`\``;
 
-const mysql = require('mysql');
-const connection = mysql.createConnection({
-    host: config.mysql.host,
-    user: config.mysql.user,
-    password: config.mysql.password,
-    database: config.mysql.database
-});
-
-connection.connect();
-
-let killImages = [];
-let kissImages = [];
-let spankImages = [];
 // ============================================================================================== //
 class Tools {
     constructor(options) {
         this.options = options || {};
-    }
-
-    incrementCommandUse(commandName) {
-        let queryString = "UPDATE commands SET `COMMAND_USE_COUNT` = `COMMAND_USE_COUNT` + 1 WHERE `COMMAND_NAME` = '" + commandName + "'";
-        connection.query(queryString, (err, res, fields) => {
-            if (err) throw err;
-        });
     }
 
     getExhentaiCookies() {
