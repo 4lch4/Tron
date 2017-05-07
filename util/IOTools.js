@@ -31,7 +31,7 @@ class IOTools {
         });
     }
 
-    getCommandUsage(callback) {
+    getAllCommandUsage(callback) {
         let queryString = "SELECT * FROM commands ORDER BY COMMAND_USE_COUNT DESC;";
 
         connection.query(queryString, (err, res, fields) => {
@@ -40,6 +40,16 @@ class IOTools {
             callback(res);
         });
     };
+
+    getCommandUsage(command, callback) {
+        let queryString = "SELECT * FROM commands WHERE `COMMAND_NAME` = '" + command + "';";
+
+        connection.query(queryString, (err, res, fields) => {
+            if (err) throw err;
+
+            callback(res);
+        });
+    }
 
     getImage(path, onComplete) {
         path = "/root/tron/images/" + path;

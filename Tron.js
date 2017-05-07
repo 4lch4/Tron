@@ -323,32 +323,57 @@ bot.registerCommand('hugs', (msg, args) => {
 
 bot.registerCommandAlias('hug', 'hugs');
 bot.registerCommandAlias('Hug', 'hugs');
+bot.registerCommandAlias('HUG', 'hugs');
+bot.registerCommandAlias('HUGS', 'hugs');
+bot.registerCommandAlias('Hugs', 'hugs');
 
+// ========================== Stats Commands ==================================================== //
 bot.registerCommand('stats', (msg, args) => {
-    ioTools.getCommandUsage((results) => {
-        let fields = [];
 
-        for (let i = 0; i < results.length; i++) {
-            fields[i] = {
-                name: results[i].COMMAND_NAME,
-                value: results[i].COMMAND_USE_COUNT,
-                inline: true
-            }
-        }
+    if (args.length == 0) {
+        ioTools.getAllCommandUsage((results) => {
+            let fields = [];
 
-        bot.createMessage(msg.channel.id, {
-            embed: {
-                title: "Command Stats", // Title of the embed
-                description: "Here's a list of the commands available and how many times they've been used.",
-                color: 0x008000, // Color, either in hex (show), or a base-10 integer
-                fields: fields
+            for (let i = 0; i < results.length; i++) {
+                fields[i] = {
+                    name: results[i].COMMAND_NAME,
+                    value: results[i].COMMAND_USE_COUNT,
+                    inline: true
+                }
             }
+
+            bot.createMessage(msg.channel.id, {
+                embed: {
+                    title: "Command Stats", // Title of the embed
+                    description: "Here's a list of the commands available and how many times they've been used.",
+                    color: 0x008000, // Color, either in hex (show), or a base-10 integer
+                    fields: fields
+                }
+            });
         });
-    });
+    } else {
+        ioTools.getCommandUsage(args[0], (results) => {
+            if (results[0] != undefined) {
+                bot.createMessage(msg.channel.id, {
+                    embed: {
+                        color: 0x008000,
+                        fields: [{
+                            name: results[0].COMMAND_NAME,
+                            value: results[0].COMMAND_USE_COUNT
+                        }]
+                    }
+                });
+            } else {
+                bot.createMessage(msg.channel.id, "Please use a valid command, this does not exist in the database.");
+            }
+
+        });
+    }
 }, {
     description: 'Display commands and how much list of use count',
     fullDescription: "Displays a list of available commands and how many times they've been used."
 });
+
 // ========================== Kick Command ====================================================== //
 bot.registerCommand('kick', (msg, args) => {
     if (msg.author.id != config.mika && msg.mentions[0] != undefined) {
