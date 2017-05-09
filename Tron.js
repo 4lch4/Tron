@@ -23,6 +23,7 @@
 // ============================================================================================== //
 "use strict"
 
+const INVALID_INPUT = "Invalid input, please make sure to mention a user.";
 // ============================================================================================== //
 const config = require('./util/config.json');
 const IOTools = require('./util/IOTools.js');
@@ -369,6 +370,26 @@ bot.registerCommand('stats', (msg, args) => {
     fullDescription: "Displays a list of available commands and how many times they've been used."
 });
 
+// ========================== Poke Command ====================================================== //
+bot.registerCommand('poke', (msg, args) => {
+    if(msg.mentions.length == 1) {
+        reactions.pickPokeImage((img) => {
+            let message = "**" + msg.mentions[0].username + "**, you've been poked by **" + msg.author.username + "**.";
+
+            bot.createMessage(msg.channel.id, message, {
+                file: img,
+                name: 'Poke.gif'
+            });
+        });
+    } else {
+        return INVALID_INPUT;
+    }
+}, {
+    aliases: ['POKE', 'Poke', 'Pokes', 'POKES'],
+    description: '',
+    fullDescription: ''
+});
+
 // ========================== Kick Command ====================================================== //
 bot.registerCommand('kick', (msg, args) => {
     if (msg.author.id != config.mika && msg.mentions[0] != undefined) {
@@ -384,7 +405,7 @@ bot.registerCommand('kick', (msg, args) => {
             ioTools.incrementCommandUse('kick');
         });
     } else {
-        return "Invalid input, please make sure to mention a user.";
+        return INVALID_INPUT;
     }
 }, {
     aliases: ['Kick', 'KICK'],

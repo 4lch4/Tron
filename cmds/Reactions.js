@@ -6,6 +6,7 @@ const Tools = require('../util/Tools.js');
 
 const tools = new Tools();
 const ioTools = new IOTools();
+
 /** Stores images for the KillMe command */
 let killMeImages = [];
 
@@ -26,6 +27,9 @@ let killImages = [];
 
 /** Stores images for the Kiss command */
 let kissImages = [];
+
+/** Stores images for the Poke command */
+let pokeImages = [];
 
 /** Stores images for the Kick command */
 let kickImages = [];
@@ -143,6 +147,21 @@ class Reactions {
         }
     }
 
+    pickPokeImage(callback) {
+        if (pokeImages.length == 0) {
+            ioTools.getImages('poke', (images) => {
+                let random = tools.getRandom(0, images.length);
+                pokeImages = pokeImages.concat(images);
+
+                callback(pokeImages[random]);
+            });
+        } else {
+            let random = tools.getRandom(0, pokeImages.length);
+
+            callback(pokeImages[random]);
+        }
+    }
+
     pickBiteImage(callback) {
         if (biteImages.length == 0) {
             ioTools.getImages('bite', (images) => {
@@ -159,7 +178,7 @@ class Reactions {
     }
 
     pickFakeImage(callback) {
-        if(fakeImages.length == 0) {
+        if (fakeImages.length == 0) {
             ioTools.getImages('fake', (images) => {
                 fakeImages = fakeImages.concat(images);
 
