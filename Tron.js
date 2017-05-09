@@ -110,6 +110,7 @@ bot.registerCommand('cry', (msg, args) => {
         ioTools.incrementCommandUse('cry');
     });
 }, {
+    aliases: ['Cry', 'CRY'],
     description: 'Displays random cry gif.',
     fullDescription: 'Displays a random cry gif.'
 });
@@ -134,6 +135,7 @@ bot.registerCommand('love', (msg, args) => {
         ioTools.incrementCommandUse('love');
     }
 }, {
+    aliases: ['Love', 'LOVE'],
     description: 'Displays random love gif.',
     fullDescription: 'Displays a random love gif and the name of the person you mention.'
 });
@@ -205,6 +207,7 @@ bot.registerCommand('kiss', (msg, args) => {
         ioTools.incrementCommandUse('kiss');
     });
 }, {
+    aliases: ['Kiss', 'KISS'],
     description: 'Displays a random kiss gif.',
     fullDescription: 'Displays a random kissing reaction gif and the name of the individual mentioned.'
 });
@@ -224,11 +227,9 @@ bot.registerCommand('pat', (msg, args) => {
             ioTools.incrementCommandUse('pat');
         });
     }
+}, {
+    aliases: ['Pat', 'Pats', 'pats', 'PAT', 'PATS']
 });
-
-bot.registerCommandAlias('Pat', 'pat');
-bot.registerCommandAlias('Pats', 'pat');
-bot.registerCommandAlias('pats', 'pat');
 
 // ========================== Kill Command ====================================================== //
 bot.registerCommand('kill', (msg, args) => {
@@ -244,11 +245,11 @@ bot.registerCommand('kill', (msg, args) => {
         ioTools.incrementCommandUse('kill');
     });
 }, {
+    aliases: ['Kill', 'KILL'],
     description: 'Displays a random killing gif.',
     fullDescription: 'Displays a random killing reaction gif and the name of the individual mentioned.'
 });
 
-bot.registerCommandAlias('Kill', 'kill');
 // ========================== Spank Command ===================================================== //
 
 bot.registerCommand('spank', (msg, args) => {
@@ -263,9 +264,9 @@ bot.registerCommand('spank', (msg, args) => {
 
         ioTools.incrementCommandUse('spank');
     })
+}, {
+    aliases: ['Spank', 'SPANK']
 });
-
-bot.registerCommandAlias('Spank', 'spank');
 
 // ========================== Kill Me Command =================================================== //
 bot.registerCommand('killme', (msg, args) => {
@@ -278,6 +279,8 @@ bot.registerCommand('killme', (msg, args) => {
     });
 
     ioTools.incrementCommandUse('killme');
+}, {
+    aliases: ['Killme', 'KILLME', 'KillMe']
 });
 
 // ========================== Rate Waifu Command (Requested by Bella and Kayla) ================= //
@@ -294,13 +297,10 @@ bot.registerCommand('ratewaifu', (msg, args) => {
         }
     }
 }, {
+    aliases: ['rate', 'Rate', 'Ratewaifu', 'ratewaifu'],
     description: 'Randomly rates a mentioned user 0 - 10.',
     fullDescription: 'Generates a random number to rate the mentioned user on a scale of 0 to 10.'
 });
-
-bot.registerCommandAlias('rate', 'ratewaifu');
-bot.registerCommandAlias('Rate', 'ratewaifu');
-bot.registerCommandAlias('Ratewaifu', 'ratewaifu');
 
 // ========================== Hugs Command ====================================================== //
 bot.registerCommand('hugs', (msg, args) => {
@@ -319,17 +319,12 @@ bot.registerCommand('hugs', (msg, args) => {
     } else {
         return "Invalid input, please make sure to mention a user.";
     }
+}, {
+    aliases: ['hug', 'Hug', 'HUG', 'HUGS', 'Hugs']
 });
-
-bot.registerCommandAlias('hug', 'hugs');
-bot.registerCommandAlias('Hug', 'hugs');
-bot.registerCommandAlias('HUG', 'hugs');
-bot.registerCommandAlias('HUGS', 'hugs');
-bot.registerCommandAlias('Hugs', 'hugs');
 
 // ========================== Stats Commands ==================================================== //
 bot.registerCommand('stats', (msg, args) => {
-
     if (args.length == 0) {
         ioTools.getAllCommandUsage((results) => {
             let fields = [];
@@ -392,6 +387,7 @@ bot.registerCommand('kick', (msg, args) => {
         return "Invalid input, please make sure to mention a user.";
     }
 }, {
+    aliases: ['Kick', 'KICK'],
     description: 'Displays random kick gif',
     fullDescription: 'Displays a random kick gif and the name of the person you mention.'
 });
@@ -413,6 +409,10 @@ bot.registerCommand('bite', (msg, args) => {
 
         ioTools.incrementCommandUse('bite');
     });
+}, {
+    aliases: ['Bite', 'BITE'],
+    description: '',
+    fullDescription: ''
 });
 
 // ========================== Jova Command ====================================================== //
@@ -436,7 +436,7 @@ bot.on("ready", () => {
     });
 
     setupRssReaders();
-})
+});
 
 // ========================== Git Command ======================================================= //
 bot.registerCommand('git', (msg, args) => {
@@ -444,6 +444,7 @@ bot.registerCommand('git', (msg, args) => {
 
     ioTools.incrementCommandUse('git');
 }, {
+    aliases: ['Git', 'GIT'],
     description: 'Display link to git repository.',
     fullDescription: 'Displays the link to the git repository on GitHub.'
 });
@@ -458,6 +459,10 @@ bot.registerCommand('blush', (msg, args) => {
 
         ioTools.incrementCommandUse('blush');
     });
+}, {
+    aliases: ['Blush', 'BLUSH'],
+    description: '',
+    fullDescription: ''
 });
 
 // ========================== Rawr Command ====================================================== //
@@ -471,6 +476,10 @@ bot.registerCommand('rawr', (msg, args) => {
     });
 
     ioTools.incrementCommandUse('rawr');
+}, {
+    aliases: ['Rawr', 'RAWR'],
+    description: '',
+    fullDescription: ''
 });
 
 // ========================== Rekt Command ====================================================== //
@@ -483,6 +492,10 @@ bot.registerCommand('rekt', (msg, args) => {
     });
 
     ioTools.incrementCommandUse('rekt');
+}, {
+    aliases: ['Rekt', 'REKT'],
+    description: '',
+    fullDescription: ''
 });
 
 // ========================== Trump Commands ==================================================== //
@@ -490,6 +503,8 @@ let trumpCmd = bot.registerCommand('trump', (msg, args) => {
     if (args.length === 0) {
         return "Invalid input, arguments required.";
     }
+}, {
+    aliases: ['Trump', 'TRUMP']
 });
 
 trumpCmd.registerSubcommand('fake', (msg, args) => {
@@ -501,6 +516,10 @@ trumpCmd.registerSubcommand('fake', (msg, args) => {
     });
 
     ioTools.incrementCommandUse('trump-fake');
+}, {
+    aliases: ['Fake', 'FAKE'],
+    description: '',
+    fullDescription: ''
 });
 
 trumpCmd.registerSubcommand('wrong', (msg, args) => {
@@ -512,8 +531,11 @@ trumpCmd.registerSubcommand('wrong', (msg, args) => {
     });
 
     ioTools.incrementCommandUse('trump-wrong');
+}, {
+    aliases: ['Wrong', 'WRONG'],
+    description: '',
+    fullDescription: ''
 });
-
 
 // ========================== Add Role Command ================================================== //
 bot.registerCommand('addr', (msg, args) => {
@@ -583,6 +605,7 @@ bot.registerCommand('ship', (msg, args) => {
         ioTools.incrementCommandUse('ship');
     }
 }, {
+    aliases: ['Ship', 'SHIP'],
     description: 'Ship two users.',
     fullDescription: 'Takes the two mentioned users and mashes their names into a lovely mess.'
 });
@@ -609,6 +632,9 @@ bot.registerCommand('leaver', (msg, args) => {
             }
         }
     }
+}, {
+    description: 'Leave a role.',
+    fullDescription: 'Used to leave a specific role, usually to also leave an associated channel.'
 });
 
 // ========================== Join Role Command ================================================= //
@@ -650,7 +676,7 @@ bot.registerCommand('exhentai', (msg, args) => {
     if (msg.channel.id != undefined) {
         bot.createMessage(msg.channel.id, tools.getExhentaiCookies().toString());
     }
-})
+});
 
 // ========================== Utah Command ====================================================== //
 bot.registerCommand('utah', (msg, args) => {
@@ -667,11 +693,10 @@ bot.registerCommand('utah', (msg, args) => {
         }
     }
 }, {
+    aliases: ['Utah', 'UTAH'],
     description: 'A command to poke fun at a good friend.',
     fullDescription: 'A command used to poke fun at a good friend. -Alcha'
 });
-
-bot.registerCommandAlias('Utah', 'utah');
 
 // ========================== Alex Command ====================================================== //
 bot.registerCommand('alex', (msg, args) => {
@@ -682,11 +707,10 @@ bot.registerCommand('alex', (msg, args) => {
         }
     }
 }, {
+    aliases: ['Alex', 'ALEX'],
     description: 'A command to show my love for a good friend.',
     fullDescription: 'A command used to show my love for a good friend. -Alcha'
 });
-
-bot.registerCommandAlias('Alex', 'alex');
 
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on("messageCreate", (msg) => {
