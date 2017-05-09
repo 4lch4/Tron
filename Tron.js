@@ -756,49 +756,5 @@ bot.on("messageCreate", (msg) => {
     }
 });
 
-// ========================== onChannelCreate Event Handler ===================================== //
-bot.on("channelCreate", (channel) => {
-    if (channel.guild) {
-        let createMessage = ":white_check_mark: ``[" + tools.getFormattedTimestamp() + "]`` " +
-            "Channel: **" + channel.name + "** has been created."
-
-        bot.createMessage(config.notificationChannel, createMessage)
-    }
-}, {
-    description: 'Log channel creation.',
-    fullDescription: 'If a channel is created, it is logged in the notificationChannel'
-});
-
-// ========================== onChannelDelete Event Handler ===================================== //
-bot.on("channelDelete", (channel) => {
-    if (channel.guild) {
-        let deleteMessage = ":x: ``[" + tools.getFormattedTimestamp() + "]`` " +
-            "Channel: **" + channel.name + "** has been deleted."
-
-        bot.createMessage(config.notificationChannel, deleteMessage)
-    }
-}, {
-    description: 'Log channel deletion.',
-    fullDescription: 'If a channel is deleted, it is logged in the notificationChannel'
-});
-
-// ========================== onGuildBanAdd Event Handler ======================================= //
-bot.on("guildBanAdd", (guild, user) => {
-    bot.createMessage(config.notificationChannel, ":hammer: ``[" + tools.getFormattedTimestamp() + "]`` " +
-        "User: <@" + user.id + "> has been banned.")
-}, {
-    description: 'Log user ban.',
-    fullDescription: 'If a user is banned, it is logged in the notificationChannel.'
-});
-
-// ========================== onGuildBanRemove Event Handler ==================================== //
-bot.on("guildBanRemove", (guild, user) => {
-    bot.createMessage(config.notificationChannel, ":x::hammer: ``[" + tools.getFormattedTimestamp() + "]`` " +
-        "User: <@" + user.id + "> has been unbanned.")
-}, {
-    description: 'Log user unban.',
-    fullDescription: 'If a user is unbanned, it is logged in the notificationChannel.'
-});
-
 // ========================== Connect Bot ======================================================= //
 bot.connect();
