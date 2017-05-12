@@ -290,6 +290,10 @@ bot.registerCommand('ratewaifu', (msg, args) => {
         if (msg.mentions[0].id == 219270060936527873) {
             // Alcha
             return "**" + msg.mentions[0].username + "**-senpai, I'd rate you 11/10. \n\n_notice me_";
+        } else if(msg.mentions[0].id == 142092834260910080) {
+            return "**" + msg.mentions[0].username + "**, I'd rate you -69/10 waifu."
+        } else if(msg.mentions[0].id == 139474184089632769) {
+            return "**" + msg.mentions[0].username + "**, I'd rate you -∞/10 waifu."
         } else {
             let random = tools.getRandom(0, 11);
             let message = "**" + msg.mentions[0].username + "**, I'd rate you " + random + "/10 waifu.";
@@ -380,6 +384,8 @@ bot.registerCommand('poke', (msg, args) => {
                 file: img,
                 name: 'Poke.gif'
             });
+
+            ioTools.incrementCommandUse('poke');
         });
     } else {
         return INVALID_INPUT;
