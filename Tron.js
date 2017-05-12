@@ -251,8 +251,20 @@ bot.registerCommand('kill', (msg, args) => {
     fullDescription: 'Displays a random killing reaction gif and the name of the individual mentioned.'
 });
 
-// ========================== Spank Command ===================================================== //
 
+// ========================== Wave Command ====================================================== //
+bot.registerCommand('wave', (msg, args) => {
+    reactions.pickWaveImage((img) => {
+        bot.createMessage(msg.channel.id, '', {
+            file: img,
+            name: 'Wave.gif'
+        });
+    });
+}, {
+    aliases: ['Wave', 'WAVE']
+});
+
+// ========================== Spank Command ===================================================== //
 bot.registerCommand('spank', (msg, args) => {
     reactions.pickSpankImage((img) => {
         let user = msg.mentions[0].username;
@@ -290,9 +302,9 @@ bot.registerCommand('ratewaifu', (msg, args) => {
         if (msg.mentions[0].id == 219270060936527873) {
             // Alcha
             return "**" + msg.mentions[0].username + "**-senpai, I'd rate you 11/10. \n\n_notice me_";
-        } else if(msg.mentions[0].id == 142092834260910080) {
+        } else if (msg.mentions[0].id == 142092834260910080) {
             return "**" + msg.mentions[0].username + "**, I'd rate you -69/10 waifu."
-        } else if(msg.mentions[0].id == 139474184089632769) {
+        } else if (msg.mentions[0].id == 139474184089632769) {
             return "**" + msg.mentions[0].username + "**, I'd rate you -∞/10 waifu."
         } else {
             let random = tools.getRandom(0, 11);
@@ -376,7 +388,7 @@ bot.registerCommand('stats', (msg, args) => {
 
 // ========================== Poke Command ====================================================== //
 bot.registerCommand('poke', (msg, args) => {
-    if(msg.mentions.length == 1) {
+    if (msg.mentions.length == 1) {
         reactions.pickPokeImage((img) => {
             let message = "**" + msg.mentions[0].username + "**, you've been poked by **" + msg.author.username + "**.";
 

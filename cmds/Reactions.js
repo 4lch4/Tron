@@ -7,6 +7,9 @@ const Tools = require('../util/Tools.js');
 const tools = new Tools();
 const ioTools = new IOTools();
 
+/** Stores images for the Wave command */
+let waveImages = [];
+
 /** Stores images for the KillMe command */
 let killMeImages = [];
 
@@ -67,6 +70,22 @@ class Reactions {
             let random = tools.getRandom(0, kissImages.length);
 
             callback(kissImages[random]);
+        }
+    }
+
+    pickWaveImage(callback) {
+        if (waveImages.length == 0) {
+            ioTools.getImages('wave', (images) => {
+                let random = tools.getRandom(0, images.length);
+
+                waveImages = waveImages.concat(images);
+
+                callback(waveImages[random]);
+            });
+        } else {
+            let random = tools.getRandom(0, waveImages.length);
+
+            callback(waveImages[random]);
         }
     }
 
