@@ -7,6 +7,9 @@ const Tools = require('../util/Tools.js');
 const tools = new Tools();
 const ioTools = new IOTools();
 
+/** Stores images for the Vape Nation command */
+let vnImages = [];
+
 /** Stores images for the Wave command */
 let waveImages = [];
 
@@ -86,6 +89,23 @@ class Reactions {
             let random = tools.getRandom(0, waveImages.length);
 
             callback(waveImages[random]);
+        }
+    }
+
+    pickVNImage(callback) {
+        if (vnImages.length == 0) {
+            ioTools.getImages('vapenation', (images) => {
+                let random = tools.getRandom(0, images.length);
+
+                vnImages = vnImages.concat(images);
+
+                callback(vnImages[random]);
+            });
+        } else {
+
+            let random = tools.getRandom(0, vnImages.length);
+
+            callback(vnImages[random]);
         }
     }
 

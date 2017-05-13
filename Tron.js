@@ -100,6 +100,22 @@ bot.registerCommand('change', (msg, args) => {
     fullDescription: 'Used to change the notification channel.'
 });
 
+// ========================== Vape Nation Command (Requested by Lagucci Mane) =================== //
+bot.registerCommand('vn', (msg, args) => {
+    reactions.pickVNImage((img) => {
+        bot.createMessage(msg.channel.id, '', {
+            file: img,
+            name: 'VapeNation.gif'
+        });
+    });
+
+    ioTools.incrementCommandUse('vapenation');
+}, {
+    aliases: ['VN', 'Vn', 'VapeNash', 'VapeNation', 'vape', 'VAPE', 'Vape', 'vapenash', 'vapenation'],
+    description: "Vape nation, y'all.",
+    fullDescription: 'Displays a random vape nation gif.'
+});
+
 // ========================== Cry Command ======================================================= //
 bot.registerCommand('cry', (msg, args) => {
     reactions.pickCryImage((cryImage) => {
