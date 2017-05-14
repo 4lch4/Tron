@@ -669,7 +669,7 @@ bot.registerCommand('ship', (msg, args) => {
 bot.registerCommand('leaver', (msg, args) => {
     let comparison = tools.concatArgs(args);
 
-    if (msg.guild != null) {
+    if (msg.channel.guild != null) {
         let userId = msg.author.id;
 
         if (comparison == "all") {
@@ -679,7 +679,7 @@ bot.registerCommand('leaver', (msg, args) => {
 
             if (roleId.length > 1) {
                 if (tools.allowedRole(comparison)) {
-                    msg.guild.removeMemberRole(userId, roleId);
+                    msg.channel.guild.removeMemberRole(userId, roleId);
                     bot.createMessage(msg.channel.id, ":outbox_tray: You've successfully been removed from your requested group.");
                     msg.delete();
                     ioTools.incrementCommandUse('leaver');
@@ -696,7 +696,7 @@ bot.registerCommand('leaver', (msg, args) => {
 bot.registerCommand('joinr', (msg, args) => {
     let comparison = tools.concatArgs(args);
 
-    if (msg.guild != null) {
+    if (msg.channel.guild != undefined) {
         let userId = msg.author.id;
 
         if (comparison == "all") {
@@ -706,7 +706,7 @@ bot.registerCommand('joinr', (msg, args) => {
 
             if (roleId.length > 1) {
                 if (tools.allowedRole(comparison)) {
-                    msg.guild.addMemberRole(userId, roleId);
+                    msg.channel.guild.addMemberRole(userId, roleId);
                     bot.createMessage(msg.channel.id, ":inbox_tray: You've successfully been added to your requested group.");
                     msg.delete();
                     ioTools.incrementCommandUse('joinr');
@@ -743,8 +743,8 @@ bot.registerCommand('utah', (msg, args) => {
             bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:298313391444066305>");
             ioTools.incrementCommandUse('utah');
         } else {
-            console.log("Guild = " + msg.guild.name);
-            console.log("id = " + msg.guild.id);
+            console.log("Guild = " + msg.channel.guild.name);
+            console.log("id = " + msg.channel.guild.id);
         }
     }
 }, {

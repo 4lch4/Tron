@@ -172,7 +172,7 @@ class Tools {
     getRoleId(msg, comparison) {
         let id = "";
 
-        msg.guild.roles.forEach((curr, index, values) => {
+        msg.channel.guild.roles.forEach((curr, index, values) => {
             if (curr.name.toLowerCase() == comparison) {
                 id = curr.id;
             }
@@ -184,7 +184,7 @@ class Tools {
     removeAllRoles(userId, msg, bot) {
         for (var x = 0; x < roleNames.length; x++) {
             let roleId = this.getRoleId(msg, roleNames[x].toLowerCase());
-            msg.guild.removeMemberRole(userId, roleId);
+            msg.channel.guild.removeMemberRole(userId, roleId);
         }
 
         bot.createMessage(msg.channel.id, "You've been removed from all the roles available to you.");
@@ -194,7 +194,7 @@ class Tools {
     addAllRoles(userId, msg, bot) {
         for (var x = 0; x < roleNames.length; x++) {
             let roleId = this.getRoleId(msg, roleNames[x].toLowerCase());
-            msg.guild.addMemberRole(userId, roleId);
+            msg.channel.guild.addMemberRole(userId, roleId);
         }
 
         bot.createMessage(msg.channel.id, "You've been added to all the roles available to you.");
