@@ -7,6 +7,9 @@ const Tools = require('../util/Tools.js');
 const tools = new Tools();
 const ioTools = new IOTools();
 
+/** Stores images for the Pout command */
+let poutImages = []
+
 /** Stores images for the Vape Nation command */
 let vnImages = [];
 
@@ -75,7 +78,21 @@ class Reactions {
             callback(kissImages[random]);
         }
     }
+    pickPoutImage(callback) {
+        if (poutImages.length == 0) {
+            ioTools.getImages('pout', (images) => {
+                let random = tools.getRandom(0, images.length);
 
+                poutImages = poutImages.concat(images);
+
+                callback(poutImages[random]);
+            });
+        } else {
+            let random = tools.getRandom(0, poutImages.length);
+
+            callback(poutImages[random]);
+        }
+    }
     pickWaveImage(callback) {
         if (waveImages.length == 0) {
             ioTools.getImages('wave', (images) => {

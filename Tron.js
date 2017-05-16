@@ -267,6 +267,17 @@ bot.registerCommand('kill', (msg, args) => {
     fullDescription: 'Displays a random killing reaction gif and the name of the individual mentioned.'
 });
 
+// ========================== Pout Command ====================================================== //
+bot.registercommand('pout', (msg, args) => {
+    reactions.pickPoutImage((img) => {
+        bot.createMessage(msg.channel.id, '', {
+            file: img,
+            name: 'Pout.gif'
+        });
+    });
+}, {
+    aliases: ['Pout', 'pout', 'POUT']
+});
 
 // ========================== Wave Command ====================================================== //
 bot.registerCommand('wave', (msg, args) => {
