@@ -289,6 +289,9 @@ bot.registercommand('pout', (msg, args) => {
             file: img,
             name: 'Pout.gif'
         });
+
+        ioTools.incrementCommandUse('pout');
+
     });
 }, {
     aliases: ['Pout', 'pout', 'POUT']
@@ -301,6 +304,9 @@ bot.registerCommand('wave', (msg, args) => {
             file: img,
             name: 'Wave.gif'
         });
+
+        ioTools.incrementCommandUse('wave');
+
     });
 }, {
     aliases: ['Wave', 'WAVE']
