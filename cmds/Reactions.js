@@ -7,6 +7,9 @@ const Tools = require('../util/Tools.js');
 const tools = new Tools();
 const ioTools = new IOTools();
 
+/** Stores images for the Confused command */
+let confusedImages = []
+
 /** Stores images for the Pout command */
 let poutImages = []
 
@@ -78,6 +81,23 @@ class Reactions {
             callback(kissImages[random]);
         }
     }
+
+    pickConfusedImage(callback) {
+        if (poutImages.length == 0) {
+            ioTools.getImages('confused', (images) => {
+                let random = tools.getRandom(0, images.length);
+
+                confusedImages = confusedImages.concat(images);
+
+                callback(confusedImages[random]);
+            });
+        } else {
+            let random = tools.getRandom(0, confusedImages.length);
+
+            callback(confusedImages[random]);
+        }
+    }
+
     pickPoutImage(callback) {
         if (poutImages.length == 0) {
             ioTools.getImages('pout', (images) => {
@@ -93,6 +113,7 @@ class Reactions {
             callback(poutImages[random]);
         }
     }
+
     pickWaveImage(callback) {
         if (waveImages.length == 0) {
             ioTools.getImages('wave', (images) => {

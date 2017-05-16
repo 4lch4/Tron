@@ -267,6 +267,21 @@ bot.registerCommand('kill', (msg, args) => {
     fullDescription: 'Displays a random killing reaction gif and the name of the individual mentioned.'
 });
 
+// ========================== Confused Command ================================================== //
+bot.registerCommand('confused', (msg, args) => {
+    reactions.pickConfusedImage((img) => {
+        bot.createMessage(msg.channel.id, '', {
+            file: img, 
+            name: 'Confused.gif'
+        });
+
+        ioTools.incrementCommandUse('confused');
+
+    });
+}, {
+    aliases: ['Confused', 'confused', 'CONFUSED']     
+});
+
 // ========================== Pout Command ====================================================== //
 bot.registercommand('pout', (msg, args) => {
     reactions.pickPoutImage((img) => {
