@@ -283,7 +283,7 @@ bot.registerCommand('confused', (msg, args) => {
 });
 
 // ========================== Pout Command ====================================================== //
-bot.registercommand('pout', (msg, args) => {
+bot.registerCommand('pout', (msg, args) => {
     reactions.pickPoutImage((img) => {
         bot.createMessage(msg.channel.id, '', {
             file: img,
