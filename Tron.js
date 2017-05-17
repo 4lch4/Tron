@@ -246,6 +246,17 @@ bot.registerCommand('pat', (msg, args) => {
     }
 }, {
     aliases: ['Pat', 'Pats', 'pats', 'PAT', 'PATS']
+// ========================== Quote Command ===================================================== //
+bot.registerCommand('quote', (msg, args) => {
+    ioTools.readFile('Quotes.txt', (content) => {
+        let temp = content.split('\n');
+        let random = tools.getRandom(0, temp.length);
+
+        bot.createMessage(msg.channel.id, temp[random]);
+    });
+}, {
+    aliases: ['Quote', 'quotes', 'Quotes'],
+    description: 'Returns a random quote.'
 });
 
 // ========================== Kill Command ====================================================== //
@@ -271,7 +282,7 @@ bot.registerCommand('kill', (msg, args) => {
 bot.registerCommand('confused', (msg, args) => {
     reactions.pickConfusedImage((img) => {
         bot.createMessage(msg.channel.id, '', {
-            file: img, 
+            file: img,
             name: 'Confused.gif'
         });
 
@@ -279,7 +290,7 @@ bot.registerCommand('confused', (msg, args) => {
 
     });
 }, {
-    aliases: ['Confused', 'confused', 'CONFUSED']     
+    aliases: ['Confused', 'confused', 'CONFUSED']
 });
 
 // ========================== Pout Command ====================================================== //

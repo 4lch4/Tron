@@ -20,6 +20,12 @@ class IOTools {
         this.options = options || {};
     }
 
+    readFile(path, callback) {
+        fs.readFile(path, "utf-8", (filename, content) => {
+            callback(content);
+        });
+    }
+
     fileExists(filename) {
         return fs.existsSync(filename);
     }
