@@ -212,17 +212,37 @@ bot.registerCommand('kms', (msg, args) => {
 
 // ========================== Kiss Command ====================================================== //
 bot.registerCommand('kiss', (msg, args) => {
-    reactions.pickKissImage((img) => {
-        let user = msg.mentions[0].username;
-        let message = "**" + user + "**, you've been kissed by **" + msg.author.username + "**. :kiss:";
+    /**
+     * First, we verify the args.length is equal to (==) 2, this means we've been given two 
+     * arguments. We make sure the first one is an actual number by using isNaN, which stands for
+     * isNotANumber. To do this, we have to parse the number with parseInt. So what this does is
+     * parse the value in args[0] (which should be a number), and then pass it to isNaN. If it 
+     * returns false, we know that it's a number. If it returns true, it's not a number, so just
+     * return a random image, which is the else statement.
+     */
+    if (args.length == 2 && !isNaN(parseInt(args[0]))) {
+        reactions.pickKissImage((img) => {
+            let user = msg.mentions[0].username;
+            let message = "**" + user + "**, you've been kissed by **" + msg.author.username + "**. :kiss:";
 
-        bot.createMessage(msg.channel.id, message, {
-            file: img,
-            name: 'Kiss.gif'
+            bot.createMessage(msg.channel.id, message, {
+                file: img,
+                name: 'Kiss.gif'
+            });
+        }, args[0]);
+    } else {
+        reactions.pickKissImage((img) => {
+            let user = msg.mentions[0].username;
+            let message = "**" + user + "**, you've been kissed by **" + msg.author.username + "**. :kiss:";
+
+            bot.createMessage(msg.channel.id, message, {
+                file: img,
+                name: 'Kiss.gif'
+            });
         });
+    }
 
-        ioTools.incrementCommandUse('kiss');
-    });
+    ioTools.incrementCommandUse('kiss');
 }, {
     aliases: ['Kiss', 'KISS'],
     description: 'Displays a random kiss gif.',
@@ -245,7 +265,14 @@ bot.registerCommand('pat', (msg, args) => {
         });
     }
 }, {
-    aliases: ['Pat', 'Pats', 'pats', 'PAT', 'PATS']
+    aliases: [
+        'pats', 'Pats', 'PATS',
+        'tap', 'Tap', 'TAP',
+        'taps', 'Taps', 'TAPS',
+        'Pat', 'PAT'
+    ]
+});
+
 // ========================== Quote Command ===================================================== //
 bot.registerCommand('quote', (msg, args) => {
     ioTools.readFile('Quotes.txt', (content) => {
@@ -508,7 +535,7 @@ bot.registerCommand('bite', (msg, args) => {
         ioTools.incrementCommandUse('bite');
     });
 }, {
-    aliases: ['Bite', 'BITE'],
+    aliases: ['Bite', 'BITE', 'bites', 'Bites', 'BITES'],
     description: '',
     fullDescription: ''
 });

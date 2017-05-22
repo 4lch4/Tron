@@ -66,16 +66,30 @@ class Reactions {
         this.options = options || {};
     }
 
-    pickKissImage(callback) {
+    pickKissImage(callback, imgIndex) {
+        console.log('imgIndex =');
+        console.log(imgIndex);
+        // If images aren't already stored, pull them from storage
         if (kissImages.length == 0) {
             ioTools.getImages('kiss', (images) => {
-                let random = tools.getRandom(0, images.length);
-
+                // Add the images retrieved from storage to the kissImages array
                 kissImages = kissImages.concat(images);
 
-                callback(kissImages[random]);
-            })
+                // If the imgIndex is smaller than the array length, return that specific image
+                if (imgIndex < kissImages.length) {
+                    callback(kissImages[imgIndex]);
+                } else {
+                    // If imgIndex is too large or undefined, return a random image
+                    let random = tools.getRandom(0, kissImages.length);
+
+                    callback(kissImages[random]);
+                }
+            });
+        } else if (imgIndex < kissImages.length) {
+            // If the imgIndex is smaller than the array length, return that specific image
+            callback(kissImages[imgIndex]);
         } else {
+            // If imgIndex is too large or undefined, return a random image
             let random = tools.getRandom(0, kissImages.length);
 
             callback(kissImages[random]);
