@@ -251,7 +251,7 @@ bot.registerCommand('kiss', (msg, args) => {
 
 // ========================== Pat Command ======================================================= //
 bot.registerCommand('pat', (msg, args) => {
-    if (msg.mentions.length == 1) {
+    if (args.length == 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickPatImage((img) => {
             let user = msg.mentions[0].username;
             let message = "**" + user + "**, you got a pat from **" + msg.author.username + "**.";
@@ -260,10 +260,20 @@ bot.registerCommand('pat', (msg, args) => {
                 file: img,
                 name: 'Pat.gif'
             });
+        }, args[0]);
+    } else {
+        reactions.pickPatImage((img) => {
+            let user = msg.mentions[0].username;
+            let message = "**" + user + "**, you got a pat from **" + msg.author.username + "**.";
 
-            ioTools.incrementCommandUse('pat');
+            bot.createMessage(msg.channel.id, message, {
+                file: img,
+                name: 'Pat.gif'
+            });
         });
     }
+
+    ioTools.incrementCommandUse('pat');
 }, {
     aliases: [
         'pats', 'Pats', 'PATS',

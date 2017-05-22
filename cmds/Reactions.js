@@ -177,15 +177,24 @@ class Reactions {
         }
     }
 
-    pickPatImage(callback) {
+    pickPatImage(callback, imgIndex) {
+        console.log('imgIndex =');
+        console.log(imgIndex);
         if (patImages.length == 0) {
             ioTools.getImages('pat', (images) => {
-                let random = tools.getRandom(0, images.length);
 
                 patImages = patImages.concat(images);
 
-                callback(patImages[random]);
-            })
+                if (imgIndex < patImages.length) {
+                    callback(patImages[imgIndex]);
+                } else {
+                    let random = tools.getRandom(0, patImages.length);
+
+                    callback(patImages[random]);
+                }
+            });
+        } else if (imgIndex < patImages.length) {
+            callback(patImages[imgIndex]);
         } else {
             let random = tools.getRandom(0, patImages.length);
 
