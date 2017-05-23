@@ -161,21 +161,31 @@ class Reactions {
         }
     }
 
-    pickKillImage(callback) {
+    pickKillImage(callback, imgIndex) {
+        console.log('imgIndex =');
+        console.log(imgIndex);
         if (killImages.length == 0) {
             ioTools.getImages('kill', (images) => {
-                let random = tools.getRandom(0, images.length);
 
                 killImages = killImages.concat(images);
 
-                callback(killImages[random]);
-            })
+                if (imgIndex < killImages.length) {
+                    callback(killImages[imgIndex]);
+                } else {
+                    let random = tools.getRandom(0, killImages.length);
+
+                    callback(killImages[random]);
+                }
+            });
+        } else if (imgIndex < killImages.length) {
+            callback(killImages[imgIndex]);
         } else {
             let random = tools.getRandom(0, killImages.length);
 
-            callback(killImages[random]);
+            callback(killimages[random]);
         }
     }
+
 
     pickPatImage(callback, imgIndex) {
         console.log('imgIndex =');

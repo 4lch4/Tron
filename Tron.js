@@ -298,17 +298,29 @@ bot.registerCommand('quote', (msg, args) => {
 
 // ========================== Kill Command ====================================================== //
 bot.registerCommand('kill', (msg, args) => {
-    reactions.pickKillImage((img) => {
-        let user = msg.mentions[0].username;
-        let message = "**" + user + "**, you've been killed by **" + msg.author.username + "**. :knife:";
+    if (args.length == 2 && !isNaN(parseInt(args[0]))) {
+        reactions.pickKillImage((img) => {
+            let user = msg.mentions[0].username;
+            let message = "**" + user + "**, you've been killed by **" + msg.author.username + "**. :knife:";
 
-        bot.createMessage(msg.channel.id, message, {
-            file: img,
-            name: 'Kill.gif'
+            bot.createMessage(msg.channel.id, message, {
+                file: img,
+                name: 'Kill.gif'
+            });
+        }, args[0]);
+    } else {
+        reactions.pickKillImage((img) => {
+            let user = msg.mentions[0].username;
+            let message = "**" + user + "**, you've been killed by **" + msg.author.username + "**. :knife:";
+
+            bot.createMessage(msg.channel.id, message, {
+                file: img,
+                name: 'Kill.gif'
+            });
         });
+    }
 
-        ioTools.incrementCommandUse('kill');
-    });
+    ioTools.incrementCommandUse('kill');
 }, {
     aliases: ['Kill', 'KILL'],
     description: 'Displays a random killing gif.',

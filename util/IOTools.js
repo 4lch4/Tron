@@ -31,14 +31,14 @@ class IOTools {
     }
 
     incrementCommandUse(commandName) {
-        let queryString = "UPDATE commands SET `COMMAND_USE_COUNT` = `COMMAND_USE_COUNT` + 1 WHERE `COMMAND_NAME` = '" + commandName + "'";
+        let queryString = "UPDATE COMMANDS SET `COMMAND_USE_COUNT` = `COMMAND_USE_COUNT` + 1 WHERE `COMMAND_NAME` = '" + commandName + "'";
         connection.query(queryString, (err, res, fields) => {
             if (err) throw err;
         });
     }
 
     getAllCommandUsage(callback) {
-        let queryString = "SELECT * FROM commands ORDER BY COMMAND_USE_COUNT DESC;";
+        let queryString = "SELECT * FROM COMMANDS ORDER BY COMMAND_USE_COUNT DESC;";
 
         connection.query(queryString, (err, res, fields) => {
             if (err) throw err;
@@ -48,7 +48,7 @@ class IOTools {
     };
 
     getCommandUsage(command, callback) {
-        let queryString = "SELECT * FROM commands WHERE `COMMAND_NAME` = '" + command + "';";
+        let queryString = "SELECT * FROM COMMANDS WHERE `COMMAND_NAME` = '" + command + "';";
 
         connection.query(queryString, (err, res, fields) => {
             if (err) throw err;
