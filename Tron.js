@@ -344,15 +344,26 @@ bot.registerCommand('confused', (msg, args) => {
 
 // ========================== Pout Command ====================================================== //
 bot.registerCommand('pout', (msg, args) => {
-    reactions.pickPoutImage((img) => {
-        bot.createMessage(msg.channel.id, '', {
-            file: img,
-            name: 'Pout.gif'
+    if (args.length == 1 && !isNaN(parseInt(args[0]))) {
+        reactions.pickPoutImage((img) => {
+                bot.createMessage(msg.channel.id, '', {
+                    file: img,
+                    name: 'Pout.gif'
+                });
+            },
+            args[0])
+    } else {
+        reactions.pickPoutImage((img) => {
+
+            bot.createMessage(msg.channel.id, '', {
+                file: img,
+                name: 'Pout.gif'
+            });
+
+            ioTools.incrementCommandUse('pout');
+
         });
-
-        ioTools.incrementCommandUse('pout');
-
-    });
+    };
 }, {
     aliases: ['Pout', 'pout', 'POUT']
 });
