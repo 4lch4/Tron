@@ -310,23 +310,6 @@ marry.registerSubcommand('list', (msg, args) => {
     aliases: ['List', 'List', 'lists', 'Lists', 'LIST', 'fuckbook']
 });
 
-function formatProposals(proposals, callback) {
-    let processed = 0;
-    let message = "```";
-
-    proposals.forEach((proposal, index, array) => {
-        message += "(" + processed + ") " + proposal.PROPOSER_USERNAME + "\n";
-
-        processed++;
-
-        if (processed == proposals.length) {
-            message += "```";
-            callback(message);
-        }
-    });
-
-}
-
 marry.registerSubcommand('accept', (msg, args) => {
     marriage.getProposals(msg.author.id, (results) => {
         if (results != null && results.length > 1) {
@@ -375,7 +358,7 @@ marry.registerSubcommand('deny', (msg, args) => {
     marriage.getProposals(msg.author.id, (results) => {
         if (results != null && results.length > 1) {
             if (args.length == 0) {
-                formatProposals(results, (formattedMsg) => {
+                marriage.formatProposals(results, (formattedMsg) => {
                     formattedMsg = "You currently have " + results.length + " proposals, please indicate which one you wish to deny (e.g. +marry deny 1):\n\n" + formattedMsg;
                     bot.create(msg.channel.id, formattedMsg);
                 });

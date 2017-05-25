@@ -191,6 +191,22 @@ class Marriage {
         }
     }
 
+    formatProposals(proposals, callback) {
+        let processed = 0;
+        let message = "```";
+
+        proposals.forEach((proposal, index, array) => {
+            message += "(" + processed + ") " + proposal.PROPOSER_USERNAME + "\n";
+
+            processed++;
+
+            if (processed == proposals.length) {
+                message += "```";
+                callback(message);
+            }
+        });
+    }
+
     alertUsers(channelId, mentions, bot) {
         this.convertMentions(mentions, (content) => {
             bot.createMessage(channelId, content + "\n\n" +
