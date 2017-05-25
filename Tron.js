@@ -151,7 +151,6 @@ bot.registerCommand('invite', (msg, args) => {
                     }
 
                     if (username == comparison) {
-                        console.log('Match found = ' + username);
                         msg.channel.editPermission(value.user.id, 1024, null, 'member');
                     }
                 }
@@ -247,7 +246,7 @@ bot.registerCommand('pat', (msg, args) => {
     ]
 });
 
-// ========================== Marry Command (requested by Prim) ================================= //
+// ========================== Marriage Commands (requested by Prim) ============================= //
 let marry = bot.registerCommand('marry', (msg, args) => {
     // Verify at least one user was mentioned
     if (msg.mentions.length > 0) {
@@ -307,6 +306,8 @@ marry.registerSubcommand('list', (msg, args) => {
 
         bot.createMessage(msg.channel.id, message);
     })
+}, {
+    aliases: ['List', 'List', 'lists', 'Lists', 'LIST', 'fuckbook']
 });
 
 function formatProposals(proposals, callback) {
@@ -816,14 +817,11 @@ bot.registerCommand('addr', (msg, args) => {
         if (tools.memberIsMod(msg)) {
             let comparison = tools.concatArgs(args);
 
-            console.log("comparison = " + comparison);
-
             let roles = msg.channel.guild.roles;
 
             roles.forEach((value, key, mapObj) => {
                 if (value.name != null) {
                     let name = value.name.toLowerCase();
-                    console.log("Name = " + name + "; Comparison = " + comparison + ";");
 
                     if (name == comparison) {
                         roleNames.push(value.name);
@@ -860,7 +858,6 @@ bot.registerCommand('avatar', (msg, args) => {
             dest: "/root/tron/images/avatar/" + origFilename
         }], (filenames) => {
             filenames.forEach((filename, key, array) => {
-                console.log(filename);
                 ioTools.getImage(filename, (image) => {
                     bot.createMessage(msg.channel.id, "", {
                         file: image,

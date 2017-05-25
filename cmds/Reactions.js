@@ -67,8 +67,6 @@ class Reactions {
     }
 
     pickKissImage(callback, imgIndex) {
-        console.log('imgIndex =');
-        console.log(imgIndex);
         // If images aren't already stored, pull them from storage
         if (kissImages.length == 0) {
             ioTools.getImages('kiss', (images) => {
@@ -113,21 +111,19 @@ class Reactions {
     }
 
     pickPoutImage(callback, imgIndex) {
-        console.log('imgIndex =');
-        console.log(imgIndex);
         if (poutImages.length == 0) {
             ioTools.getImages('pout', (images) => {
 
                 poutImages = poutImages.concat(images);
 
-            if (imgIndex < poutImages.length) {
-                callback(poutImages[imgIndex]);
-            } else {
-                let random = tools.getRandom(0, poutImages.length);
+                if (imgIndex < poutImages.length) {
+                    callback(poutImages[imgIndex]);
+                } else {
+                    let random = tools.getRandom(0, poutImages.length);
 
-                callback(poutImages[random]);
-            }
-        });
+                    callback(poutImages[random]);
+                }
+            });
         } else if (imgIndex < poutImages.length) {
             callback(poutImages[imgIndex]);
         } else {
@@ -171,8 +167,6 @@ class Reactions {
     }
 
     pickKillImage(callback, imgIndex) {
-        console.log('imgIndex =');
-        console.log(imgIndex);
         if (killImages.length == 0) {
             ioTools.getImages('kill', (images) => {
 
@@ -191,14 +185,12 @@ class Reactions {
         } else {
             let random = tools.getRandom(0, killImages.length);
 
-            callback(killimages[random]);
+            callback(killImages[random]);
         }
     }
 
 
     pickPatImage(callback, imgIndex) {
-        console.log('imgIndex =');
-        console.log(imgIndex);
         if (patImages.length == 0) {
             ioTools.getImages('pat', (images) => {
 

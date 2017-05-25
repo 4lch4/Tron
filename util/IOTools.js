@@ -199,8 +199,6 @@ class IOTools {
         fs.writeFile(filename, content, (err) => {
             if (err) return console.log(err);
 
-            console.log('File saved!');
-
             if (callback != undefined) {
                 callback();
             }

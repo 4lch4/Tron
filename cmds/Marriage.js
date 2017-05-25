@@ -38,8 +38,6 @@ class Marriage {
         ioTools.executeSql(sqlQuery, (results) => {
             if (callback != null) {
                 callback(results);
-            } else {
-                console.log("No callback was provided for addProposal!");
             }
         });
     }
@@ -60,8 +58,6 @@ class Marriage {
         ioTools.executeSql(sqlQuery, (results) => {
             if (callback != null) {
                 callback(results);
-            } else {
-                console.log("No callback was provided for removeProposal!");
             }
         });
     }
@@ -80,15 +76,12 @@ class Marriage {
         ioTools.executeSql(sqlQuery, (results) => {
             if (callback != null) {
                 callback(results);
-            } else {
-                console.log("No callback was provided for removeProposal!");
             }
         });
     }
 
     acceptProposal(proposer, proposee, callback) {
         let sqlQuery = "SELECT * FROM PROPOSALS WHERE PROPOSER_ID = " + proposer.id + " && PROPOSEE_ID = " + proposee.id + ";";
-        console.log('sqlQuery = ' + sqlQuery);
 
         ioTools.executeSql(sqlQuery, (results) => {
             if (results != null && results.length == 1) {
@@ -117,8 +110,6 @@ class Marriage {
         ioTools.executeSql(sqlQuery, (results) => {
             if (callback != null) {
                 callback(results);
-            } else {
-                console.log("No callback was provided for addMarriage!");
             }
         });
     }
@@ -139,8 +130,6 @@ class Marriage {
         ioTools.executeSql(sqlQuery, (results) => {
             if (callback != null) {
                 callback(results);
-            } else {
-                console.log("No callback was provided for removeMarriage!");
             }
         });
     }
@@ -159,8 +148,6 @@ class Marriage {
         ioTools.executeSql(sqlQuery, (results) => {
             if (callback != null) {
                 callback(results);
-            } else {
-                console.log("No callback was provided for getMarriages!");
             }
         });
     }
@@ -187,8 +174,6 @@ class Marriage {
 
             let sqlQuery = "SELECT * FROM MARRIAGES WHERE (SPOUSE_A_ID = " + userId1 + " AND SPOUSE_B_ID = " + userId2 + ") OR (SPOUSE_A_ID = " + userId2 + " AND SPOUSE_B_ID = " + userId1 + ") UNION " +
                 "SELECT * FROM PROPOSALS WHERE PROPOSER_ID = " + userId1 + " AND PROPOSEE_ID = " + userId2;
-
-            console.log('sqlQuery = ' + sqlQuery);
 
             ioTools.executeSql(sqlQuery, (results) => {
                 if (results != null && results.length > 0) {
