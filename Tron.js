@@ -659,7 +659,7 @@ bot.registerCommand('rekt', (msg, args) => {
 // ========================== Trump Commands ==================================================== //
 let trumpCmd = bot.registerCommand('trump', (msg, args) => {
     if (args.length === 0) {
-        return "Invalid input, arguments required.";
+        return "Invalid input, arguments required. Try `+trump fake` or `+trump wrong`.";
     }
 }, {
     aliases: ['Trump', 'TRUMP']
