@@ -452,7 +452,6 @@ bot.registerCommand('confused', (msg, args) => {
         });
 
         ioTools.incrementCommandUse('confused');
-
     });
 }, {
     aliases: ['Confused', 'confused', 'CONFUSED']
@@ -853,7 +852,7 @@ bot.registerCommand('listr', (msg, args) => {
 // ========================== Avatar Command (requested by Battsie) ============================= //
 bot.registerCommand('avatar', (msg, args) => {
     if (msg.mentions.length == 1) {
-        let url = msg.mentions[0].dynamicAvatarURL(null, 512);
+        let url = msg.mentions[0].dynamicAvatarURL(null, 1024);
         let origFilename = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("?"));
 
         ioTools.downloadFiles([{

@@ -185,17 +185,13 @@ class Marriage {
             let userId1 = msg.author.id;
             let userId2 = msg.mentions[x].id;
 
-            let proposalQuery = "SELECT * FROM PROPOSALS WHERE PROPOSER_ID = " + userId1 +
-                " && PROPOSEE_ID = " + userId2 + ";";
-            //SELECT * FROM MARRIAGES WHERE (SPOUSE_A_ID = 219270060936527873 AND SPOUSE_B_ID = 317247575428169732) OR (SPOUSE_A_ID = 317247575428169732 AND SPOUSE_B_ID = 219270060936527873);
-            let marriagesQuery = "SELECT * FROM MARRIAGES WHERE (SPOUSE_A_ID = " + userId1 + " AND SPOUSE_B_ID = " + userId2 + ") OR (SPOUSE_A_ID = " + userId2 + " AND SPOUSE_B_ID = " + userId1 + ")";
+            let sqlQuery = "SELECT * FROM MARRIAGES WHERE (SPOUSE_A_ID = " + userId1 + " AND SPOUSE_B_ID = " + userId2 + ") OR (SPOUSE_A_ID = " + userId2 + " AND SPOUSE_B_ID = " + userId1 + ") UNION " +
+                "SELECT * FROM PROPOSALS WHERE PROPOSER_ID = " + userId1 + " AND PROPOSEE_ID = " + userId2;
 
-            ioTools.executeSql(marriagesQuery, (results) => {
+            console.log('sqlQuery = ' + sqlQuery);
+
+            ioTools.executeSql(sqlQuery, (results) => {
                 if (results != null && results.length > 0) {
-                    if (cleanUsers.includes(msg.mentions[x])) {
-                        cleanUsers.splice(cleanUsers.indexOf(msg.mentions[x]), 1);
-                    }
-
                     allVerified = false;
                 } else if (!cleanUsers.includes(msg.mentions[x])) {
                     cleanUsers.push(msg.mentions[x]);
@@ -203,25 +199,7 @@ class Marriage {
 
                 processed++;
 
-                if (processed == msg.mentions.length * 2) {
-                    callback(cleanUsers, allVerified);
-                }
-            })
-
-            ioTools.executeSql(proposalQuery, (results) => {
-                if (results != null && results.length > 0) {
-                    if (cleanUsers.includes(msg.mentions[x])) {
-                        cleanUsers.splice(cleanUsers.indexOf(msg.mentions[x]), 1);
-                    }
-
-                    allVerified = false;
-                } else if (!cleanUsers.includes(msg.mentions[x])) {
-                    cleanUsers.push(msg.mentions[x]);
-                }
-
-                processed++;
-
-                if (processed == msg.mentions.length * 2) {
+                if (processed == msg.mentions.length) {
                     callback(cleanUsers, allVerified);
                 }
             });
