@@ -1,5 +1,6 @@
 "use strict"
 
+const download = require('image-downloader');
 const config = require('./config.json');
 const Tools = require('./Tools.js');
 const tools = new Tools();
@@ -36,6 +37,58 @@ class IOTools {
         });
     }
 
+    downloadFiles(options, callback) {
+        let processCount = 0;
+        let filenames = [];
+
+        options.forEach((option, key, array) => {
+            if (!fs.existsSync(option.dest)) {
+                download.image(option).then(({
+                    filename,
+                    image
+                }) => {
+                    processCount++;
+                    filenames.push(filename);
+
+                    if (processCount == array.length) {
+                        callback(filenames);
+                    }
+                });
+            } else {
+                processCount++;
+                filenames.push(option.dest);
+
+                if (processCount == array.length) {
+                    callback(filenames);
+                }
+            }
+        });
+    }
+
+    processUrls(urls, callback) {
+        let options = [];
+
+        for (let i = 0; i < urls.length; i++) {
+            let url = urls[i];
+            let start = url.lastIndexOf('/') + 1;
+            let end = url.lastIndexOf('?');
+            let filename = '';
+
+            if (end == -1) {
+                filename = url.substring(start);
+            } else {
+                filename = url.substring(start, end);
+            }
+
+            options.push({
+                url: url,
+                dest: '/root/tron/images/' + filename
+            });
+        }
+
+        callback(options);
+    }
+
     fileExists(filename) {
         return fs.existsSync(filename);
     }
@@ -68,7 +121,9 @@ class IOTools {
     }
 
     getImage(path, onComplete) {
-        path = "/root/tron/images/" + path;
+        if (!path.startsWith("/root/tron")) {
+            path = "/root/tron/images/" + path;
+        }
 
         fs.readFile(path, (filename, content) => {
             onComplete(content);

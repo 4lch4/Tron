@@ -862,6 +862,33 @@ bot.registerCommand('listr', (msg, args) => {
     fullDescription: 'Lists the roles that have been added by an administrator that are available.'
 });
 
+// ========================== Avatar Command (requested by Battsie) ============================= //
+bot.registerCommand('avatar', (msg, args) => {
+    if (msg.mentions.length == 1) {
+        let url = msg.mentions[0].dynamicAvatarURL(null, 512);
+        let origFilename = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("?"));
+
+        ioTools.downloadFiles([{
+            url: url,
+            dest: "/root/tron/images/avatar/" + origFilename
+        }], (filenames) => {
+            filenames.forEach((filename, key, array) => {
+                console.log(filename);
+                ioTools.getImage(filename, (image) => {
+                    bot.createMessage(msg.channel.id, "", {
+                        file: image,
+                        name: origFilename
+                    });
+                });
+            });
+        });
+    } else {
+        return "Please only mention one user at a time.";
+    }
+}, {
+    aliases: ['Avatar', 'AVATAR', 'Profile', 'profile', 'PROFILE']
+});
+
 // ========================== Ship Command ====================================================== //
 bot.registerCommand('ship', (msg, args) => {
     if (msg.channel.guild != undefined && msg.mentions.length == 2) {
