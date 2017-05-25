@@ -666,7 +666,7 @@ let trumpCmd = bot.registerCommand('trump', (msg, args) => {
 });
 
 trumpCmd.registerSubcommand('fake', (msg, args) => {
-    ioTools.getImage('/trump/Fake.gif', (img) => {
+    ioTools.getImage('/trump/fake.gif', (img) => {
         bot.createMessage(msg.channel.id, '', {
             file: img,
             name: 'Fake.gif'
@@ -681,7 +681,7 @@ trumpCmd.registerSubcommand('fake', (msg, args) => {
 });
 
 trumpCmd.registerSubcommand('wrong', (msg, args) => {
-    ioTools.getImage('/trump/Wrong.gif', (img) => {
+    ioTools.getImage('/trump/wrong.gif', (img) => {
         bot.createMessage(msg.channel.id, '', {
             file: img,
             name: 'Wrong.gif'
