@@ -1,5 +1,6 @@
 "use strict"
 
+const download = require('image-downloader');
 const config = require('./config.json');
 const Tools = require('./Tools.js');
 const tools = new Tools();
@@ -20,10 +21,72 @@ class IOTools {
         this.options = options || {};
     }
 
+    executeSql(sql, callback) {
+        connection.query(sql, (err, results, fields) => {
+            if (err) throw err;
+
+            if (callback != null) {
+                callback(results, fields);
+            }
+        });
+    }
+
     readFile(path, callback) {
         fs.readFile(path, "utf-8", (filename, content) => {
             callback(content);
         });
+    }
+
+    downloadFiles(options, callback) {
+        let processCount = 0;
+        let filenames = [];
+
+        options.forEach((option, key, array) => {
+            if (!fs.existsSync(option.dest)) {
+                download.image(option).then(({
+                    filename,
+                    image
+                }) => {
+                    processCount++;
+                    filenames.push(filename);
+
+                    if (processCount == array.length) {
+                        callback(filenames);
+                    }
+                });
+            } else {
+                processCount++;
+                filenames.push(option.dest);
+
+                if (processCount == array.length) {
+                    callback(filenames);
+                }
+            }
+        });
+    }
+
+    processUrls(urls, callback) {
+        let options = [];
+
+        for (let i = 0; i < urls.length; i++) {
+            let url = urls[i];
+            let start = url.lastIndexOf('/') + 1;
+            let end = url.lastIndexOf('?');
+            let filename = '';
+
+            if (end == -1) {
+                filename = url.substring(start);
+            } else {
+                filename = url.substring(start, end);
+            }
+
+            options.push({
+                url: url,
+                dest: '/root/tron/images/' + filename
+            });
+        }
+
+        callback(options);
     }
 
     fileExists(filename) {
@@ -32,7 +95,7 @@ class IOTools {
 
     incrementCommandUse(commandName) {
         let queryString = "UPDATE COMMANDS SET `COMMAND_USE_COUNT` = `COMMAND_USE_COUNT` + 1 WHERE `COMMAND_NAME` = '" + commandName + "'";
-        connection.query(queryString, (err, res, fields) => {
+        connection.query(queryString, (err, results, fields) => {
             if (err) throw err;
         });
     }
@@ -40,25 +103,27 @@ class IOTools {
     getAllCommandUsage(callback) {
         let queryString = "SELECT * FROM COMMANDS ORDER BY COMMAND_USE_COUNT DESC;";
 
-        connection.query(queryString, (err, res, fields) => {
+        connection.query(queryString, (err, results, fields) => {
             if (err) throw err;
 
-            callback(res);
+            callback(results);
         });
     };
 
     getCommandUsage(command, callback) {
         let queryString = "SELECT * FROM COMMANDS WHERE `COMMAND_NAME` = '" + command + "';";
 
-        connection.query(queryString, (err, res, fields) => {
+        connection.query(queryString, (err, results, fields) => {
             if (err) throw err;
 
-            callback(res);
+            callback(results);
         });
     }
 
     getImage(path, onComplete) {
-        path = "/root/tron/images/" + path;
+        if (!path.startsWith("/root/tron")) {
+            path = "/root/tron/images/" + path;
+        }
 
         fs.readFile(path, (filename, content) => {
             onComplete(content);

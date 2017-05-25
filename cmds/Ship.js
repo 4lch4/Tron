@@ -16,15 +16,15 @@ class Ship {
 
     /**
      * Parses the given URLs and returns an array of Canvas.Image objects.
-     * 
-     * @param {string[]} urls 
+     *
+     * @param {string[]} urls
      * @param {(Image[])} callback
      */
     getShipImages(urls, callback) {
         this.getPngUrls(urls, (pngUrls) => {
             this.processUrls(pngUrls, (options) => {
                 this.downloadImages(options, (filenames) => {
-                    filenames.splice(1, 0, "./images/ship/heart.png");
+                    filenames.splice(1, 0, "/root/tron/images/ship/heart.png");
                     let imagesProcessed = 0;
                     let images = [];
 
@@ -89,7 +89,7 @@ class Ship {
 
             options.push({
                 url: url,
-                dest: './images/ship/' + filename
+                dest: '/root/tron/images/ship/' + filename
             });
         }
 

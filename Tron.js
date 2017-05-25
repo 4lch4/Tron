@@ -1,39 +1,12 @@
-// ============================================================================================== //
-/**
- *  TODO: Add handlers for the following events:
- *  CHANNEL_UPDATE
- *  GUILD_CREATE
- *  GUILD_DELETE
- *  GUILD_MEMBER_ADD
- *  GUILD_MEMBER_REMOVE
- *  GUILD_MEMBER_UPDATE
- *  GUILD_ROLE_CREATE
- *  GUILD_ROLE_DELETE
- *  GUILD_ROLE_UPDATE
- *  GUILD_UPDATE
- *  MESSAGE_CREATE
- *  MESSAGE_DELETE
- *  MESSAGE_DELETE_BULK
- *  MESSAGE_UPDATE
- *  PRESENCE_UPDATE
- *  TYPING_START
- *  USER_UPDATE
- *  VOICE_STATE_UPDATE
- */
-// ============================================================================================== //
 "use strict"
 
 const INVALID_INPUT = "Invalid input, please make sure to mention a user.";
 // ============================================================================================== //
 const config = require('./util/config.json');
 const IOTools = require('./util/IOTools.js');
-const moment = require('moment-timezone');
 const Tools = require('./util/Tools.js');
 const info = require('./package.json');
-const readline = require('readline');
 const Canvas = require("canvas");
-const _ = require('lodash');
-const Image = Canvas.Image;
 
 const ioTools = new IOTools();
 const tools = new Tools();
@@ -54,6 +27,9 @@ const ship = new Ship();
 
 const Reactions = require('./cmds/Reactions.js');
 const reactions = new Reactions();
+
+const Marriage = require('./cmds/Marriage.js');
+const marriage = new Marriage();
 
 // ========================== RSS Reader ======================================================== //
 const RSSReader = require('./util/RSSReader.js');
@@ -201,10 +177,10 @@ bot.registerCommand('ping', (msg, args) => {
 // ========================== Kiss Command ====================================================== //
 bot.registerCommand('kiss', (msg, args) => {
     /**
-     * First, we verify the args.length is equal to (==) 2, this means we've been given two 
+     * First, we verify the args.length is equal to (==) 2, this means we've been given two
      * arguments. We make sure the first one is an actual number by using isNaN, which stands for
      * isNotANumber. To do this, we have to parse the number with parseInt. So what this does is
-     * parse the value in args[0] (which should be a number), and then pass it to isNaN. If it 
+     * parse the value in args[0] (which should be a number), and then pass it to isNaN. If it
      * returns false, we know that it's a number. If it returns true, it's not a number, so just
      * return a random image, which is the else statement.
      */
@@ -269,6 +245,158 @@ bot.registerCommand('pat', (msg, args) => {
         'taps', 'Taps', 'TAPS',
         'Pat', 'PAT'
     ]
+});
+
+// ========================== Marry Command (requested by Prim) ================================= //
+let marry = bot.registerCommand('marry', (msg, args) => {
+    // Verify at least one user was mentioned
+    if (msg.mentions.length > 0) {
+        // Verify the first mentioned user wasn't the author to avoid trying to marry just yourself
+        if (msg.mentions[0].id == msg.author.id) {
+            bot.createMessage(msg.channel.id, "You can't marry yourself! What kind of a backwards country you think this is?");
+        } else {
+            // Pass mentioned users to verifyProposal to determine if a proposal is valid
+            marriage.verifyProposal(msg, (cleanUsers, allVerified) => {
+                // Let the validated users know they've been proposed to
+                marriage.alertUsers(msg.channel.id, cleanUsers, bot);
+
+                // Add a proposal to the database for each validated user
+                cleanUsers.forEach((mention, index, mentions) => {
+                    marriage.addProposal({
+                        id: msg.author.id,
+                        username: msg.author.username
+                    }, {
+                        id: mention.id,
+                        username: mention.username
+                    }, (results) => {
+                        if (results.message.length > 0) {
+                            bot.createMessage(msg.channel.id, results.message + " - _If this was an error, please contact the developer._")
+                        }
+                    });
+                });
+
+                // If one of the users weren't verified for some reason, let the proposer know
+                // TODO: Provide more information on which user wasn't verified and possibly why
+                if (allVerified == false) {
+                    bot.createMessage(msg.channel.id, "Unfortunately, one or more of the users you proposed to is already married to you or you have a pending proposal.");
+                }
+            });
+        }
+    } else {
+        bot.createMessage(msg.channel.id, "Please make sure to mention one or more users in order to use this command.");
+    }
+}, {
+    aliases: ['Marry', 'MARRY', 'Propose', 'propose', 'PROPOSE']
+});
+
+marry.registerSubcommand('list', (msg, args) => {
+    marriage.getMarriages(msg.author.id, (marriages) => {
+        let message = "";
+        if (marriages.length > 0) {
+            message = "You are currently married to:\n\n";
+            for (let x = 0; x < marriages.length; x++) {
+                if (marriages[x].SPOUSE_A_ID != msg.author.id) {
+                    message += "- **" + marriages[x].SPOUSE_A_USERNAME + "** since " + marriages[x].MARRIAGE_DATE + "\n"
+                } else if (marriages[x].SPOUSE_B_ID != msg.author.id) {
+                    message += "- **" + marriages[x].SPOUSE_B_USERNAME + "** since " + marriages[x].MARRIAGE_DATE + "\n"
+                }
+            }
+        } else {
+            message = "Unfortunately, you're not currently married to anyone. :cry:"
+        }
+
+        bot.createMessage(msg.channel.id, message);
+    })
+});
+
+function formatProposals(proposals, callback) {
+    let processed = 0;
+    let message = "```";
+
+    proposals.forEach((proposal, index, array) => {
+        message += "(" + processed + ") " + proposal.PROPOSER_USERNAME + "\n";
+
+        processed++;
+
+        if (processed == proposals.length) {
+            message += "```";
+            callback(message);
+        }
+    });
+
+}
+
+marry.registerSubcommand('accept', (msg, args) => {
+    marriage.getProposals(msg.author.id, (results) => {
+        if (results != null && results.length > 1) {
+            if (args.length == 0) {
+                formatProposals(results, (formattedMsg) => {
+                    formattedMsg = "You currently have " + results.length + " proposals, please indicate which one you wish to accept (e.g. +marry accept 1):\n\n" + formattedMsg;
+
+                    bot.createMessage(msg.channel.id, formattedMsg);
+                });
+            } else if (args.length == 1) {
+                if (!isNaN(args[0])) {
+                    marriage.acceptProposal({
+                        id: results[args[0]].PROPOSER_ID,
+                        username: results[args[0]].PROPOSER_USERNAME
+                    }, {
+                        id: msg.author.id,
+                        username: msg.author.username
+                    }, (success) => {
+                        if (success) {
+                            bot.createMessage(msg.channel.id, "Congratulations, you're now married to <@" + results[args[0]].PROPOSER_ID + ">");
+                        }
+                    });
+                }
+            }
+        } else if (results.length == 1) {
+            marriage.acceptProposal({
+                id: results[0].PROPOSER_ID,
+                username: results[0].PROPOSER_USERNAME
+            }, {
+                id: msg.author.id,
+                username: msg.author.username
+            }, (success) => {
+                if (success) {
+                    bot.createMessage(msg.channel.id, "Congratulations, you're now married to <@" + results[0].PROPOSER_ID + ">");
+                }
+            });
+        } else {
+            bot.createMessage(msg.channel.id, "Unfortunately, it appears you don't have any pending proposals. :slight_frown:");
+        }
+    });
+}, {
+    aliases: ['Accept', 'ACCEPT']
+});
+
+marry.registerSubcommand('deny', (msg, args) => {
+    marriage.getProposals(msg.author.id, (results) => {
+        if (results != null && results.length > 1) {
+            if (args.length == 0) {
+                formatProposals(results, (formattedMsg) => {
+                    formattedMsg = "You currently have " + results.length + " proposals, please indicate which one you wish to deny (e.g. +marry deny 1):\n\n" + formattedMsg;
+                    bot.create(msg.channel.id, formattedMsg);
+                });
+            } else if (args.length == 1) {
+                marriage.removeProposal(results[args[0]].id, msg.author.id, (results) => {
+                    if (results.message.length == 0) {
+                        bot.createMessage(msg.channel.id, "Aww, you've successfully denied the proposal.");
+                    }
+                });
+            }
+        } else if (results.length == 1) {
+            marriage.removeProposal(results[0].PROPOSER_ID, msg.author.id, (results) => {
+                if (results.message.length == 0) {
+                    bot.createMessage(msg.channel.id, "Aww, you've successfully denied the proposal.");
+                }
+            });
+        } else {
+            bot.createMessage(msg.channel.id, "It appears you don't have any pending proposals, please try again later.");
+        }
+    });
+}, {
+    aliases: ['Deny', 'DENY', 'reject', 'Reject', 'REJECT']
 });
 
 // ========================== Quote Command ===================================================== //
@@ -647,14 +775,14 @@ bot.registerCommand('rekt', (msg, args) => {
 // ========================== Trump Commands ==================================================== //
 let trumpCmd = bot.registerCommand('trump', (msg, args) => {
     if (args.length === 0) {
-        return "Invalid input, arguments required.";
+        return "Invalid input, arguments required. Try `+trump fake` or `+trump wrong`.";
     }
 }, {
     aliases: ['Trump', 'TRUMP']
 });
 
 trumpCmd.registerSubcommand('fake', (msg, args) => {
-    ioTools.getImage('/trump/Fake.gif', (img) => {
+    ioTools.getImage('/trump/fake.gif', (img) => {
         bot.createMessage(msg.channel.id, '', {
             file: img,
             name: 'Fake.gif'
@@ -669,7 +797,7 @@ trumpCmd.registerSubcommand('fake', (msg, args) => {
 });
 
 trumpCmd.registerSubcommand('wrong', (msg, args) => {
-    ioTools.getImage('/trump/Wrong.gif', (img) => {
+    ioTools.getImage('/trump/wrong.gif', (img) => {
         bot.createMessage(msg.channel.id, '', {
             file: img,
             name: 'Wrong.gif'
@@ -720,6 +848,33 @@ bot.registerCommand('listr', (msg, args) => {
 }, {
     description: 'List roles that are available to join.',
     fullDescription: 'Lists the roles that have been added by an administrator that are available.'
+});
+
+// ========================== Avatar Command (requested by Battsie) ============================= //
+bot.registerCommand('avatar', (msg, args) => {
+    if (msg.mentions.length == 1) {
+        let url = msg.mentions[0].dynamicAvatarURL(null, 512);
+        let origFilename = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("?"));
+
+        ioTools.downloadFiles([{
+            url: url,
+            dest: "/root/tron/images/avatar/" + origFilename
+        }], (filenames) => {
+            filenames.forEach((filename, key, array) => {
+                console.log(filename);
+                ioTools.getImage(filename, (image) => {
+                    bot.createMessage(msg.channel.id, "", {
+                        file: image,
+                        name: origFilename
+                    });
+                });
+            });
+        });
+    } else {
+        return "Please only mention one user at a time.";
+    }
+}, {
+    aliases: ['Avatar', 'AVATAR', 'Profile', 'profile', 'PROFILE']
 });
 
 // ========================== Ship Command ====================================================== //

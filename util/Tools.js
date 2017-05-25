@@ -117,9 +117,9 @@ class Tools {
 
     /**
      * Returns a random integer between {min} and {max}, not including the max.
-     * 
-     * @param {*} min 
-     * @param {*} max 
+     *
+     * @param {*} min
+     * @param {*} max
      */
     getRandom(min, max) {
         return chance.integer({
