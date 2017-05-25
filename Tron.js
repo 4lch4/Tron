@@ -198,18 +198,6 @@ bot.registerCommand('ping', (msg, args) => {
     fullDescription: 'Used to check if the bot is up.'
 });
 
-// ========================== Kill Myself Command =============================================== //
-bot.registerCommand('kms', (msg, args) => {
-    reactions.pickKillMeImage((img) => {
-        bot.createMessage(msg.channel.id, '', {
-            file: img,
-            name: 'Kms.gif'
-        });
-
-        ioTools.incrementCommandUse('kms');
-    });
-});
-
 // ========================== Kiss Command ====================================================== //
 bot.registerCommand('kiss', (msg, args) => {
     /**
@@ -412,7 +400,7 @@ bot.registerCommand('killme', (msg, args) => {
 
     ioTools.incrementCommandUse('killme');
 }, {
-    aliases: ['Killme', 'KILLME', 'KillMe']
+    aliases: ['Killme', 'KILLME', 'KillMe', 'kms']
 });
 
 // ========================== Rate Waifu Command (Requested by Bella and Kayla) ================= //
