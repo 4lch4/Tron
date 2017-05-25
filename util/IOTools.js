@@ -20,6 +20,16 @@ class IOTools {
         this.options = options || {};
     }
 
+    executeSql(sql, callback) {
+        connection.query(sql, (err, results, fields) => {
+            if (err) throw err;
+
+            if (callback != null) {
+                callback(results, fields);
+            }
+        });
+    }
+
     readFile(path, callback) {
         fs.readFile(path, "utf-8", (filename, content) => {
             callback(content);
@@ -32,7 +42,7 @@ class IOTools {
 
     incrementCommandUse(commandName) {
         let queryString = "UPDATE COMMANDS SET `COMMAND_USE_COUNT` = `COMMAND_USE_COUNT` + 1 WHERE `COMMAND_NAME` = '" + commandName + "'";
-        connection.query(queryString, (err, res, fields) => {
+        connection.query(queryString, (err, results, fields) => {
             if (err) throw err;
         });
     }
@@ -40,20 +50,20 @@ class IOTools {
     getAllCommandUsage(callback) {
         let queryString = "SELECT * FROM COMMANDS ORDER BY COMMAND_USE_COUNT DESC;";
 
-        connection.query(queryString, (err, res, fields) => {
+        connection.query(queryString, (err, results, fields) => {
             if (err) throw err;
 
-            callback(res);
+            callback(results);
         });
     };
 
     getCommandUsage(command, callback) {
         let queryString = "SELECT * FROM COMMANDS WHERE `COMMAND_NAME` = '" + command + "';";
 
-        connection.query(queryString, (err, res, fields) => {
+        connection.query(queryString, (err, results, fields) => {
             if (err) throw err;
 
-            callback(res);
+            callback(results);
         });
     }
 
