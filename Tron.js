@@ -599,7 +599,11 @@ bot.registerCommand('stats', (msg, args) => {
 
         });
     }
+
+    ioTools.incrementCommandUse('stats');
 }, {
+    aliases: ['stat'],
+    caseInsensitive: false,
     description: 'Display commands and how much list of use count',
     fullDescription: "Displays a list of available commands and how many times they've been used."
 });
