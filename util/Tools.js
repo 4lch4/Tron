@@ -122,10 +122,14 @@ class Tools {
      * @param {*} max
      */
     getRandom(min, max) {
-        return chance.integer({
-            min: min,
-            max: (max - 1)
-        });
+        if (min < max) {
+            return chance.integer({
+                min: min,
+                max: (max - 1)
+            });
+        } else {
+            return 0;
+        }
     }
 
     messageIs(msg, str) {
