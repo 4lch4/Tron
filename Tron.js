@@ -59,6 +59,14 @@ giveawayBot.login(config.token).then(() => {
     throw e;
 });
 
+bot.registerCommand('dreamy', (msg, args) => {
+    return "<@142410361247760384> :underage:"
+}, {
+    caseInsensitive: true,
+    description: 'A fun command for dreamy.',
+    guildOnly: true
+});
+
 // ========================== Change Command ==================================================== //
 bot.registerCommand('change', (msg, args) => {
     // Verify user is part of admins
