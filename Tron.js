@@ -95,7 +95,7 @@ bot.registerCommand('vn', (msg, args) => {
 
     ioTools.incrementCommandUse('vapenation');
 }, {
-    aliases: ['VapeNash', 'Vape', 'vn'],
+    aliases: ['vapenash', 'vape'],
     description: "Vape nation, y'all.",
     caseInsensitive: true,
     fullDescription: 'Displays a random vape nation gif.'
@@ -112,7 +112,7 @@ bot.registerCommand('cry', (msg, args) => {
         ioTools.incrementCommandUse('cry');
     });
 }, {
-    aliases: ['Crys', 'Cried'],
+    aliases: ['crys', 'cried'],
     caseInsensitive: true,
     description: 'Displays random cry gif.',
     fullDescription: 'Displays a random cry gif.'
@@ -138,7 +138,7 @@ bot.registerCommand('love', (msg, args) => {
         ioTools.incrementCommandUse('love');
     }
 }, {
-    aliases: ['Loves'],
+    aliases: ['loves'],
     caseInsensitive: true,
     description: 'Displays random love gif.',
     fullDescription: 'Displays a random love gif and the name of the person you mention.'
@@ -219,7 +219,7 @@ bot.registerCommand('kiss', (msg, args) => {
 
     ioTools.incrementCommandUse('kiss');
 }, {
-    aliases: ['Kisses'],
+    aliases: ['kisses'],
     caseInsensitive: true,
     description: 'Displays a random kiss gif.',
     fullDescription: 'Displays a random kissing reaction gif and the name of the individual mentioned.'
@@ -251,7 +251,7 @@ bot.registerCommand('pat', (msg, args) => {
 
     ioTools.incrementCommandUse('pat');
 }, {
-    aliases: ['Pats', 'Tap', 'Taps'],
+    aliases: ['pats', 'tap', 'taps'],
     caseInsensitive: true
 });
 
@@ -294,7 +294,7 @@ let marry = bot.registerCommand('marry', (msg, args) => {
         bot.createMessage(msg.channel.id, "Please make sure to mention one or more users in order to use this command.");
     }
 }, {
-    aliases: ['Propose'],
+    aliases: ['propose'],
     caseInsensitive: true,
     description: "Proposes to the given users.",
     fullDescription: "Proposes to all of the users that are mentioned so long as you don't already " +
@@ -570,7 +570,7 @@ bot.registerCommand('quote', (msg, args) => {
         bot.createMessage(msg.channel.id, temp[random]);
     });
 }, {
-    aliases: ['Quotes'],
+    aliases: ['quotes'],
     caseInsensitive: true,
     description: 'Returns a random quote.'
 });
@@ -644,7 +644,7 @@ bot.registerCommand('pout', (msg, args) => {
         });
     };
 }, {
-    aliases: ['Pouts'],
+    aliases: ['pouts'],
     caseInsensitive: true
 });
 
@@ -660,7 +660,7 @@ bot.registerCommand('wave', (msg, args) => {
 
     });
 }, {
-    aliases: ['Waves'],
+    aliases: ['waves'],
     caseInsensitive: true
 });
 
@@ -678,7 +678,7 @@ bot.registerCommand('spank', (msg, args) => {
         ioTools.incrementCommandUse('spank');
     })
 }, {
-    aliases: ['Spanks'],
+    aliases: ['spanks'],
     caseInsensitive: true
 });
 
@@ -716,7 +716,7 @@ bot.registerCommand('ratewaifu', (msg, args) => {
         }
     }
 }, {
-    aliases: ['Rate'],
+    aliases: ['rate'],
     caseInsensitive: true,
     description: 'Randomly rates a mentioned user 0 - 10.',
     fullDescription: 'Generates a random number to rate the mentioned user on a scale of 0 to 10.'
@@ -740,7 +740,7 @@ bot.registerCommand('hugs', (msg, args) => {
         return "Invalid input, please make sure to mention a user.";
     }
 }, {
-    aliases: ['Hug'],
+    aliases: ['hug'],
     caseInsensitive: true
 });
 
@@ -811,7 +811,7 @@ bot.registerCommand('poke', (msg, args) => {
         return INVALID_INPUT;
     }
 }, {
-    aliases: ['Pokes'],
+    aliases: ['pokes'],
     caseInsensitive: true,
     description: 'Poke a user.',
     fullDescription: 'Displays a random poke gif for the mentioned user.'
@@ -835,7 +835,7 @@ bot.registerCommand('kick', (msg, args) => {
         return INVALID_INPUT;
     }
 }, {
-    aliases: ['Kicks'],
+    aliases: ['kicks'],
     caseInsensitive: true,
     description: 'Displays random kick gif',
     fullDescription: 'Displays a random kick gif and the name of the person you mention.'
@@ -859,7 +859,7 @@ bot.registerCommand('bite', (msg, args) => {
         ioTools.incrementCommandUse('bite');
     });
 }, {
-    aliases: ['Bites'],
+    aliases: ['bites'],
     caseInsensitive: true,
     description: 'Displays a random bite gif.',
     fullDescription: 'Displays a random bite gif and the name of the user you mention.'
@@ -927,7 +927,6 @@ bot.registerCommand('rawr', (msg, args) => {
 
     ioTools.incrementCommandUse('rawr');
 }, {
-    aliases: ['Rawr', 'RAWR'],
     caseInsensitive: true,
     description: 'Displays a random rawr gif.'
 });
@@ -943,7 +942,6 @@ bot.registerCommand('rekt', (msg, args) => {
 
     ioTools.incrementCommandUse('rekt');
 }, {
-    aliases: ['Rekt', 'REKT'],
     caseInsensitive: true,
     description: 'Displays a random rekt gif.'
 });
@@ -1048,7 +1046,7 @@ bot.registerCommand('Avatar', (msg, args) => {
         return "Please only mention one user at a time.";
     }
 }, {
-    aliases: ['Profile'],
+    aliases: ['profile'],
     caseInsensitive: true
 });
 
