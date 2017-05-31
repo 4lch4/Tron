@@ -303,23 +303,44 @@ let marry = bot.registerCommand('marry', (msg, args) => {
 });
 
 marry.registerSubcommand('list', (msg, args) => {
-    marriage.getMarriages(msg.author.id, (marriages) => {
-        let message = "";
-        if (marriages.length > 0) {
-            message = "You are currently married to:\n\n";
-            for (let x = 0; x < marriages.length; x++) {
-                if (marriages[x].SPOUSE_A_ID != msg.author.id) {
-                    message += "- **" + marriages[x].SPOUSE_A_USERNAME + "** since " + marriages[x].MARRIAGE_DATE + "\n"
-                } else if (marriages[x].SPOUSE_B_ID != msg.author.id) {
-                    message += "- **" + marriages[x].SPOUSE_B_USERNAME + "** since " + marriages[x].MARRIAGE_DATE + "\n"
+    if (msg.mentions.length == 0) {
+        marriage.getMarriages(msg.author.id, (marriages) => {
+            let message = "";
+            if (marriages.length > 0) {
+                message = "You are currently married to:\n\n";
+                for (let x = 0; x < marriages.length; x++) {
+                    if (marriages[x].SPOUSE_A_ID != msg.author.id) {
+                        message += "- **" + marriages[x].SPOUSE_A_USERNAME + "** since " + marriages[x].MARRIAGE_DATE + "\n"
+                    } else if (marriages[x].SPOUSE_B_ID != msg.author.id) {
+                        message += "- **" + marriages[x].SPOUSE_B_USERNAME + "** since " + marriages[x].MARRIAGE_DATE + "\n"
+                    }
                 }
+            } else {
+                message = "Unfortunately, you're not currently married to anyone. :cry:"
             }
-        } else {
-            message = "Unfortunately, you're not currently married to anyone. :cry:"
-        }
 
-        bot.createMessage(msg.channel.id, message);
-    })
+            bot.createMessage(msg.channel.id, message);
+        });
+    } else if (msg.mentions.length == 1) {
+        let userId = msg.mentions[0].id;
+        marriage.getMarriages(userId, (marriages) => {
+            let message = "";
+            if (marriages.length > 0) {
+                message = msg.mentions[0].username + " is currently married to:\n\n";
+                for (let x = 0; x < marriages.length; x++) {
+                    if (marriages[x].SPOUSE_A_ID != userId) {
+                        message += "- **" + marriages[x].SPOUSE_A_USERNAME + "** since " + marriages[x].MARRIAGE_DATE + "\n"
+                    } else if (marriages[x].SPOUSE_B_ID != userId) {
+                        message += "- **" + marriages[x].SPOUSE_B_USERNAME + "** since " + marriages[x].MARRIAGE_DATE + "\n"
+                    }
+                }
+            } else {
+                message = "Unfortunately, you're not currently married to anyone. :cry:"
+            }
+
+            bot.createMessage(msg.channel.id, message);
+        });
+    }
 }, {
     aliases: ['lists', 'fuckbook', 'history'],
     caseInsensitive: true,
