@@ -95,8 +95,9 @@ bot.registerCommand('vn', (msg, args) => {
 
     ioTools.incrementCommandUse('vapenation');
 }, {
-    aliases: ['VN', 'Vn', 'VapeNash', 'VapeNation', 'vape', 'VAPE', 'Vape', 'vapenash', 'vapenation'],
+    aliases: ['VapeNash', 'Vape', 'vn'],
     description: "Vape nation, y'all.",
+    caseInsensitive: true,
     fullDescription: 'Displays a random vape nation gif.'
 });
 
@@ -111,7 +112,8 @@ bot.registerCommand('cry', (msg, args) => {
         ioTools.incrementCommandUse('cry');
     });
 }, {
-    aliases: ['Cry', 'CRY'],
+    aliases: ['Crys', 'Cried'],
+    caseInsensitive: true,
     description: 'Displays random cry gif.',
     fullDescription: 'Displays a random cry gif.'
 });
@@ -136,7 +138,8 @@ bot.registerCommand('love', (msg, args) => {
         ioTools.incrementCommandUse('love');
     }
 }, {
-    aliases: ['Love', 'LOVE'],
+    aliases: ['Loves'],
+    caseInsensitive: true,
     description: 'Displays random love gif.',
     fullDescription: 'Displays a random love gif and the name of the person you mention.'
 });
@@ -168,6 +171,7 @@ bot.registerCommand('invite', (msg, args) => {
         console.log('In isNan else loop.');
     }
 }, {
+    caseInsensitive: true,
     description: 'Generate an invite link or invite a user to your channel.',
     fullDescription: 'If you provide a username, the user will be added to your channel. ' +
         'Otherwise, the invite link for Tron is returned.'
@@ -215,7 +219,8 @@ bot.registerCommand('kiss', (msg, args) => {
 
     ioTools.incrementCommandUse('kiss');
 }, {
-    aliases: ['Kiss', 'KISS'],
+    aliases: ['Kisses'],
+    caseInsensitive: true,
     description: 'Displays a random kiss gif.',
     fullDescription: 'Displays a random kissing reaction gif and the name of the individual mentioned.'
 });
@@ -246,12 +251,8 @@ bot.registerCommand('pat', (msg, args) => {
 
     ioTools.incrementCommandUse('pat');
 }, {
-    aliases: [
-        'pats', 'Pats', 'PATS',
-        'tap', 'Tap', 'TAP',
-        'taps', 'Taps', 'TAPS',
-        'Pat', 'PAT'
-    ]
+    aliases: ['Pats', 'Tap', 'Taps'],
+    caseInsensitive: true
 });
 
 // ========================== Marriage Commands (requested by Prim) ============================= //
@@ -265,7 +266,7 @@ let marry = bot.registerCommand('marry', (msg, args) => {
             // Pass mentioned users to verifyProposal to determine if a proposal is valid
             marriage.verifyProposal(msg, (cleanUsers, allVerified) => {
                 // Let the validated users know they've been proposed to
-                marriage.alertUsers(msg.channel.id, cleanUsers, bot);
+                marriage.alertUsersToProposals(msg.channel.id, cleanUsers, bot);
 
                 // Add a proposal to the database for each validated user
                 cleanUsers.forEach((mention, index, mentions) => {
@@ -293,7 +294,12 @@ let marry = bot.registerCommand('marry', (msg, args) => {
         bot.createMessage(msg.channel.id, "Please make sure to mention one or more users in order to use this command.");
     }
 }, {
-    aliases: ['Marry', 'MARRY', 'Propose', 'propose', 'PROPOSE']
+    aliases: ['Propose'],
+    caseInsensitive: true,
+    description: "Proposes to the given users.",
+    fullDescription: "Proposes to all of the users that are mentioned so long as you don't already " +
+        "have a pending proposal or exiting marriage to the user.",
+    usage: "[@users] e.g. `+marry @Alcha#2621 @Bugs#2413`"
 });
 
 marry.registerSubcommand('list', (msg, args) => {
@@ -315,14 +321,18 @@ marry.registerSubcommand('list', (msg, args) => {
         bot.createMessage(msg.channel.id, message);
     })
 }, {
-    aliases: ['List', 'List', 'lists', 'Lists', 'LIST', 'fuckbook']
+    aliases: ['lists', 'fuckbook', 'history'],
+    caseInsensitive: true,
+    description: 'List all current marriages.',
+    fullDescription: 'Lists all current marriages of the author or mentioned user if one is given.',
+    usage: "[@user] e.g. `+marry list @Alcha#2621`"
 });
 
 marry.registerSubcommand('accept', (msg, args) => {
     marriage.getProposals(msg.author.id, (results) => {
         if (results != null && results.length > 1) {
             if (args.length == 0) {
-                formatProposals(results, (formattedMsg) => {
+                marriage.formatProposals(results, (formattedMsg) => {
                     formattedMsg = "You currently have " + results.length + " proposals, please indicate which one you wish to accept (e.g. +marry accept 1):\n\n" + formattedMsg;
 
                     bot.createMessage(msg.channel.id, formattedMsg);
@@ -359,7 +369,7 @@ marry.registerSubcommand('accept', (msg, args) => {
         }
     });
 }, {
-    aliases: ['Accept', 'ACCEPT']
+    caseInsensitive: true
 });
 
 marry.registerSubcommand('deny', (msg, args) => {
@@ -388,7 +398,8 @@ marry.registerSubcommand('deny', (msg, args) => {
         }
     });
 }, {
-    aliases: ['Deny', 'DENY', 'reject', 'Reject', 'REJECT']
+    aliases: ['reject', 'rejected'],
+    caseInsensitive: true
 });
 
 // ========================== Quote Command ===================================================== //
@@ -400,7 +411,8 @@ bot.registerCommand('quote', (msg, args) => {
         bot.createMessage(msg.channel.id, temp[random]);
     });
 }, {
-    aliases: ['Quote', 'quotes', 'Quotes'],
+    aliases: ['Quotes'],
+    caseInsensitive: true,
     description: 'Returns a random quote.'
 });
 
@@ -430,7 +442,8 @@ bot.registerCommand('kill', (msg, args) => {
 
     ioTools.incrementCommandUse('kill');
 }, {
-    aliases: ['Kill', 'KILL'],
+    aliases: ['kills'],
+    caseInsensitive: true,
     description: 'Displays a random killing gif.',
     fullDescription: 'Displays a random killing reaction gif and the name of the individual mentioned.'
 });
@@ -446,7 +459,7 @@ bot.registerCommand('confused', (msg, args) => {
         ioTools.incrementCommandUse('confused');
     });
 }, {
-    aliases: ['Confused', 'confused', 'CONFUSED']
+    caseInsensitive: true
 });
 
 // ========================== Pout Command ====================================================== //
@@ -472,7 +485,8 @@ bot.registerCommand('pout', (msg, args) => {
         });
     };
 }, {
-    aliases: ['Pout', 'pout', 'POUT']
+    aliases: ['Pouts'],
+    caseInsensitive: true
 });
 
 // ========================== Wave Command ====================================================== //
@@ -487,7 +501,8 @@ bot.registerCommand('wave', (msg, args) => {
 
     });
 }, {
-    aliases: ['Wave', 'WAVE']
+    aliases: ['Waves'],
+    caseInsensitive: true
 });
 
 // ========================== Spank Command ===================================================== //
@@ -504,7 +519,8 @@ bot.registerCommand('spank', (msg, args) => {
         ioTools.incrementCommandUse('spank');
     })
 }, {
-    aliases: ['Spank', 'SPANK']
+    aliases: ['Spanks'],
+    caseInsensitive: true
 });
 
 // ========================== Kill Me Command =================================================== //
@@ -519,7 +535,8 @@ bot.registerCommand('killme', (msg, args) => {
 
     ioTools.incrementCommandUse('killme');
 }, {
-    aliases: ['Killme', 'KILLME', 'KillMe', 'kms']
+    aliases: ['kms'],
+    caseInsensitive: true
 });
 
 // ========================== Rate Waifu Command (Requested by Bella and Kayla) ================= //
@@ -540,7 +557,8 @@ bot.registerCommand('ratewaifu', (msg, args) => {
         }
     }
 }, {
-    aliases: ['rate', 'Rate', 'Ratewaifu', 'ratewaifu'],
+    aliases: ['Rate'],
+    caseInsensitive: true,
     description: 'Randomly rates a mentioned user 0 - 10.',
     fullDescription: 'Generates a random number to rate the mentioned user on a scale of 0 to 10.'
 });
@@ -563,7 +581,8 @@ bot.registerCommand('hugs', (msg, args) => {
         return "Invalid input, please make sure to mention a user.";
     }
 }, {
-    aliases: ['hug', 'Hug', 'HUG', 'HUGS', 'Hugs']
+    aliases: ['Hug'],
+    caseInsensitive: true
 });
 
 // ========================== Stats Commands ==================================================== //
@@ -611,7 +630,7 @@ bot.registerCommand('stats', (msg, args) => {
     ioTools.incrementCommandUse('stats');
 }, {
     aliases: ['stat'],
-    caseInsensitive: false,
+    caseInsensitive: true,
     description: 'Display commands and how much list of use count',
     fullDescription: "Displays a list of available commands and how many times they've been used."
 });
@@ -633,9 +652,10 @@ bot.registerCommand('poke', (msg, args) => {
         return INVALID_INPUT;
     }
 }, {
-    aliases: ['POKE', 'Poke', 'Pokes', 'POKES'],
-    description: '',
-    fullDescription: ''
+    aliases: ['Pokes'],
+    caseInsensitive: true,
+    description: 'Poke a user.',
+    fullDescription: 'Displays a random poke gif for the mentioned user.'
 });
 
 // ========================== Kick Command ====================================================== //
@@ -656,7 +676,8 @@ bot.registerCommand('kick', (msg, args) => {
         return INVALID_INPUT;
     }
 }, {
-    aliases: ['Kick', 'KICK'],
+    aliases: ['Kicks'],
+    caseInsensitive: true,
     description: 'Displays random kick gif',
     fullDescription: 'Displays a random kick gif and the name of the person you mention.'
 });
@@ -679,9 +700,10 @@ bot.registerCommand('bite', (msg, args) => {
         ioTools.incrementCommandUse('bite');
     });
 }, {
-    aliases: ['Bite', 'BITE', 'bites', 'Bites', 'BITES'],
-    description: '',
-    fullDescription: ''
+    aliases: ['Bites'],
+    caseInsensitive: true,
+    description: 'Displays a random bite gif.',
+    fullDescription: 'Displays a random bite gif and the name of the user you mention.'
 });
 
 // ========================== Jova Command ====================================================== //
@@ -713,8 +735,9 @@ bot.registerCommand('git', (msg, args) => {
 
     ioTools.incrementCommandUse('git');
 }, {
-    aliases: ['Git', 'GIT'],
-    description: 'Display link to git repository.',
+    aliases: ['repo', 'github', 'codebase'],
+    caseInsensitive: true,
+    description: 'Display link to online git repository.',
     fullDescription: 'Displays the link to the git repository on GitHub.'
 });
 
@@ -729,9 +752,8 @@ bot.registerCommand('blush', (msg, args) => {
         ioTools.incrementCommandUse('blush');
     });
 }, {
-    aliases: ['Blush', 'BLUSH'],
-    description: '',
-    fullDescription: ''
+    caseInsensitive: true,
+    description: 'Displays a random blush gif.'
 });
 
 // ========================== Rawr Command ====================================================== //
@@ -747,8 +769,8 @@ bot.registerCommand('rawr', (msg, args) => {
     ioTools.incrementCommandUse('rawr');
 }, {
     aliases: ['Rawr', 'RAWR'],
-    description: '',
-    fullDescription: ''
+    caseInsensitive: true,
+    description: 'Displays a random rawr gif.'
 });
 
 // ========================== Rekt Command ====================================================== //
@@ -763,8 +785,8 @@ bot.registerCommand('rekt', (msg, args) => {
     ioTools.incrementCommandUse('rekt');
 }, {
     aliases: ['Rekt', 'REKT'],
-    description: '',
-    fullDescription: ''
+    caseInsensitive: true,
+    description: 'Displays a random rekt gif.'
 });
 
 // ========================== Trump Commands ==================================================== //
@@ -773,7 +795,7 @@ let trumpCmd = bot.registerCommand('trump', (msg, args) => {
         return "Invalid input, arguments required. Try `+trump fake` or `+trump wrong`.";
     }
 }, {
-    aliases: ['Trump', 'TRUMP']
+    caseInsensitive: true
 });
 
 trumpCmd.registerSubcommand('fake', (msg, args) => {
@@ -786,9 +808,8 @@ trumpCmd.registerSubcommand('fake', (msg, args) => {
 
     ioTools.incrementCommandUse('trump-fake');
 }, {
-    aliases: ['Fake', 'FAKE'],
-    description: '',
-    fullDescription: ''
+    aliases: ['cnn'],
+    caseInsensitive: true
 });
 
 trumpCmd.registerSubcommand('wrong', (msg, args) => {
@@ -801,9 +822,7 @@ trumpCmd.registerSubcommand('wrong', (msg, args) => {
 
     ioTools.incrementCommandUse('trump-wrong');
 }, {
-    aliases: ['Wrong', 'WRONG'],
-    description: '',
-    fullDescription: ''
+    caseInsensitive: true
 });
 
 // ========================== Add Role Command ================================================== //
@@ -826,6 +845,10 @@ bot.registerCommand('addr', (msg, args) => {
             })
         }
     }
+}, {
+    aliases: ['addrole', 'plusrole'],
+    caseInsensitive: true,
+    description: 'Add a role for users to gain access to a role.'
 });
 
 // ========================== List Roles Command ================================================ //
@@ -838,12 +861,13 @@ bot.registerCommand('listr', (msg, args) => {
 
     bot.createMessage(msg.channel.id, message);
 }, {
+    caseInsensitive: true,
     description: 'List roles that are available to join.',
     fullDescription: 'Lists the roles that have been added by an administrator that are available.'
 });
 
 // ========================== Avatar Command (requested by Battsie) ============================= //
-bot.registerCommand('avatar', (msg, args) => {
+bot.registerCommand('Avatar', (msg, args) => {
     if (msg.mentions.length == 1) {
         let url = msg.mentions[0].dynamicAvatarURL(null, 1024);
         let origFilename = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("?"));
@@ -865,11 +889,12 @@ bot.registerCommand('avatar', (msg, args) => {
         return "Please only mention one user at a time.";
     }
 }, {
-    aliases: ['Avatar', 'AVATAR', 'Profile', 'profile', 'PROFILE']
+    aliases: ['Profile'],
+    caseInsensitive: true
 });
 
 // ========================== Ship Command ====================================================== //
-bot.registerCommand('ship', (msg, args) => {
+bot.registerCommand('Ship', (msg, args) => {
     if (msg.channel.guild != undefined && msg.mentions.length == 2) {
         const urls = [msg.mentions[0].avatarURL, msg.mentions[1].avatarURL];
 
@@ -897,7 +922,7 @@ bot.registerCommand('ship', (msg, args) => {
         ioTools.incrementCommandUse('ship');
     }
 }, {
-    aliases: ['Ship', 'SHIP'],
+    caseInsensitive: true,
     description: 'Ship two users.',
     fullDescription: 'Takes the two mentioned users and mashes their names into a lovely mess.'
 });
@@ -925,6 +950,7 @@ bot.registerCommand('leaver', (msg, args) => {
         }
     }
 }, {
+    caseInsensitive: true,
     description: 'Leave a role.',
     fullDescription: 'Used to leave a specific role, usually to also leave an associated channel.'
 });
@@ -952,6 +978,7 @@ bot.registerCommand('joinr', (msg, args) => {
         }
     }
 }, {
+    caseInsensitive: true,
     description: 'Places you into the requested server role.',
     fullDescription: 'Server admins are able to add select roles to the bot so that anyone can join the role with this command.'
 });
@@ -985,7 +1012,7 @@ bot.registerCommand('utah', (msg, args) => {
         }
     }
 }, {
-    aliases: ['Utah', 'UTAH'],
+    caseInsensitive: true,
     description: 'A command to poke fun at a good friend.',
     fullDescription: 'A command used to poke fun at a good friend. -Alcha'
 });
@@ -999,7 +1026,7 @@ bot.registerCommand('alex', (msg, args) => {
         }
     }
 }, {
-    aliases: ['Alex', 'ALEX'],
+    caseInsensitive: true,
     description: 'A command to show my love for a good friend.',
     fullDescription: 'A command used to show my love for a good friend. -Alcha'
 });

@@ -152,6 +152,15 @@ class Marriage {
         });
     }
 
+    getMarriage(user1Id, user2Id, callback) {
+        let sqlQuery = "SELECT * FROM MARRIAGES WHERE (SPOUSE_A_ID = " + user1Id + " AND SPOUSE_B_ID = " + user2Id + ") OR " +
+            "(SPOUSE_A_ID = " + user2Id + " AND SPOUSE_B_ID = " + user1Id + ");";
+
+        ioTools.executeSql(sqlQuery, (results) => {
+            callback(results);
+        });
+    }
+
     /**
      * Iterates through all the mentions in the provided msg object and performs an SQL query to
      * determine if the user who proposed has previously proposed to anyone they're currently
@@ -168,29 +177,42 @@ class Marriage {
         let cleanUsers = [];
         let processed = 0;
 
-        for (let x = 0; x < msg.mentions.length; x++) {
+        msg.mentions.forEach((mention, index, array) => {
             let userId1 = msg.author.id;
-            let userId2 = msg.mentions[x].id;
+            let userId2 = mention.id;
 
-            let sqlQuery = "SELECT * FROM MARRIAGES WHERE (SPOUSE_A_ID = " + userId1 + " AND SPOUSE_B_ID = " + userId2 + ") OR (SPOUSE_A_ID = " + userId2 + " AND SPOUSE_B_ID = " + userId1 + ") UNION " +
+            let sqlQuery = "SELECT * FROM MARRIAGES WHERE (SPOUSE_A_ID = " + userId1 + " AND SPOUSE_B_ID = " + userId2 + ") OR " +
+                "(SPOUSE_A_ID = " + userId2 + " AND SPOUSE_B_ID = " + userId1 + ") UNION " +
                 "SELECT * FROM PROPOSALS WHERE PROPOSER_ID = " + userId1 + " AND PROPOSEE_ID = " + userId2;
 
             ioTools.executeSql(sqlQuery, (results) => {
                 if (results != null && results.length > 0) {
                     allVerified = false;
-                } else if (!cleanUsers.includes(msg.mentions[x])) {
-                    cleanUsers.push(msg.mentions[x]);
+                } else {
+                    cleanUsers.push(mention);
                 }
 
+                // Indicate a mention has been processed
                 processed++;
 
+                // If all mentions have been processed, passback the cleaned user array and
+                // the allVerified boolean.
                 if (processed == msg.mentions.length) {
                     callback(cleanUsers, allVerified);
                 }
             });
-        }
+        });
+
     }
 
+
+    /**
+     * Format the provided proposals for display to a user. Usually display before the user selects
+     * which one to accept/deny.
+     *
+     * @param {*} proposals
+     * @param {*} callback
+     */
     formatProposals(proposals, callback) {
         let processed = 0;
         let message = "```";
@@ -208,6 +230,8 @@ class Marriage {
     }
 
     alertUsers(channelId, mentions, bot) {
+
+    alertUsersToProposals(channelId, mentions, bot) {
         this.convertMentions(mentions, (content) => {
             bot.createMessage(channelId, content + "\n\n" +
                 "You've received a marriage proposal. Use `+marry accept` to accept the proposal or `+marry deny` to reject it.");
