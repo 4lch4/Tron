@@ -103,11 +103,11 @@ class Tools {
     }
 
     formatTimeString(string) {
-        return moment(string).tz(config.defaultTimezone).format("YYYY-MM-DD_HH:mm:ss");
+        return moment(string).tz(config.defaultTimezone).format("MM-DD-YYYY_HH:mm:ss");
     }
 
     getFormattedTimestamp() {
-        return moment().tz(config.defaultTimezone).format('YYYY-MM-DD_HH:mm:ss')
+        return moment().tz(config.defaultTimezone).format('MM-DD-YYYY_HH:mm:ss')
     }
 
     upperFirstC(string) {
