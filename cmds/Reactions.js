@@ -60,7 +60,6 @@ let cryImages = [];
 
 /** Stores images for the Pat command */
 let patImages = [];
-
 class Reactions {
     constructor(options) {
         this.options = options || {};

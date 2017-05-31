@@ -106,6 +106,27 @@ class Tools {
         return moment(string).tz(config.defaultTimezone).format("MM-DD-YYYY_HH:mm:ss");
     }
 
+    /**
+     * Using the provided bot object, search the map of visible users and return the username of the
+     * user with the provided user id. If a callback is provided, the value is sent to it, otherwise
+     * the username is simply returned.
+     *
+     * @param {String} userId   User id of the user you want to look-up.
+     * @param {*} bot           The Command Client of the bot itself.
+     * @param {*} callback      A callback to receive the username upon finding it (optional).
+     */
+    getUsernameFromId(userId, bot, callback) {
+        bot.users.forEach((user, index, array) => {
+            if (user.id == userId) {
+                if (callback != null) {
+                    callback(user.username);
+                } else {
+                    return user.username;
+                }
+            }
+        });
+    }
+
     getFormattedTimestamp() {
         return moment().tz(config.defaultTimezone).format('MM-DD-YYYY_HH:mm:ss')
     }
@@ -228,7 +249,6 @@ class Tools {
         let found = false;
 
         roles.forEach((curr, index, arr) => {
-            console.log('curr = ' + curr);
             if (curr == '254970225642962949') {
                 found = true;
             } else if (curr == '254970606565588992') {

@@ -402,6 +402,144 @@ marry.registerSubcommand('deny', (msg, args) => {
     caseInsensitive: true
 });
 
+let divorce = bot.registerCommand('divorce', (msg, args) => {
+    if (msg.mentions.length > 0) {
+        let userId1 = msg.author.id;
+        let userId2 = msg.mentions[0].id;
+
+        marriage.verifyDivorce(userId1, userId2, (marriageIn) => {
+            if (marriageIn != null) {
+                marriage.addDivorceProposal({
+                    id: userId1,
+                    username: msg.author.username
+                }, {
+                    id: userId2,
+                    username: msg.mentions[0].username
+                }, (success) => {
+                    if (success) {
+                        bot.createMessage(msg.channel.id, "I'm sorry <@" + userId2 + ">, it appears " + msg.author.username + " wants a divorce. :slight_frown:\n\n" +
+                            "Please use `+divorce accept` or `+divorce deny` to accept or deny the divorce request. Keep in mind, denying a divorce for too long without good reason _may_ have some side effects...");
+                    }
+                });
+            } else {
+                bot.createMessage(msg.channel.id, "Unfortunately, the divorce could not be verified. This could happen for a number of reasons:\n\n" +
+                    "- You already have a pending divorce with this user.\n" +
+                    "- You aren't actually married to this user.\n" +
+                    "- The bot is down and nothing is really working, so you most likely won't see this... :sweat_smile:");
+            }
+        });
+    }
+}, {
+    aliases: ['divorces', 'alienate', 'separate'],
+    caseInsensitive: true
+});
+
+divorce.registerSubcommand('accept', (msg, args) => {
+    marriage.getDivorceProposals(msg.author.id, (results) => {
+        if (results != null && results.length > 1) {
+            if (args.length == 0) {
+                marriage.formatDivorceProposals(results, (formattedMsg) => {
+                    formattedMsg = "You currently have " + results.length + " divorce proposals, please indicate which one you wish to accept (e.g. +divorce accept 1):\n\n" + formattedMsg;
+
+                    bot.createMessage(msg.channel.id, formattedMsg);
+                });
+            } else if (args.length == 1) {
+                if (!isNaN(args[0])) {
+                    marriage.acceptDivorceProposal({
+                        id: results[args[0]].DIVORCER_ID,
+                        username: results[args[0]].DIVORCER_USERNAME
+                    }, {
+                        id: msg.author.id,
+                        username: msg.author.username
+                    }, (success) => {
+                        if (success) {
+                            bot.createMessage(msg.channel.id, "You've successfuly divorced <@" + results[args[0]].DIVORCER_ID + ">");
+                        }
+                    });
+                }
+            }
+        } else if (results.length == 1) {
+            marriage.acceptDivorceProposal({
+                id: results[0].DIVORCER_ID,
+                username: results[0].DIVORCER_USERNAME
+            }, {
+                id: msg.author.id,
+                username: msg.author.username
+            }, (success) => {
+                if (success) {
+                    bot.createMessage(msg.channel.id, "You've successfuly divorced <@" + results[0].DIVORCER_ID + ">");
+                }
+            });
+        } else {
+            bot.createMessage(msg.channel.id, "It appears as though you do not have any pending divorces! :tada:");
+        }
+    });
+}, {
+    caseInsensitive: true,
+    argsRequired: false,
+    description: 'Accepts a pending divorce proposal.',
+    guildOnly: true
+});
+
+divorce.registerSubcommand('deny', (msg, args) => {
+    marriage.getDivorceProposals(msg.author.id, (results) => {
+        if (results != null && results.length > 1) {
+            if (args.length == 0) {
+                marriage.formatDivorceProposals(results, (formattedMsg) => {
+                    formattedMsg = "You currently have " + results.length + " divorce proposals, please indicate which one you wish to deny (e.g. +divorce deny 1):\n\n" + formattedMsg;
+                    bot.create(msg.channel.id, formattedMsg);
+                });
+            } else if (args.length == 1) {
+                marriage.removeDivorceProposal(results[args[0]].id, msg.author.id, (results) => {
+                    if (results.message.length == 0) {
+                        bot.createMessage(msg.channel.id, "You've successfully denied the proposal.");
+                    }
+                });
+            }
+        } else if (results.length == 1) {
+            marriage.removeDivorceProposal(results[0].DIVORCER_ID, msg.author.id, (results) => {
+                if (results.message.length == 0) {
+                    bot.createMessage(msg.channel.id, "You've successfully denied the proposal.");
+                }
+            });
+        } else {
+            bot.createMessage(msg.channel.id, "It appears you don't have any pending divorce proposals, please try again later.");
+        }
+    });
+}, {
+    aliases: ['reject', 'rejected'],
+    caseInsensitive: true,
+    description: 'Rejects a pending divorce proposal.',
+    guildOnly: true
+});
+
+/**
+ * mysql> SELECT * FROM DIVORCES WHERE (DIVORCER_ID = 219270060936527873 AND DIVORCEE_ID = 265102393308479488) OR (DIVORCER_ID = 265102393308479488 AND DIVORCEE_ID = 219270060936527873) UNION SELECT * FROM DIVORCE_PROPOSALS WHERE (DIVORCER_ID = 219270060936527873 AND DIVORCEE_ID = 265102393308479488) OR (DIVORCER_ID = 265102393308479488 AND DIVORCEE_ID = 219270060936527873);
+ */
+
+divorce.registerSubcommand('list', (msg, args) => {
+    // List current divorces of author or provided mention
+    marriage.getDivorces(msg.author.id, (divorces) => {
+        if (divorces.length == 0) {
+            bot.createMessage(msg.channel.id, "It appears as though you do not have any divorces! :tada:");
+        } else {
+            let message = 'Here is a list of your current divorces:\n\n';
+
+            for (let x = 0; x < divorces.length; x++) {
+                if (divorces[x].DIVORCER_ID != msg.author.id) {
+                    message += "- **" + divorces[x].DIVORCER_USERNAME + "** since " + divorces[x].DIVORCE_DATE + "\n"
+                } else if (divorces[x].DIVORCEE_ID != msg.author.id) {
+                    message += "- **" + divorces[x].DIVORCEE_USERNAME + "** since " + divorces[x].DIVORCE_DATE + "\n"
+                }
+            }
+
+            bot.createMessage(msg.channel.id, message);
+        }
+    })
+}, {
+    caseInsensitive: true
+});
+
 // ========================== Quote Command ===================================================== //
 bot.registerCommand('quote', (msg, args) => {
     ioTools.readFile('Quotes.txt', (content) => {
