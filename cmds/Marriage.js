@@ -52,7 +52,7 @@ class Marriage {
      * @param {*} callback        Callback to receive query results (if any) - optional.
      */
     removeProposal(proposerId, proposeeId, callback) {
-        let sqlQuery = "DELETE FROM PROPOSALS WHERE PROPOSER_ID = " + proposerId + " && " +
+        let sqlQuery = "DELETE FROM PROPOSALS WHERE PROPOSER_ID = " + proposerId + " AND " +
             "PROPOSEE_ID = " + proposeeId + ";";
 
         ioTools.executeSql(sqlQuery, (results) => {
@@ -81,7 +81,7 @@ class Marriage {
     }
 
     acceptProposal(proposer, proposee, callback) {
-        let sqlQuery = "SELECT * FROM PROPOSALS WHERE PROPOSER_ID = " + proposer.id + " && PROPOSEE_ID = " + proposee.id + ";";
+        let sqlQuery = "SELECT * FROM PROPOSALS WHERE PROPOSER_ID = " + proposer.id + " AND PROPOSEE_ID = " + proposee.id + ";";
 
         ioTools.executeSql(sqlQuery, (results) => {
             if (results != null && results.length == 1) {
@@ -336,7 +336,7 @@ class Marriage {
      * @param {*} callback        Callback to receive query results (if any) - optional.
      */
     removeDivorceProposal(divorcerId, divorceeId, callback) {
-        let sqlQuery = "DELETE FROM DIVORCE_PROPOSALS WHERE DIVORCER_ID = " + divorcerId + " && " +
+        let sqlQuery = "DELETE FROM DIVORCE_PROPOSALS WHERE DIVORCER_ID = " + divorcerId + " AND " +
             "DIVORCEE_ID = " + divorceeId + ";";
 
         ioTools.executeSql(sqlQuery, (results) => {
@@ -359,7 +359,7 @@ class Marriage {
     }
 
     acceptDivorceProposal(divorcer, divorcee, callback) {
-        let sqlQuery = "SELECT * FROM DIVORCE_PROPOSALS WHERE DIVORCER_ID = " + divorcer.id + " && DIVORCEE_ID = " + divorcee.id + ";";
+        let sqlQuery = "SELECT * FROM DIVORCE_PROPOSALS WHERE DIVORCER_ID = " + divorcer.id + " AND DIVORCEE_ID = " + divorcee.id + ";";
 
         ioTools.executeSql(sqlQuery, (results) => {
             if (results != null && results.length == 1) {

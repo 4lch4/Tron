@@ -399,10 +399,10 @@ marry.registerSubcommand('deny', (msg, args) => {
             if (args.length == 0) {
                 marriage.formatProposals(results, (formattedMsg) => {
                     formattedMsg = "You currently have " + results.length + " proposals, please indicate which one you wish to deny (e.g. +marry deny 1):\n\n" + formattedMsg;
-                    bot.create(msg.channel.id, formattedMsg);
+                    bot.createMessage(msg.channel.id, formattedMsg);
                 });
             } else if (args.length == 1) {
-                marriage.removeProposal(results[args[0]].id, msg.author.id, (results) => {
+                marriage.removeProposal(results[args[0]].PROPOSER_ID, msg.author.id, (results) => {
                     if (results.message.length == 0) {
                         bot.createMessage(msg.channel.id, "Aww, you've successfully denied the proposal.");
                     }
@@ -419,7 +419,7 @@ marry.registerSubcommand('deny', (msg, args) => {
         }
     });
 }, {
-    aliases: ['reject', 'rejected'],
+    aliases: ['reject', 'rejected', 'refuse'],
     caseInsensitive: true
 });
 
