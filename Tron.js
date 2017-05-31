@@ -59,7 +59,7 @@ giveawayBot.login(config.token).then(() => {
     throw e;
 });
 
-bot.registerCommand('dreamy', (msg, args) => {
+bot.registerCommand('Dreamy', (msg, args) => {
     return "<@142410361247760384> :underage:"
 }, {
     caseInsensitive: true,
@@ -68,24 +68,22 @@ bot.registerCommand('dreamy', (msg, args) => {
 });
 
 // ========================== Change Command ==================================================== //
-bot.registerCommand('change', (msg, args) => {
+bot.registerCommand('Change', (msg, args) => {
     // Verify user is part of admins
     if (config.adminids.indexOf(msg.author.id) > -1) {
         if (args[0] == 'notification') {
             config.notificationChannel = msg.channel.id;
             bot.createMessage(msg.channel.id, 'The NotificationChannel has been changed to - ' + msg.channel.name);
-        } else if (args[0] == 'timeout') {
-            giveawayValues.timeout = args[1];
-            bot.createMessage(msg.channel.id, 'The timeout has been updated to - ' + args[1] + '.');
         }
     }
 }, {
     description: 'Change notification channel.',
+    caseInsensitive: true,
     fullDescription: 'Used to change the notification channel.'
 });
 
 // ========================== Vape Nation Command (Requested by Lagucci Mane) =================== //
-bot.registerCommand('vn', (msg, args) => {
+bot.registerCommand('VN', (msg, args) => {
     reactions.pickVNImage((img) => {
         bot.createMessage(msg.channel.id, '', {
             file: img,
@@ -95,14 +93,14 @@ bot.registerCommand('vn', (msg, args) => {
 
     ioTools.incrementCommandUse('vapenation');
 }, {
-    aliases: ['VapeNash', 'Vape', 'vn'],
+    aliases: ['VapeNash', 'Vape'],
     description: "Vape nation, y'all.",
     caseInsensitive: true,
     fullDescription: 'Displays a random vape nation gif.'
 });
 
 // ========================== Cry Command ======================================================= //
-bot.registerCommand('cry', (msg, args) => {
+bot.registerCommand('Cry', (msg, args) => {
     reactions.pickCryImage((cryImage) => {
         bot.createMessage(msg.channel.id, '', {
             file: cryImage,
@@ -119,7 +117,7 @@ bot.registerCommand('cry', (msg, args) => {
 });
 
 // ========================== Love Command ====================================================== //
-bot.registerCommand('love', (msg, args) => {
+bot.registerCommand('Love', (msg, args) => {
     if (msg.channel.guild != undefined) {
         reactions.pickLoveImage((loveImage) => {
             let message = '';
@@ -145,7 +143,7 @@ bot.registerCommand('love', (msg, args) => {
 });
 
 // ========================== Invite Command ==================================================== //
-bot.registerCommand('invite', (msg, args) => {
+bot.registerCommand('Invite', (msg, args) => {
     if (msg.channel.guild != undefined) {
         if (args.length < 1) {
             return "Would you like me to join your server? :smiley: \n" + config.invitelink;
@@ -178,7 +176,7 @@ bot.registerCommand('invite', (msg, args) => {
 });
 
 // ========================== Ping Command ====================================================== //
-bot.registerCommand('ping', (msg, args) => {
+bot.registerCommand('Ping', (msg, args) => {
     return 'Pong!';
 }, {
     description: 'Pong!',
@@ -186,7 +184,7 @@ bot.registerCommand('ping', (msg, args) => {
 });
 
 // ========================== Kiss Command ====================================================== //
-bot.registerCommand('kiss', (msg, args) => {
+bot.registerCommand('Kiss', (msg, args) => {
     /**
      * First, we verify the args.length is equal to (==) 2, this means we've been given two
      * arguments. We make sure the first one is an actual number by using isNaN, which stands for
@@ -226,7 +224,7 @@ bot.registerCommand('kiss', (msg, args) => {
 });
 
 // ========================== Pat Command ======================================================= //
-bot.registerCommand('pat', (msg, args) => {
+bot.registerCommand('Pat', (msg, args) => {
     if (args.length == 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickPatImage((img) => {
             let user = msg.mentions[0].username;
@@ -256,7 +254,7 @@ bot.registerCommand('pat', (msg, args) => {
 });
 
 // ========================== Marriage Commands (requested by Prim) ============================= //
-let marry = bot.registerCommand('marry', (msg, args) => {
+let marry = bot.registerCommand('Marry', (msg, args) => {
     // Verify at least one user was mentioned
     if (msg.mentions.length > 0) {
         // Verify the first mentioned user wasn't the author to avoid trying to marry just yourself
@@ -288,6 +286,8 @@ let marry = bot.registerCommand('marry', (msg, args) => {
                 if (allVerified == false) {
                     bot.createMessage(msg.channel.id, "Unfortunately, one or more of the users you proposed to is already married to you or you have a pending proposal.");
                 }
+
+                ioTools.incrementCommandUse('marry');
             });
         }
     } else {
@@ -302,7 +302,7 @@ let marry = bot.registerCommand('marry', (msg, args) => {
     usage: "[@users] e.g. `+marry @Alcha#2621 @Bugs#2413`"
 });
 
-marry.registerSubcommand('list', (msg, args) => {
+marry.registerSubcommand('List', (msg, args) => {
     marriage.getMarriages(msg.author.id, (marriages) => {
         let message = "";
         if (marriages.length > 0) {
@@ -328,7 +328,7 @@ marry.registerSubcommand('list', (msg, args) => {
     usage: "[@user] e.g. `+marry list @Alcha#2621`"
 });
 
-marry.registerSubcommand('accept', (msg, args) => {
+marry.registerSubcommand('Accept', (msg, args) => {
     marriage.getProposals(msg.author.id, (results) => {
         if (results != null && results.length > 1) {
             if (args.length == 0) {
@@ -372,7 +372,7 @@ marry.registerSubcommand('accept', (msg, args) => {
     caseInsensitive: true
 });
 
-marry.registerSubcommand('deny', (msg, args) => {
+marry.registerSubcommand('Deny', (msg, args) => {
     marriage.getProposals(msg.author.id, (results) => {
         if (results != null && results.length > 1) {
             if (args.length == 0) {
@@ -398,12 +398,12 @@ marry.registerSubcommand('deny', (msg, args) => {
         }
     });
 }, {
-    aliases: ['reject', 'rejected'],
+    aliases: ['Reject', 'Rejected'],
     caseInsensitive: true
 });
 
 // ========================== Quote Command ===================================================== //
-bot.registerCommand('quote', (msg, args) => {
+bot.registerCommand('Quote', (msg, args) => {
     ioTools.readFile('Quotes.txt', (content) => {
         let temp = content.split('\n');
         let random = tools.getRandom(0, temp.length);
@@ -417,7 +417,7 @@ bot.registerCommand('quote', (msg, args) => {
 });
 
 // ========================== Kill Command ====================================================== //
-bot.registerCommand('kill', (msg, args) => {
+bot.registerCommand('Kill', (msg, args) => {
     if (args.length == 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickKillImage((img) => {
             let user = msg.mentions[0].username;
@@ -442,14 +442,14 @@ bot.registerCommand('kill', (msg, args) => {
 
     ioTools.incrementCommandUse('kill');
 }, {
-    aliases: ['kills'],
+    aliases: ['Kills'],
     caseInsensitive: true,
     description: 'Displays a random killing gif.',
     fullDescription: 'Displays a random killing reaction gif and the name of the individual mentioned.'
 });
 
 // ========================== Confused Command ================================================== //
-bot.registerCommand('confused', (msg, args) => {
+bot.registerCommand('Confused', (msg, args) => {
     reactions.pickConfusedImage((img) => {
         bot.createMessage(msg.channel.id, '', {
             file: img,
@@ -463,7 +463,7 @@ bot.registerCommand('confused', (msg, args) => {
 });
 
 // ========================== Pout Command ====================================================== //
-bot.registerCommand('pout', (msg, args) => {
+bot.registerCommand('Pout', (msg, args) => {
     if (args.length == 1 && !isNaN(parseInt(args[0]))) {
         reactions.pickPoutImage((img) => {
                 bot.createMessage(msg.channel.id, '', {
@@ -490,7 +490,7 @@ bot.registerCommand('pout', (msg, args) => {
 });
 
 // ========================== Wave Command ====================================================== //
-bot.registerCommand('wave', (msg, args) => {
+bot.registerCommand('Wave', (msg, args) => {
     reactions.pickWaveImage((img) => {
         bot.createMessage(msg.channel.id, '', {
             file: img,
@@ -506,7 +506,7 @@ bot.registerCommand('wave', (msg, args) => {
 });
 
 // ========================== Spank Command ===================================================== //
-bot.registerCommand('spank', (msg, args) => {
+bot.registerCommand('Spank', (msg, args) => {
     reactions.pickSpankImage((img) => {
         let user = msg.mentions[0].username;
         let message = "**" + user + "**, you've been spanked by **" + msg.author.username + "**. :wave:";
@@ -524,7 +524,7 @@ bot.registerCommand('spank', (msg, args) => {
 });
 
 // ========================== Kill Me Command =================================================== //
-bot.registerCommand('killme', (msg, args) => {
+bot.registerCommand('KillMe', (msg, args) => {
     reactions.pickKillMeImage((killMeImage) => {
         // Mika's requested killme command
         bot.createMessage(msg.channel.id, '', {
@@ -540,7 +540,7 @@ bot.registerCommand('killme', (msg, args) => {
 });
 
 // ========================== Rate Waifu Command (Requested by Bella and Kayla) ================= //
-bot.registerCommand('ratewaifu', (msg, args) => {
+bot.registerCommand('RateWaifu', (msg, args) => {
     if (msg.channel.guild != undefined && msg.mentions.length == 1) {
         if (msg.mentions[0].id == 219270060936527873) {
             // Alcha
@@ -564,7 +564,7 @@ bot.registerCommand('ratewaifu', (msg, args) => {
 });
 
 // ========================== Hugs Command ====================================================== //
-bot.registerCommand('hugs', (msg, args) => {
+bot.registerCommand('Hugs', (msg, args) => {
     if (msg.mentions[0] != undefined) {
         reactions.pickHugImage((hugImage) => {
             let user = msg.mentions[0].username;
@@ -586,7 +586,7 @@ bot.registerCommand('hugs', (msg, args) => {
 });
 
 // ========================== Stats Commands ==================================================== //
-bot.registerCommand('stats', (msg, args) => {
+bot.registerCommand('Stats', (msg, args) => {
     if (args.length == 0) {
         ioTools.getAllCommandUsage((results) => {
             let fields = [];
@@ -629,14 +629,14 @@ bot.registerCommand('stats', (msg, args) => {
 
     ioTools.incrementCommandUse('stats');
 }, {
-    aliases: ['stat'],
+    aliases: ['Stat'],
     caseInsensitive: true,
     description: 'Display commands and how much list of use count',
     fullDescription: "Displays a list of available commands and how many times they've been used."
 });
 
 // ========================== Poke Command ====================================================== //
-bot.registerCommand('poke', (msg, args) => {
+bot.registerCommand('Poke', (msg, args) => {
     if (msg.mentions.length == 1) {
         reactions.pickPokeImage((img) => {
             let message = "**" + msg.mentions[0].username + "**, you've been poked by **" + msg.author.username + "**.";
@@ -659,7 +659,7 @@ bot.registerCommand('poke', (msg, args) => {
 });
 
 // ========================== Kick Command ====================================================== //
-bot.registerCommand('kick', (msg, args) => {
+bot.registerCommand('Kick', (msg, args) => {
     if (msg.author.id != config.mika && msg.mentions[0] != undefined) {
         reactions.pickKickImage((img) => {
             let user = msg.mentions[0].username;
@@ -683,7 +683,7 @@ bot.registerCommand('kick', (msg, args) => {
 });
 
 // ========================== Bite Command ====================================================== //
-bot.registerCommand('bite', (msg, args) => {
+bot.registerCommand('Bite', (msg, args) => {
     reactions.pickBiteImage((biteImage) => {
         var message = '';
 
@@ -707,7 +707,7 @@ bot.registerCommand('bite', (msg, args) => {
 });
 
 // ========================== Jova Command ====================================================== //
-bot.registerCommand('jova', (msg, args) => {
+bot.registerCommand('Jova', (msg, args) => {
     bot.createMessage(msg.channel.id, 'Who is <@78694002332803072>? Does <@78694002332803072> is gay?');
 
     ioTools.incrementCommandUse('jova');
@@ -730,7 +730,7 @@ bot.on("ready", () => {
 });
 
 // ========================== Git Command ======================================================= //
-bot.registerCommand('git', (msg, args) => {
+bot.registerCommand('Git', (msg, args) => {
     bot.createMessage(msg.channel.id, 'You can find the git repo for Tron here: https://github.com/Alcha/Tron');
 
     ioTools.incrementCommandUse('git');
@@ -742,7 +742,7 @@ bot.registerCommand('git', (msg, args) => {
 });
 
 // ========================== Blush Command ===================================================== //
-bot.registerCommand('blush', (msg, args) => {
+bot.registerCommand('Blush', (msg, args) => {
     reactions.pickBlushImage((blushImage) => {
         bot.createMessage(msg.channel.id, '', {
             file: blushImage,
@@ -757,7 +757,7 @@ bot.registerCommand('blush', (msg, args) => {
 });
 
 // ========================== Rawr Command ====================================================== //
-bot.registerCommand('rawr', (msg, args) => {
+bot.registerCommand('Rawr', (msg, args) => {
     bot.createMessage(msg.channel.id, {
         embed: {
             image: {
@@ -768,13 +768,12 @@ bot.registerCommand('rawr', (msg, args) => {
 
     ioTools.incrementCommandUse('rawr');
 }, {
-    aliases: ['Rawr', 'RAWR'],
     caseInsensitive: true,
     description: 'Displays a random rawr gif.'
 });
 
 // ========================== Rekt Command ====================================================== //
-bot.registerCommand('rekt', (msg, args) => {
+bot.registerCommand('Rekt', (msg, args) => {
     reactions.pickRektImage((rektImage) => {
         bot.createMessage(msg.channel.id, '', {
             file: rektImage,
@@ -784,13 +783,12 @@ bot.registerCommand('rekt', (msg, args) => {
 
     ioTools.incrementCommandUse('rekt');
 }, {
-    aliases: ['Rekt', 'REKT'],
     caseInsensitive: true,
     description: 'Displays a random rekt gif.'
 });
 
 // ========================== Trump Commands ==================================================== //
-let trumpCmd = bot.registerCommand('trump', (msg, args) => {
+let trumpCmd = bot.registerCommand('Trump', (msg, args) => {
     if (args.length === 0) {
         return "Invalid input, arguments required. Try `+trump fake` or `+trump wrong`.";
     }
@@ -798,7 +796,7 @@ let trumpCmd = bot.registerCommand('trump', (msg, args) => {
     caseInsensitive: true
 });
 
-trumpCmd.registerSubcommand('fake', (msg, args) => {
+trumpCmd.registerSubcommand('Fake', (msg, args) => {
     ioTools.getImage('/trump/fake.gif', (img) => {
         bot.createMessage(msg.channel.id, '', {
             file: img,
@@ -808,11 +806,11 @@ trumpCmd.registerSubcommand('fake', (msg, args) => {
 
     ioTools.incrementCommandUse('trump-fake');
 }, {
-    aliases: ['cnn'],
+    aliases: ['CNN'],
     caseInsensitive: true
 });
 
-trumpCmd.registerSubcommand('wrong', (msg, args) => {
+trumpCmd.registerSubcommand('Wrong', (msg, args) => {
     ioTools.getImage('/trump/wrong.gif', (img) => {
         bot.createMessage(msg.channel.id, '', {
             file: img,
@@ -826,7 +824,7 @@ trumpCmd.registerSubcommand('wrong', (msg, args) => {
 });
 
 // ========================== Add Role Command ================================================== //
-bot.registerCommand('addr', (msg, args) => {
+bot.registerCommand('AddR', (msg, args) => {
     if (msg.channel.guild != null) {
         if (tools.memberIsMod(msg)) {
             let comparison = tools.concatArgs(args);
@@ -846,13 +844,13 @@ bot.registerCommand('addr', (msg, args) => {
         }
     }
 }, {
-    aliases: ['addrole', 'plusrole'],
+    aliases: ['AddRole', 'PlusRole'],
     caseInsensitive: true,
     description: 'Add a role for users to gain access to a role.'
 });
 
 // ========================== List Roles Command ================================================ //
-bot.registerCommand('listr', (msg, args) => {
+bot.registerCommand('ListR', (msg, args) => {
     let message = "List of currently available roles:\n";
 
     roleNames.forEach((curr, index, arr) => {
@@ -928,7 +926,7 @@ bot.registerCommand('Ship', (msg, args) => {
 });
 
 // ========================== Leave Role Command ================================================ //
-bot.registerCommand('leaver', (msg, args) => {
+bot.registerCommand('LeaveR', (msg, args) => {
     let comparison = tools.concatArgs(args);
 
     if (msg.channel.guild != null) {
@@ -956,7 +954,7 @@ bot.registerCommand('leaver', (msg, args) => {
 });
 
 // ========================== Join Role Command ================================================= //
-bot.registerCommand('joinr', (msg, args) => {
+bot.registerCommand('JoinR', (msg, args) => {
     let comparison = tools.concatArgs(args);
 
     if (msg.channel.guild != undefined) {
@@ -984,21 +982,25 @@ bot.registerCommand('joinr', (msg, args) => {
 });
 
 // ========================== List Peeps (Not for public) ======================================= //
-bot.registerCommand('listPeeps', (msg, args) => {
+bot.registerCommand('ListPeeps', (msg, args) => {
     if (msg.author.id == config.owner) {
         if (args[0] != null) {}
     }
+}, {
+    caseInsensitive: true
 });
 
 // ========================== Exhentai Command ====================================================== //
-bot.registerCommand('exhentai', (msg, args) => {
+bot.registerCommand('Exhentai', (msg, args) => {
     if (msg.channel.id != undefined) {
         bot.createMessage(msg.channel.id, tools.getExhentaiCookies().toString());
     }
+}, {
+    caseInsensitive: true
 });
 
 // ========================== Utah Command ====================================================== //
-bot.registerCommand('utah', (msg, args) => {
+bot.registerCommand('Utah', (msg, args) => {
     if (msg.channel.guild != undefined) {
         if (msg.channel.guild.id == 254496813552238594) {
             bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:256668458480041985>");
@@ -1018,7 +1020,7 @@ bot.registerCommand('utah', (msg, args) => {
 });
 
 // ========================== Alex Command ====================================================== //
-bot.registerCommand('alex', (msg, args) => {
+bot.registerCommand('Alex', (msg, args) => {
     if (msg.channel.guild != undefined) {
         if (msg.channel.guild.id == 254496813552238594) {
             bot.createMessage(msg.channel.id, "<@!191316261299290112> 🖕")
