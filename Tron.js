@@ -205,7 +205,7 @@ bot.registerCommand('kiss', (msg, args) => {
                 name: 'Kiss.gif'
             });
         }, args[0]);
-    } else {
+    } else if (msg.mentions.length > 0) {
         reactions.pickKissImage((img) => {
             let user = msg.mentions[0].username;
             let message = "**" + user + "**, you've been kissed by **" + msg.author.username + "**. :kiss:";
@@ -215,6 +215,8 @@ bot.registerCommand('kiss', (msg, args) => {
                 name: 'Kiss.gif'
             });
         });
+    } else {
+        bot.createMessage(msg.channel.id, "Please make sure to mention one or more users in order to use this command.");
     }
 
     ioTools.incrementCommandUse('kiss');
