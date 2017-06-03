@@ -59,6 +59,7 @@ giveawayBot.login(config.token).then(() => {
     throw e;
 });
 
+// ========================== Dreamy Command ==================================================== //
 bot.registerCommand('dreamy', (msg, args) => {
     return "<@142410361247760384> :underage:"
 }, {
