@@ -10,6 +10,9 @@ const ioTools = new IOTools();
 /** Stores images for the Dance command */
 let danceImages = []
 
+/** Stores images for the Punch command */
+let punchImages = []
+
 /** Stores images for the Confused command */
 let confusedImages = []
 
@@ -95,6 +98,29 @@ class Reactions {
             }
         }
     }
+
+    pickPunchImage(callback, imgIndex) {
+        if (punchImages.length == 0) {
+            ioTools.getImages('punch', (images) => {
+                punchImages = punchImages.concat(images);
+
+                if (imgIndex < punchImages.length) {
+                    callback(punchImages[imgIndex]);
+                } else {
+                    let random = tools.getRandom(9, punchImages.length);
+
+                    callback(punchImages[random]);
+                }
+            });
+        } else if (imgIndex < punchImages.length) {
+            callback(punchImages[imgIndex]);
+        } else {
+            let random = tools.getRandom(0, punchImages.length);
+
+            callback(punchImages[random]);
+        }
+    }
+
 
     pickKissImage(callback, imgIndex) {
         // If images aren't already stored, pull them from storage

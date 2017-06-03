@@ -647,6 +647,38 @@ bot.registerCommand('kill', (msg, args) => {
     fullDescription: 'Displays a random killing reaction gif and the name of the individual mentioned.'
 });
 
+// ========================== Punch Command ===================================================== //
+bot.registerCommand('punch', (msg, args) => {
+    if (args.length == 2 && !isNaN(parseInt(args[0]))) {
+        reactions.pickPunchImage((img) => {
+            let user = msg.mentions[0].username;
+            let message = "**" + user + "**, you've been punched by **" + msg.author.username + "**. :punch:";
+
+            bot.createMessage(msg.channel.id, message, {
+                file: img,
+                name: 'Punch.gif'
+            });
+        }, args[0]);
+    } else {
+        reactions.pickPunchImage((img) => {
+            let user = msg.mentions[0].username;
+            let message = "**" + user + "**, you've been punched by **" + msg.author.username + "**. :punch:"
+
+            bot.createMessage(msg.channel.id, message, {
+                file: img,
+                name: 'Punch.gif'
+            });
+        });
+    }
+
+    ioTools.incrementCommandUse('punch');
+}, {
+    aliases: ['punches'],
+    caseInsensitive: true,
+    description: 'Displays a random punching gif.',
+    fullDescription: 'Displays a random punching reaction gif and the name of the individual mentioned.'
+});
+
 // ========================== Confused Command ================================================== //
 bot.registerCommand('confused', (msg, args) => {
     reactions.pickConfusedImage((img) => {
