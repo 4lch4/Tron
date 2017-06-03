@@ -70,7 +70,7 @@ bot.registerCommand('dreamy', (msg, args) => {
 
 // ========================== Change Command ==================================================== //
 bot.registerCommand('change', (msg, args) => {
-    // Verify user is part of admins
+    //Verify user is part of admins
     if (config.adminids.indexOf(msg.author.id) > -1) {
         if (args[0] == 'notification') {
             config.notificationChannel = msg.channel.id;
@@ -619,6 +619,20 @@ bot.registerCommand('confused', (msg, args) => {
         });
 
         ioTools.incrementCommandUse('confused');
+    });
+}, {
+    caseInsensitive: true
+});
+
+// ========================== Dance Command ===================================================== //
+bot.registerCommand('dance', (msg, args) => {
+    reactions.pickDanceImage((img) => {
+        bot.createMessage(msg.channel.id, '', {
+            file: img,
+            name: 'Dance.gif'
+        });
+
+        ioTools.incrementCommandUse('dance');
     });
 }, {
     caseInsensitive: true

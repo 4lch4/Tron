@@ -7,6 +7,9 @@ const Tools = require('../util/Tools.js');
 const tools = new Tools();
 const ioTools = new IOTools();
 
+/** Stores images for the Dance command */
+let danceImages = []
+
 /** Stores images for the Confused command */
 let confusedImages = []
 
@@ -90,6 +93,22 @@ class Reactions {
             let random = tools.getRandom(0, kissImages.length);
 
             callback(kissImages[random]);
+        }
+    }
+
+pickDanceImage(callback) {
+        if (danceImages.length == 0) {
+            ioTools.getImages('dance', (images) => {
+                let random = tools.getRandom(0, images.length);
+
+                danceImages = danceImages.concat(images);
+
+                callback(danceImages[random]);
+            });
+        } else {
+            let random = tools.getRandom(0, danceImages.length);
+
+            callback(danceImages[random]);
         }
     }
 
