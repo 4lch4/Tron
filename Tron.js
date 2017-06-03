@@ -958,6 +958,13 @@ bot.registerCommand('jova', (msg, args) => {
     ioTools.incrementCommandUse('jova');
 });
 
+// ========================== Boo Command ======================================================= //
+bot.registerCommand('boo', (msg, args) => {
+    bot.createMessage(msg.channel.id, '<@160372598734061568> is <@219270060936527873>\'s boo. :heart:');
+
+    ioTools.incrementCommandUse('boo');
+});
+
 // ========================== onReady Event Handler ============================================= //
 bot.on("ready", () => {
     console.log('Tron is ready!');
