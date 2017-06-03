@@ -186,6 +186,43 @@ bot.registerCommand('ping', (msg, args) => {
     fullDescription: 'Used to check if the bot is up.'
 });
 
+// ========================== Slap Command ====================================================== //
+bot.registerCommand('slap', (msg, args) => {
+    if (args.length == 2 && !isNaN(parseInt(args[0]))) {
+        reactions.pickSlapImage((img) => {
+            let message = '';
+            if (msg.mentions.length > 0) {
+                message = "**" + msg.mentions[0].username + "**, you've been slapped by **" + msg.author.username + "**.";
+            }
+
+            bot.createMessage(msg.channel.id, message, {
+                file: img,
+                name: 'Slap.gif'
+            });
+        }, args[0]);
+    } else if (msg.mentions.length > 0) {
+        reactions.pickSlapImage((img) => {
+            let message = '';
+            if (msg.mentions.length > 0) {
+                message = "**" + msg.mentions[0].username + "**, you've been slapped by **" + msg.author.username + "**.";
+            }
+
+            bot.createMessage(msg.channel.id, message, {
+                file: img,
+                name: 'Slap.gif'
+            });
+        });
+    }
+}, {
+    aliases: ['slaps'],
+    argsRequired: true,
+    caseInsensitive: true,
+    description: 'Displays a random slap gif.',
+    fullDescription: 'Displays a random slap gif and the name of the user you mention.',
+    guildOnly: true,
+    usage: "@user e.g. `+slap @Alcha#2621`"
+});
+
 // ========================== Kiss Command ====================================================== //
 bot.registerCommand('kiss', (msg, args) => {
     /**

@@ -49,6 +49,9 @@ let kickImages = [];
 /** Stores images for the Love command */
 let loveImages = [];
 
+/** Stores images for the Slap command */
+let slapImages = [];
+
 /** Stores images for the Rekt command */
 let rektImages = [];
 
@@ -60,9 +63,34 @@ let cryImages = [];
 
 /** Stores images for the Pat command */
 let patImages = [];
+
 class Reactions {
     constructor(options) {
         this.options = options || {};
+    }
+
+    pickSlapImage(callback, imgIndex) {
+        if (slapImages.length == 0) {
+            ioTools.getImages('slap', (images) => {
+                slapImages = slapImages.concat(images);
+
+                if (imgIndex < slapImages.length) {
+                    callback(slapImages[imgIndex]);
+                } else {
+                    let random = tools.getRandom(0, slapImages.length);
+
+                    callback(slapImages[random]);
+                }
+            });
+        } else {
+            if (imgIndex < slapImages.length) {
+                callback(slapImages[imgIndex]);
+            } else {
+                let random = tools.getRandom(0, slapImages.length);
+
+                callback(slapImages[random]);
+            }
+        }
     }
 
     pickKissImage(callback, imgIndex) {
