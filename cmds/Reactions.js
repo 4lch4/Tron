@@ -150,7 +150,7 @@ class Reactions {
         }
     }
 
-pickDanceImage(callback) {
+    pickDanceImage(callback) {
         if (danceImages.length == 0) {
             ioTools.getImages('dance', (images) => {
                 let random = tools.getRandom(0, images.length);

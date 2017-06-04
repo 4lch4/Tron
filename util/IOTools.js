@@ -125,9 +125,7 @@ class IOTools {
             path = "/root/tron/images/" + path;
         }
 
-        fs.readFile(path, (filename, content) => {
-            onComplete(content);
-        });
+        onComplete(fs.readFileSync(path, 'utf-8'));
     }
 
     getImages(dirnameIn, onComplete) {

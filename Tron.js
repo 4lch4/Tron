@@ -22,14 +22,17 @@ const bot = new Eris.CommandClient(config.token, {}, {
 });
 
 // ========================== External Cmd Files ================================================ //
-const Ship = require('./cmds/Ship.js');
+const Ship = require('./cmds/Ship');
 const ship = new Ship();
 
-const Reactions = require('./cmds/Reactions.js');
-const reactions = new Reactions();
+const Reactions = require('./cmds/Reactions');
+const reactions = new Reactions(bot);
 
-const Marriage = require('./cmds/Marriage.js');
+const Marriage = require('./cmds/Marriage');
 const marriage = new Marriage();
+
+const Lewds = require('./cmds/Lewds');
+const lewds = new Lewds();
 
 // ========================== RSS Reader ======================================================== //
 const RSSReader = require('./util/RSSReader.js');
@@ -143,6 +146,50 @@ bot.registerCommand('love', (msg, args) => {
     caseInsensitive: true,
     description: 'Displays random love gif.',
     fullDescription: 'Displays a random love gif and the name of the person you mention.'
+});
+
+// ========================== Send Lewd ========================================================= //
+bot.registerCommand('newd', (msg, args) => {
+    if (msg.channel.guild == undefined) {
+        // Private message channel
+        // TODO: Added private message support.
+    } else {
+        // Guild channel
+        if (msg.mentions != undefined && msg.mentions.length > 0) {
+            lewds.getButt((butt, filename) => {
+                msg.mentions.forEach((mention, index, array) => {
+                    mention.getDMChannel().then((channel) => {
+                        bot.createMessage(channel.id, '', {
+                            file: butt,
+                            name: filename
+                        }).then((message) => {
+                            // Process message?
+                            console.log("Message sent.");
+                        }).catch((err) => {
+                            if (err.code == 20009) {
+                                bot.createMessage(channel.id, "Unfortunately, it appears you can't receive explicit content. Please update your security settings and try again.");
+                            }
+                        });
+                    });
+                });
+
+                if (msg.mentions.length == 1) {
+                    bot.createMessage(msg.channel.id, "Your message has most likely been sent. :wink:");
+                } else {
+                    bot.createMessage(msg.channel.id, "Your messages have most likely been sent. :wink:");
+                }
+
+                ioTools.incrementCommandUse('newd');
+            });
+        }
+    }
+}, {
+    aliases: ['sendnude', 'sendnudes', 'lewd', 'lewds', 'nudes', 'snude', 'sn', 'slideintodms', 'sendnoods', 'sendnoots'],
+    caseInsensitive: true,
+    deleteCommand: true,
+    description: "For those spicy nudes you've been wanting ( . Y . )",
+    fullDescription: ':lenny:',
+    usage: "[@users] e.g. `+sendnudes @Alcha#2621 @MissBella#6480`"
 });
 
 // ========================== Invite Command ==================================================== //

@@ -302,29 +302,6 @@ class Tools {
             });
         });
     }
-
-    getImageFromUrl(url, callback) {
-        var http = require('http');
-        var Canvas = require('canvas');
-        http.get(url).on('response', (res) => {
-                // http://stackoverflow.com/a/14269536/478603
-
-                var chunks = [];
-                res.on('data', (data) => {
-                    chunks.push(data);
-                })
-
-                res.on('end', () => {
-                    var img = new Canvas.Image();
-                    img.src = Buffer.concat(chunks);
-                    callback(img);
-                })
-
-            })
-            .on('error', (err) => {
-                callback(err);
-            });
-    }
 }
 
 module.exports = Tools;
