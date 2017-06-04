@@ -167,7 +167,7 @@ bot.registerCommand('newd', (msg, args) => {
                             console.log("Message sent.");
                         }).catch((err) => {
                             if (err.code == 20009) {
-                                bot.createMessage(channel.id, "Unfortunately, it appears you can't receive explicit content. Please update your security settings and try again.");
+                                bot.createMessage(channel.id, "Unfortunately, it appears you can't receive explicit content. Please add Tron to your friends and try again.");
                             }
                         });
                     });
