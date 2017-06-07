@@ -1087,6 +1087,9 @@ bot.registerCommand('rekt', (msg, args) => {
 });
 
 // ========================== Trump Commands ==================================================== //
+let trumpFake = null;
+let trumpWrong = null;
+
 let trumpCmd = bot.registerCommand('trump', (msg, args) => {
     if (args.length === 0) {
         return "Invalid input, arguments required. Try `+trump fake` or `+trump wrong`.";
@@ -1096,12 +1099,20 @@ let trumpCmd = bot.registerCommand('trump', (msg, args) => {
 });
 
 trumpCmd.registerSubcommand('fake', (msg, args) => {
-    ioTools.getImage('/trump/fake.gif', (img) => {
+    if (trumpWrong == null) {
+        ioTools.getImage('trump/fake.gif', (img) => {
+            trumpFake = img;
+            bot.createMessage(msg.channel.id, '', {
+                file: img,
+                name: 'Fake.gif'
+            });
+        });
+    } else {
         bot.createMessage(msg.channel.id, '', {
-            file: img,
+            file: trumpFake,
             name: 'Fake.gif'
         });
-    });
+    }
 
     ioTools.incrementCommandUse('trump-fake');
 }, {
@@ -1110,12 +1121,20 @@ trumpCmd.registerSubcommand('fake', (msg, args) => {
 });
 
 trumpCmd.registerSubcommand('wrong', (msg, args) => {
-    ioTools.getImage('/trump/wrong.gif', (img) => {
+    if (trumpWrong == null) {
+        ioTools.getImage('trump/wrong.gif', (img) => {
+            trumpWrong = img;
+            bot.createMessage(msg.channel.id, '', {
+                file: img,
+                name: 'Wrong.gif'
+            });
+        });
+    } else {
         bot.createMessage(msg.channel.id, '', {
-            file: img,
+            file: trumpWrong,
             name: 'Wrong.gif'
         });
-    });
+    }
 
     ioTools.incrementCommandUse('trump-wrong');
 }, {

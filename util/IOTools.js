@@ -121,11 +121,17 @@ class IOTools {
     }
 
     getImage(path, onComplete) {
-        if (!path.startsWith("/root/tron")) {
+        if (!path.startsWith("/root/tron/")) {
             path = "/root/tron/images/" + path;
         }
 
-        onComplete(fs.readFileSync(path, 'utf-8'));
+        fs.readFile(path, (err, content) => {
+            if (err) {
+                throw err;
+            }
+
+            onComplete(content);
+        })
     }
 
     getImages(dirnameIn, onComplete) {
@@ -182,7 +188,7 @@ class IOTools {
                     if (processNum == array.length) {
                         onComplete();
                     }
-                })
+                });
             });
         });
     }
