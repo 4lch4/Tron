@@ -274,10 +274,9 @@ bot.registerCommand('slap', (msg, args) => {
 let helpText = require('./util/HelpText.json');
 
 bot.unregisterCommand('help');
+
 let helpCmd = bot.registerCommand('help', (msg, args) => {
-    if (args.length == 0) {
-        bot.createMessage(msg.channel.id, helpText.base.join(''));
-    }
+        return helpText.base.join('');
 }, {
     aliases: ['halp', 'helps', 'halps'],
     argsRequired: false,
@@ -286,16 +285,12 @@ let helpCmd = bot.registerCommand('help', (msg, args) => {
 });
 
 let changeHelpCmd = helpCmd.registerSubcommand('change', (msg, args) => {
-    if (args.length == 0) {
-        bot.createMessage(msg.channel.id, helpText.features.change.join(''));
-    }
+        return helpText.features.change.join('');
 });
 
 helpCmd.registerSubcommand('quote', (msg, args) => {
-    if (args.length == 0) {
-        bot.createMessage(msg.channel.id, helpText.features.quote.join(''));
-    }
-})
+        return helpText.features.quote.join('');
+});
 
 // ========================== Kiss Command ====================================================== //
 bot.registerCommand('kiss', (msg, args) => {
