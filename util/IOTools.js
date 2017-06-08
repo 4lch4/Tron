@@ -131,7 +131,7 @@ class IOTools {
             }
 
             onComplete(content);
-        })
+        });
     }
 
     getImages(dirnameIn, onComplete) {

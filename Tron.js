@@ -270,6 +270,23 @@ bot.registerCommand('slap', (msg, args) => {
     usage: "@user e.g. `+slap @Alcha#2621`"
 });
 
+// ========================= Suggestion Command ================================================= //
+bot.registerCommand('suggestion', (msg, args) => {
+    let sqlQuery = "INSERT INTO SUGGESTIONS (AUTHOR_ID, AUTHOR_USERNAME, SUGGESTION_TEXT) VALUES " +
+        "(\"" + msg.author.id + "\", \"" + msg.author.username + "\", \"" + args.join(' ') + "\");";
+
+    ioTools.executeSql(sqlQuery);
+
+    return "Thank you for your suggestion!";
+}, {
+    argsRequired: true,
+    caseInsensitive: true,
+    description: 'Provide a suggestion to the bot authors.',
+    fullDescription: 'Provide a suggestion for a command or new feature you would like to see in Tron.',
+    guildOnly: false,
+    usage: "`+suggestion Give me all your money.`"
+});
+
 // ========================== Help Commands ===================================================== //
 /*let helpText = require('./util/HelpText.json');
 
@@ -285,7 +302,7 @@ let helpCmd = bot.registerCommand('help', (msg, args) => {
 });
 
 let changeHelpCmd = helpCmd.registerSubcommand('change', (msg, args) => {
-    return helpText.features.change.join('');
+    return helpText.features.change.base.join('');
 });
 
 changeHelpCmd.registerSubcommand('notification', (msg, args) => {
