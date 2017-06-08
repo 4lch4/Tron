@@ -270,6 +270,33 @@ bot.registerCommand('slap', (msg, args) => {
     usage: "@user e.g. `+slap @Alcha#2621`"
 });
 
+// ========================== Help Command ====================================================== //
+let helpText = require('./util/HelpText.json');
+
+bot.unregisterCommand('help');
+let helpCmd = bot.registerCommand('help', (msg, args) => {
+    if (args.length == 0) {
+        bot.createMessage(msg.channel.id, helpText.base.join(''));
+    }
+}, {
+    aliases: ['halp', 'helps', 'halps'],
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
+});
+
+let changeHelpCmd = helpCmd.registerSubcommand('change', (msg, args) => {
+    if (args.length == 0) {
+        bot.createMessage(msg.channel.id, helpText.features.change.join(''));
+    }
+});
+
+helpCmd.registerSubcommand('quote', (msg, args) => {
+    if (args.length == 0) {
+        bot.createMessage(msg.channel.id, helpText.features.quote.join(''));
+    }
+})
+
 // ========================== Kiss Command ====================================================== //
 bot.registerCommand('kiss', (msg, args) => {
     /**
