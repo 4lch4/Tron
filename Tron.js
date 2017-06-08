@@ -1546,7 +1546,12 @@ bot.on("messageCreate", (msg) => {
         } else if (tools.messageIs(msg, 'hello')) {
             bot.createMessage(msg.channel.id, 'New fone who dis?')
         } else if (tools.messageIs(msg, 'bye')) {
-            bot.createMessage(msg.channel.id, 'https://cdn.discordapp.com/attachments/238466589362487306/258896018354077697/byefelicia.png')
+            ioTools.getImage('bye.png', (img) => {
+                bot.createMessage(msg.channel.id, '', {
+                    file: img,
+                    name: 'Bye.png'
+                });
+            });
         } else if (tools.messageIs(msg, 'god damn')) {
             bot.createMessage(msg.channel.id, "https://i.imgur.com/ULUZMtV.gifv")
         }
