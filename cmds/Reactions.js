@@ -55,9 +55,6 @@ let kickImages = [];
 /** Stores images for the Love command */
 let loveImages = [];
 
-/** Stores images for the Slap command */
-let slapImages = [];
-
 /** Stores images for the Rekt command */
 let rektImages = [];
 
@@ -69,7 +66,6 @@ let cryImages = [];
 
 /** Stores images for the Pat command */
 let patImages = [];
-
 class Reactions {
     constructor(options) {
         this.options = options || {};
@@ -120,7 +116,6 @@ class Reactions {
             callback(punchImages[random]);
         }
     }
-
 
     pickKissImage(callback, imgIndex) {
         // If images aren't already stored, pull them from storage
