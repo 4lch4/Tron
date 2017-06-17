@@ -62,13 +62,21 @@ giveawayBot.login(config.token).then(() => {
     throw e;
 });
 
-// ========================== Dreamy Command ==================================================== //
+// ========================== Dreamy Command (Requested by Dreamy) ==================================================== //
 bot.registerCommand('dreamy', (msg, args) => {
-    return "<@142410361247760384> :underage:"
+    reactions.pickDreamyImage((dreamyImage) => {
+        bot.createMessage(msg.channel.id, '', {
+            file: dreamyImage,
+            name: 'Dreamy.gif'
+        });
+    });
+
+    ioTools.incrementCommandUse('dreamy');
 }, {
+    aliases: ['dreamy'],
     caseInsensitive: true,
-    description: 'A fun command for dreamy.',
-    guildOnly: true
+    description: 'Displays random dreamy gif.',
+    fullDescription: 'Displays a random dreamy gif.'
 });
 
 // ========================== Change Command ==================================================== //
@@ -288,7 +296,7 @@ bot.registerCommand('suggestion', (msg, args) => {
 });
 
 // ========================== Help Commands ===================================================== //
-/*let helpText = require('./util/HelpText.json');
+let helpText = require('./util/HelpText.json');
 
 bot.unregisterCommand('help');
 
@@ -437,7 +445,6 @@ helpCmd.registerSubcommand('jova', (msg, args) => {
     return helpText.features.jova.join('');
 });
 
-
 let marryHelpCmd = helpCmd.registerSubcommand('marry', (msg, args) => {
     return helpText.actions.marry.base.join('');
 });
@@ -454,7 +461,7 @@ marryHelpCmd.registerSubcommand('deny', (msg, args) => {
     return helpText.actions.marry.accept.join('');
 });
 
-let divorceHelpCmd = helpCmd.registerSubcommand('marry', (msg, args) => {
+let divorceHelpCmd = helpCmd.registerSubcommand('divorce', (msg, args) => {
     return helpText.actions.divorce.base.join('');
 });
 
@@ -468,7 +475,7 @@ divorceHelpCmd.registerSubcommand('accept', (msg, args) => {
 
 divorceHelpCmd.registerSubcommand('deny', (msg, args) => {
     return helpText.actions.divorce.accept.join('');
-});*/
+});
 
 // ========================== Kiss Command ====================================================== //
 bot.registerCommand('kiss', (msg, args) => {
@@ -1034,12 +1041,16 @@ bot.registerCommand('killme', (msg, args) => {
 // ========================== Rate Waifu Command (Requested by Bella and Kayla) ================= //
 bot.registerCommand('ratewaifu', (msg, args) => {
     if (msg.channel.guild != undefined && msg.mentions.length == 1) {
+        ioTools.incrementCommandUse('rate');
+
         if (msg.mentions[0].id == 219270060936527873) {
             // Alcha
             return "**" + msg.mentions[0].username + "**-senpai, I'd rate you 11/10. \n\n_notice me_";
         } else if (msg.mentions[0].id == 142092834260910080) {
+            // Snow/Daddy Yoana
             return "**" + msg.mentions[0].username + "**, I'd rate you -69/10 waifu."
         } else if (msg.mentions[0].id == 139474184089632769) {
+            // Utah
             return "**" + msg.mentions[0].username + "**, I'd rate you -∞/10 waifu."
         } else {
             let random = tools.getRandom(0, 11);

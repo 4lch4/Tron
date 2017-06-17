@@ -7,6 +7,9 @@ const Tools = require('../util/Tools.js');
 const tools = new Tools();
 const ioTools = new IOTools();
 
+/** Stores images for the Dreamy command */
+let dreamyImages = []
+
 /** Stores images for the Dance command */
 let danceImages = []
 
@@ -71,6 +74,30 @@ class Reactions {
         this.options = options || {};
     }
 
+    pickDreamyImage(callback, imgIndex) {
+        if (dreamyImages.length == 0) {
+            ioTools.getImages('dreamy', (images) => {
+                dreamyImages = dreamyImages.concat(images);
+
+                if (imgIndex < dreamyImages.length) {
+                    callback(dreamyImages[imgIndex]);
+                } else {
+                    let random = tools.getRandom(0, dreamyImages.length);
+
+                    callback(dreamyImages[random]);
+                }
+            });
+        } else {
+            if (imgIndex < dreamyImages.length) {
+                callback(dreamyImages[imgIndex]);
+            } else {
+                let random = tools.getRandom(0, dreamyImages.length);
+
+                callback(dreamyImages[random]);
+            }
+        }
+    }
+    
     pickSlapImage(callback, imgIndex) {
         if (slapImages.length == 0) {
             ioTools.getImages('slap', (images) => {
