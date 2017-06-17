@@ -7,6 +7,9 @@ const Tools = require('../util/Tools.js');
 const tools = new Tools();
 const ioTools = new IOTools();
 
+/** Stores images for the Nobulli command */
+let nobulliImages = []
+
 /** Stores images for the Dreamy command */
 let dreamyImages = []
 
@@ -77,6 +80,29 @@ class Reactions {
         this.options = options || {};
     }
 
+    pickNobulliImage(callback, imgIndex) {
+        if (nobulliImages.length == 0) {
+            ioTools.getImages('nobulli', (images) => {
+                nobulliImages = nobulliImages.concat(images);
+
+                if (imgIndex < nobulliImages.length) {
+                    callback(nobulliImages[imgIndex]);
+                } else {
+                    let random = tools.getRandom(0, nobulliImages.length);
+
+                    callback(nobulliImages[random]);
+                }
+            });
+        } else {
+            if (imgIndex < nobulliImages.length) {
+                callback(nobulliImages[imgIndex]);
+            } else {
+                let random = tools.getRandom(0, nobulliImages.length);
+
+                callback(nobulliImages[random]);
+            }
+        }
+    }
     pickDreamyImage(callback, imgIndex) {
         if (dreamyImages.length == 0) {
             ioTools.getImages('dreamy', (images) => {

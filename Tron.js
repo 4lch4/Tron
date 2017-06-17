@@ -62,6 +62,44 @@ giveawayBot.login(config.token).then(() => {
     throw e;
 });
 
+// ========================== Nobulli Command (Compromise on request from Onyx) ====================================================== //
+bot.registerCommand('nobulli', (msg, args) => {
+    if (args.length == 2 && !isNaN(parseInt(args[0]))) {
+        reactions.pickNobulliImage((img) => {
+            let message = '';
+            if (msg.mentions.length > 0) {
+                message = "**" + msg.mentions[0].username + "**, don't you dare bulli **" + msg.author.username + "**!";
+            }
+
+            bot.createMessage(msg.channel.id, message, {
+                file: img,
+                name: 'Nobulli.gif'
+            });
+        }, args[0]);
+    } else if (msg.mentions.length > 0) {
+        reactions.pickNobulliImage((img) => {
+            let message = '';
+            if (msg.mentions.length > 0) {
+                message = "**" + msg.mentions[0].username + "**, don't you dare bulli **" + msg.author.username + "**!";
+            }
+
+            bot.createMessage(msg.channel.id, message, {
+                file: img,
+                name: 'Nobulli.gif'
+            });
+        });
+    }
+    ioTools.incrementCommandUse('nobulli');
+}, {
+    aliases: ['bulli', 'bully', 'nobully'],
+    argsRequired: true,
+    caseInsensitive: true,
+    description: 'Displays a random nobulli gif.',
+    fullDescription: 'Displays a random nobulli gif and the name of the user you mention.',
+    guildOnly: true,
+    usage: "@user e.g. `+nobulli @Alcha#2621`"
+});
+
 // ========================== Dreamy Command (Requested by Dreamy) ==================================================== //
 bot.registerCommand('dreamy', (msg, args) => {
     reactions.pickDreamyImage((dreamyImage) => {
