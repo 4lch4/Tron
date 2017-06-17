@@ -10,6 +10,9 @@ const ioTools = new IOTools();
 /** Stores images for the Dreamy command */
 let dreamyImages = []
 
+/** Stores images for the Slap command */
+let slapImages = []
+
 /** Stores images for the Dance command */
 let danceImages = []
 
