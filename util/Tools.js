@@ -131,6 +131,10 @@ class Tools {
         return moment().tz(config.defaultTimezone).format('MM-DD-YYYY_HH:mm:ss')
     }
 
+    getCurrDateTimestamp() {
+        return moment().toDate();
+    }
+
     upperFirstC(string) {
         let temp = string.toLowerCase();
         return temp.charAt(0).toUpperCase() + temp.slice(1);
