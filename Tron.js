@@ -62,6 +62,19 @@ giveawayBot.login(config.token).then(() => {
     throw e;
 });
 
+// ========================== Admin Commands ==================================================== //
+let adminCmd = bot.registerCommand('admin', (msg, args) => {
+
+});
+
+adminCmd.registerSubcommand('list', (msg, args) => {
+    if (config.adminids.includes(msg.author.id) && args.length == 1) {
+        if (args[0].toLowerCase() == "servers") {
+            return 'Server count = ' + bot.guilds.size;
+        }
+    }
+});
+
 // ========================== Cats Command (Requested by Neko) ================================== //
 bot.registerCommand('cat', (msg, args) => {
     if (!isNaN(parseInt(args[0]))) {
