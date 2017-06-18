@@ -120,7 +120,7 @@ class Reactions {
                 roseFilenames = filenames;
 
                 if (imgIndex < roseImages.length) {
-                    callback(roseImages[imgIndex]);
+                    callback(roseImages[imgIndex], roseFilenames[imgIndex]);
                 } else {
                     let random = tools.getRandom(0, roseImages.length);
 
@@ -129,7 +129,7 @@ class Reactions {
             });
         } else {
             if (imgIndex < roseImages.length) {
-                callback(roseImages[imgIndex]);
+                callback(roseImages[imgIndex], roseFilenames[imgIndex]);
             } else {
                 let random = tools.getRandom(0, roseImages.length);
 
