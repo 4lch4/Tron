@@ -53,9 +53,6 @@ debug\.log
 
 node_modules/*
 images/*
-\.eslintrc\.json
-
-\.jsbeautifyrc
 
 \.vscode/
 
