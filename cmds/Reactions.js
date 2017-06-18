@@ -7,6 +7,10 @@ const Tools = require('../util/Tools.js');
 const tools = new Tools();
 const ioTools = new IOTools();
 
+/** Stores images for the Cat command */
+let catImages = [];
+let catFilenames = [];
+
 /** Stores images for the Rose command */
 let roseImages = [];
 let roseFilenames = [];
@@ -82,6 +86,31 @@ let patImages = [];
 class Reactions {
     constructor(options) {
         this.options = options || {};
+    }
+
+    pickCatImage(callback, imgIndex) {
+        if (catImages.length == 0) {
+            ioTools.getImages('cats', (images, filenames) => {
+                catImages = catImages.concat(images);
+                catFilenames = filenames;
+
+                if (imgIndex < catImages.length) {
+                    callback(catImages[imgIndex], catFilenames[imgIndex]);
+                } else {
+                    let random = tools.getRandom(0, catImages.length);
+
+                    callback(catImages[random], catFilenames[random]);
+                }
+            });
+        } else {
+            if (imgIndex < catImages.length) {
+                callback(catImages[imgIndex], catFilenames[imgIndex]);
+            } else {
+                let random = tools.getRandom(0, catImages.length);
+
+                callback(catImages[random], catFilenames[random]);
+            }
+        }
     }
 
     pickRoseImage(callback, imgIndex) {

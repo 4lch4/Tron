@@ -62,6 +62,31 @@ giveawayBot.login(config.token).then(() => {
     throw e;
 });
 
+// ========================== Cats Command (Requested by Neko) ================================== //
+bot.registerCommand('cat', (msg, args) => {
+    if (!isNaN(parseInt(args[0]))) {
+        reactions.pickCatImage((img, filename) => {
+            bot.createMessage(msg.channel.id, '', {
+                file: img,
+                name: filename
+            });
+        }, args[0]);
+    } else {
+        reactions.pickCatImage((img, filename) => {
+            bot.createMessage(msg.channel.id, '', {
+                file: img,
+                name: filename
+            });
+        });
+    }
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    description: 'Displays a random cat image or gif.',
+    fullDescription: 'Displays a random cat image or gif that was supplied by Neko.',
+    guildOnly: true,
+});
+
 // ========================== Rose Command (Requested by PrimRose) ============================== //
 bot.registerCommand('rose', (msg, args) => {
     if (!isNaN(parseInt(args[0]))) {
