@@ -66,26 +66,32 @@ giveawayBot.login(config.token).then(() => {
 bot.registerCommand('nobulli', (msg, args) => {
     if (args.length == 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickNobulliImage((img) => {
-            let message = '';
-            if (msg.mentions.length > 0) {
-                message = "**" + msg.mentions[0].username + "**, don't you dare bulli **" + msg.author.username + "**!";
-            }
+            tools.getUsernames(args, bot, (usernames) => {
+                let message = '';
 
-            bot.createMessage(msg.channel.id, message, {
-                file: img,
-                name: 'Nobulli.gif'
+                if (usernames.length == 2) {
+                    message = "**" + usernames[0] + "**, don't you dare bulli **" + usernames[1] + "**!";
+                }
+
+                bot.createMessage(msg.channel.id, message, {
+                    file: img,
+                    name: 'Nobulli.gif'
+                });
             });
         }, args[0]);
     } else if (msg.mentions.length > 0) {
         reactions.pickNobulliImage((img) => {
-            let message = '';
-            if (msg.mentions.length > 0) {
-                message = "**" + msg.mentions[0].username + "**, don't you dare bulli **" + msg.author.username + "**!";
-            }
+            tools.getUsernames(args, bot, (usernames) => {
+                let message = '';
 
-            bot.createMessage(msg.channel.id, message, {
-                file: img,
-                name: 'Nobulli.gif'
+                if (usernames.length == 2) {
+                    message = "**" + usernames[0] + "**, don't you dare bulli **" + usernames[1] + "**!";
+                }
+
+                bot.createMessage(msg.channel.id, message, {
+                    file: img,
+                    name: 'Nobulli.gif'
+                });
             });
         });
     }

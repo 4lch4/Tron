@@ -127,6 +127,37 @@ class Tools {
         });
     }
 
+    /**
+     * Using the provided args variable, if two user ID's are present they are pulled out and the
+     * username is retrieved based on their user ID. The username is added to an array and sent 
+     * through the provided callback.
+     * 
+     * @param {*} args 
+     * @param {*} bot 
+     * @param {*} callback 
+     */
+    getUsernames(args, bot, callback) {
+        if (args.length == 2) {
+            let usernames = [];
+
+            /*
+             The args[0] value is something like <@219270060936527873> so we have to pull out the first two 
+             characters as well as the last one and simply store the numbers between.
+             */
+            let userId1 = args[0].substring(2, args[0].length - 1);
+            let userId2 = args[1].substring(2, args[1].length - 1);
+
+            this.getUsernameFromId(userId1, bot, (username) => {
+                usernames.push(username);
+
+                this.getUsernameFromId(userId2, bot, (username) => {
+                    usernames.push(username);
+                    callback(usernames);
+                });
+            });
+        }
+    }
+
     getFormattedTimestamp() {
         return moment().tz(config.defaultTimezone).format('MM-DD-YYYY_HH:mm:ss')
     }
