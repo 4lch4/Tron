@@ -1,6 +1,6 @@
 {
     "base": ["```markdown\n",
-        "To list more commands from a specific category, use ,help <category>.\n\n",
+        "To list more commands from a specific category, use +help <category>.\n\n",
         "Features\n",
         "--------\n",
         "Change, Quote, Ping, Invite, Stats, RateWaifu, Git, Add Role, List Roles, Leave Role, Join Role, Avatar, Ship, Exhentai\n\n",
