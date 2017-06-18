@@ -79,6 +79,8 @@ bot.registerCommand('cat', (msg, args) => {
             });
         });
     }
+
+    ioTools.incrementCommandUse('cat');
 }, {
     argsRequired: false,
     caseInsensitive: true,
