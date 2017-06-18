@@ -7,26 +7,30 @@ const Tools = require('../util/Tools.js');
 const tools = new Tools();
 const ioTools = new IOTools();
 
+/** Stores images for the Rose command */
+let roseImages = [];
+let roseFilenames = [];
+
 /** Stores images for the Nobulli command */
-let nobulliImages = []
+let noBulliImages = [];
 
 /** Stores images for the Dreamy command */
-let dreamyImages = []
+let dreamyImages = [];
 
 /** Stores images for the Slap command */
-let slapImages = []
+let slapImages = [];
 
 /** Stores images for the Dance command */
-let danceImages = []
+let danceImages = [];
 
 /** Stores images for the Punch command */
-let punchImages = []
+let punchImages = [];
 
 /** Stores images for the Confused command */
-let confusedImages = []
+let confusedImages = [];
 
 /** Stores images for the Pout command */
-let poutImages = []
+let poutImages = [];
 
 /** Stores images for the Vape Nation command */
 let vnImages = [];
@@ -80,26 +84,51 @@ class Reactions {
         this.options = options || {};
     }
 
-    pickNobulliImage(callback, imgIndex) {
-        if (nobulliImages.length == 0) {
-            ioTools.getImages('nobulli', (images) => {
-                nobulliImages = nobulliImages.concat(images);
+    pickRoseImage(callback, imgIndex) {
+        if (roseImages.length == 0) {
+            ioTools.getImages('rose', (images, filenames) => {
+                roseImages = roseImages.concat(images);
+                roseFilenames = filenames;
 
-                if (imgIndex < nobulliImages.length) {
-                    callback(nobulliImages[imgIndex]);
+                if (imgIndex < roseImages.length) {
+                    callback(roseImages[imgIndex]);
                 } else {
-                    let random = tools.getRandom(0, nobulliImages.length);
+                    let random = tools.getRandom(0, roseImages.length);
 
-                    callback(nobulliImages[random]);
+                    callback(roseImages[random], roseFilenames[random]);
                 }
             });
         } else {
-            if (imgIndex < nobulliImages.length) {
-                callback(nobulliImages[imgIndex]);
+            if (imgIndex < roseImages.length) {
+                callback(roseImages[imgIndex]);
             } else {
-                let random = tools.getRandom(0, nobulliImages.length);
+                let random = tools.getRandom(0, roseImages.length);
 
-                callback(nobulliImages[random]);
+                callback(roseImages[random], roseFilenames[random]);
+            }
+        }
+    }
+
+    pickNobulliImage(callback, imgIndex) {
+        if (noBulliImages.length == 0) {
+            ioTools.getImages('nobulli', (images) => {
+                noBulliImages = noBulliImages.concat(images);
+
+                if (imgIndex < noBulliImages.length) {
+                    callback(noBulliImages[imgIndex]);
+                } else {
+                    let random = tools.getRandom(0, noBulliImages.length);
+
+                    callback(noBulliImages[random]);
+                }
+            });
+        } else {
+            if (imgIndex < noBulliImages.length) {
+                callback(noBulliImages[imgIndex]);
+            } else {
+                let random = tools.getRandom(0, noBulliImages.length);
+
+                callback(noBulliImages[random]);
             }
         }
     }
@@ -126,7 +155,7 @@ class Reactions {
             }
         }
     }
-    
+
     pickSlapImage(callback, imgIndex) {
         if (slapImages.length == 0) {
             ioTools.getImages('slap', (images) => {

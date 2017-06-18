@@ -62,7 +62,34 @@ giveawayBot.login(config.token).then(() => {
     throw e;
 });
 
-// ========================== Nobulli Command (Compromise on request from Onyx) ================ //
+// ========================== Rose Command (Requested by PrimRose) ============================== //
+bot.registerCommand('rose', (msg, args) => {
+    if (!isNaN(parseInt(args[0]))) {
+        reactions.pickRoseImage((img, filename) => {
+            bot.createMessage(msg.channel.id, '', {
+                file: img,
+                name: filename
+            });
+        }, args[0]);
+    } else {
+        reactions.pickRoseImage((img, filename) => {
+            bot.createMessage(msg.channel.id, '', {
+                file: img,
+                name: filename
+            });
+        });
+    }
+
+    ioTools.incrementCommandUse('rose');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    description: 'Displays a random Eevee gif.',
+    fullDescription: 'Displays a random Eevee gif that was supplied by Prim.',
+    guildOnly: true,
+});
+
+// ========================== Nobulli Command (Compromise on request from Onyx) ================= //
 bot.registerCommand('nobulli', (msg, args) => {
     if (args.length == 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickNobulliImage((img) => {

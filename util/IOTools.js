@@ -137,14 +137,16 @@ class IOTools {
     getImages(dirnameIn, onComplete) {
         let dirname = "/root/tron/images/" + dirnameIn + "/";
         let images = [];
+        let filenames = [];
 
         this.readFiles(dirname, (filename, content) => {
             images.push(content);
+            filenames.push(filename);
         }, (err) => {
             console.log("Error occured.");
             console.log(err);
         }, () => {
-            onComplete(images);
+            onComplete(images, filenames);
         })
     }
 
