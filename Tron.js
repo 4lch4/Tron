@@ -62,7 +62,7 @@ giveawayBot.login(config.token).then(() => {
     throw e;
 });
 
-// ========================== Nobulli Command (Compromise on request from Onyx) ====================================================== //
+// ========================== Nobulli Command (Compromise on request from Onyx) ================ //
 bot.registerCommand('nobulli', (msg, args) => {
     if (args.length == 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickNobulliImage((img) => {
@@ -729,8 +729,11 @@ bot.registerCommand('quote', (msg, args) => {
 bot.registerCommand('kill', (msg, args) => {
     if (args.length == 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickKillImage((img) => {
-            let user = msg.mentions[0].username;
-            let message = "**" + user + "**, you've been killed by **" + msg.author.username + "**. :knife:";
+            let message = '';
+            if (msg.mentions.length > 0) {
+                let user = msg.mentions[0].username;
+                message = "**" + user + "**, you've been killed by **" + msg.author.username + "**. :knife:";
+            }
 
             bot.createMessage(msg.channel.id, message, {
                 file: img,
@@ -739,8 +742,11 @@ bot.registerCommand('kill', (msg, args) => {
         }, args[0]);
     } else {
         reactions.pickKillImage((img) => {
-            let user = msg.mentions[0].username;
-            let message = "**" + user + "**, you've been killed by **" + msg.author.username + "**. :knife:";
+            let message = '';
+            if (msg.mentions.length > 0) {
+                let user = msg.mentions[0].username;
+                message = "**" + user + "**, you've been killed by **" + msg.author.username + "**. :knife:";
+            }
 
             bot.createMessage(msg.channel.id, message, {
                 file: img,

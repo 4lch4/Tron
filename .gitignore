@@ -58,3 +58,5 @@ images/*
 \.jsbeautifyrc
 
 \.vscode/
+
+Database_Schema\.md
