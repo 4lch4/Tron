@@ -14,6 +14,10 @@ const tools = new Tools();
 const roleNames = config.roleNames;
 const Eris = require("eris");
 
+// For crash logging
+const Raven = require('raven');
+Raven.config('https://48c87e30f01f45a7a112e0b033715f3d:d9b9df5b82914180b48856a41140df34@sentry.io/181885').install();
+
 // ========================== Bot Declaration =================================================== //
 const bot = new Eris.CommandClient(config.token, {}, {
     description: info.description,
@@ -1978,5 +1982,6 @@ trumpHelp.registerSubcommand('fake', (msg, args) => {
     caseInsensitive: true,
     guildOnly: false
 });
+
 // ========================== Connect Bot ======================================================= //
 bot.connect();
