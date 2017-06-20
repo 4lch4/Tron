@@ -1535,208 +1535,448 @@ let helpCmd = bot.registerCommand('help', (msg, args) => {
     guildOnly: false
 });
 
-// ========================== Action Help Commands ============================================== //
-let changeHelpCmd = helpCmd.registerSubcommand('change', (msg, args) => {
+// ========================== Features Help Commands ============================================ //
+helpCmd.registerSubcommand('change', (msg, args) => {
     return helpText.features.change.base.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
-changeHelpCmd.registerSubcommand('notification', (msg, args) => {
-    return helpText.features.change.notification.join('');
+helpCmd.registerSubcommand('features', (msg, args) => {
+    return helpText.features.base.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
-
-changeHelpCmd.registerSubcommand('prefix', (msg, args) => {
-    return helpText.features.change.prefix.join('');
-});
-
-changeHelpCmd.registerSubcommand('gtimeout', (msg, args) => {
-    return helpText.features.change.gtimeout.join('');
-})
 
 helpCmd.registerSubcommand('quote', (msg, args) => {
     return helpText.features.quote.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('ping', (msg, args) => {
     return helpText.features.ping.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('invite', (msg, args) => {
     return helpText.features.invite.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('stats', (msg, args) => {
     return helpText.features.stats.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('ratewaifu', (msg, args) => {
     return helpText.features.ratewaifu.join('');
+}, {
+    aliases: ['rate'],
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('git', (msg, args) => {
     return helpText.features.git.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('addr', (msg, args) => {
     return helpText.features.addr.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('listr', (msg, args) => {
     return helpText.features.listr.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('leaver', (msg, args) => {
     return helpText.features.leaver.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('joinr', (msg, args) => {
     return helpText.features.joinr.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('avatar', (msg, args) => {
     return helpText.features.avatar.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('ship', (msg, args) => {
     return helpText.features.ship.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('exhentai', (msg, args) => {
     return helpText.features.exhentai.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
+});
+
+helpCmd.registerSubcommand('actions', (msg, args) => {
+    return helpText.actions.base.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
+});
+
+helpCmd.registerSubcommand('users', (msg, args) => {
+    return helpText.users.base.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
+});
+
+helpCmd.registerSubcommand('reactions', (msg, args) => {
+    return helpText.reactions.base.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('love', (msg, args) => {
-    return helpText.features.love.join('');
+    return helpText.actions.love.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('newd', (msg, args) => {
-    return helpText.features.newd.join('');
+    return helpText.actions.newd.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('poke', (msg, args) => {
-    return helpText.features.poke.join('');
+    return helpText.actions.poke.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('slap', (msg, args) => {
-    return helpText.features.slap.join('');
+    return helpText.actions.slap.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('kiss', (msg, args) => {
-    return helpText.features.kiss.join('');
+    return helpText.actions.kiss.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('pat', (msg, args) => {
-    return helpText.features.pat.join('');
+    return helpText.actions.pat.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('kill', (msg, args) => {
-    return helpText.features.kill.join('');
+    return helpText.actions.kill.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
+});
+
+helpCmd.registerSubcommand('hugs', (msg, args) => {
+    return helpText.actions.hugs.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('punch', (msg, args) => {
-    return helpText.features.punch.join('');
+    return helpText.actions.punch.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('wave', (msg, args) => {
-    return helpText.features.wave.join('');
+    return helpText.actions.wave.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('spank', (msg, args) => {
-    return helpText.features.spank.join('');
+    return helpText.actions.spank.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('hug', (msg, args) => {
-    return helpText.features.hug.join('');
+    return helpText.actions.hug.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('kick', (msg, args) => {
-    return helpText.features.kick.join('');
+    return helpText.actions.kick.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('bite', (msg, args) => {
-    return helpText.features.bite.join('');
+    return helpText.actions.bite.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('dreamy', (msg, args) => {
-    return helpText.features.dreamy.join('');
+    return helpText.users.dreamy.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('alex', (msg, args) => {
-    return helpText.features.alex.join('');
+    return helpText.users.alex.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('utah', (msg, args) => {
-    return helpText.features.utah.join('');
+    return helpText.users.utah.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('jova', (msg, args) => {
-    return helpText.features.jova.join('');
+    return helpText.users.jova.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 // ========================== Reactions Help Command ============================================ //
 helpCmd.registerSubcommand('cry', (msg, args) => {
-    return helpText.features.jova.join('');
+    return helpText.reactions.cry.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('confused', (msg, args) => {
-    return helpText.features.jova.join('');
+    return helpText.reactions.confused.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('killme', (msg, args) => {
-    return helpText.features.jova.join('');
+    return helpText.reactions.killme.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('pout', (msg, args) => {
-    return helpText.features.jova.join('');
+    return helpText.reactions.pout.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('dance', (msg, args) => {
-    return helpText.features.jova.join('');
+    return helpText.reactions.dance.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('blush', (msg, args) => {
-    return helpText.features.jova.join('');
+    return helpText.reactions.blush.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('rawr', (msg, args) => {
-    return helpText.features.jova.join('');
+    return helpText.reactions.rawr.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 helpCmd.registerSubcommand('rekt', (msg, args) => {
-    return helpText.features.jova.join('');
+    return helpText.reactions.rekt.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 // ========================== Marriage Help ===================================================== //
 let marryHelpCmd = helpCmd.registerSubcommand('marry', (msg, args) => {
     return helpText.actions.marry.base.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 marryHelpCmd.registerSubcommand('list', (msg, args) => {
     return helpText.actions.marry.list.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 marryHelpCmd.registerSubcommand('accept', (msg, args) => {
     return helpText.actions.marry.accept.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 marryHelpCmd.registerSubcommand('deny', (msg, args) => {
-    return helpText.actions.marry.accept.join('');
+    return helpText.actions.marry.deny.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 let divorceHelpCmd = helpCmd.registerSubcommand('divorce', (msg, args) => {
     return helpText.actions.divorce.base.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 divorceHelpCmd.registerSubcommand('list', (msg, args) => {
     return helpText.actions.divorce.list.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 divorceHelpCmd.registerSubcommand('accept', (msg, args) => {
     return helpText.actions.divorce.accept.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 divorceHelpCmd.registerSubcommand('deny', (msg, args) => {
-    return helpText.actions.divorce.accept.join('');
+    return helpText.actions.divorce.deny.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
 });
 
+let trumpHelp = helpCmd.registerSubcommand('trump', (msg, args) => {
+    return helpText.reactions.trump.base.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
+});
+
+trumpHelp.registerSubcommand('wrong', (msg, args) => {
+    return helpText.reactions.trump.wrong.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
+});
+
+trumpHelp.registerSubcommand('fake', (msg, args) => {
+    return helpText.reactions.trump.fake.join('');
+}, {
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: false
+});
 // ========================== Connect Bot ======================================================= //
 bot.connect();
