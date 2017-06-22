@@ -903,25 +903,22 @@ bot.registerCommand('dance', (msg, args) => {
 // ========================== Pout Command ====================================================== //
 bot.registerCommand('pout', (msg, args) => {
     if (args.length == 1 && !isNaN(parseInt(args[0]))) {
-        reactions.pickPoutImage((img) => {
-                bot.createMessage(msg.channel.id, '', {
-                    file: img,
-                    name: 'Pout.gif'
-                });
-            },
-            args[0])
-    } else {
-        reactions.pickPoutImage((img) => {
-
+        reactions.pickPoutImage(args[0]).then((img) => {
             bot.createMessage(msg.channel.id, '', {
                 file: img,
                 name: 'Pout.gif'
             });
-
-            ioTools.incrementCommandUse('pout');
-
         });
-    };
+    } else {
+        reactions.pickPoutImage().then((img) => {
+            bot.createMessage(msg.channel.id, '', {
+                file: img,
+                name: 'Pout.gif'
+            });
+        });
+    }
+
+    ioTools.incrementCommandUse('pout');
 }, {
     aliases: ['pouts'],
     caseInsensitive: true
