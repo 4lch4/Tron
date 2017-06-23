@@ -1116,7 +1116,7 @@ bot.registerCommand('hugs', (msg, args) => {
         return "Invalid input, please make sure to mention a user.";
     }
 }, {
-    aliases: ['hug'],
+    aliases: ['hug', 'cuddles'],
     caseInsensitive: true
 });
 
