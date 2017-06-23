@@ -41,6 +41,9 @@ const lewds = new Lewds();
 const Mute = require('./cmds/Mute');
 const muteCmd = new Mute();
 
+const Yaoi = require('./cmds/Yaoi');
+const yaoiCmd = new Yaoi();
+
 // ========================== RSS Reader ======================================================== //
 const RSSReader = require('./util/RSSReader.js');
 
@@ -173,6 +176,13 @@ bot.registerCommand('mute', (msg, args) => {
     requirements: {
         roleNames: ["tron-mod"]
     }
+});*/
+
+// ========================== Yaoi Command (Requested by Mimiru) ================================ //
+bot.registerCommand('yaoi', (msg, args) => {
+    yaoiCmd.getYaoiPhoto().then((photoUrl) => {
+        bot.createMessage(msg.channel.id, photoUrl);
+    });
 });
 
 // ========================== Cats Command (Requested by Neko) ================================== //
