@@ -1582,14 +1582,16 @@ bot.registerCommand('utah', (msg, args) => {
     if (msg.channel.guild != undefined) {
         if (msg.channel.guild.id == 254496813552238594) {
             bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:256668458480041985>");
-            ioTools.incrementCommandUse('utah');
         } else if (msg.channel.guild.id == 197846974408556544) {
             bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:298313391444066305>");
-            ioTools.incrementCommandUse('utah');
+        } else if (msg.channel.guild.id == 325420023705370625) {
+            bot.createMessage(msg.channel.id, "<@139474184089632769> <:Tiggered:327634830483259393>");
         } else {
             console.log("Guild = " + msg.channel.guild.name);
             console.log("id = " + msg.channel.guild.id);
         }
+
+        ioTools.incrementCommandUse('utah');
     }
 }, {
     caseInsensitive: true,
