@@ -491,8 +491,8 @@ bot.registerCommand('slap', (msg, args) => {
 
 // ========================= Suggestion Command ================================================= //
 bot.registerCommand('suggestion', (msg, args) => {
-    let sqlQuery = "INSERT INTO SUGGESTIONS (AUTHOR_ID, AUTHOR_USERNAME, SUGGESTION_TEXT) VALUES " +
-        "(\"" + msg.author.id + "\", \"" + msg.author.username + "\", \"" + args.join(' ') + "\");";
+    let sqlQuery = "INSERT INTO SUGGESTIONS (AUTHOR_ID, SUGGESTION_TEXT) VALUES " +
+        "(\"" + msg.author.id + "\", " + " \"" + args.join(' ') + "\");";
 
     ioTools.executeSql(sqlQuery);
 
