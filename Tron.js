@@ -38,6 +38,9 @@ const marriage = new Marriage();
 const Lewds = require('./cmds/Lewds');
 const lewds = new Lewds();
 
+const Mute = require('./cmds/Mute');
+const muteCmd = new Mute();
+
 // ========================== RSS Reader ======================================================== //
 const RSSReader = require('./util/RSSReader.js');
 
@@ -79,38 +82,13 @@ adminCmd.registerSubcommand('list', (msg, args) => {
     }
 });
 
-function getMember(msg, user) {
-    return new Promise((resolve, reject) => {
-        msg.channel.guild.members.forEach((member, index, array) => {
-            if (member.user.id == user.id) {
-                resolve(member);
-            }
-        })
-    });
-}
-
-function getTronMuteRole(msg) {
-    return new Promise((resolve, reject) => {
-        msg.channel.guild.roles.forEach((role, index, array) => {
-            if (role.name == "tron-mute") {
-                resolve(role);
-            }
-        });
-    });
-}
-
-function getMuteStatus(member, roleId) {
-    return new Promise((resolve, reject) => {
-        if (member.roles.includes(roleId)) {
-            resolve(true);
-        } else {
-            resolve(false);
-        }
-    });
-}
-
 bot.registerCommand('initialize', (msg, args) => {
-    getTronMuteRole(msg).then((role) => {
+    msg.channel.guild.createRole({
+        name: "tron-mod"
+    });
+    msg.channel.guild.createRole({
+        name: "tron-mute"
+    }).then((role) => {
         msg.channel.guild.channels.forEach((channel, index, collection) => {
             if (channel.type == 0) {
                 channel.editPermission(role.id, undefined, 2048, "role").then((err) => {
@@ -131,31 +109,37 @@ bot.registerCommand('initialize', (msg, args) => {
     }
 });
 
-function muteUser(msg, user, role) {
-    return new Promise((resolve, reject) => {
-        getMember(msg, user).then((member) => {
-            getMuteStatus(member, role.id).then((muted) => {
+// ========================== Mute Command ====================================================== //
+bot.registerCommand('mute', (msg, args) => {
+    if (msg.mentions[0] != undefined && msg.channel.guild != undefined) {
+        msg.mentions.forEach((user, index, array) => {
+            muteCmd.muteUser(msg, user).then((muted) => {
                 if (muted) {
-                    msg.channel.guild.removeMemberRole(member.id, role.id).then((err) => {
-                        if (err) {
-                            Raven.captureException(err);
-                        } else {
-                            resolve(false);
+                    bot.createMessage(msg.channel.id, {
+                        embed: {
+                            description: "**" + user.username + "** has been muted from text and voice by **" + msg.author.username + "**.",
+                            color: 0x008000
                         }
                     });
                 } else {
-                    msg.channel.guild.addMemberRole(member.id, role.id).then((err) => {
-                        if (err) {
-                            Raven.captureException(err);
-                        } else {
-                            resolve(true);
+                    bot.createMessage(msg.channel.id, {
+                        embed: {
+                            description: "**" + user.username + "** has been unmuted from text and voice by **" + msg.author.username + "**.",
+                            color: 0x008000
                         }
                     });
                 }
             });
         });
-    });
-}
+    } else {
+        return "Please mention at least one user to mute.";
+    }
+}, {
+    guildOnly: true,
+    requirements: {
+        roleNames: ["tron-mod"]
+    }
+});
 
 // ========================== Mute Command ====================================================== //
 bot.registerCommand('mute', (msg, args) => {

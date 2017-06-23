@@ -279,6 +279,26 @@ class Tools {
         return str;
     }
 
+    getMember(msg, user) {
+        return new Promise((resolve, reject) => {
+            msg.channel.guild.members.forEach((member, index, array) => {
+                if (member.user.id == user.id) {
+                    resolve(member);
+                }
+            })
+        });
+    }
+
+    getTronMuteRole(msg) {
+        return new Promise((resolve, reject) => {
+            msg.channel.guild.roles.forEach((role, index, array) => {
+                if (role.name == "tron-mute") {
+                    resolve(role);
+                }
+            });
+        });
+    }
+    
     memberIsMod(msg) {
         let roles = msg.channel.guild.members.get(msg.author.id).roles;
         let found = false;
