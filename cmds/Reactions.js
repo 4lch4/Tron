@@ -7,6 +7,10 @@ const Tools = require('../util/Tools.js');
 const tools = new Tools();
 const ioTools = new IOTools();
 
+/** Stores images for the Alcha command */
+let jerryImages = [];
+let jerryFilenames = [];
+
 /** Stores images for the Cat command */
 let catImages = [];
 let catFilenames = [];
@@ -291,27 +295,67 @@ class Reactions {
         }
     }
 
-    pickPoutImage(callback, imgIndex) {
-        if (poutImages.length == 0) {
-            ioTools.getImages('pout', (images) => {
+    pickJerryImage(imgIndex) {
+        return new Promise((resolve, reject) => {
+            if (jerryImages.length == 0) {
+                ioTools.getImages('alcha', (images, filenames) => {
+                    jerryImages = jerryImages.concat(images);
+                    jerryFilenames = jerryFilenames.concat(filenames);
 
-                poutImages = poutImages.concat(images);
+                    if (imgIndex < jerryImages.length) {
+                        resolve({
+                            file: jerryImages[imgIndex],
+                            name: jerryFilenames[imgIndex]
+                        });
+                    } else {
+                        let random = tools.getRandom(0, jerryImages.length);
 
-                if (imgIndex < poutImages.length) {
-                    callback(poutImages[imgIndex]);
+                        resolve({
+                            file: jerryImages[random],
+                            name: jerryFilenames[random]
+                        });
+                    }
+                });
+            } else {
+                if (imgIndex < jerryImages.length) {
+                    resolve({
+                        file: jerryImages[imgIndex],
+                        name: jerryFilenames[imgIndex]
+                    });
                 } else {
-                    let random = tools.getRandom(0, poutImages.length);
+                    let random = tools.getRandom(0, jerryImages.length);
 
-                    callback(poutImages[random]);
+                    resolve({
+                        file: jerryImages[random],
+                        name: jerryFilenames[random]
+                    });
                 }
-            });
-        } else if (imgIndex < poutImages.length) {
-            callback(poutImages[imgIndex]);
-        } else {
-            let random = tools.getRandom(0, poutImages.length);
+            }
+        });
+    }
 
-            callback(poutImages[random]);
-        }
+    pickPoutImage(imgIndex) {
+        return new Promise((resolve, reject) => {
+            if (poutImages.length == 0) {
+                ioTools.getImages('pout', (images) => {
+                    poutImages = poutImages.concat(images);
+
+                    if (imgIndex < poutImages.length) {
+                        resolve(poutImages[imgIndex]);
+                    } else {
+                        let random = tools.getRandom(0, poutImages.length);
+
+                        resolve(poutImages[random]);
+                    }
+                });
+            } else if (imgIndex < poutImages.length) {
+                resolve(poutImages[imgIndex]);
+            } else {
+                let random = tools.getRandom(0, poutImages.length);
+
+                resolve(poutImages[random]);
+            }
+        });
     }
 
     pickWaveImage(callback) {

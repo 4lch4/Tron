@@ -1549,11 +1549,32 @@ bot.registerCommand('listPeeps', (msg, args) => {
     }
 });
 
-// ========================== Exhentai Command ====================================================== //
+// ========================== Exhentai Command ================================================== //
 bot.registerCommand('exhentai', (msg, args) => {
     if (msg.channel.id != undefined) {
-        bot.createMessage(msg.channel.id, tools.getExhentaiCookies().toString());
+        return tools.getExhentaiCookies().toString();
     }
+});
+
+// ========================== Alcha Command (Requested by Utah) ================================= //
+bot.registerCommand('alcha', (msg, args) => {
+    if (!isNaN(parseInt(args[0]))) {
+        reactions.pickJerryImage(args[0]).then((data) => {
+            bot.createMessage(msg.channel.id, '', data);
+        });
+    } else {
+        reactions.pickJerryImage().then((data) => {
+            bot.createMessage(msg.channel.id, '', data);
+        });
+    }
+
+    ioTools.incrementCommandUse('alcha');
+}, {
+    aliases: ['morty', 'jerry'],
+    argsRequired: false,
+    caseInsensitive: true,
+    guildOnly: true,
+
 });
 
 // ========================== Utah Command ====================================================== //
