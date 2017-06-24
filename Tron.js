@@ -249,11 +249,16 @@ bot.registerCommand('boobs', (msg, args) => {
     let randomSub = tools.getRandom(0, boobSubs.length);
 
     reddit.r(boobSubs[randomSub], (err, data, res) => {
-        let randomPost = tools.getRandom(0, data.data.children.length);
+        if (err) {
+            Raven.captureException(err);
+            bot.createMessage(msg.channel.id, err);
+        } else {
+            let randomPost = tools.getRandom(0, data.data.children.length);
 
-        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+            bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
 
-        ioTools.incrementCommandUse('boobs');
+            ioTools.incrementCommandUse('boobs');
+        }
     });
 }, {
     aliases: ['boob', 'breasts', 'tits'],
@@ -282,11 +287,16 @@ bot.registerCommand('butt', (msg, args) => {
     let randomSub = tools.getRandom(0, buttSubs.length);
 
     reddit.r(buttSubs[randomSub], (err, data, res) => {
-        let randomPost = tools.getRandom(0, data.data.children.length);
+        if (err) {
+            Raven.captureException(err);
+            bot.createMessage(msg.channel.id, err);
+        } else {
+            let randomPost = tools.getRandom(0, data.data.children.length);
 
-        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+            bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
 
-        ioTools.incrementCommandUse('butt');
+            ioTools.incrementCommandUse('butt');
+        }
     });
 }, {
     aliases: ['butts', 'booty', 'ass'],
@@ -324,11 +334,16 @@ bot.registerCommand('feet', (msg, args) => {
     let randomSub = tools.getRandom(0, feetSubs.length);
 
     reddit.r(feetSubs[randomSub], (err, data, res) => {
-        let randomPost = tools.getRandom(0, data.data.children.length);
+        if (err) {
+            Raven.captureException(err);
+            bot.createMessage(msg.channel.id, err);
+        } else {
+            let randomPost = tools.getRandom(0, data.data.children.length);
 
-        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+            bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
 
-        ioTools.incrementCommandUse('feet');
+            ioTools.incrementCommandUse('feet');
+        }
     });
 }, {
     aliases: ['feets', 'foot'],
@@ -355,11 +370,16 @@ bot.registerCommand('gay', (msg, args) => {
     let randomSub = tools.getRandom(0, gaySubs.length);
 
     reddit.r(gaySubs[randomSub], (err, data, res) => {
-        let randomPost = tools.getRandom(0, data.data.children.length);
+        if (err) {
+            Raven.captureException(err);
+            bot.createMessage(msg.channel.id, err);
+        } else {
+            let randomPost = tools.getRandom(0, data.data.children.length);
 
-        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+            bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
 
-        ioTools.incrementCommandUse('gay');
+            ioTools.incrementCommandUse('gay');
+        }
     });
 }, {
     aliases: ['dick', 'dicks', 'cock', 'penis'],
@@ -414,21 +434,9 @@ bot.registerCommand('nobulli', (msg, args) => {
             });
         }, args[0]);
     } else if (msg.mentions.length > 0) {
-        reactions.pickNobulliImage((img) => {
-            tools.getUsernames(args, bot, (usernames) => {
-                let message = '';
-
-                if (usernames.length == 2) {
-                    message = "**" + usernames[0] + "**, don't you dare bulli **" + usernames[1] + "**!";
-                }
-
-                bot.createMessage(msg.channel.id, message, {
-                    file: img,
-                    name: 'Nobulli.gif'
-                });
-            });
-        });
+        return 'Please mention 2 users to include in the message.';
     }
+
     ioTools.incrementCommandUse('nobulli');
 }, {
     aliases: ['bulli', 'bully', 'nobully'],
@@ -436,8 +444,7 @@ bot.registerCommand('nobulli', (msg, args) => {
     caseInsensitive: true,
     description: 'Displays a random nobulli gif.',
     fullDescription: 'Displays a random nobulli gif and the name of the user you mention.',
-    guildOnly: true,
-    usage: "@user e.g. `+nobulli @Alcha#2621`"
+    guildOnly: true
 });
 
 // ========================== Dreamy Command (Requested by Dreamy) ==================================================== //
