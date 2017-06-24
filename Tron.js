@@ -216,6 +216,46 @@ bot.registerCommand('cat', (msg, args) => {
     guildOnly: true,
 });
 
+// ========================== Feet Command (Requested by Rosa) ================================== //
+bot.registerCommand('feet', (msg, args) => {
+    let feetSubs = [
+        'CelebrityFeet',
+        'FFSocks',
+        'Feet_NSFW',
+        'FootFetish',
+        'FFNBPS',
+        'feetish',
+        'scent_of_women_feet',
+        'AsianFeet',
+        'gayfootfetish',
+        'HighHeels',
+        'Soles',
+        'CosplayFeet',
+        'dirtyfeet',
+        'DesiFeet',
+        'ebonyfeet',
+        'rule34feet',
+        'girlsinanklesocks',
+        'Porn_Star_Feet',
+        'FeetVideos',
+        'Soles_And_Holes',
+        'Footjobs'
+    ];
+
+    let randomSub = tools.getRandom(0, feetSubs.length);
+
+    reddit.r(feetSubs[randomSub], (err, data, res) => {
+        let randomPost = tools.getRandom(0, data.data.children.length);
+
+        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+
+        ioTools.incrementCommandUse('feet');
+    });
+}, {
+    aliases: ['feets', 'foot'],
+    caseInsensitive: true
+});
+
 // ========================== Gay Command (Requested by Mimiru) ================================= //
 bot.registerCommand('gay', (msg, args) => {
     let gaySubs = [
