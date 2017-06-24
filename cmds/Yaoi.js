@@ -54,9 +54,9 @@ class Yaoi {
 
     pickRandomBlog() {
         return new Promise((resolve, reject) => {
-            tools.getPRandom(0, blogUrls.length).then((random) => {
-                resolve(blogUrls[random]);
-            });
+            let random = tools.getRandom(0, blogUrls.length);
+
+            resolve(blogUrls[random]);
         });
     }
 }

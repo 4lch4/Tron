@@ -298,7 +298,7 @@ class Tools {
             });
         });
     }
-    
+
     memberIsMod(msg) {
         let roles = msg.channel.guild.members.get(msg.author.id).roles;
         let found = false;
