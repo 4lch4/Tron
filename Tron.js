@@ -87,6 +87,82 @@ adminCmd.registerSubcommand('list', (msg, args) => {
     }
 });
 
+adminCmd.registerSubcommand('ban', (msg, args) => {
+    if (args.length > 1 && msg.mentions.length > 0) {
+        let reason = args.slice(msg.mentions.length).join(' ');
+
+        if (reason.length > 0) {
+            msg.mentions.forEach((mention, index, mapObj) => {
+                tools.getMember(msg, mention).then((member) => {
+                    msg.channel.guild.banMember(member.id, 0, reason);
+
+                    bot.createMessage(msg.channel.id, member.username + " has been banned from the server.");
+                });
+            });
+        } else {
+            msg.mentions.forEach((mention, index, mapObj) => {
+                tools.getMember(msg, mention).then((member) => {
+                    msg.channel.guild.banMember(member.id);
+
+                    bot.createMessage(msg.channel.id, member.username + " has been banned from the server.");
+                });
+            });
+        }
+    } else if (msg.mentions.length > 0) {
+        msg.mentions.forEach((mention, index, mapObj) => {
+            tools.getMember(msg, mention).then((member) => {
+                msg.channel.guild.banMember(member.id);
+
+                bot.createMessage(msg.channel.id, member.username + " has been banned from the server.");
+            });
+        });
+    } else {
+        return "Please mention at least one user to ban and an optional reason after the mentioned user(s).";
+    }
+}, {
+    requirements: {
+        roleNames: ['tron-mod']
+    }
+});
+
+adminCmd.registerSubcommand('kick', (msg, args) => {
+    if (args.length > 1 && msg.mentions.length > 0) {
+        let reason = args.slice(msg.mentions.length).join(' ');
+
+        if (reason.length > 0) {
+            msg.mentions.forEach((mention, index, mapObj) => {
+                tools.getMember(msg, mention).then((member) => {
+                    msg.channel.guild.kickMember(member.id, reason);
+
+                    bot.createMessage(msg.channel.id, member.username + " has been kicked from the server.");
+                });
+            });
+        } else {
+            msg.mentions.forEach((mention, index, mapObj) => {
+                tools.getMember(msg, mention).then((member) => {
+                    msg.channel.guild.kickMember(member.id);
+
+                    bot.createMessage(msg.channel.id, member.username + " has been kicked from the server.");
+                });
+            });
+        }
+    } else if (msg.mentions.length > 0) {
+        msg.mentions.forEach((mention, index, mapObj) => {
+            tools.getMember(msg, mention).then((member) => {
+                msg.channel.guild.kickMember(member.id);
+
+                bot.createMessage(msg.channel.id, member.username + " has been kicked from the server.");
+            });
+        });
+    } else {
+        return "Please mention at least one user to kick and an optional reason after the mentioned user(s).";
+    }
+}, {
+    requirements: {
+        roleNames: ['tron-mod']
+    }
+});
+
 bot.registerCommand('initialize', (msg, args) => {
     msg.channel.guild.createRole({
         name: "tron-mod"
