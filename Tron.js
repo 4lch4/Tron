@@ -200,6 +200,39 @@ bot.registerCommand('cat', (msg, args) => {
     guildOnly: true,
 });
 
+// ========================== Butt Command ====================================================== //
+bot.registerCommand('butt', (msg, args) => {
+    let buttSubs = [
+        'asstastic',
+        'pawg',
+        'facedownassup',
+        'ass',
+        'brunetteass',
+        'CheekyBottoms',
+        'datgap',
+        'underbun',
+        'rearpussy',
+        'pawgtastic',
+        'BestBooties',
+        'CuteLittleButts'
+    ];
+
+    let randomSub = tools.getRandom(0, buttSubs.length);
+
+    reddit.r(buttSubs[randomSub], (err, data, res) => {
+        let randomPost = tools.getRandom(0, data.data.children.length);
+
+        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+
+        ioTools.incrementCommandUse('butt');
+    });
+}, {
+    aliases: ['butts', 'booty', 'ass'],
+    caseInsensitive: true,
+    cooldown: 5000,
+    cooldownMessage: 'Please wait 5 seconds between uses of this command.'
+});
+
 // ========================== Feet Command (Requested by Rosa) ================================== //
 bot.registerCommand('feet', (msg, args) => {
     let feetSubs = [
