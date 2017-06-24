@@ -447,7 +447,7 @@ bot.registerCommand('nobulli', (msg, args) => {
     guildOnly: true
 });
 
-// ========================== Dreamy Command (Requested by Dreamy) ==================================================== //
+// ========================== Dreamy Command (Requested by Dreamy) ============================== //
 bot.registerCommand('dreamy', (msg, args) => {
     reactions.pickDreamyImage((dreamyImage) => {
         bot.createMessage(msg.channel.id, '', {
@@ -458,7 +458,6 @@ bot.registerCommand('dreamy', (msg, args) => {
 
     ioTools.incrementCommandUse('dreamy');
 }, {
-    aliases: ['dreamy'],
     caseInsensitive: true,
     description: 'Displays random dreamy gif.',
     fullDescription: 'Displays a random dreamy gif.'
@@ -471,9 +470,6 @@ bot.registerCommand('change', (msg, args) => {
         if (args[0] == 'notification') {
             config.notificationChannel = msg.channel.id;
             bot.createMessage(msg.channel.id, 'The NotificationChannel has been changed to - ' + msg.channel.name);
-        } else if (args[0] == 'timeout') {
-            giveawayValues.timeout = args[1];
-            bot.createMessage(msg.channel.id, 'The timeout has been updated to - ' + args[1] + '.');
         }
     }
 }, {
@@ -552,17 +548,21 @@ bot.registerCommand('newd', (msg, args) => {
             lewds.getButt((butt, filename) => {
                 msg.mentions.forEach((mention, index, array) => {
                     mention.getDMChannel().then((channel) => {
-                        bot.createMessage(channel.id, '', {
-                            file: butt,
-                            name: filename
-                        }).then((message) => {
-                            // Process message?
-                            console.log("Message sent.");
-                        }).catch((err) => {
-                            if (err.code == 20009) {
-                                bot.createMessage(channel.id, "Unfortunately, it appears you can't receive explicit content. Please add Tron to your friends and try again.");
-                            }
-                        });
+                        if (mention.bot) {
+                            bot.createMessage(msg.channel.id, "You can't send private messages to a bot.");
+                        } else {
+                            bot.createMessage(channel.id, '', {
+                                file: butt,
+                                name: filename
+                            }).then((message) => {
+                                // Process message?
+                                console.log(msg.author.username + ' sent a lewd message to ' + mention.username + '.');
+                            }).catch((err) => {
+                                if (err.code == 20009) {
+                                    bot.createMessage(channel.id, "Unfortunately, it appears you can't receive explicit content. Please add Tron to your friends and try again.");
+                                }
+                            });
+                        }
                     });
                 });
 
