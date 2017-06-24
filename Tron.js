@@ -126,7 +126,25 @@ bot.registerCommand('mute', (msg, args) => {
                             color: 0x008000
                         }
                     });
-                } else {
+                }
+            });
+        });
+    } else {
+        return "Please mention at least one user to mute.";
+    }
+}, {
+    guildOnly: true,
+    requirements: {
+        roleNames: ["tron-mod"]
+    }
+});
+
+// ========================== Unmute Command ==================================================== //
+bot.registerCommand('unmute', (msg, args) => {
+    if (msg.mentions[0] != undefined && msg.channel.guild != undefined) {
+        msg.mentions.forEach((user, index, array) => {
+            muteCmd.unmuteUser(msg, user).then((muted) => {
+                if (muted) {
                     bot.createMessage(msg.channel.id, {
                         embed: {
                             description: "**" + user.username + "** has been unmuted from text and voice by **" + msg.author.username + "**.",
@@ -145,40 +163,6 @@ bot.registerCommand('mute', (msg, args) => {
         roleNames: ["tron-mod"]
     }
 });
-
-// ========================== Mute Command ====================================================== //
-bot.registerCommand('mute', (msg, args) => {
-    if (msg.mentions[0] != undefined && msg.channel.guild != undefined) {
-        getTronMuteRole(msg).then((role) => {
-            msg.mentions.forEach((user, index, array) => {
-                muteUser(msg, user, role).then((muted) => {
-                    if (muted) {
-                        bot.createMessage(msg.channel.id, {
-                            embed: {
-                                description: "**" + user.username + "** has been muted from text and voice by **" + msg.author.username + "**.",
-                                color: 0x008000
-                            }
-                        });
-                    } else {
-                        bot.createMessage(msg.channel.id, {
-                            embed: {
-                                description: "**" + user.username + "** has been unmuted from text and voice by **" + msg.author.username + "**.",
-                                color: 0x008000
-                            }
-                        });
-                    }
-                });
-            });
-        });
-    } else {
-        return "Please mention at least one user to mute.";
-    }
-}, {
-    guildOnly: true,
-    requirements: {
-        roleNames: ["tron-mod"]
-    }
-});*/
 
 // ========================== Yaoi Command (Requested by Mimiru) ================================ //
 bot.registerCommand('yaoi', (msg, args) => {
