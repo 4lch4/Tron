@@ -164,15 +164,6 @@ bot.registerCommand('unmute', (msg, args) => {
     }
 });
 
-// ========================== Yaoi Command (Requested by Mimiru) ================================ //
-bot.registerCommand('yaoi', (msg, args) => {
-    yaoiCmd.getYaoiPhoto().then((photoUrl) => {
-        bot.createMessage(msg.channel.id, photoUrl);
-
-        ioTools.incrementCommandUse('yaoi');
-    });
-});
-
 // ========================== Cats Command (Requested by Neko) ================================== //
 bot.registerCommand('cat', (msg, args) => {
     if (!isNaN(parseInt(args[0]))) {
@@ -198,6 +189,19 @@ bot.registerCommand('cat', (msg, args) => {
     description: 'Displays a random cat image or gif.',
     fullDescription: 'Displays a random cat image or gif that was supplied by Neko.',
     guildOnly: true,
+});
+
+// ========================== Yaoi Command (Requested by Mimiru) ================================ //
+bot.registerCommand('yaoi', (msg, args) => {
+    yaoiCmd.getYaoiPhoto().then((photoUrl) => {
+        bot.createMessage(msg.channel.id, photoUrl);
+
+        ioTools.incrementCommandUse('yaoi');
+    });
+}, {
+    caseInsensitive: true,
+    cooldown: 5000,
+    cooldownMessage: 'Please wait 5 seconds between uses of this command.'
 });
 
 // ========================== Butt Command ====================================================== //
@@ -270,7 +274,9 @@ bot.registerCommand('feet', (msg, args) => {
     });
 }, {
     aliases: ['feets', 'foot'],
-    caseInsensitive: true
+    caseInsensitive: true,
+    cooldown: 5000,
+    cooldownMessage: 'Please wait 5 seconds between uses of this command.'
 });
 
 // ========================== Gay Command (Requested by Mimiru) ================================= //
@@ -300,7 +306,9 @@ bot.registerCommand('gay', (msg, args) => {
 }, {
     aliases: ['dick', 'dicks', 'cock', 'penis'],
     caseInsensitive: true,
-    guildOnly: false
+    guildOnly: false,
+    cooldown: 5000,
+    cooldownMessage: 'Please wait 5 seconds between uses of this command.'
 });
 
 // ========================== Rose Command (Requested by PrimRose) ============================== //
