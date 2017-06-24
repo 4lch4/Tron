@@ -204,6 +204,35 @@ bot.registerCommand('yaoi', (msg, args) => {
     cooldownMessage: 'Please wait 5 seconds between uses of this command.'
 });
 
+// ========================== Boobs Command ===================================================== //
+bot.registerCommand('boobs', (msg, args) => {
+    let boobSubs = [
+        'boobs',
+        'Boobies',
+        'Stacked',
+        'BustyPetite',
+        'Cleavage',
+        'bustyasians',
+        'boltedontits',
+        'burstingout'
+    ];
+
+    let randomSub = tools.getRandom(0, boobSubs.length);
+
+    reddit.r(boobSubs[randomSub], (err, data, res) => {
+        let randomPost = tools.getRandom(0, data.data.children.length);
+
+        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+
+        ioTools.incrementCommandUse('boobs');
+    });
+}, {
+    aliases: ['boob', 'breasts', 'tits'],
+    caseInsensitive: true,
+    cooldown: 5000,
+    cooldownMessage: 'Please wait 5 seconds between uses of this command.'
+});
+
 // ========================== Butt Command ====================================================== //
 bot.registerCommand('butt', (msg, args) => {
     let buttSubs = [
