@@ -83,7 +83,7 @@ class GiveawayBot {
             process.exit(0);
         });
 
-        let switchUser = function () {
+        let switchUser = function() {
             if (tempGiveaway.started) {
                 giveawayBot.users.get(tempGiveaway.current_user).sendMessage(`You failed to claim the prize.`);
                 giveawayBot.guilds.get(giveawayValues.guild_id).channels.get(giveawayValues.channel_id).messages.get(tempGiveaway.message_id).clearReactions();
@@ -107,7 +107,7 @@ class GiveawayBot {
             }
         }
 
-        giveawayBot.on("ready", function () {
+        giveawayBot.on("ready", function() {
             console.log('GiveawayBot ready.');
         });
 
@@ -128,6 +128,7 @@ class GiveawayBot {
                     message.channel.sendMessage("Time taken: " + (time / 1000) + " seconds\n" + msg);
                 } catch (e) {
                     message.channel.sendMessage("```js\n" + e + "```");
+                    Raven.captureException(e);
                 }
             }
 
