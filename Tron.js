@@ -204,6 +204,35 @@ bot.registerCommand('yaoi', (msg, args) => {
     cooldownMessage: 'Please wait 5 seconds between uses of this command.'
 });
 
+// ========================== Hentai Command ==================================================== //
+bot.registerCommand('hentai', (msg, args) => {
+    let hentaiSubs = [
+        'hentai',
+        'rule34',
+        'rule34feet'
+    ];
+
+    let randomSub = tools.getRandom(0, hentaiSubs.length);
+
+    reddit.r(hentaiSubs[randomSub], (err, data, res) => {
+        if (err) {
+            Raven.captureException(err);
+            bot.createMessage(msg.channel.id, err);
+        } else {
+            let randomPost = tools.getRandom(0, data.data.children.length);
+
+            bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+
+            ioTools.incrementCommandUse('hentai');
+        }
+    });
+}, {
+    aliases: ['boob', 'breasts', 'tits'],
+    caseInsensitive: true,
+    cooldown: 5000,
+    cooldownMessage: 'Please wait 5 seconds between uses of this command.'
+});
+
 // ========================== Boobs Command ===================================================== //
 bot.registerCommand('boobs', (msg, args) => {
     let boobSubs = [
