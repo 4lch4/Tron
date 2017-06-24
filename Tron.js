@@ -11,6 +11,8 @@ const Canvas = require("canvas");
 const ioTools = new IOTools();
 const tools = new Tools();
 
+const reddit = require('redwrap');
+
 const roleNames = config.roleNames;
 const Eris = require("eris");
 
@@ -182,6 +184,8 @@ bot.registerCommand('mute', (msg, args) => {
 bot.registerCommand('yaoi', (msg, args) => {
     yaoiCmd.getYaoiPhoto().then((photoUrl) => {
         bot.createMessage(msg.channel.id, photoUrl);
+
+        ioTools.incrementCommandUse('yaoi');
     });
 });
 
@@ -210,6 +214,36 @@ bot.registerCommand('cat', (msg, args) => {
     description: 'Displays a random cat image or gif.',
     fullDescription: 'Displays a random cat image or gif that was supplied by Neko.',
     guildOnly: true,
+});
+
+// ========================== Gay Command (Requested by Mimiru) ================================= //
+bot.registerCommand('gay', (msg, args) => {
+    let gaySubs = [
+        'cockrating',
+        'BonersInPublic',
+        'curved_cock',
+        'MassiveCock',
+        'ratemycock',
+        'RedditorCum',
+        'NSFW_DICK_and_Cock',
+        'TotallyStraight',
+        'CockOutline',
+        'lovegaymale'
+    ];
+
+    let randomSub = tools.getRandom(0, gaySubs.length);
+
+    reddit.r(gaySubs[randomSub], (err, data, res) => {
+        let randomPost = tools.getRandom(0, data.data.children.length);
+
+        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+
+        ioTools.incrementCommandUse('gay');
+    });
+}, {
+    aliases: ['dick', 'dicks', 'cock', 'penis'],
+    caseInsensitive: true,
+    guildOnly: false
 });
 
 // ========================== Rose Command (Requested by PrimRose) ============================== //
