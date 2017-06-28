@@ -130,7 +130,7 @@
         "avatar": ["```markdown\n",
             "Avatar\n",
             "--------\n",
-            "+avatar\n\n",
+            "+avatar @Alcha#2621\n\n",
             "Shows a higher resolution (if available) version of a user's avatar.\n",
             "```"
         ],
