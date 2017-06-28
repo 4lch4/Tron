@@ -314,6 +314,29 @@ bot.registerCommand('powerwashingporn', (msg, args) => {
         ioTools.incrementCommandUse('powerwashing');
     }
 });
+
+bot.registerCommand('reddit', (msg, args) => {
+    let subreddit = args.join('');
+
+    reddit.r(subreddit, (err, data, res) => {
+        let randomPost = tools.getRandom(0, data.data.children.length);
+
+        if (data.data.children[randomPost] != undefined) {
+            bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+        } else {
+            console.log('data.data.children[randomPost].data == undefined');
+            console.log('subreddit = ' + subreddit);
+            console.log('randomPost = ' + randomPost);
+            console.log(data.data.children);
+            bot.createMessage(msg.channel.id, "Unfortunately, something went wrong and the developers have been alerted. Please try again.");
+        }
+
+        ioTools.incrementCommandUse('reddit');
+    });
+}, {
+    aliases: ['r']
+});
+
 // ========================== Hentai Command ==================================================== //
 bot.registerCommand('hentai', (msg, args) => {
     let hentaiSubs = [
