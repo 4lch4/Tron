@@ -22,6 +22,10 @@ Raven.config('https://48c87e30f01f45a7a112e0b033715f3d:d9b9df5b82914180b48856a41
 
 let PowerWashingLinks = [];
 
+const CleverbotClient = require('node-rest-client').Client;
+const Cleverbot = new CleverbotClient();
+const urlencode = require('urlencode');
+
 // ========================== Bot Declaration =================================================== //
 const bot = new Eris.CommandClient(config.token, {}, {
     description: info.description,
@@ -1928,6 +1932,18 @@ bot.registerCommand('alex', (msg, args) => {
 
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on("messageCreate", (msg) => {
+    if (msg.mentions.length == 1 && msg.mentions[0].id == 258162570622533635) {
+        let url = "https://www.cleverbot.com/getreply?key=CC31q15R4QvFxg5hAdt-JT5CkLA";
+        let input = urlencode(msg.cleanContent);
+        url += "&input=" + input;
+
+        console.log('input = ' + input);
+        
+        Cleverbot.get(url, (data, response) => {
+            bot.createMessage(msg.channel.id, data.clever_output);
+        });
+    }
+
     if (!isNaN(msg.author.id) && msg.channel.guild != undefined && msg.channel.guild.id == config.ownerServer) {
         if (msg.content.includes('@everyone')) {
             let everyoneMention = ":mega: ``[" + tools.getFormattedTimestamp() + "]``" +
