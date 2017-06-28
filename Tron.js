@@ -1391,6 +1391,8 @@ bot.registerCommand('ratewaifu', (msg, args) => {
         } else if (msg.mentions[0].id == 139474184089632769) {
             // Utah
             return "**" + msg.mentions[0].username + "**, I'd rate you -∞/10 waifu."
+        } else if (msg.mentions[0].id == 167546638758445056) {
+            return "**" + msg.mentions[0].username + "**, I'd rate you ∞/10 waifu. The best of the best."
         } else {
             let random = tools.getRandom(0, 11);
             let message = "**" + msg.mentions[0].username + "**, I'd rate you " + random + "/10 waifu.";
@@ -1403,6 +1405,10 @@ bot.registerCommand('ratewaifu', (msg, args) => {
     caseInsensitive: true,
     description: 'Randomly rates a mentioned user 0 - 10.',
     fullDescription: 'Generates a random number to rate the mentioned user on a scale of 0 to 10.'
+});
+
+bot.registerCommand('derp', (msg, args) => {
+    return "Is loved by <@219270060936527873> more than anyone.";
 });
 
 // ========================== Hugs Command ====================================================== //
