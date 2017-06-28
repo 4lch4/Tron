@@ -20,6 +20,8 @@ const Eris = require("eris");
 const Raven = require('raven');
 Raven.config('https://48c87e30f01f45a7a112e0b033715f3d:d9b9df5b82914180b48856a41140df34@sentry.io/181885').install();
 
+let PowerWashingLinks = [];
+
 // ========================== Bot Declaration =================================================== //
 const bot = new Eris.CommandClient(config.token, {}, {
     description: info.description,
@@ -280,6 +282,38 @@ bot.registerCommand('yaoi', (msg, args) => {
     cooldownMessage: 'Please wait 5 seconds between uses of this command.'
 });
 
+bot.registerCommand('powerwashingporn', (msg, args) => {
+    if (PowerWashingLinks.length == 0) {
+        reddit.r('powerwashingporn').top().from('all').all((res) => {
+            res.on('data', (data, res) => {
+                data.data.children.forEach((child, index, mapObj) => {
+                    if (child.data.url != undefined) {
+                        PowerWashingLinks.push(child.data.url);
+                    }
+                });
+            });
+
+            res.on('error', (err) => {
+                console.log('Error while parsing powerwashingporn:');
+                console.log(err);
+            });
+
+            res.on('end', () => {
+                let randomUrl = tools.getRandom(0, PowerWashingLinks.length);
+
+                bot.createMessage(msg.channel.id, PowerWashingLinks[randomUrl]);
+            });
+
+            ioTools.incrementCommandUse('powerwashing');
+        });
+    } else {
+        let randomUrl = tools.getRandom(0, PowerWashingLinks.length);
+
+        bot.createMessage(msg.channel.id, PowerWashingLinks[randomUrl]);
+
+        ioTools.incrementCommandUse('powerwashing');
+    }
+});
 // ========================== Hentai Command ==================================================== //
 bot.registerCommand('hentai', (msg, args) => {
     let hentaiSubs = [
