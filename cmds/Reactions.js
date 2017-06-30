@@ -43,6 +43,9 @@ let poutImages = [];
 /** Stores images for the Vape Nation command */
 let vnImages = [];
 
+/** Stores images for the Dodge command */
+let dodgeImages= [];
+
 /** Stores images for the Wave command */
 let waveImages = [];
 
@@ -356,6 +359,30 @@ class Reactions {
                 resolve(poutImages[random]);
             }
         });
+    }
+
+    pickDodgeImage(imgIndex) {
+        return new Promise((resolve, reject) => {
+            if (dodgeImages.length == 0) {
+                ioTools.getImages('dodge', (images) => {
+                    dodgeImages = dodgeImages.concat(images);
+
+                    if (imgIndex < dodgeImages.length) {
+                        resolve(dodgeImages[imgIndex]);
+                    } else {
+                        let random = tools.getRandom(0, dodgeImages.length);
+
+                        resolve(dodgeImages[random]);
+                    }
+                });
+            } else if (imgIndex < dodgeImages.length) {
+                resolve(dodgeImages[imgIndex]);
+            } else {
+                let random = tools.getRandom(0, dodgeImages.length);
+
+                resolve(dodgeImages[random]);
+            }
+        });    
     }
 
     pickWaveImage(callback) {

@@ -584,6 +584,30 @@ bot.registerCommand('nobulli', (msg, args) => {
     guildOnly: true
 });
 
+// ========================== Dodge Command (Requested by Rose) ================================= //
+bot.registerCommand('dodge', (msg, args) => {
+    if (args.length == 1 && !isNaN(parseInt(args[0]))) {
+        reactions.pickDodgeImage(args[0]).then((img) => {
+            bot.createMessage(msg.channel.id, '', {
+                file: img,
+                name: 'Dodge.gif'
+            });
+        });
+    } else {
+        reactions.pickDodgeImage().then((img) => {
+            bot.createMessage(msg.channel.id, '', {
+                file: img,
+                name: 'Dodge.gif'
+            });
+        });
+    }
+
+    ioTools.incrementCommandUse('dodge');
+}, {
+    aliases: ['dodges'],
+    caseInsensitive: true
+});
+
 // ========================== Dreamy Command (Requested by Dreamy) ============================== //
 bot.registerCommand('dreamy', (msg, args) => {
     reactions.pickDreamyImage((dreamyImage) => {
