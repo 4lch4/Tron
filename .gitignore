@@ -57,3 +57,7 @@ images/*
 \.vscode/
 
 Database_Schema\.md
+
+Temp\.js
+
+VoiceStateUpdate\.json

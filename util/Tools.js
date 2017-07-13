@@ -279,6 +279,35 @@ class Tools {
         return str;
     }
 
+    /**
+     * Analyzes the given Message object and determines if Shu-Hu (**132710431201427456**), is
+     * mentioned. If so, true is returned, otherwise false.
+     * 
+     * @param {*} msg Message object you wish to analyze.
+     */
+    doesMsgContainShu(msg) {
+        return new Promise((resolve, reject) => {
+            if (msg.mentions == undefined) {
+                resolve(false);
+            } else {
+                let processed = 0;
+
+                msg.mentions.forEach((user, index, map) => {
+                    if (user.id == 132710431201427456) {
+                        console.log('A user has mentioned Shu - ' + msg.author.username);
+                        resolve(true)
+                    } else {
+                        processed++;
+
+                        if (processed == msg.mentions.length) {
+                            resolve(false);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     getMember(msg, user) {
         return new Promise((resolve, reject) => {
             msg.channel.guild.members.forEach((member, index, array) => {
