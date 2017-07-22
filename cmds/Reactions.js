@@ -46,6 +46,9 @@ let vnImages = [];
 /** Stores images for the Dodge command */
 let dodgeImages= [];
 
+/** Stores images for the Lick command */
+let lickImages= [];
+
 /** Stores images for the Wave command */
 let waveImages = [];
 
@@ -383,6 +386,30 @@ class Reactions {
                 resolve(dodgeImages[random]);
             }
         });    
+    }
+
+    pickLickImage(imgIndex) {
+        return new Promise((resolve, reject) => {
+            if (lickImages.length == 0) {
+                ioTools.getImages('lick', (images) => {
+                    lickImages = lickImages.concat(images);
+
+                    if (imgIndex < lickImages.length) {
+                        resolve(lickImages[imgIndex]);
+                    } else {
+                        let random = tools.getRandom(0, lickImages.length);
+
+                        resolve(lickImages[random]);
+                    }
+                });
+            } else if (imgIndex < lickImages.length) {
+                resolve(lickImages[imgIndex]);
+            } else {
+                let random = tools.getRandom(0, lickImages.length);
+
+                resolve(lickImages[random]);
+            }
+        });
     }
 
     pickWaveImage(callback) {

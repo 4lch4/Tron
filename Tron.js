@@ -907,6 +907,46 @@ bot.registerCommand('kiss', (msg, args) => {
     fullDescription: 'Displays a random kissing reaction gif and the name of the individual mentioned.'
 });
 
+// ========================== Lick Command ====================================================== // 
+bot.registerCommand('lick', (msg, args) => {
+    tools.doesMsgContainShu(msg).then((shuFlag) => {
+        if (shuFlag) {
+            bot.createMessage(msg.channel.id, "You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.");
+        } else {
+            if (args.length == 2 && !isNaN(parseInt(args[0]))) {
+                reactions.pickLickImage(args[0]).then((img) => {
+                    let user = msg.mentions[0].username;
+                    let message = "**" + user + "**, you've been licked by **" + msg.author.username + "**. :tongue:";
+
+                    bot.createMessage(msg.channel.id, message, {
+                        file: img,
+                        name: 'Lick.gif'
+                    });
+                }, args[0]);
+            } else if (msg.mentions.length > 0) {
+                reactions.pickLickImage().then((img) => {
+                    let user = msg.mentions[0].username;
+                    let message = "**" + user + "**, you've been licked by **" + msg.author.username + "**. :tongue:";
+
+                    bot.createMessage(msg.channel.id, message, {
+                        file: img,
+                        name: 'Lick.gif'
+                    });
+                });
+            } else {
+                bot.createMessage(msg.channel.id, "Please make sure to mention one or more users in order to use this command");
+            }
+        };
+    });
+
+    ioTools.incrementCommandUse('lick');
+}, {
+    aliases: ['licks'],
+    caseInsensitive: true,
+    description: 'Displays a random lick gif.',
+    fullDescription: 'Displays a random licking gif and the name of the individual mentioned.'
+});
+    
 // ========================== Pat Command ======================================================= //
 bot.registerCommand('pat', (msg, args) => {
     tools.doesMsgContainShu(msg).then((shuFlag) => {
