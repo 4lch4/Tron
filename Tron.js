@@ -946,7 +946,7 @@ bot.registerCommand('lick', (msg, args) => {
     description: 'Displays a random lick gif.',
     fullDescription: 'Displays a random licking gif and the name of the individual mentioned.'
 });
-    
+
 // ========================== Pat Command ======================================================= //
 bot.registerCommand('pat', (msg, args) => {
     tools.doesMsgContainShu(msg).then((shuFlag) => {
@@ -1524,23 +1524,22 @@ bot.registerCommand('ratewaifu', (msg, args) => {
             bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.');
         } else {
             if (msg.channel.guild != undefined && msg.mentions.length == 1) {
-
                 if (msg.mentions[0].id == 219270060936527873) {
                     // Alcha
-                    return "**" + msg.mentions[0].username + "**-senpai, I'd rate you 11/10. \n\n_notice me_";
+                    bot.createMessage(msg.channel.id, "**" + msg.mentions[0].username + "**-senpai, I'd rate you 11/10. \n\n_notice me_");
                 } else if (msg.mentions[0].id == 142092834260910080) {
                     // Snow/Daddy Yoana
-                    return "**" + msg.mentions[0].username + "**, I'd rate you -69/10 waifu."
+                    bot.createMessage(msg.channel.id, "**" + msg.mentions[0].username + "**, I'd rate you -69/10 waifu.");
                 } else if (msg.mentions[0].id == 139474184089632769) {
                     // Utah
-                    return "**" + msg.mentions[0].username + "**, I'd rate you -∞/10 waifu."
+                    bot.createMessage(msg.channel.id, "**" + msg.mentions[0].username + "**, I'd rate you -∞/10 waifu.");
                 } else if (msg.mentions[0].id == 167546638758445056) {
-                    return "**" + msg.mentions[0].username + "**, I'd rate you ∞/10 waifu. The best of the best."
+                    bot.createMessage(msg.channel.id, "**" + msg.mentions[0].username + "**, I'd rate you ∞/10 waifu. The best of the best.");
                 } else {
                     let random = tools.getRandom(0, 11);
                     let message = "**" + msg.mentions[0].username + "**, I'd rate you " + random + "/10 waifu.";
 
-                    return message;
+                    bot.createMessage(msg.channel.id, message);
                 }
             }
         }
@@ -2111,7 +2110,7 @@ bot.on("messageCreate", (msg) => {
         url += "&input=" + input;
 
         console.log('input = ' + input);
-        
+
         Cleverbot.get(url, (data, response) => {
             bot.createMessage(msg.channel.id, data.clever_output);
         });
