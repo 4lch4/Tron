@@ -1517,6 +1517,45 @@ bot.registerCommand('killme', (msg, args) => {
     caseInsensitive: true
 });
 
+// ========================== NSFW Commands ===================================================== //
+/**
+ * Tatoos:
+ * - r/Hotchickswithtattoos
+ * - r/SuicideGirls
+ * - r/SceneGirls
+ * - r/prettyaltgirls
+ */
+let nsfwCmd = bot.registerCommand('nsfw', (msg, args) => {
+    if (!msg.channel.nsfw) {
+        console.log('NSFW == false');
+        bot.createMessage(msg.channel.id, "NSFW commands can only be executed in a channel flagged NSFW.");
+    }
+});
+
+nsfwCmd.registerSubcommand('tattoo', (msg, args) => {
+    let random = tools.getRandom(0, tatSubs.length);
+
+    let tatSubs = [
+        'HotChicksWithTattoos',
+        'SuicideGirls',
+        'SceneGirls',
+        'PrettyAltGirls'
+    ];
+
+    reddit.r(tatSubs[random], (err, data, res) => {
+        let randomPost = tools.getRandom(0, data.data.children.length);
+
+        if (data.data.children[randomPost] != undefined) {
+            bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+        } else {
+            console.log('data.data.children[randomPost].data == undefined');
+            console.log('subreddit = ' + tatSubs[random]);
+            console.log(data.data.children);
+            bot.createMessage(msg.channel.id, "Unfortunately, something went wrong and the developers have been alerted. Please try again.");
+        }
+    });
+});
+
 // ========================== Rate Waifu Command (Requested by Bella and Kayla) ================= //
 bot.registerCommand('ratewaifu', (msg, args) => {
     tools.doesMsgContainShu(msg).then((shuFlag) => {
