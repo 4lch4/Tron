@@ -261,6 +261,12 @@ class Tools {
         msg.delete();
     }
 
+    /**
+     * Makes each item in the given args variable lower case and appends it to a
+     * string object. When all items have been added to the string, it is 
+     * returned.
+     * @param {*} args 
+     */
     concatArgs(args) {
         let str = "";
 

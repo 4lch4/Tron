@@ -20,11 +20,12 @@ const Eris = require("eris");
 const Raven = require('raven');
 Raven.config('https://48c87e30f01f45a7a112e0b033715f3d:d9b9df5b82914180b48856a41140df34@sentry.io/181885').install();
 
-let PowerWashingLinks = [];
-
 const CleverbotClient = require('node-rest-client').Client;
 const Cleverbot = new CleverbotClient();
+
 const urlencode = require('urlencode');
+
+let PowerWashingLinks = [];
 
 // ========================== Bot Declaration =================================================== //
 const bot = new Eris.CommandClient(config.token, {}, {
@@ -1542,7 +1543,7 @@ nsfwCmd.registerSubcommand('tattoo', (msg, args) => {
         'PrettyAltGirls'
     ];
 
-    reddit.r(tatSubs[random], (err, data, res) => {
+    reddit.r('HotChicksWithTattoos', (err, data, res) => {
         let randomPost = tools.getRandom(0, data.data.children.length);
 
         if (data.data.children[randomPost] != undefined) {
@@ -2133,6 +2134,106 @@ bot.registerCommand('utah', (msg, args) => {
     fullDescription: 'A command used to poke fun at a good friend. -Alcha'
 });
 
+const popura = require('popura');
+const malClient = popura(config.malUsername, config.malPass);
+
+let malCmd = bot.registerCommand('mal', (msg, args) => {});
+
+let malUserCmd = malCmd.registerSubcommand('user', (msg, args) => {
+    if (args.length == 0) {
+        bot.createMessage(msg.channel.id, 'You must include the username of an account on MAL.');
+    } else {
+        let username = tools.concatArgs(args);
+        malClient.getAnimeList(username).then((res) => {
+            bot.createMessage(msg.channel.id, {
+                embed: {
+                    title: 'Currently watching ' + res.myinfo.user_watching + ' anime', // Title of the embed
+                    description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days watching anime and/or reading manga.',
+                    url: "https://myanimelist.net/animelist/" + res.myinfo.user_name + "?status=1",
+                    author: { // Author property
+                        name: res.myinfo.user_name,
+                        url: "https://myanimelist.net/profile/" + res.myinfo.user_name,
+                        icon_url: "https://myanimelist.cdn-dena.com/images/userimages/" + res.myinfo.user_id + ".jpg"
+                    },
+                    color: 0x336699, // Color, either in hex (show), or a base-10 integer
+                    thumbnail: {},
+                    fields: [ // Array of field objects
+                        {
+                            name: "Completed",
+                            value: res.myinfo.user_completed,
+                            inline: true
+                        },
+                        {
+                            name: "On Hold",
+                            value: res.myinfo.user_onhold,
+                            inline: true
+                        },
+                        {
+                            name: "Dropped",
+                            value: res.myinfo.user_dropped,
+                            inline: true
+                        }
+                    ],
+                    footer: {
+                        text: "Data retrieved from MyAnimeList.net.",
+                        icon_url: "https://myanimelist.cdn-dena.com/images/faviconv5.ico"
+                    }
+                }
+            }).catch(err => {
+                console.log(err);
+            });
+        }).catch((err) => {
+            console.log(err)
+            bot.createMessage(msg.channel.id, "Unfortunately, it appears this username does not exist. Please verify and try again.");
+        });
+    }
+});
+
+malUserCmd.registerSubcommand('list', (msg, args) => {
+    if (args.length == 0) {
+        bot.createMessage(msg.channel.id, 'You must include the username of an account on MAL.');
+    } else {
+        let username = tools.concatArgs(args);
+        malClient.getAnimeList(username).then((res) => {
+            let fields = [];
+            res.list.sort((a, b) => {
+                if (a.my_score > b.my_score) return 1
+                else if (a.my_score < b.my_score) return -1
+                else return 0;
+            });
+
+            for (let i = res.list.length; fields.length < 30; i--) {
+                if (res.list[i] != undefined && res.list[i].my_score != 0) {
+                    fields.push({
+                        name: res.list[i].series_title,
+                        value: res.list[i].my_score,
+                        inline: true
+                    });
+                }
+            }
+
+            bot.createMessage(msg.channel.id, {
+                embed: {
+                    title: 'Currently watching ' + res.myinfo.user_watching + ' anime.', // Title of the embed
+                    description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days watching anime and/or reading manga.',
+                    author: { // Author property
+                        name: res.myinfo.user_name,
+                        url: "https://myanimelist.net/profile/" + res.myinfo.user_name,
+                        icon_url: "https://myanimelist.cdn-dena.com/images/userimages/" + res.myinfo.user_id + ".jpg"
+                    },
+                    color: 0x336699,
+                    fields: fields,
+                    footer: {
+                        text: "Data retrieved from MyAnimeList.net.",
+                        icon_url: "https://myanimelist.cdn-dena.com/images/faviconv5.ico"
+                    }
+                }
+            }).catch(err => console.log(err));
+        }).catch(err => {
+            bot.createMessage(msg.channel.id, "Unfortunately, it appears this username does not exist. Please verify and try again.");
+        });
+    }
+});
 // ========================== Alex Command ====================================================== //
 bot.registerCommand('alex', (msg, args) => {
     if (msg.channel.guild != undefined) {
