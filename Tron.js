@@ -2474,6 +2474,12 @@ bot.on("messageCreate", (msg) => {
             });
         } else if (tools.messageIs(msg, 'god damn')) {
             bot.createMessage(msg.channel.id, "https://i.imgur.com/ULUZMtV.gifv")
+        } else if (tools.messageIs(msg, 'o/') && msg.author.id != 258162570622533635) {
+            bot.createMessage(msg.channel.id, '\\o');
+        } else if (tools.messageIs(msg, '\\o') && msg.author.id != 258162570622533635) {
+            bot.createMessage(msg.channel.id, 'o/');
+        } else if (tools.messageIs(msg, 'ayy') && msg.author.id != 258162570622533635) {
+            bot.createMessage(msg.channel.id, 'lmao');
         }
     }
 });
