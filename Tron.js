@@ -2134,106 +2134,296 @@ bot.registerCommand('utah', (msg, args) => {
     fullDescription: 'A command used to poke fun at a good friend. -Alcha'
 });
 
+// ========================== MyAnimeList Commands ============================================== //
 const popura = require('popura');
-const malClient = popura(config.malUsername, config.malPass);
+const malClient = popura(config.malUsername, config.malPassword);
 
 let malCmd = bot.registerCommand('mal', (msg, args) => {});
+
+let malSearchCmd = malCmd.registerSubcommand('search', (msg, args) => {});
+
+malSearchCmd.registerSubcommand('anime', (msg, args) => {
+    if (args.length == 0) {
+
+    } else {
+        let name = tools.concatArgs(args);
+
+        malClient.searchAnimes(name).then(animes => {
+            animes.forEach((anime, index, map) => {
+                let animeUrl = "https://myanimelist.net/anime/" + anime.id + "/" + anime.title.replace(/ /g, "_");
+
+                bot.createMessage(msg.channel.id, {
+                    embed: {
+                        title: anime.title,
+                        description: 'Score: **' + anime.score.toString() + '**',
+                        color: 0x336699,
+                        url: animeUrl,
+                        fields: [ // Array of field objects
+                            {
+                                name: "Type",
+                                value: anime.type,
+                                inline: true
+                            },
+                            {
+                                name: "Episodes",
+                                value: anime.episodes,
+                                inline: true
+                            },
+                            {
+                                name: "Status",
+                                value: anime.status,
+                                inline: true
+                            },
+                            {
+                                name: "Synopsis",
+                                value: anime.synopsis,
+                                inline: false
+                            }
+                        ],
+                        footer: {
+                            text: "Data retrieved from MyAnimeList.net.",
+                            icon_url: "https://myanimelist.cdn-dena.com/images/faviconv5.ico"
+                        }
+                    }
+                })
+            })
+        }).catch(err => console.log(err));
+    }
+})
+
+malSearchCmd.registerSubcommand('manga', (msg, args) => {
+    if (args.length == 0) {
+
+    } else {
+        let name = tools.concatArgs(args);
+
+        malClient.searchMangas(name).then(mangas => {
+            mangas.forEach((manga, index, map) => {
+                if (index + 1 != mangas.length) {
+                    let synopsis;
+                    let type;
+                    let volumes;
+                    let status;
+                    let score;
+                    let title;
+                    let image;
+
+                    if (manga.synopsis == null || manga.synopsis == undefined || manga.synopsis.length < 2) {
+                        synopsis = "N/A";
+                    } else {
+                        synopsis = manga.synopsis.replace(/\[\/?i]/g, '_')
+                            .replace(/\[\/?b]/g, '**')
+                            .replace(/(\[url=)/g, '(')
+                            .replace(/]\b/g, ') ')
+                            .replace(/(\[\/url\])/g, ' ');
+                    }
+
+                    if (manga.type == null) type = "N/A";
+                    else type = manga.type;
+
+                    if (manga.volumes == null) volumes = "N/A";
+                    else volumes = manga.volumes;
+
+                    if (manga.status == null) status = "N/A";
+                    else status = manga.status;
+
+                    if (manga.score == undefined || manga.score == null || manga.score.length == 0) score = "N/A";
+                    else score = manga.score;
+
+                    if (manga.title == undefined || manga.title == null || manga.title.length < 2) title = "N/A";
+                    else title = manga.title;
+
+                    if (manga.image == undefined || manga.image == null || manga.image.length < 2) image = "N/A";
+                    else image = manga.image;
+
+                    let mangaUrl = "https://myanimelist.net/manga/" + manga.id + "/" + title.replace(/ /g, "_");
+
+                    bot.createMessage(msg.channel.id, {
+                        embed: {
+                            title: title,
+                            thumbnail: {
+                                url: image
+                            },
+                            description: 'Score: **' + score.toString() + '**',
+                            color: 0x336699,
+                            url: mangaUrl,
+                            fields: [ // Array of field objects
+                                {
+                                    name: "Type",
+                                    value: type,
+                                    inline: true
+                                },
+                                {
+                                    name: "Volumes",
+                                    value: volumes,
+                                    inline: true
+                                },
+                                {
+                                    name: "Status",
+                                    value: status,
+                                    inline: true
+                                },
+                                {
+                                    name: "Synopsis",
+                                    value: synopsis,
+                                    inline: false
+                                }
+                            ],
+                            footer: {
+                                text: "Data retrieved from MyAnimeList.net.",
+                                icon_url: "https://myanimelist.cdn-dena.com/images/faviconv5.ico"
+                            }
+                        }
+                    }).catch((err) => {
+                        console.log('Error occured searching for manga.');
+                    })
+                }
+            })
+        }).catch(err => console.log(err));
+    }
+})
 
 let malUserCmd = malCmd.registerSubcommand('user', (msg, args) => {
     if (args.length == 0) {
         bot.createMessage(msg.channel.id, 'You must include the username of an account on MAL.');
     } else {
-        let username = tools.concatArgs(args);
-        malClient.getAnimeList(username).then((res) => {
-            bot.createMessage(msg.channel.id, {
-                embed: {
-                    title: 'Currently watching ' + res.myinfo.user_watching + ' anime', // Title of the embed
-                    description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days watching anime and/or reading manga.',
-                    url: "https://myanimelist.net/animelist/" + res.myinfo.user_name + "?status=1",
-                    author: { // Author property
-                        name: res.myinfo.user_name,
-                        url: "https://myanimelist.net/profile/" + res.myinfo.user_name,
-                        icon_url: "https://myanimelist.cdn-dena.com/images/userimages/" + res.myinfo.user_id + ".jpg"
-                    },
-                    color: 0x336699, // Color, either in hex (show), or a base-10 integer
-                    thumbnail: {},
-                    fields: [ // Array of field objects
-                        {
-                            name: "Completed",
-                            value: res.myinfo.user_completed,
+        let username = args[0];
+        if (args[1] != undefined && args[1].toLowerCase() == 'anime') {
+            malClient.getAnimeList(username).then((res) => {
+                let fields = [];
+                res.list.sort((a, b) => {
+                    if (a.my_score > b.my_score) return 1;
+                    else if (a.my_score < b.my_score) return -1;
+                    else return 0;
+                });
+
+                for (let i = res.list.length; fields.length < 30; i--) {
+                    if (res.list[i] != undefined && res.list[i].my_score != 0) {
+                        fields.push({
+                            name: res.list[i].series_title,
+                            value: res.list[i].my_score,
                             inline: true
+                        });
+                    }
+                }
+
+                bot.createMessage(msg.channel.id, {
+                    embed: {
+                        title: 'Currently watching ' + res.myinfo.user_watching + ' anime.', // Title of the embed
+                        description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days watching anime.',
+                        author: { // Author property
+                            name: res.myinfo.user_name,
+                            url: "https://myanimelist.net/profile/" + res.myinfo.user_name,
+                            icon_url: "https://myanimelist.cdn-dena.com/images/userimages/" + res.myinfo.user_id + ".jpg"
                         },
-                        {
-                            name: "On Hold",
-                            value: res.myinfo.user_onhold,
-                            inline: true
-                        },
-                        {
-                            name: "Dropped",
-                            value: res.myinfo.user_dropped,
-                            inline: true
+                        color: 0x336699,
+                        fields: fields,
+                        footer: {
+                            text: "Data retrieved from MyAnimeList.net.",
+                            icon_url: "https://myanimelist.cdn-dena.com/images/faviconv5.ico"
                         }
-                    ],
-                    footer: {
-                        text: "Data retrieved from MyAnimeList.net.",
-                        icon_url: "https://myanimelist.cdn-dena.com/images/faviconv5.ico"
                     }
-                }
+                }).catch(err => console.log(err));
             }).catch(err => {
-                console.log(err);
+                bot.createMessage(msg.channel.id, "Unfortunately, it appears this username does not exist. Please verify and try again.");
             });
-        }).catch((err) => {
-            console.log(err)
-            bot.createMessage(msg.channel.id, "Unfortunately, it appears this username does not exist. Please verify and try again.");
-        });
-    }
-});
+        } else if (args[1] != undefined && args[1].toLowerCase() == 'manga') {
+            malClient.getMangaList(username).then((res) => {
+                let fields = [];
 
-malUserCmd.registerSubcommand('list', (msg, args) => {
-    if (args.length == 0) {
-        bot.createMessage(msg.channel.id, 'You must include the username of an account on MAL.');
-    } else {
-        let username = tools.concatArgs(args);
-        malClient.getAnimeList(username).then((res) => {
-            let fields = [];
-            res.list.sort((a, b) => {
-                if (a.my_score > b.my_score) return 1
-                else if (a.my_score < b.my_score) return -1
-                else return 0;
-            });
+                res.list.sort((a, b) => {
+                    if (a.my_score < b.my_score) return 1
+                    else if (a.my_score > b.my_score) return -1
+                    else return 0;
+                });
 
-            for (let i = res.list.length; fields.length < 30; i--) {
-                if (res.list[i] != undefined && res.list[i].my_score != 0) {
-                    fields.push({
-                        name: res.list[i].series_title,
-                        value: res.list[i].my_score,
-                        inline: true
-                    });
-                }
-            }
-
-            bot.createMessage(msg.channel.id, {
-                embed: {
-                    title: 'Currently watching ' + res.myinfo.user_watching + ' anime.', // Title of the embed
-                    description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days watching anime and/or reading manga.',
-                    author: { // Author property
-                        name: res.myinfo.user_name,
-                        url: "https://myanimelist.net/profile/" + res.myinfo.user_name,
-                        icon_url: "https://myanimelist.cdn-dena.com/images/userimages/" + res.myinfo.user_id + ".jpg"
-                    },
-                    color: 0x336699,
-                    fields: fields,
-                    footer: {
-                        text: "Data retrieved from MyAnimeList.net.",
-                        icon_url: "https://myanimelist.cdn-dena.com/images/faviconv5.ico"
+                res.list.forEach((manga, index, map) => {
+                    if (manga.my_score == 0 && manga.my_status == 2) {
+                        fields.push({
+                            name: manga.series_title,
+                            value: manga.my_score,
+                            inline: true
+                        });
+                    } else if (manga.my_score != 0) {
+                        fields.push({
+                            name: manga.series_title,
+                            value: manga.my_score,
+                            inline: true
+                        });
                     }
-                }
-            }).catch(err => console.log(err));
-        }).catch(err => {
-            bot.createMessage(msg.channel.id, "Unfortunately, it appears this username does not exist. Please verify and try again.");
-        });
+                });
+
+                bot.createMessage(msg.channel.id, {
+                    embed: {
+                        title: 'Currently reading ' + res.myinfo.user_reading + ' manga', // Title of the embed
+                        description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days reading manga.',
+                        url: "https://myanimelist.net/animelist/" + res.myinfo.user_name + "?status=1",
+                        author: { // Author property
+                            name: res.myinfo.user_name,
+                            url: "https://myanimelist.net/profile/" + res.myinfo.user_name,
+                            icon_url: "https://myanimelist.cdn-dena.com/images/userimages/" + res.myinfo.user_id + ".jpg"
+                        },
+                        color: 0x336699, // Color, either in hex (show), or a base-10 integer
+                        fields: fields,
+                        footer: {
+                            text: "Data retrieved from MyAnimeList.net.",
+                            icon_url: "https://myanimelist.cdn-dena.com/images/faviconv5.ico"
+                        }
+                    }
+                }).catch(err => {
+                    console.log(err);
+                });
+            }).catch((err) => {
+                console.log(err)
+                bot.createMessage(msg.channel.id, "Unfortunately, it appears this username does not exist. Please verify and try again.");
+            });
+        } else if (args[1] == undefined) {
+            malClient.getAnimeList(username).then((res) => {
+                bot.createMessage(msg.channel.id, {
+                    embed: {
+                        title: 'Currently watching ' + res.myinfo.user_watching + ' anime', // Title of the embed
+                        description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days watching anime.',
+                        url: "https://myanimelist.net/animelist/" + res.myinfo.user_name + "?status=1",
+                        author: { // Author property
+                            name: res.myinfo.user_name,
+                            url: "https://myanimelist.net/profile/" + res.myinfo.user_name,
+                            icon_url: "https://myanimelist.cdn-dena.com/images/userimages/" + res.myinfo.user_id + ".jpg"
+                        },
+                        color: 0x336699, // Color, either in hex (show), or a base-10 integer
+                        thumbnail: {},
+                        fields: [ // Array of field objects
+                            {
+                                name: "Completed",
+                                value: res.myinfo.user_completed,
+                                inline: true
+                            },
+                            {
+                                name: "On Hold",
+                                value: res.myinfo.user_onhold,
+                                inline: true
+                            },
+                            {
+                                name: "Dropped",
+                                value: res.myinfo.user_dropped,
+                                inline: true
+                            }
+                        ],
+                        footer: {
+                            text: "Data retrieved from MyAnimeList.net.",
+                            icon_url: "https://myanimelist.cdn-dena.com/images/faviconv5.ico"
+                        }
+                    }
+                }).catch(err => {
+                    console.log(err);
+                });
+            }).catch((err) => {
+                console.log(err)
+                bot.createMessage(msg.channel.id, "Unfortunately, it appears this username does not exist. Please verify and try again.");
+            });
+        }
     }
 });
+
 // ========================== Alex Command ====================================================== //
 bot.registerCommand('alex', (msg, args) => {
     if (msg.channel.guild != undefined) {
