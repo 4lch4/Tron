@@ -80,6 +80,21 @@ class Marriage {
         });
     }
 
+    getProposalType(userId, type, callback) {
+        let sqlQuery = "SELECT * FROM PROPOSALS WHERE ";
+        if (type == 0) {
+            sqlQuery += "PROPOSER_ID = " + userId + ";";
+        } else {
+            sqlQuery += "PROPOSEE_ID = " + userId + ";";
+        }
+
+        ioTools.executeSql(sqlQuery, (results) => {
+            if (callback != null) {
+                callback(results);
+            }
+        });
+    }
+
     acceptProposal(proposer, proposee, callback) {
         let sqlQuery = "SELECT * FROM PROPOSALS WHERE PROPOSER_ID = " + proposer.id + " AND PROPOSEE_ID = " + proposee.id + ";";
 

@@ -1091,7 +1091,7 @@ marry.registerSubcommand('list', (msg, args) => {
 });
 
 marry.registerSubcommand('accept', (msg, args) => {
-    marriage.getProposals(msg.author.id, (results) => {
+    marriage.getProposalType(msg.author.id, 1, (results) => {
         if (results != null && results.length > 1) {
             if (args.length == 0) {
                 marriage.formatProposals(results, (formattedMsg) => {
