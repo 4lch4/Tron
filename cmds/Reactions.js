@@ -286,7 +286,7 @@ class Reactions {
     }
 
     pickConfusedImage(callback) {
-        if (poutImages.length == 0) {
+        if (confusedImages.length == 0) {
             ioTools.getImages('confused', (images) => {
                 let random = tools.getRandom(0, images.length);
 
