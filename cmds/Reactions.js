@@ -7,6 +7,9 @@ const Tools = require('../util/Tools.js');
 const tools = new Tools();
 const ioTools = new IOTools();
 
+/** Stores images for the Snow command */
+let kaylaImages = [];
+
 /** Stores images for the Alcha command */
 let jerryImages = [];
 let jerryFilenames = [];
@@ -283,6 +286,21 @@ class Reactions {
 
             callback(danceImages[random]);
         }
+    }
+
+    pickKaylaImage() {
+        return new Promise((resolve, reject) => {
+            if(kaylaImages.length == 0) {
+                ioTools.getImages('kayla', images => {
+                    let random = tools.getRandom(0, images.length);
+                    kaylaImages = kaylaImages.concat(images);
+                    resolve(kaylaImages[random]);
+                });
+            } else {
+                let random = tools.getRandom(0, kaylaImages.length);
+                resolve(kaylaImages[random]);
+            }
+        });
     }
 
     pickConfusedImage(callback) {
