@@ -1413,16 +1413,12 @@ bot.registerCommand('punch', (msg, args) => {
 // ========================== Kayla Command (Requested by Snow) ================================= //
 bot.registerCommand('kayla', (msg, args) => {
     if (msg.author.id == 142092834260910080 || msg.author.id == 217870035090276374 || msg.author.id == config.owner) {
-        if (msg.channel.guild.id == 254496813552238594) {
-            return 'This command is unavailable on this server.';
-        } else {
-            reactions.pickKaylaImage().then(img => {
-                bot.createMessage(msg.channel.id, '', {
-                    file: img,
-                    name: 'Kayla.gif'
-                });
+        reactions.pickKaylaImage().then(img => {
+            bot.createMessage(msg.channel.id, '', {
+                file: img,
+                name: 'Kayla.gif'
             });
-        }
+        });
     } else {
         return 'This command is unavailable to you.';
     }
