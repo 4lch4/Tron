@@ -1550,14 +1550,14 @@ let nsfwCmd = bot.registerCommand('nsfw', (msg, args) => {
 });
 
 nsfwCmd.registerSubcommand('tattoo', (msg, args) => {
-    let random = tools.getRandom(0, tatSubs.length);
-
     let tatSubs = [
         'HotChicksWithTattoos',
         'SuicideGirls',
         'SceneGirls',
         'PrettyAltGirls'
     ];
+
+    let random = tools.getRandom(0, tatSubs.length);
 
     reddit.r('HotChicksWithTattoos', (err, data, res) => {
         let randomPost = tools.getRandom(0, data.data.children.length);
