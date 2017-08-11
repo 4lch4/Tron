@@ -1,3 +1,5 @@
+| [Home](./README.md) | [Commands](./Commands.md) |
+
 # Command List
 
 This is a list of all available commands, it will be updated as commands are added:
