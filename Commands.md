@@ -16,7 +16,7 @@
 | Quote       | +quote                                                                                                                                                            |
 | Ping        | +ping                                                                                                                                                             |
 | Invite      | +invite                                                                                                                                                           |
-| Stats       | +stats <\command name\>                                                                                                                                           |
+| Stats       | +stats \<command name\>                                                                                                                                           |
 | RateWaifu   | +ratewaifu \<@waifu\>                                                                                                                                             |
 | Git         | +git                                                                                                                                                              |
 | List Roles  | +listr                                                                                                                                                            |
@@ -29,7 +29,7 @@
 | Suggestion  | +suggestion "This is my suggestion, heed my call!"                                                                                                                |
 | MyAnimeList | +mal search anime \<anime name\><br/>+mal search manga \<manga name\><br/>+mal user anime\<username\><br/>+mal user manga \<username\><br/>+mal user \<username\> |
 
-| Reaction Commands |     Usage    |
+| Reactions         |     Usage    |
 |-------------------|--------------|
 | Cry               | +cry         |
 | Confused          | +confused    |
@@ -44,7 +44,7 @@
 | Cat               | +cat         |
 | Dodge             | +dodge       |
 
-| Action Commands |                         Usage                                    |
+| Actions         |                         Usage                                    |
 |-----------------|------------------------------------------------------------------|
 | Marry           | +marry<br/>+marry list<br/>+marry accept<br/>+marry deny         |
 | Divorce         | +divorce<br/>+divorce list<br/>+divorce accept<br/>+divorce deny |
@@ -63,7 +63,7 @@
 | Lick            | +lick \<@user\>                                                  |
 | Hugs            | +hugs \<@user\>                                                  |
 
-| NSFW Commands |        Usage         |
+| NSFW          |        Usage         |
 |---------------|----------------------|
 | Butts         | +nsfw butts          |
 | Boobs         | +nsfw boobs          |
