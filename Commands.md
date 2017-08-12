@@ -27,7 +27,7 @@
 | Exhentai    | +exhentai                                                                                                                                |
 | Reddit      | +reddit \<subreddit\>                                                                                                                    |
 | Suggestion  | +suggestion "This is my suggestion, heed my call!"                                                                                       |
-| MyAnimeList | +mal search anime \<anime name\> +mal search manga \<manga name\> +mal user anime \<username\> +mal user manga \<username\> +mal user \<username\> |
+| MyAnimeList | +mal search anime \<anime name\><br/>+mal search manga \<manga name\><br/>+mal user anime\<username\><br/>+mal user manga \<username\><br/>+mal user \<username\>|
 
 | Reaction Commands |     Usage    |
 |-------------------|--------------|
@@ -44,24 +44,24 @@
 | Cat               | +cat         |
 | Dodge             | +dodge       |
 
-| Action Commands |                         Usage                        |
-|-----------------|------------------------------------------------------|
-| Marry           | +marry/+marry list/+marry accept/+marry deny         |
-| Divorce         | +divorce/+divorce list/+divorce accept/+divorce deny |
-| Love            | +love \<@user\>                                      |
-| Poke            | +poke \<@user\>                                      |
-| Slap            | +slap \<@user\>                                      |
-| Kiss            | +kiss \<@user\>                                      |
-| Pat             | +pat \<@user\>                                       |
-| Kill            | +kill \<@user\>                                      |
-| Punch           | +punch \<@user\>                                     |
-| Wave            | +wave \<@user\>                                      |
-| Spank           | +spank \<@user\>                                     |
-| Kick            | +kick \<@user\>                                      |
-| Bite            | +bite \<@user\>                                      |
-| NoBulli         | +nobulli <@user 1> <@user 2>                         |
-| Lick            | +lick \<@user\>                                      |
-| Hugs            | +hugs \<@user\>                                      |
+| Action Commands |                         Usage                            |
+|-----------------|----------------------------------------------------------|
+| Marry           | +marry<br/>+marry list<br/>+marry accept<br/>+marry deny |
+| Divorce         | +divorce/+divorce list/+divorce accept/+divorce deny     |
+| Love            | +love \<@user\>                                          |
+| Poke            | +poke \<@user\>                                          |
+| Slap            | +slap \<@user\>                                          |
+| Kiss            | +kiss \<@user\>                                          |
+| Pat             | +pat \<@user\>                                           |
+| Kill            | +kill \<@user\>                                          |
+| Punch           | +punch \<@user\>                                         |
+| Wave            | +wave \<@user\>                                          |
+| Spank           | +spank \<@user\>                                         |
+| Kick            | +kick \<@user\>                                          |
+| Bite            | +bite \<@user\>                                          |
+| NoBulli         | +nobulli <@user 1> <@user 2>                             |
+| Lick            | +lick \<@user\>                                          |
+| Hugs            | +hugs \<@user\>                                          |
 
 | NSFW Commands |        Usage         |
 |---------------|----------------------|
