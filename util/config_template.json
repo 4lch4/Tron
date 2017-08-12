@@ -1,0 +1,35 @@
+{
+    "token": "",
+    "shardCount": "1",
+    "simpleLog": "no",
+    "adminids": [""],
+    "owner": "",
+    "invitelink": "https://discordapp.com/oauth2/authorize?client_id=<client_id_here>&scope=bot",
+    "botid": "",
+    "defaultgame": "Space Paranoids",
+    "prefix": "",
+    "imageDirectory": "",
+    "portListen": "80",
+    "notificationChannel": "325510994719932418",
+    "notificationMessage": "**<server_name> is Active**",
+    "defaultTimezone": "America/Los_Angeles",
+    "targetChannel": "",
+    "ownerServer": "",
+    "roleNames": [""],
+    "mysql": {
+        "host": "localhost",
+        "user": "",
+        "password": "",
+        "database": ""
+    },
+    "tumblr": {
+        "token": "",
+        "token_secret": "",
+        "consumer_key": "",
+        "consumer_secret": ""
+    },
+    "cleverbot": "",
+    "malUsername": "",
+    "malPassword": "",
+    "blizzKey": ""
+}
