@@ -1,6 +1,6 @@
 {
   "name": "tron",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Our Tron bot that makes socializing on our servers more entertaining.",
   "main": "Tron.js",
   "author": "Alcha",
