@@ -554,6 +554,26 @@ bot.registerCommand('rose', (msg, args) => {
     guildOnly: true,
 });
 
+bot.registerCommand('squirtle', (msg, args) => {
+    if (!isNaN(parseInt(args[0]))) {
+        reactions.pickSquirtleImage(args[0]).then(imgObject => {
+            bot.createMessage(msg.channel.id, '', {
+                file: imgObject.image,
+                name: imgObject.filename
+            });
+        });
+    } else {
+        reactions.pickSquirtleImage().then(imgObject => {
+            bot.createMessage(msg.channel.id, '', {
+                file: imgObject.image,
+                name: imgObject.filename
+            });
+        });
+    }
+}, {
+    caseInsensitive: true
+});
+
 // ========================== Nobulli Command (Compromise on request from Onyx) ================= //
 bot.registerCommand('nobulli', (msg, args) => {
     tools.doesMsgContainShu(msg).then((shuFlag) => {

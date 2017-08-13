@@ -22,6 +22,10 @@ let catFilenames = [];
 let roseImages = [];
 let roseFilenames = [];
 
+/** Stores images for the Squirtle command */
+let squirtleImages = [];
+let squirtleFilenames = [];
+
 /** Stores images for the Nobulli command */
 let noBulliImages = [];
 
@@ -47,10 +51,10 @@ let poutImages = [];
 let vnImages = [];
 
 /** Stores images for the Dodge command */
-let dodgeImages= [];
+let dodgeImages = [];
 
 /** Stores images for the Lick command */
-let lickImages= [];
+let lickImages = [];
 
 /** Stores images for the Wave command */
 let waveImages = [];
@@ -124,6 +128,45 @@ class Reactions {
                 callback(catImages[random], catFilenames[random]);
             }
         }
+    }
+
+    pickSquirtleImage(imgIndex) {
+        return new Promise((resolve, reject) => {
+            if (squirtleImages.length == 0) {
+                ioTools.getImages('squirtle', (images, filenames) => {
+                    squirtleImages = squirtleImages.concat(images);
+                    squirtleFilenames = filenames;
+
+                    if (imgIndex < squirtleImages.length) {
+                        resolve({
+                            image: squirtleImages[imgIndex],
+                            filename: squirtleFilenames[imgIndex]
+                        });
+                    } else {
+                        let random = tools.getRandom(0, images.length);
+
+                        resolve({
+                            image: squirtleImages[random],
+                            filename: squirtleFilenames[random]
+                        });
+                    }
+                })
+            } else {
+                if (imgIndex < squirtleImages.length) {
+                    resolve({
+                        image: squirtleImages[imgIndex],
+                        filename: squirtleFilenames[imgIndex]
+                    });
+                } else {
+                    let random = tools.getRandom(0, squirtleImages.length);
+
+                    resolve({
+                        image: squirtleImages[random],
+                        filename: squirtleFilenames[random]
+                    });
+                }
+            }
+        });
     }
 
     pickRoseImage(callback, imgIndex) {
@@ -290,7 +333,7 @@ class Reactions {
 
     pickKaylaImage() {
         return new Promise((resolve, reject) => {
-            if(kaylaImages.length == 0) {
+            if (kaylaImages.length == 0) {
                 ioTools.getImages('kayla', images => {
                     let random = tools.getRandom(0, images.length);
                     kaylaImages = kaylaImages.concat(images);
@@ -403,7 +446,7 @@ class Reactions {
 
                 resolve(dodgeImages[random]);
             }
-        });    
+        });
     }
 
     pickLickImage(imgIndex) {
