@@ -1591,7 +1591,7 @@ bot.registerCommand('ratewaifu', (msg, args) => {
                     bot.createMessage(msg.channel.id, "**" + msg.mentions[0].username + "**, I'd rate you -69/10 waifu.");
                 } else if (msg.mentions[0].id == 120797492865400832) {
                     // Bella
-                    bot.createMessage(msg.channel.id, "**" + msg.mentions[0].username + "**, I'd rate you 12/10 waifu. :fire: :fire: \n\n_notice me_");
+                    bot.createMessage(msg.channel.id, "**" + msg.mentions[0].username + "**, I'd rate you 12/10 waifu. :fire: :fire:");
                 } else if (msg.mentions[0].id == 139474184089632769) {
                     // Utah
                     bot.createMessage(msg.channel.id, "**" + msg.mentions[0].username + "**, I'd rate you -∞/10 waifu.");
