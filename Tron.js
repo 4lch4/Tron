@@ -274,19 +274,6 @@ bot.registerCommand('cat', (msg, args) => {
     guildOnly: true,
 });
 
-// ========================== Yaoi Command (Requested by Mimiru) ================================ //
-bot.registerCommand('yaoi', (msg, args) => {
-    yaoiCmd.getYaoiPhoto().then((photoUrl) => {
-        bot.createMessage(msg.channel.id, photoUrl);
-
-        ioTools.incrementCommandUse('yaoi');
-    });
-}, {
-    caseInsensitive: true,
-    cooldown: 5000,
-    cooldownMessage: 'Please wait 5 seconds between uses of this command.'
-});
-
 bot.registerCommand('powerwashingporn', (msg, args) => {
     if (PowerWashingLinks.length == 0) {
         reddit.r('powerwashingporn').top().from('all').all((res) => {
@@ -327,7 +314,11 @@ bot.registerCommand('reddit', (msg, args) => {
         let randomPost = tools.getRandom(0, data.data.children.length);
 
         if (data.data.children[randomPost] != undefined) {
-            bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+            if (data.data.children[randomPost].data.over_18 && !msg.channel.nsfw) {
+                bot.createMessage(msg.channel.id, "It appears the result of this search is NSFW and this channel is not flagged for NSFW content. Please try in another channel.")
+            } else {
+                bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+            }
         } else {
             console.log('data.data.children[randomPost].data == undefined');
             console.log('subreddit = ' + subreddit);
@@ -340,191 +331,6 @@ bot.registerCommand('reddit', (msg, args) => {
     });
 }, {
     aliases: ['r']
-});
-
-// ========================== Hentai Command ==================================================== //
-bot.registerCommand('hentai', (msg, args) => {
-    let hentaiSubs = [
-        'hentai',
-        'rule34',
-        'rule34feet'
-    ];
-
-    let randomSub = tools.getRandom(0, hentaiSubs.length);
-
-    reddit.r(hentaiSubs[randomSub], (err, data, res) => {
-        if (err) {
-            Raven.captureException(err);
-            bot.createMessage(msg.channel.id, err);
-        } else {
-            let randomPost = tools.getRandom(0, data.data.children.length);
-
-            bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
-
-            ioTools.incrementCommandUse('hentai');
-        }
-    });
-}, {
-    aliases: ['boob', 'breasts', 'tits'],
-    caseInsensitive: true,
-    cooldown: 5000,
-    cooldownMessage: 'Please wait 5 seconds between uses of this command.'
-});
-
-// ========================== Boobs Command ===================================================== //
-bot.registerCommand('boobs', (msg, args) => {
-    let boobSubs = [
-        'boobs',
-        'Boobies',
-        'Stacked',
-        'BustyPetite',
-        'Cleavage',
-        'bustyasians',
-        'boltedontits',
-        'burstingout'
-    ];
-
-    let randomSub = tools.getRandom(0, boobSubs.length);
-
-    reddit.r(boobSubs[randomSub], (err, data, res) => {
-        if (err) {
-            Raven.captureException(err);
-            bot.createMessage(msg.channel.id, err);
-        } else {
-            let randomPost = tools.getRandom(0, data.data.children.length);
-
-            bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
-
-            ioTools.incrementCommandUse('boobs');
-        }
-    });
-}, {
-    aliases: ['boob', 'breasts', 'tits'],
-    caseInsensitive: true,
-    cooldown: 5000,
-    cooldownMessage: 'Please wait 5 seconds between uses of this command.'
-});
-
-// ========================== Butt Command ====================================================== //
-bot.registerCommand('butt', (msg, args) => {
-    let buttSubs = [
-        'asstastic',
-        'pawg',
-        'facedownassup',
-        'ass',
-        'brunetteass',
-        'CheekyBottoms',
-        'datgap',
-        'underbun',
-        'rearpussy',
-        'pawgtastic',
-        'BestBooties',
-        'CuteLittleButts'
-    ];
-
-    let randomSub = tools.getRandom(0, buttSubs.length);
-
-    reddit.r(buttSubs[randomSub], (err, data, res) => {
-        if (err) {
-            Raven.captureException(err);
-            bot.createMessage(msg.channel.id, err);
-        } else {
-            let randomPost = tools.getRandom(0, data.data.children.length);
-
-            bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
-
-            ioTools.incrementCommandUse('butt');
-        }
-    });
-}, {
-    aliases: ['butts', 'booty', 'ass'],
-    caseInsensitive: true,
-    cooldown: 5000,
-    cooldownMessage: 'Please wait 5 seconds between uses of this command.'
-});
-
-// ========================== Feet Command (Requested by Rosa) ================================== //
-bot.registerCommand('feet', (msg, args) => {
-    let feetSubs = [
-        'CelebrityFeet',
-        'FFSocks',
-        'Feet_NSFW',
-        'FootFetish',
-        'FFNBPS',
-        'feetish',
-        'scent_of_women_feet',
-        'AsianFeet',
-        'gayfootfetish',
-        'HighHeels',
-        'Soles',
-        'CosplayFeet',
-        'dirtyfeet',
-        'DesiFeet',
-        'ebonyfeet',
-        'rule34feet',
-        'girlsinanklesocks',
-        'Porn_Star_Feet',
-        'FeetVideos',
-        'Soles_And_Holes',
-        'Footjobs'
-    ];
-
-    let randomSub = tools.getRandom(0, feetSubs.length);
-
-    reddit.r(feetSubs[randomSub], (err, data, res) => {
-        if (err) {
-            Raven.captureException(err);
-            bot.createMessage(msg.channel.id, err);
-        } else {
-            let randomPost = tools.getRandom(0, data.data.children.length);
-
-            bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
-
-            ioTools.incrementCommandUse('feet');
-        }
-    });
-}, {
-    aliases: ['feets', 'foot'],
-    caseInsensitive: true,
-    cooldown: 5000,
-    cooldownMessage: 'Please wait 5 seconds between uses of this command.'
-});
-
-// ========================== Gay Command (Requested by Mimiru) ================================= //
-bot.registerCommand('gay', (msg, args) => {
-    let gaySubs = [
-        'cockrating',
-        'BonersInPublic',
-        'curved_cock',
-        'MassiveCock',
-        'ratemycock',
-        'RedditorCum',
-        'NSFW_DICK_and_Cock',
-        'TotallyStraight',
-        'CockOutline',
-        'lovegaymale'
-    ];
-
-    let randomSub = tools.getRandom(0, gaySubs.length);
-
-    reddit.r(gaySubs[randomSub], (err, data, res) => {
-        if (err) {
-            Raven.captureException(err);
-            bot.createMessage(msg.channel.id, err);
-        } else {
-            let randomPost = tools.getRandom(0, data.data.children.length);
-
-            bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
-
-            ioTools.incrementCommandUse('gay');
-        }
-    });
-}, {
-    aliases: ['dick', 'dicks', 'cock', 'penis'],
-    caseInsensitive: true,
-    guildOnly: false,
-    cooldown: 5000,
-    cooldownMessage: 'Please wait 5 seconds between uses of this command.'
 });
 
 // ========================== Rose Command (Requested by PrimRose) ============================== //
@@ -749,60 +555,6 @@ bot.registerCommand('love', (msg, args) => {
     caseInsensitive: true,
     description: 'Displays random love gif.',
     fullDescription: 'Displays a random love gif and the name of the person you mention.'
-});
-
-// ========================== Send Lewd ========================================================= //
-bot.registerCommand('newd', (msg, args) => {
-    tools.doesMsgContainShu(msg).then((shuFlag) => {
-        if (shuFlag) {
-            bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.');
-        } else {
-            if (msg.channel.guild == undefined) {
-                // Private message channel
-                // TODO: Added private message support.
-            } else {
-                // Guild channel
-                if (msg.mentions != undefined && msg.mentions.length > 0) {
-                    lewds.getButt((butt, filename) => {
-                        msg.mentions.forEach((mention, index, array) => {
-                            mention.getDMChannel().then((channel) => {
-                                if (mention.bot) {
-                                    bot.createMessage(msg.channel.id, "You can't send private messages to a bot.");
-                                } else {
-                                    bot.createMessage(channel.id, '', {
-                                        file: butt,
-                                        name: filename
-                                    }).then((message) => {
-                                        // Process message?
-                                        console.log(msg.author.username + ' sent a lewd message to ' + mention.username + '.');
-                                    }).catch((err) => {
-                                        if (err.code == 20009) {
-                                            bot.createMessage(channel.id, "Unfortunately, it appears you can't receive explicit content. Please add Tron to your friends and try again.");
-                                        }
-                                    });
-                                }
-                            });
-                        });
-
-                        if (msg.mentions.length == 1) {
-                            bot.createMessage(msg.channel.id, "Your message has most likely been sent. :wink:");
-                        } else {
-                            bot.createMessage(msg.channel.id, "Your messages have most likely been sent. :wink:");
-                        }
-                    });
-                }
-            }
-        }
-    });
-
-    ioTools.incrementCommandUse('newd');
-}, {
-    aliases: ['sendnude', 'sendnudes', 'nudes', 'snude', 'sn', 'slideintodms', 'sendnoods', 'sendnoots'],
-    caseInsensitive: true,
-    deleteCommand: true,
-    description: "For those spicy nudes you've been wanting ( . Y . )",
-    fullDescription: ':lenny:',
-    usage: "[@users] e.g. `+sendnudes @Alcha#2621 @MissBella#6480`"
 });
 
 // ========================== Invite Command ==================================================== //
@@ -1575,42 +1327,304 @@ bot.registerCommand('killme', (msg, args) => {
 });
 
 // ========================== NSFW Commands ===================================================== //
-/**
- * Tatoos:
- * - r/Hotchickswithtattoos
- * - r/SuicideGirls
- * - r/SceneGirls
- * - r/prettyaltgirls
- */
 let nsfwCmd = bot.registerCommand('nsfw', (msg, args) => {
     if (!msg.channel.nsfw) {
-        console.log('NSFW == false');
         bot.createMessage(msg.channel.id, "NSFW commands can only be executed in a channel flagged NSFW.");
+    }
+}, {
+    defaultSubcommandOptions: {
+        caseInsensitive: true,
+        cooldown: 5000,
+        cooldownMessage: 'Please wait 5 seconds between uses of this command.',
+        guildOnly: false
     }
 });
 
 nsfwCmd.registerSubcommand('tattoo', (msg, args) => {
-    let tatSubs = [
-        'HotChicksWithTattoos',
-        'SuicideGirls',
-        'SceneGirls',
-        'PrettyAltGirls'
-    ];
+    if (!msg.channel.nsfw) {
+        bot.createMessage(msg.channel.id, "NSFW commands can only be executed in a channel flagged NSFW.");
+    } else {
+        let tatSubs = [
+            'HotChicksWithTattoos',
+            'SuicideGirls',
+            'SceneGirls',
+            'PrettyAltGirls'
+        ];
 
-    let random = tools.getRandom(0, tatSubs.length);
+        let random = tools.getRandom(0, tatSubs.length);
 
-    reddit.r('HotChicksWithTattoos', (err, data, res) => {
-        let randomPost = tools.getRandom(0, data.data.children.length);
+        reddit.r('HotChicksWithTattoos', (err, data, res) => {
+            let randomPost = tools.getRandom(0, data.data.children.length);
 
-        if (data.data.children[randomPost] != undefined) {
-            bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
-        } else {
-            console.log('data.data.children[randomPost].data == undefined');
-            console.log('subreddit = ' + tatSubs[random]);
-            console.log(data.data.children);
-            bot.createMessage(msg.channel.id, "Unfortunately, something went wrong and the developers have been alerted. Please try again.");
-        }
-    });
+            if (data.data.children[randomPost] != undefined) {
+                bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+            } else {
+                console.log('data.data.children[randomPost].data == undefined');
+                console.log('subreddit = ' + tatSubs[random]);
+                console.log(data.data.children);
+                bot.createMessage(msg.channel.id, "Unfortunately, something went wrong and the developers have been alerted. Please try again.");
+            }
+        });
+    }
+});
+
+nsfwCmd.registerSubcommand('newd', (msg, args) => {
+    if (!msg.channel.nsfw) {
+        bot.createMessage(msg.channel.id, "NSFW commands can only be executed in a channel flagged NSFW.");
+    } else {
+        tools.doesMsgContainShu(msg).then((shuFlag) => {
+            if (shuFlag) {
+                bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.');
+            } else {
+                if (msg.channel.guild == undefined) {
+                    // Private message channel
+                    // TODO: Added private message support.
+                } else {
+                    // Guild channel
+                    if (msg.mentions != undefined && msg.mentions.length > 0) {
+                        lewds.getButt((butt, filename) => {
+                            msg.mentions.forEach((mention, index, array) => {
+                                mention.getDMChannel().then((channel) => {
+                                    if (mention.bot) {
+                                        bot.createMessage(msg.channel.id, "You can't send private messages to a bot.");
+                                    } else {
+                                        bot.createMessage(channel.id, '', {
+                                            file: butt,
+                                            name: filename
+                                        }).then((message) => {
+                                            // Process message?
+                                            console.log(msg.author.username + ' sent a lewd message to ' + mention.username + '.');
+                                        }).catch((err) => {
+                                            if (err.code == 20009) {
+                                                bot.createMessage(channel.id, "Unfortunately, it appears you can't receive explicit content. Please add Tron to your friends and try again.");
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+
+                            if (msg.mentions.length == 1) {
+                                bot.createMessage(msg.channel.id, "Your message has most likely been sent. :wink:");
+                            } else {
+                                bot.createMessage(msg.channel.id, "Your messages have most likely been sent. :wink:");
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+    ioTools.incrementCommandUse('newd');
+}, {
+    aliases: ['sendnude', 'sendnudes', 'nudes', 'snude', 'sn', 'slideintodms', 'sendnoods', 'sendnoots'],
+    caseInsensitive: true,
+    deleteCommand: true,
+    description: "For those spicy nudes you've been wanting ( . Y . )",
+    fullDescription: ':lenny:',
+    usage: "[@users] e.g. `+sendnudes @Alcha#2621 @MissBella#6480`"
+});
+
+// ========================== Hentai Command ==================================================== //
+nsfwCmd.registerSubcommand('boobs', (msg, args) => {
+    if (!msg.channel.nsfw) {
+        bot.createMessage(msg.channel.id, "NSFW commands can only be executed in a channel flagged NSFW.");
+    } else {
+        let boobSubs = [
+            'boobs',
+            'Boobies',
+            'Stacked',
+            'BustyPetite',
+            'Cleavage',
+            'bustyasians',
+            'boltedontits',
+            'burstingout'
+        ];
+
+        let randomSub = tools.getRandom(0, boobSubs.length);
+
+        reddit.r(boobSubs[randomSub], (err, data, res) => {
+            if (err) {
+                Raven.captureException(err);
+                bot.createMessage(msg.channel.id, err);
+            } else {
+                let randomPost = tools.getRandom(0, data.data.children.length);
+
+                bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+
+                ioTools.incrementCommandUse('boobs');
+            }
+        });
+    }
+}, {
+    aliases: ['boob', 'breasts', 'tits']
+});
+
+// ========================== Hentai Command ==================================================== //
+nsfwCmd.registerSubcommand('hentai', (msg, args) => {
+    if (!msg.channel.nsfw) {
+        bot.createMessage(msg.channel.id, "NSFW commands can only be executed in a channel flagged NSFW.");
+    } else {
+        let hentaiSubs = [
+            'hentai',
+            'rule34',
+            'rule34feet'
+        ];
+
+        let randomSub = tools.getRandom(0, hentaiSubs.length);
+
+        reddit.r(hentaiSubs[randomSub], (err, data, res) => {
+            if (err) {
+                Raven.captureException(err);
+                bot.createMessage(msg.channel.id, err);
+            } else {
+                let randomPost = tools.getRandom(0, data.data.children.length);
+
+                bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+
+                ioTools.incrementCommandUse('hentai');
+            }
+        });
+    }
+}, {
+    aliases: ['boob', 'breasts', 'tits']
+});
+
+// ========================== Butt Command ====================================================== //
+nsfwCmd.registerSubcommand('butt', (msg, args) => {
+    if (!msg.channel.nsfw) {
+        bot.createMessage(msg.channel.id, "NSFW commands can only be executed in a channel flagged NSFW.");
+    } else {
+        let buttSubs = [
+            'asstastic',
+            'pawg',
+            'facedownassup',
+            'ass',
+            'brunetteass',
+            'CheekyBottoms',
+            'datgap',
+            'underbun',
+            'rearpussy',
+            'pawgtastic',
+            'BestBooties',
+            'CuteLittleButts'
+        ];
+
+        let randomSub = tools.getRandom(0, buttSubs.length);
+
+        reddit.r(buttSubs[randomSub], (err, data, res) => {
+            if (err) {
+                Raven.captureException(err);
+                bot.createMessage(msg.channel.id, err);
+            } else {
+                let randomPost = tools.getRandom(0, data.data.children.length);
+
+                bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+
+                ioTools.incrementCommandUse('butt');
+            }
+        });
+    }
+}, {
+    aliases: ['butts', 'booty', 'ass']
+});
+
+// ========================== Feet Command (Requested by Rosa) ================================== //
+nsfwCmd.registerSubcommand('feet', (msg, args) => {
+    if (!msg.channel.nsfw) {
+        bot.createMessage(msg.channel.id, "NSFW commands can only be executed in a channel flagged NSFW.");
+    } else {
+        let feetSubs = [
+            'CelebrityFeet',
+            'FFSocks',
+            'Feet_NSFW',
+            'FootFetish',
+            'FFNBPS',
+            'feetish',
+            'scent_of_women_feet',
+            'AsianFeet',
+            'gayfootfetish',
+            'HighHeels',
+            'Soles',
+            'CosplayFeet',
+            'dirtyfeet',
+            'DesiFeet',
+            'ebonyfeet',
+            'rule34feet',
+            'girlsinanklesocks',
+            'Porn_Star_Feet',
+            'FeetVideos',
+            'Soles_And_Holes',
+            'Footjobs'
+        ];
+
+        let randomSub = tools.getRandom(0, feetSubs.length);
+
+        reddit.r(feetSubs[randomSub], (err, data, res) => {
+            if (err) {
+                Raven.captureException(err);
+                bot.createMessage(msg.channel.id, err);
+            } else {
+                let randomPost = tools.getRandom(0, data.data.children.length);
+
+                bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+
+                ioTools.incrementCommandUse('feet');
+            }
+        });
+    }
+}, {
+    aliases: ['feets', 'foot']
+});
+
+// ========================== Gay Command (Requested by Mimiru) ================================= //
+nsfwCmd.registerSubcommand('gay', (msg, args) => {
+    if (!msg.channel.nsfw) {
+        bot.createMessage(msg.channel.id, "NSFW commands can only be executed in a channel flagged NSFW.");
+    } else {
+        let gaySubs = [
+            'cockrating',
+            'BonersInPublic',
+            'curved_cock',
+            'MassiveCock',
+            'ratemycock',
+            'RedditorCum',
+            'NSFW_DICK_and_Cock',
+            'TotallyStraight',
+            'CockOutline',
+            'lovegaymale'
+        ];
+
+        let randomSub = tools.getRandom(0, gaySubs.length);
+
+        reddit.r(gaySubs[randomSub], (err, data, res) => {
+            if (err) {
+                Raven.captureException(err);
+                bot.createMessage(msg.channel.id, err);
+            } else {
+                let randomPost = tools.getRandom(0, data.data.children.length);
+
+                bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url);
+
+                ioTools.incrementCommandUse('gay');
+            }
+        });
+    }
+}, {
+    aliases: ['dick', 'dicks', 'cock', 'penis']
+});
+
+// ========================== Yaoi Command (Requested by Mimiru) ================================ //
+nsfwCmd.registerSubcommand('yaoi', (msg, args) => {
+    if (!msg.channel.nsfw) {
+        bot.createMessage(msg.channel.id, "NSFW commands can only be executed in a channel flagged NSFW.");
+    } else {
+        yaoiCmd.getYaoiPhoto().then((photoUrl) => {
+            bot.createMessage(msg.channel.id, photoUrl);
+
+            ioTools.incrementCommandUse('yaoi');
+        });
+    }
 });
 
 // ========================== Rate Waifu Command (Requested by Bella and Kayla) ================= //
