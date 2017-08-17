@@ -554,6 +554,26 @@ bot.registerCommand('rose', (msg, args) => {
     guildOnly: true,
 });
 
+bot.registerCommand('lewd', (msg, args) => {
+    if (!isNaN(parseInt(args[0]))) {
+        console.log('!isNaN');
+        reactions.pickLewdImage(args[0]).then(imgObject => {
+            bot.createMessage(msg.channel.id, '', {
+                file: imgObject.image,
+                name: imgObject.filename
+            });
+        });
+    } else {
+        console.log('isNaN');
+        reactions.pickLewdImage().then(imgObject => {
+            bot.createMessage(msg.channel.id, '', {
+                file: imgObject.image,
+                name: imgObject.filename
+            });
+        });
+    }
+});
+
 bot.registerCommand('squirtle', (msg, args) => {
     if (!isNaN(parseInt(args[0]))) {
         reactions.pickSquirtleImage(args[0]).then(imgObject => {
@@ -777,7 +797,7 @@ bot.registerCommand('newd', (msg, args) => {
 
     ioTools.incrementCommandUse('newd');
 }, {
-    aliases: ['sendnude', 'sendnudes', 'lewd', 'lewds', 'nudes', 'snude', 'sn', 'slideintodms', 'sendnoods', 'sendnoots'],
+    aliases: ['sendnude', 'sendnudes', 'nudes', 'snude', 'sn', 'slideintodms', 'sendnoods', 'sendnoots'],
     caseInsensitive: true,
     deleteCommand: true,
     description: "For those spicy nudes you've been wanting ( . Y . )",

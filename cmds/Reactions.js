@@ -14,6 +14,10 @@ let kaylaImages = [];
 let jerryImages = [];
 let jerryFilenames = [];
 
+/** Stores images for the Lewd command */
+let lewdImages = [];
+let lewdFilenames = [];
+
 /** Stores images for the Cat command */
 let catImages = [];
 let catFilenames = [];
@@ -128,6 +132,49 @@ class Reactions {
                 callback(catImages[random], catFilenames[random]);
             }
         }
+    }
+
+    pickLewdImage(imgIndex) {
+        return new Promise((resolve, reject) => {
+            if (lewdImages.length == 0) {
+                ioTools.getImages('lewd', (images, filenames) => {
+                    lewdImages = lewdImages.concat(images);
+                    lewdFilenames = filenames;
+
+                    if (imgIndex < lewdImages.length) {
+                        resolve({
+                            image: lewdImages[imgIndex],
+                            filename: lewdFilenames[imgIndex]
+                        });
+                    } else {
+                        let random = tools.getRandom(0, images.length);
+                        console.log('random = ' + random);
+                        console.log('filename = ' + lewdFilenames[random]);
+
+                        resolve({
+                            image: lewdImages[random],
+                            filename: lewdFilenames[random]
+                        });
+                    }
+                })
+            } else {
+                if (imgIndex < lewdImages.length) {
+                    resolve({
+                        image: lewdImages[imgIndex],
+                        filename: lewdFilenames[imgIndex]
+                    });
+                } else {
+                    let random = tools.getRandom(0, lewdImages.length);
+                    console.log('random = ' + random);
+                    console.log('filename = ' + lewdFilenames[random]);
+
+                    resolve({
+                        image: lewdImages[random],
+                        filename: lewdFilenames[random]
+                    });
+                }
+            }
+        });
     }
 
     pickSquirtleImage(imgIndex) {
