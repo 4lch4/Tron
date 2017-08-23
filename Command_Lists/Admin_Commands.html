@@ -1,0 +1,82 @@
+<style>
+    .pageCenter {
+        margin-left: auto;
+        margin-right: auto;
+        float: none;
+        width: 100%;
+    }
+
+    th {
+        text-align: left;
+    }
+
+    tr {
+        border: solid;
+        border-width: 1px 0;
+    }
+
+    tbody tr:hover {
+        background-color: #EEEEEE;
+    }
+
+    td {
+        padding-top: 1em;
+        padding-bottom: 1em;
+    }
+
+    .h2Center {
+        width: 100%;
+        text-align: center;
+    }
+</style>
+
+<h2 id="AdminCommands" class="h2Center">Admin Commands</h2>
+
+<table class="pageCenter">
+    <col width="20%">
+    <col width="30%">
+    <col width="50%">
+    <thead>
+        <tr>
+            <th>Command</th>
+            <th>Usage</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr id="KickUser">
+            <td>Kick User</td>
+            <td>+admin kick <b>@User</b></td>
+            <td>Kicks the mentioned user from the server.</td>
+        </tr>
+        <tr id="BanUser">
+            <td>Ban User</td>
+            <td>+admin ban <b>@User</b></td>
+            <td>Bans the mentioned user from the server.</td>
+        </tr>
+
+        <tr id="AddRole">
+            <td>Add Role</td>
+            <td>+admin addr <b>"Role Name"</b></td>
+            <td>Adds the named role to the list of roles available to server users.</td>
+        </tr>
+
+        <tr id="DeleteRole">
+            <td>Delete Role</td>
+            <td>+admin delr <b>"Role Name"</b></td>
+            <td>Deletes the named role from the list of roles available to server users.</td>
+        </tr>
+
+        <tr id="ListServerCount">
+            <td>List</td>
+            <td>+admin list</td>
+            <td>Returns the amount of servers Tron is currently connected to.</td>
+        </tr>
+
+        <tr id="Initialize">
+            <td>Initialize</td>
+            <td>+admin initialize</td>
+            <td>I honestly can't remember <i>what</i> this does...</td>
+        </tr>
+    </tbody>
+</table>
