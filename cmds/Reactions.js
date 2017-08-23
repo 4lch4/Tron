@@ -148,8 +148,6 @@ class Reactions {
                         });
                     } else {
                         let random = tools.getRandom(0, images.length);
-                        console.log('random = ' + random);
-                        console.log('filename = ' + lewdFilenames[random]);
 
                         resolve({
                             image: lewdImages[random],
@@ -165,8 +163,6 @@ class Reactions {
                     });
                 } else {
                     let random = tools.getRandom(0, lewdImages.length);
-                    console.log('random = ' + random);
-                    console.log('filename = ' + lewdFilenames[random]);
 
                     resolve({
                         image: lewdImages[random],

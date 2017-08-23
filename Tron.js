@@ -362,7 +362,6 @@ bot.registerCommand('rose', (msg, args) => {
 
 bot.registerCommand('lewd', (msg, args) => {
     if (!isNaN(parseInt(args[0]))) {
-        console.log('!isNaN');
         reactions.pickLewdImage(args[0]).then(imgObject => {
             bot.createMessage(msg.channel.id, '', {
                 file: imgObject.image,
@@ -370,7 +369,6 @@ bot.registerCommand('lewd', (msg, args) => {
             });
         });
     } else {
-        console.log('isNaN');
         reactions.pickLewdImage().then(imgObject => {
             bot.createMessage(msg.channel.id, '', {
                 file: imgObject.image,
@@ -1983,47 +1981,6 @@ trumpCmd.registerSubcommand('wrong', (msg, args) => {
     caseInsensitive: true
 });
 
-// ========================== Add Role Command ================================================== //
-bot.registerCommand('addr', (msg, args) => {
-    if (msg.channel.guild != null) {
-        if (tools.memberIsMod(msg)) {
-            let comparison = tools.concatArgs(args);
-
-            let roles = msg.channel.guild.roles;
-
-            roles.forEach((value, key, mapObj) => {
-                if (value.name != null) {
-                    let name = value.name.toLowerCase();
-
-                    if (name == comparison) {
-                        roleNames.push(value.name);
-                        bot.createMessage(msg.channel.id, "Added " + value.name + " to list of available roles.");
-                    }
-                }
-            })
-        }
-    }
-}, {
-    aliases: ['addrole', 'plusrole'],
-    caseInsensitive: true,
-    description: 'Add a role for users to gain access to a role.'
-});
-
-// ========================== List Roles Command ================================================ //
-bot.registerCommand('listr', (msg, args) => {
-    let message = "List of currently available roles:\n";
-
-    roleNames.forEach((curr, index, arr) => {
-        message += "- **" + curr + "**\n";
-    });
-
-    bot.createMessage(msg.channel.id, message);
-}, {
-    caseInsensitive: true,
-    description: 'List roles that are available to join.',
-    fullDescription: 'Lists the roles that have been added by an administrator that are available.'
-});
-
 // ========================== Avatar Command (requested by Battsie) ============================= //
 bot.registerCommand('Avatar', (msg, args) => {
     if (msg.mentions.length == 1) {
@@ -2089,6 +2046,47 @@ bot.registerCommand('Ship', (msg, args) => {
     caseInsensitive: true,
     description: 'Ship two users.',
     fullDescription: 'Takes the two mentioned users and mashes their names into a lovely mess.'
+});
+
+// ========================== Add Role Command ================================================== //
+bot.registerCommand('addr', (msg, args) => {
+    if (msg.channel.guild != null) {
+        if (tools.memberIsMod(msg)) {
+            let comparison = tools.concatArgs(args);
+
+            let roles = msg.channel.guild.roles;
+
+            roles.forEach((value, key, mapObj) => {
+                if (value.name != null) {
+                    let name = value.name.toLowerCase();
+
+                    if (name == comparison) {
+                        roleNames.push(value.name);
+                        bot.createMessage(msg.channel.id, "Added " + value.name + " to list of available roles.");
+                    }
+                }
+            })
+        }
+    }
+}, {
+    aliases: ['addrole', 'plusrole'],
+    caseInsensitive: true,
+    description: 'Add a role for users to gain access to a role.'
+});
+
+// ========================== List Roles Command ================================================ //
+bot.registerCommand('listr', (msg, args) => {
+    let message = "List of currently available roles:\n";
+
+    roleNames.forEach((curr, index, arr) => {
+        message += "- **" + curr + "**\n";
+    });
+
+    bot.createMessage(msg.channel.id, message);
+}, {
+    caseInsensitive: true,
+    description: 'List roles that are available to join.',
+    fullDescription: 'Lists the roles that have been added by an administrator that are available.'
 });
 
 // ========================== Leave Role Command ================================================ //
