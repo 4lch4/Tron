@@ -30,10 +30,8 @@ class Marriage {
      */
     addProposal(proposer, proposee, callback) {
         let currDate = tools.getFormattedTimestamp();
-        let sqlQuery = "INSERT INTO PROPOSALS (PROPOSER_ID, PROPOSER_USERNAME, PROPOSEE_ID, PROPOSEE_USERNAME, PROPOSAL_DATE) VALUES (" +
-            proposer.id + ", '" + proposer.username + "', " +
-            proposee.id + ", '" + proposee.username + "', '" +
-            currDate + "');";
+        let sqlQuery = "INSERT INTO PROPOSALS (PROPOSER_ID, PROPOSEE_ID, PROPOSAL_DATE) VALUES (" +
+            proposer + ", " + proposee + ", '" + currDate + "');";
 
         ioTools.executeSql(sqlQuery, (results) => {
             if (callback != null) {
@@ -119,8 +117,8 @@ class Marriage {
      */
     addMarriage(spouseA, spouseB, callback) {
         let currDate = tools.getFormattedTimestamp();
-        let sqlQuery = "INSERT INTO MARRIAGES (SPOUSE_A_ID, SPOUSE_A_USERNAME, SPOUSE_B_ID, SPOUSE_B_USERNAME, MARRIAGE_DATE) VALUES (" +
-            spouseA.id + ", '" + spouseA.username + "', " + spouseB.id + ", '" + spouseB.username + "', '" + currDate + "');";
+        let sqlQuery = "INSERT INTO MARRIAGES (SPOUSE_A_ID, SPOUSE_B_ID, MARRIAGE_DATE) VALUES (" +
+            spouseA.id + ", " + spouseB.id + ", '" + currDate + "');";
 
         ioTools.executeSql(sqlQuery, (results) => {
             if (callback != null) {
@@ -252,8 +250,8 @@ class Marriage {
 
     addDivorce(divorcer, divorcee, callback) {
         let currDate = tools.getFormattedTimestamp();
-        let sqlQuery = "INSERT INTO DIVORCES (DIVORCE_ID, DIVORCER_ID, DIVORCEE_ID, DIVORCE_DATE, DIVORCER_USERNAME, DIVORCEE_USERNAME) VALUES " +
-            "(null, \"" + divorcer.id + "\", \"" + divorcee.id + "\", \"" + currDate + "\", \"" + divorcer.username + "\", \"" + divorcee.username + "\");";
+        let sqlQuery = "INSERT INTO DIVORCES (DIVORCER_ID, DIVORCEE_ID, DIVORCE_DATE) VALUES " +
+            "(" + divorcer.id + ", " + divorcee.id + ", \"" + currDate + "\");";
 
         ioTools.executeSql(sqlQuery, (results) => {
             if (callback != null) {
@@ -319,9 +317,8 @@ class Marriage {
     }
 
     addDivorceProposal(divorcer, divorcee, callback) {
-        let sqlQuery = "INSERT INTO DIVORCE_PROPOSALS (DIVORCER_ID, DIVORCER_USERNAME, DIVORCEE_ID, DIVORCEE_USERNAME) VALUES (" +
-            divorcer.id + ", '" + divorcer.username + "', " +
-            divorcee.id + ", '" + divorcee.username + "');";
+        let sqlQuery = "INSERT INTO DIVORCE_PROPOSALS (DIVORCER_ID, DIVORCEE_ID) VALUES (" +
+            divorcer.id + ", " + divorcee.id + ");";
 
         ioTools.executeSql(sqlQuery, (results) => {
             if (callback != null) {

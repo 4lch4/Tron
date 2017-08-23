@@ -116,15 +116,19 @@ class Tools {
      * @param {*} callback      A callback to receive the username upon finding it (optional).
      */
     getUsernameFromId(userId, bot, callback) {
+        let username = "";
+
         bot.users.forEach((user, index, array) => {
             if (user.id == userId) {
                 if (callback != null) {
                     callback(user.username);
                 } else {
-                    return user.username;
+                    username = user.username;
                 }
             }
         });
+
+        return username;
     }
 
     /**
@@ -293,7 +297,7 @@ class Tools {
      */
     doesMsgContainShu(msg) {
         return new Promise((resolve, reject) => {
-            if (msg.mentions == undefined) {
+            if (msg.mentions.length >= 1) {
                 resolve(false);
             } else {
                 let processed = 0;

@@ -793,17 +793,12 @@ let marry = bot.registerCommand('marry', (msg, args) => {
 
                         // Add a proposal to the database for each validated user
                         cleanUsers.forEach((mention, index, mentions) => {
-                            marriage.addProposal({
-                                id: msg.author.id,
-                                username: msg.author.username
-                            }, {
-                                id: mention.id,
-                                username: mention.username
-                            }, (results) => {
-                                if (results.message.length > 0) {
-                                    bot.createMessage(msg.channel.id, results.message + " - _If this was an error, please contact the developer._")
-                                }
-                            });
+                            marriage.addProposal(msg.author.id, mention.id,
+                                (results) => {
+                                    if (results.message.length > 0) {
+                                        bot.createMessage(msg.channel.id, results.message + " - _If this was an error, please contact the developer._")
+                                    }
+                                });
                         });
 
                         // If one of the users weren't verified for some reason, let the proposer know
@@ -828,29 +823,11 @@ let marry = bot.registerCommand('marry', (msg, args) => {
 });
 
 marry.registerSubcommand('list', (msg, args) => {
-    tools.doesMsgContainShu(msg).then((shuFlag) => {
-        if (shuFlag) {
-            bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.');
-        } else {
-            if (msg.mentions.length == 0) {
-                marriage.getMarriages(msg.author.id, (marriages) => {
-                    let message = "";
-                    if (marriages.length > 0) {
-                        message = "You are currently married to:\n\n";
-                        for (let x = 0; x < marriages.length; x++) {
-                            if (marriages[x].SPOUSE_A_ID != msg.author.id) {
-                                message += "- **" + marriages[x].SPOUSE_A_USERNAME + "** since " + marriages[x].MARRIAGE_DATE + "\n"
-                            } else if (marriages[x].SPOUSE_B_ID != msg.author.id) {
-                                message += "- **" + marriages[x].SPOUSE_B_USERNAME + "** since " + marriages[x].MARRIAGE_DATE + "\n"
-                            }
-                        }
-                    } else {
-                        message = "Unfortunately, you're not currently married to anyone. :cry:"
-                    }
-
-                    bot.createMessage(msg.channel.id, message);
-                });
-            } else if (msg.mentions.length == 1) {
+    if (msg.mentions.length != 0) {
+        tools.doesMsgContainShu(msg).then((shuFlag) => {
+            if (shuFlag) {
+                bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.');
+            } else {
                 let userId = msg.mentions[0].id;
                 marriage.getMarriages(userId, (marriages) => {
                     let message = "";
@@ -858,9 +835,13 @@ marry.registerSubcommand('list', (msg, args) => {
                         message = msg.mentions[0].username + " is currently married to:\n\n";
                         for (let x = 0; x < marriages.length; x++) {
                             if (marriages[x].SPOUSE_A_ID != userId) {
-                                message += "- **" + marriages[x].SPOUSE_A_USERNAME + "** since " + marriages[x].MARRIAGE_DATE + "\n"
+                                let username = tools.getUsernameFromId(marriages[x].SPOUSE_A_ID, bot);
+                                if (username.length > 0)
+                                    message += "- **" + username + "** since " + marriages[x].MARRIAGE_DATE + "\n"
                             } else if (marriages[x].SPOUSE_B_ID != userId) {
-                                message += "- **" + marriages[x].SPOUSE_B_USERNAME + "** since " + marriages[x].MARRIAGE_DATE + "\n"
+                                let username = tools.getUsernameFromId(marriages[x].SPOUSE_B_ID, bot);
+                                if (username.length > 0)
+                                    message += "- **" + username + "** since " + marriages[x].MARRIAGE_DATE + "\n"
                             }
                         }
                     } else {
@@ -870,8 +851,26 @@ marry.registerSubcommand('list', (msg, args) => {
                     bot.createMessage(msg.channel.id, message);
                 });
             }
-        }
-    });
+        });
+    } else {
+        marriage.getMarriages(msg.author.id, (marriages) => {
+            let message = "";
+            if (marriages.length > 0) {
+                message = "You are currently married to:\n\n";
+                for (let x = 0; x < marriages.length; x++) {
+                    if (marriages[x].SPOUSE_A_ID != msg.author.id) {
+                        message += "- **" + tools.getUsernameFromId(marriages[x].SPOUSE_A_ID, bot) + "** since " + marriages[x].MARRIAGE_DATE + "\n"
+                    } else if (marriages[x].SPOUSE_B_ID != msg.author.id) {
+                        message += "- **" + tools.getUsernameFromId(marriages[x].SPOUSE_B_ID, bot) + "** since " + marriages[x].MARRIAGE_DATE + "\n"
+                    }
+                }
+            } else {
+                message = "Unfortunately, you're not currently married to anyone. :cry:"
+            }
+
+            bot.createMessage(msg.channel.id, message);
+        });
+    }
 }, {
     aliases: ['lists', 'fuckbook', 'history'],
     caseInsensitive: true,
@@ -965,13 +964,7 @@ let divorce = bot.registerCommand('divorce', (msg, args) => {
 
                 marriage.verifyDivorce(userId1, userId2, (marriageIn) => {
                     if (marriageIn != null) {
-                        marriage.addDivorceProposal({
-                            id: userId1,
-                            username: msg.author.username
-                        }, {
-                            id: userId2,
-                            username: msg.mentions[0].username
-                        }, (success) => {
+                        marriage.addDivorceProposal(userId1, userId2, (success) => {
                             if (success) {
                                 bot.createMessage(msg.channel.id, "I'm sorry <@" + userId2 + ">, it appears " + msg.author.username + " wants a divorce. :slight_frown:\n\n" +
                                     "Please use `+divorce accept` or `+divorce deny` to accept or deny the divorce request. Keep in mind, denying a divorce for too long without good reason _may_ have some side effects...");
@@ -1003,13 +996,7 @@ divorce.registerSubcommand('accept', (msg, args) => {
                 });
             } else if (args.length == 1) {
                 if (!isNaN(args[0])) {
-                    marriage.acceptDivorceProposal({
-                        id: results[args[0]].DIVORCER_ID,
-                        username: results[args[0]].DIVORCER_USERNAME
-                    }, {
-                        id: msg.author.id,
-                        username: msg.author.username
-                    }, (success) => {
+                    marriage.acceptDivorceProposal(results[args[0]].DIVORCER_ID, msg.author.id, (success) => {
                         if (success) {
                             bot.createMessage(msg.channel.id, "You've successfuly divorced <@" + results[args[0]].DIVORCER_ID + ">");
                         }
@@ -1017,13 +1004,7 @@ divorce.registerSubcommand('accept', (msg, args) => {
                 }
             }
         } else if (results.length == 1) {
-            marriage.acceptDivorceProposal({
-                id: results[0].DIVORCER_ID,
-                username: results[0].DIVORCER_USERNAME
-            }, {
-                id: msg.author.id,
-                username: msg.author.username
-            }, (success) => {
+            marriage.acceptDivorceProposal(results[0].DIVORCER_ID, msg.author.id, (success) => {
                 if (success) {
                     bot.createMessage(msg.channel.id, "You've successfuly divorced <@" + results[0].DIVORCER_ID + ">");
                 }
@@ -1089,9 +1070,13 @@ divorce.registerSubcommand('list', (msg, args) => {
 
                     for (let x = 0; x < divorces.length; x++) {
                         if (divorces[x].DIVORCER_ID != msg.author.id) {
-                            message += "- **" + divorces[x].DIVORCER_USERNAME + "** since " + divorces[x].DIVORCE_DATE + "\n"
+                            let username = tools.getUsernameFromId(divorces[x].DIVORCER_ID);
+                            if (username.length > 0)
+                                message += "- **" + username + "** since " + divorces[x].DIVORCE_DATE + "\n"
                         } else if (divorces[x].DIVORCEE_ID != msg.author.id) {
-                            message += "- **" + divorces[x].DIVORCEE_USERNAME + "** since " + divorces[x].DIVORCE_DATE + "\n"
+                            let username = tools.getUsernameFromId(divorces[x].DIVORCEE_ID);
+                            if (username.length > 0)
+                                message += "- **" + username + "** since " + divorces[x].DIVORCE_DATE + "\n"
                         }
                     }
 
