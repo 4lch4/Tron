@@ -244,6 +244,12 @@ bot.registerCommand('key', (msg, args) => {
   caseInsensitive: true
 });
 
+bot.registerCommand('ami', (msg, args) => {
+  return "𝓽𝓱𝓮 𝓲𝓶𝓹𝓾𝓻𝓮 𝓱𝓮𝓷𝓽𝓪𝓲 𝓺𝓾𝓮𝓮𝓷";
+}, {
+  caseInsensitive: true
+});
+
 // ========================== Unmute Command ==================================================== //
 bot.registerCommand('unmute', (msg, args) => {
   if (msg.mentions[0] != undefined && msg.channel.guild != undefined) {
