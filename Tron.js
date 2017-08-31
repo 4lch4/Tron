@@ -1714,7 +1714,7 @@ bot.registerCommand('potato', (msg, args) => {
 });
 
 // ========================== Hugs Command ====================================================== //
-bot.registerCommand('hugs', (msg, args) => {
+bot.registerCommand('hug', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
       bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.');
@@ -1737,7 +1737,7 @@ bot.registerCommand('hugs', (msg, args) => {
     }
   });
 }, {
-  aliases: ['hug', 'cuddles'],
+  aliases: ['hugs', 'cuddles'],
   caseInsensitive: true
 });
 
