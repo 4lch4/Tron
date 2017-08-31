@@ -222,6 +222,17 @@ bot.registerCommand('mute', (msg, args) => {
   }
 });
 
+bot.registerCommand('jay', (msg, args) => {
+  ioTools.getImage('/root/tron/images/Jay.png', (img) => {
+    bot.createMessage(msg.channel.id, '', {
+      file: img,
+      name: 'Jay.png'
+    });
+  });
+}, {
+  caseInsensitive: true
+});
+
 // ========================== Unmute Command ==================================================== //
 bot.registerCommand('unmute', (msg, args) => {
   if (msg.mentions[0] != undefined && msg.channel.guild != undefined) {
