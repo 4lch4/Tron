@@ -176,7 +176,7 @@ class Tools {
     }
 
     /**
-     * Returns a random integer between {min} and {max}, not including the max.
+     * Returns a random integer between the min (inclusive) and max (exclusive).
      *
      * @param {*} min
      * @param {*} max
