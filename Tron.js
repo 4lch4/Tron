@@ -389,6 +389,17 @@ bot.registerCommand('rose', (msg, args) => {
   guildOnly: true,
 });
 
+bot.registerCommand('meh', (msg, args) => {
+  ioTools.getImage('/root/tron/images/meh.gif', (img) => {
+    bot.createMessage(msg.channel.id, '', {
+      file: img,
+      name: 'meh.gif'
+    });
+  });
+}, {
+  caseInsensitive: true
+});
+
 bot.registerCommand('lewd', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickLewdImage(args[0]).then(imgObject => {
