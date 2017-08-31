@@ -105,658 +105,658 @@ let cryImages = [];
 /** Stores images for the Pat command */
 let patImages = [];
 class Reactions {
-    constructor(options) {
-        this.options = options || {};
-    }
+  constructor(options) {
+    this.options = options || {};
+  }
 
-    pickCatImage(callback, imgIndex) {
-        if (catImages.length == 0) {
-            ioTools.getImages('cats', (images, filenames) => {
-                catImages = catImages.concat(images);
-                catFilenames = filenames;
+  pickCatImage(callback, imgIndex) {
+    if (catImages.length == 0) {
+      ioTools.getImages('cats', (images, filenames) => {
+        catImages = catImages.concat(images);
+        catFilenames = filenames;
 
-                if (imgIndex < catImages.length) {
-                    callback(catImages[imgIndex], catFilenames[imgIndex]);
-                } else {
-                    let random = tools.getRandom(0, catImages.length);
-
-                    callback(catImages[random], catFilenames[random]);
-                }
-            });
+        if (imgIndex < catImages.length) {
+          callback(catImages[imgIndex], catFilenames[imgIndex]);
         } else {
-            if (imgIndex < catImages.length) {
-                callback(catImages[imgIndex], catFilenames[imgIndex]);
-            } else {
-                let random = tools.getRandom(0, catImages.length);
+          let random = tools.getRandom(0, catImages.length);
 
-                callback(catImages[random], catFilenames[random]);
-            }
+          callback(catImages[random], catFilenames[random]);
         }
+      });
+    } else {
+      if (imgIndex < catImages.length) {
+        callback(catImages[imgIndex], catFilenames[imgIndex]);
+      } else {
+        let random = tools.getRandom(0, catImages.length);
+
+        callback(catImages[random], catFilenames[random]);
+      }
     }
+  }
 
-    pickLewdImage(imgIndex) {
-        return new Promise((resolve, reject) => {
-            if (lewdImages.length == 0) {
-                ioTools.getImages('lewd', (images, filenames) => {
-                    lewdImages = lewdImages.concat(images);
-                    lewdFilenames = filenames;
+  pickLewdImage(imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (lewdImages.length == 0) {
+        ioTools.getImages('lewd', (images, filenames) => {
+          lewdImages = lewdImages.concat(images);
+          lewdFilenames = filenames;
 
-                    if (imgIndex < lewdImages.length) {
-                        resolve({
-                            image: lewdImages[imgIndex],
-                            filename: lewdFilenames[imgIndex]
-                        });
-                    } else {
-                        let random = tools.getRandom(0, images.length);
+          if (imgIndex < lewdImages.length) {
+            resolve({
+              image: lewdImages[imgIndex],
+              filename: lewdFilenames[imgIndex]
+            });
+          } else {
+            let random = tools.getRandom(0, images.length);
 
-                        resolve({
-                            image: lewdImages[random],
-                            filename: lewdFilenames[random]
-                        });
-                    }
-                })
-            } else {
-                if (imgIndex < lewdImages.length) {
-                    resolve({
-                        image: lewdImages[imgIndex],
-                        filename: lewdFilenames[imgIndex]
-                    });
-                } else {
-                    let random = tools.getRandom(0, lewdImages.length);
+            resolve({
+              image: lewdImages[random],
+              filename: lewdFilenames[random]
+            });
+          }
+        })
+      } else {
+        if (imgIndex < lewdImages.length) {
+          resolve({
+            image: lewdImages[imgIndex],
+            filename: lewdFilenames[imgIndex]
+          });
+        } else {
+          let random = tools.getRandom(0, lewdImages.length);
 
-                    resolve({
-                        image: lewdImages[random],
-                        filename: lewdFilenames[random]
-                    });
-                }
-            }
+          resolve({
+            image: lewdImages[random],
+            filename: lewdFilenames[random]
+          });
+        }
+      }
+    });
+  }
+
+  pickSquirtleImage(imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (squirtleImages.length == 0) {
+        ioTools.getImages('squirtle', (images, filenames) => {
+          squirtleImages = squirtleImages.concat(images);
+          squirtleFilenames = filenames;
+
+          if (imgIndex < squirtleImages.length) {
+            resolve({
+              image: squirtleImages[imgIndex],
+              filename: squirtleFilenames[imgIndex]
+            });
+          } else {
+            let random = tools.getRandom(0, images.length);
+
+            resolve({
+              image: squirtleImages[random],
+              filename: squirtleFilenames[random]
+            });
+          }
+        })
+      } else {
+        if (imgIndex < squirtleImages.length) {
+          resolve({
+            image: squirtleImages[imgIndex],
+            filename: squirtleFilenames[imgIndex]
+          });
+        } else {
+          let random = tools.getRandom(0, squirtleImages.length);
+
+          resolve({
+            image: squirtleImages[random],
+            filename: squirtleFilenames[random]
+          });
+        }
+      }
+    });
+  }
+
+  pickRoseImage(callback, imgIndex) {
+    if (roseImages.length == 0) {
+      ioTools.getImages('rose', (images, filenames) => {
+        roseImages = roseImages.concat(images);
+        roseFilenames = filenames;
+
+        if (imgIndex < roseImages.length) {
+          callback(roseImages[imgIndex], roseFilenames[imgIndex]);
+        } else {
+          let random = tools.getRandom(0, roseImages.length);
+
+          callback(roseImages[random], roseFilenames[random]);
+        }
+      });
+    } else {
+      if (imgIndex < roseImages.length) {
+        callback(roseImages[imgIndex], roseFilenames[imgIndex]);
+      } else {
+        let random = tools.getRandom(0, roseImages.length);
+
+        callback(roseImages[random], roseFilenames[random]);
+      }
+    }
+  }
+
+  pickNobulliImage(callback, imgIndex) {
+    if (noBulliImages.length == 0) {
+      ioTools.getImages('nobulli', (images) => {
+        noBulliImages = noBulliImages.concat(images);
+
+        if (imgIndex < noBulliImages.length) {
+          callback(noBulliImages[imgIndex]);
+        } else {
+          let random = tools.getRandom(0, noBulliImages.length);
+
+          callback(noBulliImages[random]);
+        }
+      });
+    } else {
+      if (imgIndex < noBulliImages.length) {
+        callback(noBulliImages[imgIndex]);
+      } else {
+        let random = tools.getRandom(0, noBulliImages.length);
+
+        callback(noBulliImages[random]);
+      }
+    }
+  }
+  pickDreamyImage(callback, imgIndex) {
+    if (dreamyImages.length == 0) {
+      ioTools.getImages('dreamy', (images) => {
+        dreamyImages = dreamyImages.concat(images);
+
+        if (imgIndex < dreamyImages.length) {
+          callback(dreamyImages[imgIndex]);
+        } else {
+          let random = tools.getRandom(0, dreamyImages.length);
+
+          callback(dreamyImages[random]);
+        }
+      });
+    } else {
+      if (imgIndex < dreamyImages.length) {
+        callback(dreamyImages[imgIndex]);
+      } else {
+        let random = tools.getRandom(0, dreamyImages.length);
+
+        callback(dreamyImages[random]);
+      }
+    }
+  }
+
+  pickSlapImage(callback, imgIndex) {
+    if (slapImages.length == 0) {
+      ioTools.getImages('slap', (images) => {
+        slapImages = slapImages.concat(images);
+
+        if (imgIndex < slapImages.length) {
+          callback(slapImages[imgIndex]);
+        } else {
+          let random = tools.getRandom(0, slapImages.length);
+
+          callback(slapImages[random]);
+        }
+      });
+    } else {
+      if (imgIndex < slapImages.length) {
+        callback(slapImages[imgIndex]);
+      } else {
+        let random = tools.getRandom(0, slapImages.length);
+
+        callback(slapImages[random]);
+      }
+    }
+  }
+
+  pickPunchImage(callback, imgIndex) {
+    if (punchImages.length == 0) {
+      ioTools.getImages('punch', (images) => {
+        punchImages = punchImages.concat(images);
+
+        if (imgIndex < punchImages.length) {
+          callback(punchImages[imgIndex]);
+        } else {
+          let random = tools.getRandom(9, punchImages.length);
+
+          callback(punchImages[random]);
+        }
+      });
+    } else if (imgIndex < punchImages.length) {
+      callback(punchImages[imgIndex]);
+    } else {
+      let random = tools.getRandom(0, punchImages.length);
+
+      callback(punchImages[random]);
+    }
+  }
+
+  pickKissImage(callback, imgIndex) {
+    // If images aren't already stored, pull them from storage
+    if (kissImages.length == 0) {
+      ioTools.getImages('kiss', (images) => {
+        // Add the images retrieved from storage to the kissImages array
+        kissImages = kissImages.concat(images);
+
+        // If the imgIndex is smaller than the array length, return that specific image
+        if (imgIndex < kissImages.length) {
+          callback(kissImages[imgIndex]);
+        } else {
+          // If imgIndex is too large or undefined, return a random image
+          let random = tools.getRandom(0, kissImages.length);
+
+          callback(kissImages[random]);
+        }
+      });
+    } else if (imgIndex < kissImages.length) {
+      // If the imgIndex is smaller than the array length, return that specific image
+      callback(kissImages[imgIndex]);
+    } else {
+      // If imgIndex is too large or undefined, return a random image
+      let random = tools.getRandom(0, kissImages.length);
+
+      callback(kissImages[random]);
+    }
+  }
+
+  pickDanceImage(callback) {
+    if (danceImages.length == 0) {
+      ioTools.getImages('dance', (images) => {
+        let random = tools.getRandom(0, images.length);
+
+        danceImages = danceImages.concat(images);
+
+        callback(danceImages[random]);
+      });
+    } else {
+      let random = tools.getRandom(0, danceImages.length);
+
+      callback(danceImages[random]);
+    }
+  }
+
+  pickKaylaImage() {
+    return new Promise((resolve, reject) => {
+      if (kaylaImages.length == 0) {
+        ioTools.getImages('kayla', images => {
+          let random = tools.getRandom(0, images.length);
+          kaylaImages = kaylaImages.concat(images);
+          resolve(kaylaImages[random]);
         });
+      } else {
+        let random = tools.getRandom(0, kaylaImages.length);
+        resolve(kaylaImages[random]);
+      }
+    });
+  }
+
+  pickConfusedImage(callback) {
+    if (confusedImages.length == 0) {
+      ioTools.getImages('confused', (images) => {
+        let random = tools.getRandom(0, images.length);
+
+        confusedImages = confusedImages.concat(images);
+
+        callback(confusedImages[random]);
+      });
+    } else {
+      let random = tools.getRandom(0, confusedImages.length);
+
+      callback(confusedImages[random]);
     }
+  }
 
-    pickSquirtleImage(imgIndex) {
-        return new Promise((resolve, reject) => {
-            if (squirtleImages.length == 0) {
-                ioTools.getImages('squirtle', (images, filenames) => {
-                    squirtleImages = squirtleImages.concat(images);
-                    squirtleFilenames = filenames;
+  pickJerryImage(imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (jerryImages.length == 0) {
+        ioTools.getImages('alcha', (images, filenames) => {
+          jerryImages = jerryImages.concat(images);
+          jerryFilenames = jerryFilenames.concat(filenames);
 
-                    if (imgIndex < squirtleImages.length) {
-                        resolve({
-                            image: squirtleImages[imgIndex],
-                            filename: squirtleFilenames[imgIndex]
-                        });
-                    } else {
-                        let random = tools.getRandom(0, images.length);
+          if (imgIndex < jerryImages.length) {
+            resolve({
+              file: jerryImages[imgIndex],
+              name: jerryFilenames[imgIndex]
+            });
+          } else {
+            let random = tools.getRandom(0, jerryImages.length);
 
-                        resolve({
-                            image: squirtleImages[random],
-                            filename: squirtleFilenames[random]
-                        });
-                    }
-                })
-            } else {
-                if (imgIndex < squirtleImages.length) {
-                    resolve({
-                        image: squirtleImages[imgIndex],
-                        filename: squirtleFilenames[imgIndex]
-                    });
-                } else {
-                    let random = tools.getRandom(0, squirtleImages.length);
-
-                    resolve({
-                        image: squirtleImages[random],
-                        filename: squirtleFilenames[random]
-                    });
-                }
-            }
+            resolve({
+              file: jerryImages[random],
+              name: jerryFilenames[random]
+            });
+          }
         });
-    }
-
-    pickRoseImage(callback, imgIndex) {
-        if (roseImages.length == 0) {
-            ioTools.getImages('rose', (images, filenames) => {
-                roseImages = roseImages.concat(images);
-                roseFilenames = filenames;
-
-                if (imgIndex < roseImages.length) {
-                    callback(roseImages[imgIndex], roseFilenames[imgIndex]);
-                } else {
-                    let random = tools.getRandom(0, roseImages.length);
-
-                    callback(roseImages[random], roseFilenames[random]);
-                }
-            });
+      } else {
+        if (imgIndex < jerryImages.length) {
+          resolve({
+            file: jerryImages[imgIndex],
+            name: jerryFilenames[imgIndex]
+          });
         } else {
-            if (imgIndex < roseImages.length) {
-                callback(roseImages[imgIndex], roseFilenames[imgIndex]);
-            } else {
-                let random = tools.getRandom(0, roseImages.length);
+          let random = tools.getRandom(0, jerryImages.length);
 
-                callback(roseImages[random], roseFilenames[random]);
-            }
+          resolve({
+            file: jerryImages[random],
+            name: jerryFilenames[random]
+          });
         }
-    }
+      }
+    });
+  }
 
-    pickNobulliImage(callback, imgIndex) {
-        if (noBulliImages.length == 0) {
-            ioTools.getImages('nobulli', (images) => {
-                noBulliImages = noBulliImages.concat(images);
+  pickPoutImage(imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (poutImages.length == 0) {
+        ioTools.getImages('pout', (images) => {
+          poutImages = poutImages.concat(images);
 
-                if (imgIndex < noBulliImages.length) {
-                    callback(noBulliImages[imgIndex]);
-                } else {
-                    let random = tools.getRandom(0, noBulliImages.length);
+          if (imgIndex < poutImages.length) {
+            resolve(poutImages[imgIndex]);
+          } else {
+            let random = tools.getRandom(0, poutImages.length);
 
-                    callback(noBulliImages[random]);
-                }
-            });
-        } else {
-            if (imgIndex < noBulliImages.length) {
-                callback(noBulliImages[imgIndex]);
-            } else {
-                let random = tools.getRandom(0, noBulliImages.length);
-
-                callback(noBulliImages[random]);
-            }
-        }
-    }
-    pickDreamyImage(callback, imgIndex) {
-        if (dreamyImages.length == 0) {
-            ioTools.getImages('dreamy', (images) => {
-                dreamyImages = dreamyImages.concat(images);
-
-                if (imgIndex < dreamyImages.length) {
-                    callback(dreamyImages[imgIndex]);
-                } else {
-                    let random = tools.getRandom(0, dreamyImages.length);
-
-                    callback(dreamyImages[random]);
-                }
-            });
-        } else {
-            if (imgIndex < dreamyImages.length) {
-                callback(dreamyImages[imgIndex]);
-            } else {
-                let random = tools.getRandom(0, dreamyImages.length);
-
-                callback(dreamyImages[random]);
-            }
-        }
-    }
-
-    pickSlapImage(callback, imgIndex) {
-        if (slapImages.length == 0) {
-            ioTools.getImages('slap', (images) => {
-                slapImages = slapImages.concat(images);
-
-                if (imgIndex < slapImages.length) {
-                    callback(slapImages[imgIndex]);
-                } else {
-                    let random = tools.getRandom(0, slapImages.length);
-
-                    callback(slapImages[random]);
-                }
-            });
-        } else {
-            if (imgIndex < slapImages.length) {
-                callback(slapImages[imgIndex]);
-            } else {
-                let random = tools.getRandom(0, slapImages.length);
-
-                callback(slapImages[random]);
-            }
-        }
-    }
-
-    pickPunchImage(callback, imgIndex) {
-        if (punchImages.length == 0) {
-            ioTools.getImages('punch', (images) => {
-                punchImages = punchImages.concat(images);
-
-                if (imgIndex < punchImages.length) {
-                    callback(punchImages[imgIndex]);
-                } else {
-                    let random = tools.getRandom(9, punchImages.length);
-
-                    callback(punchImages[random]);
-                }
-            });
-        } else if (imgIndex < punchImages.length) {
-            callback(punchImages[imgIndex]);
-        } else {
-            let random = tools.getRandom(0, punchImages.length);
-
-            callback(punchImages[random]);
-        }
-    }
-
-    pickKissImage(callback, imgIndex) {
-        // If images aren't already stored, pull them from storage
-        if (kissImages.length == 0) {
-            ioTools.getImages('kiss', (images) => {
-                // Add the images retrieved from storage to the kissImages array
-                kissImages = kissImages.concat(images);
-
-                // If the imgIndex is smaller than the array length, return that specific image
-                if (imgIndex < kissImages.length) {
-                    callback(kissImages[imgIndex]);
-                } else {
-                    // If imgIndex is too large or undefined, return a random image
-                    let random = tools.getRandom(0, kissImages.length);
-
-                    callback(kissImages[random]);
-                }
-            });
-        } else if (imgIndex < kissImages.length) {
-            // If the imgIndex is smaller than the array length, return that specific image
-            callback(kissImages[imgIndex]);
-        } else {
-            // If imgIndex is too large or undefined, return a random image
-            let random = tools.getRandom(0, kissImages.length);
-
-            callback(kissImages[random]);
-        }
-    }
-
-    pickDanceImage(callback) {
-        if (danceImages.length == 0) {
-            ioTools.getImages('dance', (images) => {
-                let random = tools.getRandom(0, images.length);
-
-                danceImages = danceImages.concat(images);
-
-                callback(danceImages[random]);
-            });
-        } else {
-            let random = tools.getRandom(0, danceImages.length);
-
-            callback(danceImages[random]);
-        }
-    }
-
-    pickKaylaImage() {
-        return new Promise((resolve, reject) => {
-            if (kaylaImages.length == 0) {
-                ioTools.getImages('kayla', images => {
-                    let random = tools.getRandom(0, images.length);
-                    kaylaImages = kaylaImages.concat(images);
-                    resolve(kaylaImages[random]);
-                });
-            } else {
-                let random = tools.getRandom(0, kaylaImages.length);
-                resolve(kaylaImages[random]);
-            }
+            resolve(poutImages[random]);
+          }
         });
-    }
+      } else if (imgIndex < poutImages.length) {
+        resolve(poutImages[imgIndex]);
+      } else {
+        let random = tools.getRandom(0, poutImages.length);
 
-    pickConfusedImage(callback) {
-        if (confusedImages.length == 0) {
-            ioTools.getImages('confused', (images) => {
-                let random = tools.getRandom(0, images.length);
+        resolve(poutImages[random]);
+      }
+    });
+  }
 
-                confusedImages = confusedImages.concat(images);
+  pickDodgeImage(imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (dodgeImages.length == 0) {
+        ioTools.getImages('dodge', (images) => {
+          dodgeImages = dodgeImages.concat(images);
 
-                callback(confusedImages[random]);
-            });
-        } else {
-            let random = tools.getRandom(0, confusedImages.length);
+          if (imgIndex < dodgeImages.length) {
+            resolve(dodgeImages[imgIndex]);
+          } else {
+            let random = tools.getRandom(0, dodgeImages.length);
 
-            callback(confusedImages[random]);
-        }
-    }
-
-    pickJerryImage(imgIndex) {
-        return new Promise((resolve, reject) => {
-            if (jerryImages.length == 0) {
-                ioTools.getImages('alcha', (images, filenames) => {
-                    jerryImages = jerryImages.concat(images);
-                    jerryFilenames = jerryFilenames.concat(filenames);
-
-                    if (imgIndex < jerryImages.length) {
-                        resolve({
-                            file: jerryImages[imgIndex],
-                            name: jerryFilenames[imgIndex]
-                        });
-                    } else {
-                        let random = tools.getRandom(0, jerryImages.length);
-
-                        resolve({
-                            file: jerryImages[random],
-                            name: jerryFilenames[random]
-                        });
-                    }
-                });
-            } else {
-                if (imgIndex < jerryImages.length) {
-                    resolve({
-                        file: jerryImages[imgIndex],
-                        name: jerryFilenames[imgIndex]
-                    });
-                } else {
-                    let random = tools.getRandom(0, jerryImages.length);
-
-                    resolve({
-                        file: jerryImages[random],
-                        name: jerryFilenames[random]
-                    });
-                }
-            }
+            resolve(dodgeImages[random]);
+          }
         });
-    }
+      } else if (imgIndex < dodgeImages.length) {
+        resolve(dodgeImages[imgIndex]);
+      } else {
+        let random = tools.getRandom(0, dodgeImages.length);
 
-    pickPoutImage(imgIndex) {
-        return new Promise((resolve, reject) => {
-            if (poutImages.length == 0) {
-                ioTools.getImages('pout', (images) => {
-                    poutImages = poutImages.concat(images);
+        resolve(dodgeImages[random]);
+      }
+    });
+  }
 
-                    if (imgIndex < poutImages.length) {
-                        resolve(poutImages[imgIndex]);
-                    } else {
-                        let random = tools.getRandom(0, poutImages.length);
+  pickLickImage(imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (lickImages.length == 0) {
+        ioTools.getImages('lick', (images) => {
+          lickImages = lickImages.concat(images);
 
-                        resolve(poutImages[random]);
-                    }
-                });
-            } else if (imgIndex < poutImages.length) {
-                resolve(poutImages[imgIndex]);
-            } else {
-                let random = tools.getRandom(0, poutImages.length);
+          if (imgIndex < lickImages.length) {
+            resolve(lickImages[imgIndex]);
+          } else {
+            let random = tools.getRandom(0, lickImages.length);
 
-                resolve(poutImages[random]);
-            }
+            resolve(lickImages[random]);
+          }
         });
+      } else if (imgIndex < lickImages.length) {
+        resolve(lickImages[imgIndex]);
+      } else {
+        let random = tools.getRandom(0, lickImages.length);
+
+        resolve(lickImages[random]);
+      }
+    });
+  }
+
+  pickWaveImage(callback) {
+    if (waveImages.length == 0) {
+      ioTools.getImages('wave', (images) => {
+        let random = tools.getRandom(0, images.length);
+
+        waveImages = waveImages.concat(images);
+
+        callback(waveImages[random]);
+      });
+    } else {
+      let random = tools.getRandom(0, waveImages.length);
+
+      callback(waveImages[random]);
     }
+  }
 
-    pickDodgeImage(imgIndex) {
-        return new Promise((resolve, reject) => {
-            if (dodgeImages.length == 0) {
-                ioTools.getImages('dodge', (images) => {
-                    dodgeImages = dodgeImages.concat(images);
+  pickVNImage(callback) {
+    if (vnImages.length == 0) {
+      ioTools.getImages('vapenation', (images) => {
+        let random = tools.getRandom(0, images.length);
 
-                    if (imgIndex < dodgeImages.length) {
-                        resolve(dodgeImages[imgIndex]);
-                    } else {
-                        let random = tools.getRandom(0, dodgeImages.length);
+        vnImages = vnImages.concat(images);
 
-                        resolve(dodgeImages[random]);
-                    }
-                });
-            } else if (imgIndex < dodgeImages.length) {
-                resolve(dodgeImages[imgIndex]);
-            } else {
-                let random = tools.getRandom(0, dodgeImages.length);
+        callback(vnImages[random]);
+      });
+    } else {
 
-                resolve(dodgeImages[random]);
-            }
-        });
+      let random = tools.getRandom(0, vnImages.length);
+
+      callback(vnImages[random]);
     }
+  }
 
-    pickLickImage(imgIndex) {
-        return new Promise((resolve, reject) => {
-            if (lickImages.length == 0) {
-                ioTools.getImages('lick', (images) => {
-                    lickImages = lickImages.concat(images);
+  pickKillImage(callback, imgIndex) {
+    if (killImages.length == 0) {
+      ioTools.getImages('kill', (images) => {
 
-                    if (imgIndex < lickImages.length) {
-                        resolve(lickImages[imgIndex]);
-                    } else {
-                        let random = tools.getRandom(0, lickImages.length);
+        killImages = killImages.concat(images);
 
-                        resolve(lickImages[random]);
-                    }
-                });
-            } else if (imgIndex < lickImages.length) {
-                resolve(lickImages[imgIndex]);
-            } else {
-                let random = tools.getRandom(0, lickImages.length);
-
-                resolve(lickImages[random]);
-            }
-        });
-    }
-
-    pickWaveImage(callback) {
-        if (waveImages.length == 0) {
-            ioTools.getImages('wave', (images) => {
-                let random = tools.getRandom(0, images.length);
-
-                waveImages = waveImages.concat(images);
-
-                callback(waveImages[random]);
-            });
+        if (imgIndex < killImages.length) {
+          callback(killImages[imgIndex]);
         } else {
-            let random = tools.getRandom(0, waveImages.length);
+          let random = tools.getRandom(0, killImages.length);
 
-            callback(waveImages[random]);
+          callback(killImages[random]);
         }
+      });
+    } else if (imgIndex < killImages.length) {
+      callback(killImages[imgIndex]);
+    } else {
+      let random = tools.getRandom(0, killImages.length);
+
+      callback(killImages[random]);
     }
+  }
 
-    pickVNImage(callback) {
-        if (vnImages.length == 0) {
-            ioTools.getImages('vapenation', (images) => {
-                let random = tools.getRandom(0, images.length);
 
-                vnImages = vnImages.concat(images);
+  pickPatImage(callback, imgIndex) {
+    if (patImages.length == 0) {
+      ioTools.getImages('pat', (images) => {
 
-                callback(vnImages[random]);
-            });
+        patImages = patImages.concat(images);
+
+        if (imgIndex < patImages.length) {
+          callback(patImages[imgIndex]);
         } else {
+          let random = tools.getRandom(0, patImages.length);
 
-            let random = tools.getRandom(0, vnImages.length);
-
-            callback(vnImages[random]);
+          callback(patImages[random]);
         }
+      });
+    } else if (imgIndex < patImages.length) {
+      callback(patImages[imgIndex]);
+    } else {
+      let random = tools.getRandom(0, patImages.length);
+
+      callback(patImages[random]);
     }
+  }
 
-    pickKillImage(callback, imgIndex) {
-        if (killImages.length == 0) {
-            ioTools.getImages('kill', (images) => {
+  pickSpankImage(callback) {
+    if (spankImages.length == 0) {
+      ioTools.getImages('spank', (images) => {
+        let random = tools.getRandom(0, images.length);
+        spankImages = spankImages.concat(images);
 
-                killImages = killImages.concat(images);
+        callback(spankImages[random]);
+      })
+    } else {
+      let random = tools.getRandom(0, spankImages.length);
 
-                if (imgIndex < killImages.length) {
-                    callback(killImages[imgIndex]);
-                } else {
-                    let random = tools.getRandom(0, killImages.length);
-
-                    callback(killImages[random]);
-                }
-            });
-        } else if (imgIndex < killImages.length) {
-            callback(killImages[imgIndex]);
-        } else {
-            let random = tools.getRandom(0, killImages.length);
-
-            callback(killImages[random]);
-        }
+      callback(spankImages[random]);
     }
+  }
 
+  pickKickImage(callback) {
+    if (kickImages.length == 0) {
+      ioTools.getImages('kick', (images) => {
+        let random = tools.getRandom(0, images.length);
+        kickImages = kickImages.concat(images);
 
-    pickPatImage(callback, imgIndex) {
-        if (patImages.length == 0) {
-            ioTools.getImages('pat', (images) => {
+        callback(kickImages[random]);
+      })
+    } else {
+      let random = tools.getRandom(0, kickImages.length);
 
-                patImages = patImages.concat(images);
-
-                if (imgIndex < patImages.length) {
-                    callback(patImages[imgIndex]);
-                } else {
-                    let random = tools.getRandom(0, patImages.length);
-
-                    callback(patImages[random]);
-                }
-            });
-        } else if (imgIndex < patImages.length) {
-            callback(patImages[imgIndex]);
-        } else {
-            let random = tools.getRandom(0, patImages.length);
-
-            callback(patImages[random]);
-        }
+      callback(kickImages[random]);
     }
+  }
 
-    pickSpankImage(callback) {
-        if (spankImages.length == 0) {
-            ioTools.getImages('spank', (images) => {
-                let random = tools.getRandom(0, images.length);
-                spankImages = spankImages.concat(images);
+  pickKillMeImage(callback) {
+    if (killMeImages.length == 0) {
+      ioTools.getImages('killme', (images) => {
+        let random = tools.getRandom(0, images.length);
+        killMeImages = killMeImages.concat(images);
 
-                callback(spankImages[random]);
-            })
-        } else {
-            let random = tools.getRandom(0, spankImages.length);
+        callback(killMeImages[random]);
+      });
+    } else {
+      let random = tools.getRandom(0, killMeImages.length);
 
-            callback(spankImages[random]);
-        }
+      callback(killMeImages[random]);
     }
+  }
 
-    pickKickImage(callback) {
-        if (kickImages.length == 0) {
-            ioTools.getImages('kick', (images) => {
-                let random = tools.getRandom(0, images.length);
-                kickImages = kickImages.concat(images);
+  pickPokeImage(callback) {
+    if (pokeImages.length == 0) {
+      ioTools.getImages('poke', (images) => {
+        let random = tools.getRandom(0, images.length);
+        pokeImages = pokeImages.concat(images);
 
-                callback(kickImages[random]);
-            })
-        } else {
-            let random = tools.getRandom(0, kickImages.length);
+        callback(pokeImages[random]);
+      });
+    } else {
+      let random = tools.getRandom(0, pokeImages.length);
 
-            callback(kickImages[random]);
-        }
+      callback(pokeImages[random]);
     }
+  }
 
-    pickKillMeImage(callback) {
-        if (killMeImages.length == 0) {
-            ioTools.getImages('killme', (images) => {
-                let random = tools.getRandom(0, images.length);
-                killMeImages = killMeImages.concat(images);
+  pickBiteImage(callback) {
+    if (biteImages.length == 0) {
+      ioTools.getImages('bite', (images) => {
+        let random = tools.getRandom(0, images.length);
+        biteImages = biteImages.concat(images);
 
-                callback(killMeImages[random]);
-            });
-        } else {
-            let random = tools.getRandom(0, killMeImages.length);
+        callback(biteImages[random]);
+      });
+    } else {
+      let random = tools.getRandom(0, biteImages.length);
 
-            callback(killMeImages[random]);
-        }
+      callback(biteImages[random]);
     }
+  }
 
-    pickPokeImage(callback) {
-        if (pokeImages.length == 0) {
-            ioTools.getImages('poke', (images) => {
-                let random = tools.getRandom(0, images.length);
-                pokeImages = pokeImages.concat(images);
+  pickFakeImage(callback) {
+    if (fakeImages.length == 0) {
+      ioTools.getImages('fake', (images) => {
+        fakeImages = fakeImages.concat(images);
 
-                callback(pokeImages[random]);
-            });
-        } else {
-            let random = tools.getRandom(0, pokeImages.length);
-
-            callback(pokeImages[random]);
-        }
+        callback(fakeImages[0]);
+      });
+    } else {
+      callback(fakeImages[0]);
     }
+  }
 
-    pickBiteImage(callback) {
-        if (biteImages.length == 0) {
-            ioTools.getImages('bite', (images) => {
-                let random = tools.getRandom(0, images.length);
-                biteImages = biteImages.concat(images);
+  pickCryImage(callback) {
+    if (cryImages.length == 0) {
+      ioTools.getImages('cry', (images) => {
+        let random = tools.getRandom(0, images.length);
+        cryImages = cryImages.concat(images);
 
-                callback(biteImages[random]);
-            });
-        } else {
-            let random = tools.getRandom(0, biteImages.length);
+        callback(cryImages[random]);
+      });
+    } else {
+      let random = tools.getRandom(0, cryImages.length);
 
-            callback(biteImages[random]);
-        }
+      callback(cryImages[random]);
     }
+  }
 
-    pickFakeImage(callback) {
-        if (fakeImages.length == 0) {
-            ioTools.getImages('fake', (images) => {
-                fakeImages = fakeImages.concat(images);
+  pickRektImage(callback) {
+    if (rektImages.length == 0) {
+      ioTools.getImages('rekt', (images) => {
+        let random = tools.getRandom(0, images.length);
+        rektImages = rektImages.concat(images);
 
-                callback(fakeImages[0]);
-            });
-        } else {
-            callback(fakeImages[0]);
-        }
+        callback(rektImages[random]);
+      });
+    } else {
+      let random = tools.getRandom(0, rektImages.length);
+
+      callback(rektImages[random]);
     }
+  }
 
-    pickCryImage(callback) {
-        if (cryImages.length == 0) {
-            ioTools.getImages('cry', (images) => {
-                let random = tools.getRandom(0, images.length);
-                cryImages = cryImages.concat(images);
+  pickHugImage(callback) {
+    if (hugImages.length == 0) {
+      ioTools.getImages('hug', (images) => {
+        let random = tools.getRandom(0, images.length);
+        hugImages = hugImages.concat(images);
 
-                callback(cryImages[random]);
-            });
-        } else {
-            let random = tools.getRandom(0, cryImages.length);
+        callback(hugImages[random]);
+      });
+    } else {
+      let random = tools.getRandom(0, hugImages.length);
 
-            callback(cryImages[random]);
-        }
+      callback(hugImages[random]);
     }
+  }
 
-    pickRektImage(callback) {
-        if (rektImages.length == 0) {
-            ioTools.getImages('rekt', (images) => {
-                let random = tools.getRandom(0, images.length);
-                rektImages = rektImages.concat(images);
+  pickBlushImage(callback) {
+    if (blushImages.length == 0) {
+      ioTools.getImages('blush', (images) => {
+        let random = tools.getRandom(0, images.length);
+        blushImages = blushImages.concat(images);
 
-                callback(rektImages[random]);
-            });
-        } else {
-            let random = tools.getRandom(0, rektImages.length);
+        callback(blushImages[random]);
+      });
+    } else {
+      let random = tools.getRandom(0, blushImages.length);
 
-            callback(rektImages[random]);
-        }
+      callback(blushImages[random]);
     }
+  }
 
-    pickHugImage(callback) {
-        if (hugImages.length == 0) {
-            ioTools.getImages('hug', (images) => {
-                let random = tools.getRandom(0, images.length);
-                hugImages = hugImages.concat(images);
+  pickLoveImage(callback) {
+    if (loveImages.length == 0) {
+      ioTools.getImages('love', (images) => {
+        let random = tools.getRandom(0, images.length);
+        loveImages = loveImages.concat(images);
 
-                callback(hugImages[random]);
-            });
-        } else {
-            let random = tools.getRandom(0, hugImages.length);
+        callback(loveImages[random]);
+      });
+    } else {
+      let random = tools.getRandom(0, loveImages.length);
 
-            callback(hugImages[random]);
-        }
+      callback(loveImages[random]);
     }
-
-    pickBlushImage(callback) {
-        if (blushImages.length == 0) {
-            ioTools.getImages('blush', (images) => {
-                let random = tools.getRandom(0, images.length);
-                blushImages = blushImages.concat(images);
-
-                callback(blushImages[random]);
-            });
-        } else {
-            let random = tools.getRandom(0, blushImages.length);
-
-            callback(blushImages[random]);
-        }
-    }
-
-    pickLoveImage(callback) {
-        if (loveImages.length == 0) {
-            ioTools.getImages('love', (images) => {
-                let random = tools.getRandom(0, images.length);
-                loveImages = loveImages.concat(images);
-
-                callback(loveImages[random]);
-            });
-        } else {
-            let random = tools.getRandom(0, loveImages.length);
-
-            callback(loveImages[random]);
-        }
-    }
+  }
 }
 
 module.exports = Reactions;
