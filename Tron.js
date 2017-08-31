@@ -1702,6 +1702,17 @@ bot.registerCommand('batts', (msg, args) => {
   caseInsensitive: true
 });
 
+bot.registerCommand('potato', (msg, args) => {
+  ioTools.getImage('/root/tron/images/potato.png', (img) => {
+    bot.createMessage(msg.channel.id, '', {
+      file: img,
+      name: 'Potato.png'
+    });
+  });
+}, {
+  caseInsensitive: true
+});
+
 // ========================== Hugs Command ====================================================== //
 bot.registerCommand('hugs', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
