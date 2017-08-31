@@ -1662,6 +1662,18 @@ bot.registerCommand('derp', (msg, args) => {
   return "Is loved by <@219270060936527873> more than anyone.";
 });
 
+const Batts = require('./cmds/Batts');
+const batts = new Batts();
+
+bot.registerCommand('batts', (msg, args) => {
+  batts.getRandomEquation().then(equation => {
+    bot.createMessage(msg.channel.id, equation);
+  });
+}, {
+  aliases: ['battsie'],
+  caseInsensitive: true
+});
+
 // ========================== Hugs Command ====================================================== //
 bot.registerCommand('hugs', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
