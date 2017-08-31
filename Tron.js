@@ -233,6 +233,17 @@ bot.registerCommand('jay', (msg, args) => {
   caseInsensitive: true
 });
 
+bot.registerCommand('key', (msg, args) => {
+  ioTools.getImage('/root/tron/images/Key.jpg', (img) => {
+    bot.createMessage(msg.channel.id, '<@140183864076140544>', {
+      file: img,
+      name: 'Key.jpg'
+    });
+  });
+}, {
+  caseInsensitive: true
+});
+
 // ========================== Unmute Command ==================================================== //
 bot.registerCommand('unmute', (msg, args) => {
   if (msg.mentions[0] != undefined && msg.channel.guild != undefined) {
