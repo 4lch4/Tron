@@ -1153,6 +1153,15 @@ let quoteCmd = bot.registerCommand('quote', (msg, args) => {
   description: 'Returns a random quote.'
 })
 
+quoteCmd.registerSubcommand('cm', (msg, args) => {
+  ioTools.readFile('CM_Quotes.txt', (content) => {
+    let temp = content.split('\n')
+    let random = tools.getRandom(0, temp.length)
+
+    bot.createMessage(msg.channel.id, temp[random])
+  })
+})
+
 // ========================== Kill Command ====================================================== //
 bot.registerCommand('kill', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
