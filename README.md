@@ -1,10 +1,9 @@
-<div align="left">
-  <p>
-    <a href="http://forthebadge.com/"><img src="http://forthebadge.com/images/badges/does-not-contain-msg.svg" alt="Does not contain MSG"></a>
-    <br>
-    <a href="https://discord.gg/JfskD5Q"><img src="https://discordapp.com/api/guilds/325504841541746688/embed.png" alt="Paranoid Devs"></a>
-  </p>
-</div>
+<p>
+  <a href="http://forthebadge.com/"><img src="http://forthebadge.com/images/badges/does-not-contain-msg.svg" alt="Does not contain MSG" /></a>
+  <br />
+  <a href="https://standardjs.com"><img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="JavaScript Standard Style" /></a><br />
+  <a href="https://discord.gg/JfskD5Q"><img src="https://discordapp.com/api/guilds/325504841541746688/embed.png" alt="Paranoid Devs" /></a>
+</p>
 
 | [Home](./README.md) | [Commands](./Commands.md) |
 
