@@ -1,9 +1,4 @@
 <div align="left">
-  <h1>
-    <br>
-    Tron
-    <br>
-  </h1>
   <p>
     <a href="http://forthebadge.com/"><img src="http://forthebadge.com/images/badges/does-not-contain-msg.svg" alt="Does not contain MSG"></a>
     <br>
