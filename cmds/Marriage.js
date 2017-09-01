@@ -1,11 +1,11 @@
-"use strict"
+'use strict'
 
 // ========================== Tool Declarations ================================================= //
-const Tools = require('../util/Tools.js');
-const tools = new Tools();
+const Tools = require('../util/Tools.js')
+const tools = new Tools()
 
-const IOTools = require('../util/IOTools.js');
-const ioTools = new IOTools();
+const IOTools = require('../util/IOTools.js')
+const ioTools = new IOTools()
 
 // ========================== Marriage Class Begins ============================================= //
 /**
@@ -16,8 +16,8 @@ const ioTools = new IOTools();
  * it may become a possibility so it does accept options.
  */
 class Marriage {
-  constructor(options) {
-    this.options = options || {};
+  constructor (options) {
+    this.options = options || {}
   }
 
   /**
@@ -28,16 +28,16 @@ class Marriage {
    * @param {string} proposee User object of the person being proposed to.
    * @param {*} callback      Callback to receive query results (if any).
    */
-  addProposal(proposer, proposee, callback) {
-    let currDate = tools.getFormattedTimestamp();
-    let sqlQuery = "INSERT INTO PROPOSALS (PROPOSER_ID, PROPOSEE_ID, PROPOSAL_DATE) VALUES (" +
-      proposer + ", " + proposee + ", '" + currDate + "');";
+  addProposal (proposer, proposee, callback) {
+    let currDate = tools.getFormattedTimestamp()
+    let sqlQuery = 'INSERT INTO PROPOSALS (PROPOSER_ID, PROPOSEE_ID, PROPOSAL_DATE) VALUES (' +
+      proposer + ', ' + proposee + ", '" + currDate + "');"
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback != null) {
-        callback(results);
+      if (callback !== null) {
+        callback(results)
       }
-    });
+    })
   }
 
   /**
@@ -49,15 +49,15 @@ class Marriage {
    * @param {string} proposeeId User ID of the person who was proposed to.
    * @param {*} callback        Callback to receive query results (if any) - optional.
    */
-  removeProposal(proposerId, proposeeId, callback) {
-    let sqlQuery = "DELETE FROM PROPOSALS WHERE PROPOSER_ID = " + proposerId + " AND " +
-      "PROPOSEE_ID = " + proposeeId + ";";
+  removeProposal (proposerId, proposeeId, callback) {
+    let sqlQuery = 'DELETE FROM PROPOSALS WHERE PROPOSER_ID = ' + proposerId + ' AND ' +
+      'PROPOSEE_ID = ' + proposeeId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback != null) {
-        callback(results);
+      if (callback !== null) {
+        callback(results)
       }
-    });
+    })
   }
 
   /**
@@ -67,44 +67,44 @@ class Marriage {
    * @param {string} userId   User ID of the person of interest.
    * @param {*} callback Callback to receive query results (if any) - required.
    */
-  getProposals(userId, callback) {
-    let sqlQuery = "SELECT * FROM PROPOSALS WHERE PROPOSER_ID = " + userId +
-      " || PROPOSEE_ID = " + userId + ";";
+  getProposals (userId, callback) {
+    let sqlQuery = 'SELECT * FROM PROPOSALS WHERE PROPOSER_ID = ' + userId +
+      ' || PROPOSEE_ID = ' + userId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback != null) {
-        callback(results);
+      if (callback !== null) {
+        callback(results)
       }
-    });
+    })
   }
 
-  getProposalType(userId, type, callback) {
-    let sqlQuery = "SELECT * FROM PROPOSALS WHERE ";
-    if (type == 0) {
-      sqlQuery += "PROPOSER_ID = " + userId + ";";
+  getProposalType (userId, type, callback) {
+    let sqlQuery = 'SELECT * FROM PROPOSALS WHERE '
+    if (type === 0) {
+      sqlQuery += 'PROPOSER_ID = ' + userId + ';'
     } else {
-      sqlQuery += "PROPOSEE_ID = " + userId + ";";
+      sqlQuery += 'PROPOSEE_ID = ' + userId + ';'
     }
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback != null) {
-        callback(results);
+      if (callback !== null) {
+        callback(results)
       }
-    });
+    })
   }
 
-  acceptProposal(proposer, proposee, callback) {
-    let sqlQuery = "SELECT * FROM PROPOSALS WHERE PROPOSER_ID = " + proposer.id + " AND PROPOSEE_ID = " + proposee.id + ";";
+  acceptProposal (proposer, proposee, callback) {
+    let sqlQuery = 'SELECT * FROM PROPOSALS WHERE PROPOSER_ID = ' + proposer.id + ' AND PROPOSEE_ID = ' + proposee.id + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (results != null && results.length == 1) {
-        this.removeProposal(proposer.id, proposee.id);
+      if (results !== null && results.length === 1) {
+        this.removeProposal(proposer.id, proposee.id)
 
-        this.addMarriage(proposer, proposee);
+        this.addMarriage(proposer, proposee)
 
-        callback(true);
+        callback(null, true)
       }
-    });
+    })
   }
 
   /**
@@ -115,24 +115,23 @@ class Marriage {
    * @param {string} spouseB  User ID of the user who was proposed to.
    * @param {*} callback      Callback to receive query results (if any) - optional.
    */
-  addMarriage(spouseA, spouseB, callback) {
-    let currDate = tools.getFormattedTimestamp();
-    let sqlQuery = "INSERT INTO MARRIAGES (SPOUSE_A_ID, SPOUSE_B_ID, MARRIAGE_DATE) VALUES (" +
-      spouseA.id + ", " + spouseB.id + ", '" + currDate + "');";
+  addMarriage (spouseA, spouseB, callback) {
+    let currDate = tools.getFormattedTimestamp()
+    let sqlQuery = 'INSERT INTO MARRIAGES (SPOUSE_A_ID, SPOUSE_B_ID, MARRIAGE_DATE) VALUES (' +
+      spouseA.id + ', ' + spouseB.id + ", '" + currDate + "');"
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback != null) {
-        callback(results);
+      if (callback !== null) {
+        callback(results)
       }
-    });
+    })
 
     this.getDivorce(spouseA.id, spouseB.id, (divorce) => {
       if (divorce.length > 0) {
-        this.removeDivorce(spouseA.id, spouseB.id);
+        this.removeDivorce(spouseA.id, spouseB.id)
       }
     })
   }
-
 
   /**
    * Removes a marriage to the MARRIAGES table using the provided spouses user IDs and if there is
@@ -142,16 +141,16 @@ class Marriage {
    * @param {string} spouseBId User ID of the other user involved in the marriage.
    * @param {*} callback       Callback to receive query results (if any) - optional.
    */
-  removeMarriage(spouseAId, spouseBId, callback) {
-    let sqlQuery = "DELETE FROM MARRIAGES WHERE " +
-      "(SPOUSE_A_ID = " + spouseAId + " AND SPOUSE_B_ID = " + spouseBId + ") OR " +
-      "(SPOUSE_A_ID = " + spouseBId + " AND SPOUSE_B_ID = " + spouseAId + ");";
+  removeMarriage (spouseAId, spouseBId, callback) {
+    let sqlQuery = 'DELETE FROM MARRIAGES WHERE ' +
+      '(SPOUSE_A_ID = ' + spouseAId + ' AND SPOUSE_B_ID = ' + spouseBId + ') OR ' +
+      '(SPOUSE_A_ID = ' + spouseBId + ' AND SPOUSE_B_ID = ' + spouseAId + ');'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback != null) {
-        callback(results);
+      if (callback !== null) {
+        callback(results)
       }
-    });
+    })
   }
 
   /**
@@ -161,24 +160,24 @@ class Marriage {
    * @param {string} userId   User ID of the person of interest.
    * @param {*} callback      Callback to receive query results (if any) - required.
    */
-  getMarriages(userId, callback) {
-    let sqlQuery = "SELECT * FROM MARRIAGES WHERE SPOUSE_A_ID = " + userId +
-      " || SPOUSE_B_ID = " + userId + ";";
+  getMarriages (userId, callback) {
+    let sqlQuery = 'SELECT * FROM MARRIAGES WHERE SPOUSE_A_ID = ' + userId +
+      ' || SPOUSE_B_ID = ' + userId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback != null) {
-        callback(results);
+      if (callback !== null) {
+        callback(results)
       }
-    });
+    })
   }
 
-  getMarriage(user1Id, user2Id, callback) {
-    let sqlQuery = "SELECT * FROM MARRIAGES WHERE (SPOUSE_A_ID = " + user1Id + " AND SPOUSE_B_ID = " + user2Id + ") OR " +
-      "(SPOUSE_A_ID = " + user2Id + " AND SPOUSE_B_ID = " + user1Id + ");";
+  getMarriage (user1Id, user2Id, callback) {
+    let sqlQuery = 'SELECT * FROM MARRIAGES WHERE (SPOUSE_A_ID = ' + user1Id + ' AND SPOUSE_B_ID = ' + user2Id + ') OR ' +
+      '(SPOUSE_A_ID = ' + user2Id + ' AND SPOUSE_B_ID = ' + user1Id + ');'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      callback(results);
-    });
+      callback(results)
+    })
   }
 
   /**
@@ -192,37 +191,36 @@ class Marriage {
    * @param {*} msg       Message object from the Discord bot containing the mentions.
    * @param {*} callback  Callback to receive the cleaned Message object.
    */
-  verifyProposal(msg, callback) {
-    let allVerified = true;
-    let cleanUsers = [];
-    let processed = 0;
+  verifyProposal (msg, callback) {
+    let allVerified = true
+    let cleanUsers = []
+    let processed = 0
 
     msg.mentions.forEach((mention, index, array) => {
-      let userId1 = msg.author.id;
-      let userId2 = mention.id;
+      let userId1 = msg.author.id
+      let userId2 = mention.id
 
-      let sqlQuery = "SELECT * FROM MARRIAGES WHERE (SPOUSE_A_ID = " + userId1 + " AND SPOUSE_B_ID = " + userId2 + ") OR " +
-        "(SPOUSE_A_ID = " + userId2 + " AND SPOUSE_B_ID = " + userId1 + ") UNION " +
-        "SELECT * FROM PROPOSALS WHERE PROPOSER_ID = " + userId1 + " AND PROPOSEE_ID = " + userId2;
+      let sqlQuery = 'SELECT * FROM MARRIAGES WHERE (SPOUSE_A_ID = ' + userId1 + ' AND SPOUSE_B_ID = ' + userId2 + ') OR ' +
+        '(SPOUSE_A_ID = ' + userId2 + ' AND SPOUSE_B_ID = ' + userId1 + ') UNION ' +
+        'SELECT * FROM PROPOSALS WHERE PROPOSER_ID = ' + userId1 + ' AND PROPOSEE_ID = ' + userId2
 
       ioTools.executeSql(sqlQuery, (results) => {
-        if (results != null && results.length > 0) {
-          allVerified = false;
+        if (results !== null && results.length > 0) {
+          allVerified = false
         } else {
-          cleanUsers.push(mention);
+          cleanUsers.push(mention)
         }
 
         // Indicate a mention has been processed
-        processed++;
+        processed++
 
         // If all mentions have been processed, passback the cleaned user array and
         // the allVerified boolean.
-        if (processed == msg.mentions.length) {
-          callback(cleanUsers, allVerified);
+        if (processed === msg.mentions.length) {
+          callback(cleanUsers, allVerified)
         }
-      });
-    });
-
+      })
+    })
   }
 
   /**
@@ -232,51 +230,51 @@ class Marriage {
    * @param {*} proposals
    * @param {*} callback
    */
-  formatProposals(proposals, callback) {
-    let processed = 0;
-    let message = "```";
+  formatProposals (proposals, callback) {
+    let processed = 0
+    let message = '```'
 
     proposals.forEach((proposal, index, array) => {
-      message += "(" + processed + ") " + proposal.PROPOSER_USERNAME + "\n";
+      message += '(' + processed + ') ' + proposal.PROPOSER_USERNAME + '\n'
 
-      processed++;
+      processed++
 
-      if (processed == proposals.length) {
-        message += "```";
-        callback(message);
+      if (processed === proposals.length) {
+        message += '```'
+        callback(message)
       }
-    });
+    })
   }
 
-  addDivorce(divorcer, divorcee, callback) {
-    let currDate = tools.getFormattedTimestamp();
-    let sqlQuery = "INSERT INTO DIVORCES (DIVORCER_ID, DIVORCEE_ID, DIVORCE_DATE) VALUES " +
-      "(" + divorcer.id + ", " + divorcee.id + ", \"" + currDate + "\");";
+  addDivorce (divorcer, divorcee, callback) {
+    let currDate = tools.getFormattedTimestamp()
+    let sqlQuery = 'INSERT INTO DIVORCES (DIVORCER_ID, DIVORCEE_ID, DIVORCE_DATE) VALUES ' +
+      '(' + divorcer.id + ', ' + divorcee.id + ', "' + currDate + '");'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback != null) {
-        callback(results);
+      if (callback !== null) {
+        callback(results)
       }
-    });
+    })
   }
 
-  //SELECT * FROM DIVORCES WHERE (DIVORCER_ID = userId1 AND DIVORCEE_ID = userId2) OR
-  //(DIVORCER_ID = userId2 AND DIVORCEE_ID = userId1) UNION SELECT * FROM DIVORCE_PROPOSALS(DIVORCER_ID = userId1 AND DIVORCEE_ID = userId2) OR(DIVORCER_ID = userId2 AND DIVORCEE_ID = userId1);
-  getDivorce(userId1, userId2, callback) {
-    let sqlQuery = "SELECT DIVORCER_ID FROM DIVORCES WHERE (DIVORCER_ID = " + userId1 + " AND DIVORCEE_ID = " + userId2 + ") OR " +
-      "(DIVORCER_ID = " + userId2 + " AND DIVORCEE_ID = " + userId1 + ") UNION SELECT DIVORCER_ID FROM DIVORCE_PROPOSALS WHERE (DIVORCER_ID = " + userId1 + " AND DIVORCEE_ID = " + userId2 + ") OR (DIVORCER_ID = " + userId2 + " AND DIVORCEE_ID = " + userId1 + ");";
+  // SELECT * FROM DIVORCES WHERE (DIVORCER_ID = userId1 AND DIVORCEE_ID = userId2) OR
+  // (DIVORCER_ID = userId2 AND DIVORCEE_ID = userId1) UNION SELECT * FROM DIVORCE_PROPOSALS(DIVORCER_ID = userId1 AND DIVORCEE_ID = userId2) OR(DIVORCER_ID = userId2 AND DIVORCEE_ID = userId1);
+  getDivorce (userId1, userId2, callback) {
+    let sqlQuery = 'SELECT DIVORCER_ID FROM DIVORCES WHERE (DIVORCER_ID = ' + userId1 + ' AND DIVORCEE_ID = ' + userId2 + ') OR ' +
+      '(DIVORCER_ID = ' + userId2 + ' AND DIVORCEE_ID = ' + userId1 + ') UNION SELECT DIVORCER_ID FROM DIVORCE_PROPOSALS WHERE (DIVORCER_ID = ' + userId1 + ' AND DIVORCEE_ID = ' + userId2 + ') OR (DIVORCER_ID = ' + userId2 + ' AND DIVORCEE_ID = ' + userId1 + ');'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      callback(results);
-    });
+      callback(results)
+    })
   }
 
-  getDivorces(userId, callback) {
-    let sqlQuery = "SELECT * FROM DIVORCES WHERE DIVORCER_ID = " + userId + " OR DIVORCEE_ID = " + userId + ";";
+  getDivorces (userId, callback) {
+    let sqlQuery = 'SELECT * FROM DIVORCES WHERE DIVORCER_ID = ' + userId + ' OR DIVORCEE_ID = ' + userId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      callback(results);
-    });
+      callback(results)
+    })
   }
 
   /**
@@ -286,56 +284,56 @@ class Marriage {
    * @param {*} proposals
    * @param {*} callback
    */
-  formatDivorceProposals(proposals, callback) {
-    let processed = 0;
-    let message = "```";
+  formatDivorceProposals (proposals, callback) {
+    let processed = 0
+    let message = '```'
 
     proposals.forEach((proposal, index, array) => {
-      message += "(" + processed + ") " + proposal.DIVORCER_USERNAME + "\n";
+      message += '(' + processed + ') ' + proposal.DIVORCER_USERNAME + '\n'
 
-      processed++;
+      processed++
 
-      if (processed == proposals.length) {
-        message += "```";
-        callback(message);
+      if (processed === proposals.length) {
+        message += '```'
+        callback(message)
       }
-    });
+    })
   }
 
-  verifyDivorce(userId1, userId2, callback) {
+  verifyDivorce (userId1, userId2, callback) {
     this.getMarriage(userId1, userId2, (marriage) => {
-      if (marriage != null) {
+      if (marriage !== null) {
         this.getDivorce(userId1, userId2, (divorce) => {
-          if (divorce.length == 0) {
-            callback(marriage);
+          if (divorce.length === 0) {
+            callback(marriage)
           } else {
-            callback(null);
+            callback(null)
           }
         })
       }
     })
   }
 
-  addDivorceProposal(divorcer, divorcee, callback) {
-    let sqlQuery = "INSERT INTO DIVORCE_PROPOSALS (DIVORCER_ID, DIVORCEE_ID) VALUES (" +
-      divorcer.id + ", " + divorcee.id + ");";
+  addDivorceProposal (divorcer, divorcee, callback) {
+    let sqlQuery = 'INSERT INTO DIVORCE_PROPOSALS (DIVORCER_ID, DIVORCEE_ID) VALUES (' +
+      divorcer.id + ', ' + divorcee.id + ');'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback != null) {
-        callback(results);
+      if (callback !== null) {
+        callback(results)
       }
-    });
+    })
   }
 
-  getDivorceProposals(userId, callback) {
-    let sqlQuery = "SELECT * FROM DIVORCE_PROPOSALS WHERE DIVORCER_ID = " + userId +
-      " || DIVORCEE_ID = " + userId + ";";
+  getDivorceProposals (userId, callback) {
+    let sqlQuery = 'SELECT * FROM DIVORCE_PROPOSALS WHERE DIVORCER_ID = ' + userId +
+      ' || DIVORCEE_ID = ' + userId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback != null) {
-        callback(results);
+      if (callback !== null) {
+        callback(results)
       }
-    });
+    })
   }
 
   /**
@@ -347,63 +345,63 @@ class Marriage {
    * @param {string} divorceeId User ID of the person who was proposed to.
    * @param {*} callback        Callback to receive query results (if any) - optional.
    */
-  removeDivorceProposal(divorcerId, divorceeId, callback) {
-    let sqlQuery = "DELETE FROM DIVORCE_PROPOSALS WHERE DIVORCER_ID = " + divorcerId + " AND " +
-      "DIVORCEE_ID = " + divorceeId + ";";
+  removeDivorceProposal (divorcerId, divorceeId, callback) {
+    let sqlQuery = 'DELETE FROM DIVORCE_PROPOSALS WHERE DIVORCER_ID = ' + divorcerId + ' AND ' +
+      'DIVORCEE_ID = ' + divorceeId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback != null) {
-        callback(results);
+      if (callback !== null) {
+        callback(results)
       }
-    });
+    })
   }
 
-  removeDivorce(divorcerId, divorceeId, callback) {
-    let sqlQuery = "DELETE FROM DIVORCES WHERE " +
-      "(DIVORCER_ID = " + divorcerId + " AND DIVORCEE_ID = " + divorceeId + ") OR " +
-      "(DIVORCER_ID = " + divorceeId + " AND DIVORCEE_ID = " + divorcerId + ");";
+  removeDivorce (divorcerId, divorceeId, callback) {
+    let sqlQuery = 'DELETE FROM DIVORCES WHERE ' +
+      '(DIVORCER_ID = ' + divorcerId + ' AND DIVORCEE_ID = ' + divorceeId + ') OR ' +
+      '(DIVORCER_ID = ' + divorceeId + ' AND DIVORCEE_ID = ' + divorcerId + ');'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback != null) {
-        callback(results);
+      if (callback !== null) {
+        callback(results)
       }
-    });
+    })
   }
 
-  acceptDivorceProposal(divorcer, divorcee, callback) {
-    let sqlQuery = "SELECT * FROM DIVORCE_PROPOSALS WHERE DIVORCER_ID = " + divorcer.id + " AND DIVORCEE_ID = " + divorcee.id + ";";
+  acceptDivorceProposal (divorcer, divorcee, callback) {
+    let sqlQuery = 'SELECT * FROM DIVORCE_PROPOSALS WHERE DIVORCER_ID = ' + divorcer.id + ' AND DIVORCEE_ID = ' + divorcee.id + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (results != null && results.length == 1) {
-        this.removeDivorceProposal(divorcer.id, divorcee.id);
+      if (results !== null && results.length === 1) {
+        this.removeDivorceProposal(divorcer.id, divorcee.id)
 
-        this.addDivorce(divorcer, divorcee);
+        this.addDivorce(divorcer, divorcee)
 
-        this.removeMarriage(divorcer.id, divorcee.id);
+        this.removeMarriage(divorcer.id, divorcee.id)
 
-        callback(true);
+        callback(null, true)
       }
-    });
+    })
   }
 
-  alertUsersToProposals(channelId, mentions, bot) {
+  alertUsersToProposals (channelId, mentions, bot) {
     this.convertMentions(mentions, (content) => {
-      bot.createMessage(channelId, content + "\n\n" +
-        "You've received a marriage proposal. Use `+marry accept` to accept the proposal or `+marry deny` to reject it.");
-    });
+      bot.createMessage(channelId, content + '\n\n' +
+        "You've received a marriage proposal. Use `+marry accept` to accept the proposal or `+marry deny` to reject it.")
+    })
   }
 
-  convertMentions(mentions, callback) {
-    let message = '';
+  convertMentions (mentions, callback) {
+    let message = ''
 
     for (let x = 0; x < mentions.length; x++) {
-      message += "<@" + mentions[x].id + "> "
+      message += '<@' + mentions[x].id + '> '
 
-      if (x + 1 == mentions.length) {
-        callback(message);
+      if (x + 1 === mentions.length) {
+        callback(message)
       }
     }
   }
 }
 
-module.exports = Marriage;
+module.exports = Marriage

@@ -1,15 +1,15 @@
-"use strict"
+'use strict'
 
-const Tools = require('../util/Tools');
-const tools = new Tools();
+const Tools = require('../util/Tools')
+const tools = new Tools()
 
-const IOTools = require('../util/IOTools');
-const ioTools = new IOTools();
+const IOTools = require('../util/IOTools')
+const ioTools = new IOTools()
 
-const download = require('image-downloader');
+const download = require('image-downloader')
 
 /** Stores the links on obutts.ru that are available for download */
-let buttLinks = {};
+let buttLinks = {}
 
 /**
  *  Provides functions for retrieving various images of the Lewd variety. Upon creation, it's used
@@ -18,8 +18,8 @@ let buttLinks = {};
  * features down the road, I'm just not sure where to start yet.
  */
 class Lewds {
-  constructor(options) {
-    this.options = options || {};
+  constructor (options) {
+    this.options = options || {}
   }
 
   /**
@@ -33,21 +33,21 @@ class Lewds {
    *
    * @param {*} callback
    */
-  getButt(callback) {
-    if (buttLinks.length == undefined) {
-      ioTools.readFile("/root/tron/ButtImages.txt", (file) => {
-        buttLinks = file.split('\n');
+  getButt (callback) {
+    if (buttLinks.length === undefined) {
+      ioTools.readFile('/root/tron/ButtImages.txt', (file) => {
+        buttLinks = file.split('\n')
 
         let random = tools.getRandom(0, buttLinks.length)
 
         this.getRandomButt(random, (butt, filename) => {
-          callback(butt, filename);
-        });
-      });
+          callback(butt, filename)
+        })
+      })
     } else {
       this.getRandomButt(tools.getRandom(0, buttLinks.length), (butt, filename) => {
-        callback(butt, filename);
-      });
+        callback(butt, filename)
+      })
     }
   }
 
@@ -59,9 +59,9 @@ class Lewds {
    * @param {int} random
    * @param {*} callback
    */
-  getRandomButt(random, callback) {
-    let buttLink = buttLinks[random];
-    let shortFilename = buttLink.substring(buttLink.lastIndexOf('/') + 1);
+  getRandomButt (random, callback) {
+    let buttLink = buttLinks[random]
+    let shortFilename = buttLink.substring(buttLink.lastIndexOf('/') + 1)
 
     download.image({
       url: buttLink,
@@ -70,11 +70,11 @@ class Lewds {
       filename,
       image
     }) => {
-      callback(image, shortFilename);
+      callback(image, shortFilename)
     }).catch((err) => {
-      throw err;
-    });
+      throw err
+    })
   }
 }
 
-module.exports = Lewds;
+module.exports = Lewds

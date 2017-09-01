@@ -1,29 +1,28 @@
-const Tools = require('../util/Tools');
-const tools = new Tools();
+const Tools = require('../util/Tools')
+const tools = new Tools()
 
 class Mute {
-  constructor(options) {
-    this.options == options || {};
+  constructor (options) {
+    this.options = options || {}
   }
 
-  unmuteUser(msg, user) {
+  unmuteUser (msg, user) {
     return new Promise((resolve, reject) => {
       tools.getTronMuteRole(msg).then((role) => {
         tools.getMember(msg, user).then((member) => {
           msg.channel.guild.removeMemberRole(member.id, role.id).then((err) => {
             if (err) {
-              Raven.captureException(err);
-              reject(err);
+              reject(err)
             } else {
-              resolve(true);
+              resolve(true)
             }
-          });
-        });
-      });
-    });
+          })
+        })
+      })
+    })
   }
 
-  muteUser(msg, user) {
+  muteUser (msg, user) {
     return new Promise((resolve, reject) => {
       // Get mute role to make needed changes
       tools.getTronMuteRole(msg).then((role) => {
@@ -31,16 +30,15 @@ class Mute {
         tools.getMember(msg, user).then((member) => {
           msg.channel.guild.addMemberRole(member.id, role.id).then((err) => {
             if (err) {
-              Raven.captureException(err);
-              reject(err);
+              reject(err)
             } else {
-              resolve(true);
+              resolve(true)
             }
-          });
-        });
-      });
-    });
+          })
+        })
+      })
+    })
   }
 }
 
-module.exports = Mute;
+module.exports = Mute
