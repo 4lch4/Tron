@@ -19,6 +19,7 @@
     "node-rest-client": "3.1.0",
     "popura": "1.2.5",
     "raven": "2.1.2",
+    "standard": "10.0.3",
     "readline": "1.3.0",
     "redwrap": "0.0.4",
     "tumblr.js": "1.1.1",
@@ -26,6 +27,8 @@
   },
   "scripts": {
     "update": "npm update",
-    "start": "node Tron.js"
+    "start": "node Tron.js",
+    "test": "standard | snazzy",
+    "fix": "standard --fix"
   }
 }
