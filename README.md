@@ -1,18 +1,9 @@
-<div align="left">
-  <p>
-    <a href="http://forthebadge.com/">
-      <img src="http://forthebadge.com/images/badges/does-not-contain-msg.svg" alt="Does not contain MSG" />
-    </a><br />
-    <a href="https://standardjs.com">
-      <img src="https://img.shields.io/badge/code_style-standard-brightgreen.svg" alt="JavaScript Standard Style" />
-    </a>
-    <a href="https://discord.gg/JfskD5Q">
-      <img src="https://discordapp.com/api/guilds/325504841541746688/embed.png" alt="Paranoid Devs" />
-    </a>
-  </p>
-</div>
+[![ForTheBadge](http://forthebadge.com/images/badges/does-not-contain-msg.svg)](https://forthebadge.com/)
 
-| [Home](./README.md) | [Commands](./Commands.md) |
+[![Standard-Js](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com/)
+[![David-dm](https://david-dm.org/Paranoid-Devs/Tron.svg)](https://david-dm.org/Paranoid-Devs/Tron)
+
+[![Paranoid-Devs](https://discordapp.com/api/guilds/325504841541746688/embed.png)](https://discord.gg/JfskD5Q)
 
 # Purpose
 
