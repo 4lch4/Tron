@@ -9,6 +9,9 @@ const ioTools = new IOTools()
 /** Stores images for the Snow command */
 let kaylaImages = []
 
+let sunlessImages = []
+let sunlessFilenames = []
+
 let battsieImages = []
 let battsieFilenames = []
 
@@ -405,6 +408,45 @@ class Reactions {
 
       callback(confusedImages[random])
     }
+  }
+
+  pickSunlessImage (imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (sunlessImages.length === 0) {
+        ioTools.getImages('sunless', (images, filenames) => {
+          sunlessImages = sunlessImages.concat(images)
+          sunlessFilenames = sunlessFilenames.concat(filenames)
+
+          if (imgIndex < sunlessImages.length) {
+            resolve({
+              file: sunlessImages[imgIndex],
+              name: sunlessFilenames[imgIndex]
+            })
+          } else {
+            let random = tools.getRandom(0, sunlessImages.length)
+
+            resolve({
+              file: sunlessImages[random],
+              name: sunlessFilenames[random]
+            })
+          }
+        })
+      } else {
+        if (imgIndex < sunlessImages.length) {
+          resolve({
+            file: sunlessImages[imgIndex],
+            name: sunlessFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, sunlessImages.length)
+
+          resolve({
+            file: sunlessImages[random],
+            name: sunlessFilenames[random]
+          })
+        }
+      }
+    })
   }
 
   pickBattsieImage (imgIndex) {

@@ -2232,6 +2232,21 @@ bot.registerCommand('batts', (msg, args) => {
   caseInsensitive: true
 })
 
+bot.registerCommand('sunless', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickSunlessImage(args[0]).then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  } else {
+    reactions.pickSunlessImage().then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  }
+}, {
+  aliases: ['aimer'],
+  caseInsensitive: true
+})
+
 // ========================== Alcha Command (Requested by Utah) ================================= //
 bot.registerCommand('alcha', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
