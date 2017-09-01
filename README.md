@@ -1,3 +1,16 @@
+<div align="center">
+  <h1>
+    <br>
+    Tron
+    <br>
+  </h1>
+  <p>
+    <a href="http://forthebadge.com/"><img src="http://forthebadge.com/images/badges/does-not-contain-msg.svg" alt="Does not contain MSG"></a>
+    <br>
+    <a href="https://discord.gg/JfskD5Q"><img src="https://discordapp.com/api/guilds/325504841541746688/embed.png" alt="Paranoid Devs"></a>
+  </p>
+</div>
+
 | [Home](./README.md) | [Commands](./Commands.md) |
 
 # Purpose
