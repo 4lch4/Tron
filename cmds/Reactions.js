@@ -10,6 +10,9 @@ const ioTools = new IOTools();
 /** Stores images for the Snow command */
 let kaylaImages = [];
 
+let battsieImages = [];
+let battsieFilenames = [];
+
 /** Stores images for the Alcha command */
 let jerryImages = [];
 let jerryFilenames = [];
@@ -405,6 +408,45 @@ class Reactions {
     }
   }
 
+  pickBattsieImage(imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (battsieImages.length == 0) {
+        ioTools.getImages('battsie', (images, filenames) => {
+          battsieImages = battsieImages.concat(images);
+          battsieFilenames = battsieFilenames.concat(filenames);
+
+          if (imgIndex < battsieImages.length) {
+            resolve({
+              file: battsieImages[imgIndex],
+              name: battsieFilenames[imgIndex]
+            });
+          } else {
+            let random = tools.getRandom(0, battsieImages.length);
+
+            resolve({
+              file: battsieImages[random],
+              name: battsieFilenames[random]
+            });
+          }
+        });
+      } else {
+        if (imgIndex < battsieImages.length) {
+          resolve({
+            file: battsieImages[imgIndex],
+            name: battsieFilenames[imgIndex]
+          });
+        } else {
+          let random = tools.getRandom(0, battsieImages.length);
+
+          resolve({
+            file: battsieImages[random],
+            name: battsieFilenames[random]
+          });
+        }
+      }
+    });
+  }
+
   pickJerryImage(imgIndex) {
     return new Promise((resolve, reject) => {
       if (jerryImages.length == 0) {
@@ -571,7 +613,6 @@ class Reactions {
       callback(killImages[random]);
     }
   }
-
 
   pickPatImage(callback, imgIndex) {
     if (patImages.length == 0) {

@@ -1701,18 +1701,6 @@ bot.registerCommand('derp', (msg, args) => {
   return "Is loved by <@219270060936527873> more than anyone.";
 });
 
-const Batts = require('./cmds/Batts');
-const batts = new Batts();
-
-bot.registerCommand('batts', (msg, args) => {
-  batts.getRandomEquation().then(equation => {
-    bot.createMessage(msg.channel.id, equation);
-  });
-}, {
-  aliases: ['battsie'],
-  caseInsensitive: true
-});
-
 bot.registerCommand('potato', (msg, args) => {
   ioTools.getImage('/root/tron/images/potato.png', (img) => {
     bot.createMessage(msg.channel.id, '', {
@@ -2210,6 +2198,21 @@ bot.registerCommand('exhentai', (msg, args) => {
   if (msg.channel.id != undefined) {
     return tools.getExhentaiCookies().toString();
   }
+});
+
+bot.registerCommand('batts', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickBattsieImage(args[0]).then((data) => {
+      bot.createMessage(msg.channel.id, '', data);
+    });
+  } else {
+    reactions.pickBattsieImage().then((data) => {
+      bot.createMessage(msg.channel.id, '', data);
+    });
+  }
+}, {
+  aliases: ['battsie'],
+  caseInsensitive: true
 });
 
 // ========================== Alcha Command (Requested by Utah) ================================= //
