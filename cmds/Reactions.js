@@ -9,6 +9,9 @@ const ioTools = new IOTools()
 /** Stores images for the Snow command */
 let kaylaImages = []
 
+let coffeeImages = []
+let coffeeFilenames = []
+
 let sunlessImages = []
 let sunlessFilenames = []
 
@@ -443,6 +446,45 @@ class Reactions {
           resolve({
             file: sunlessImages[random],
             name: sunlessFilenames[random]
+          })
+        }
+      }
+    })
+  }
+
+  pickCoffeeImage (imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (coffeeImages.length === 0) {
+        ioTools.getImages('coffee', (images, filenames) => {
+          coffeeImages = coffeeImages.concat(images)
+          coffeeFilenames = coffeeFilenames.concat(filenames)
+
+          if (imgIndex < coffeeImages.length) {
+            resolve({
+              file: coffeeImages[imgIndex],
+              name: coffeeFilenames[imgIndex]
+            })
+          } else {
+            let random = tools.getRandom(0, coffeeImages.length)
+
+            resolve({
+              file: coffeeImages[random],
+              name: coffeeFilenames[random]
+            })
+          }
+        })
+      } else {
+        if (imgIndex < coffeeImages.length) {
+          resolve({
+            file: coffeeImages[imgIndex],
+            name: coffeeFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, coffeeImages.length)
+
+          resolve({
+            file: coffeeImages[random],
+            name: coffeeFilenames[random]
           })
         }
       }

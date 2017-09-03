@@ -2271,7 +2271,23 @@ bot.registerCommand('alcha', (msg, args) => {
   argsRequired: false,
   caseInsensitive: true,
   guildOnly: true
+})
 
+bot.registerCommand('coffee', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickCoffeeImage(args[0]).then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  } else {
+    reactions.pickCoffeeImage().then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  }
+}, {
+  aliases: ['morty', 'jerry'],
+  argsRequired: false,
+  caseInsensitive: true,
+  guildOnly: true
 })
 
 // ========================== Utah Command ====================================================== //
