@@ -34,6 +34,13 @@ const bot = new Eris.CommandClient(config.token, {}, {
   prefix: config.prefix
 })
 
+// ========================== Socket.io code for JarJar ========================================= //
+const io = require('socket.io')(80)
+
+io.on('connection', (socket) => {
+  console.log('Connection received from ' + socket.conn.remoteAddress + ' at ' + tools.getCurrDateTimestamp())
+})
+
 // ========================== External Cmd Files ================================================ //
 const Ship = require('./cmds/Ship')
 const ship = new Ship()
