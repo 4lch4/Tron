@@ -1246,7 +1246,7 @@ bot.registerCommand('punch', (msg, args) => {
 
 // ========================== Kayla Command (Requested by Snow) ================================= //
 bot.registerCommand('kayla', (msg, args) => {
-  if (msg.author.id === 142092834260910080 || msg.author.id === 217870035090276374 || msg.author.id === config.owner) {
+  if (parseInt(msg.author.id) === 142092834260910080 || parseInt(msg.author.id) === 217870035090276374 || msg.author.id === config.owner) {
     reactions.pickKaylaImage().then(img => {
       bot.createMessage(msg.channel.id, '', {
         file: img,
@@ -2271,11 +2271,11 @@ bot.registerCommand('alcha', (msg, args) => {
 // ========================== Utah Command ====================================================== //
 bot.registerCommand('utah', (msg, args) => {
   if (msg.channel.guild !== undefined) {
-    if (msg.channel.guild.id === 254496813552238594) {
+    if (parseInt(msg.channel.guild.id) === 254496813552238594) {
       bot.createMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:256668458480041985>')
-    } else if (msg.channel.guild.id === 197846974408556544) {
+    } else if (parseInt(msg.channel.guild.id) === 197846974408556544) {
       bot.createMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:298313391444066305>')
-    } else if (msg.channel.guild.id === 325420023705370625) {
+    } else if (parseInt(msg.channel.guild.id) === 325420023705370625) {
       bot.createMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:327634830483259393>')
     } else {
       console.log('Guild = ' + msg.channel.guild.name)
