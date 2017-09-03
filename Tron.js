@@ -1550,7 +1550,6 @@ nsfwCmd.registerSubcommand('butt', (msg, args) => {
       'CheekyBottoms',
       'datgap',
       'underbun',
-      'rearpussy',
       'pawgtastic',
       'BestBooties',
       'CuteLittleButts'
