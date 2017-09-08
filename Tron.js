@@ -1750,22 +1750,30 @@ bot.registerCommand('ratewaifu', (msg, args) => {
       bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (msg.channel.guild !== undefined && msg.mentions.length === 1) {
-        if (msg.mentions[0].id === 219270060936527873) {
+        let mentionId = parseInt(msg.mentions[0].id)
+
+        if (mentionId === 219270060936527873) {
           // Alcha
           bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**-senpai, I'd rate you 11/10. \n\n_notice me_")
-        } else if (msg.mentions[0].id === 158740486352273409) {
+        } else if (mentionId === 317138587491631104) {
+          // Travis
+          bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + '**-dono, I\'d rate you 11/10. :fire:')
+        } else if (mentionId === 158740486352273409) {
           // Micaww
           bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you 0/10 waifu.")
-        } else if (msg.mentions[0].id === 142092834260910080) {
+        } else if (mentionId === 142092834260910080) {
           // Snow/Daddy Yoana
           bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you -69/10 waifu.")
-        } else if (msg.mentions[0].id === 120797492865400832) {
+        } else if (mentionId === 146023112008400896) {
+          // Aaron/Mamba
+          bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + '**, I\'d rate you 0/10 waifu.')
+        } else if (mentionId === 120797492865400832) {
           // Bella
           bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you 12/10 waifu. :fire: :fire:")
-        } else if (msg.mentions[0].id === 139474184089632769) {
+        } else if (mentionId === 139474184089632769) {
           // Utah
           bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you -∞/10 waifu.")
-        } else if (msg.mentions[0].id === 167546638758445056) {
+        } else if (mentionId === 167546638758445056) {
           bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you ∞/10 waifu. The best of the best.")
         } else {
           let random = tools.getRandom(0, 11)
