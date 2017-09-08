@@ -2383,6 +2383,29 @@ bot.registerCommand('alcha', (msg, args) => {
   guildOnly: true
 })
 
+// ========================== Foupa Command ===================================================== //
+bot.registerCommand('foupa', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickFoupaImage(args[0]).then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  } else {
+    reactions.pickFoupaImage().then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  }
+}, {
+  aliases: ['friendlyneighborhoodpedo'],
+  requirements: {
+    userIDs: ['219270060936527873', '159844469464760320']
+  },
+  caseInsensitive: true,
+  permissionMessage: 'This command is unavailable to you.',
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE
+})
+
+// ========================== Coffee Command =================================================== //
 bot.registerCommand('coffee', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickCoffeeImage(args[0]).then((data) => {
