@@ -98,7 +98,7 @@ class Marriage {
 
     ioTools.executeSql(sqlQuery, (results) => {
       if (results !== null && results.length === 1) {
-        this.removeProposal(proposer.id, proposee.id)
+        this.removeProposal(proposer.id, proposee.id, null)
 
         this.addMarriage(proposer, proposee)
 
