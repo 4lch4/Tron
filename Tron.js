@@ -2779,15 +2779,6 @@ bot.on('messageCreate', (msg) => {
         '<@' + msg.author.id + '> has used the ``@here`` mention in the <#' + msg.channel.id + '> channel.'
 
       bot.createMessage(config.notificationChannel, hereMention)
-    } else if (tools.messageIs(msg, 'hello')) {
-      bot.createMessage(msg.channel.id, 'New fone who dis?')
-    } else if (tools.messageIs(msg, 'bye')) {
-      ioTools.getImage('bye.png', (img) => {
-        bot.createMessage(msg.channel.id, '', {
-          file: img,
-          name: 'Bye.png'
-        })
-      })
     } else if (tools.messageIs(msg, 'god damn')) {
       bot.createMessage(msg.channel.id, 'https://i.imgur.com/ULUZMtV.gifv')
     } else if (tools.messageIs(msg, 'o/') && msg.author.id !== 258162570622533635) {
