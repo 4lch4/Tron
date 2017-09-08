@@ -30,8 +30,9 @@ let PowerWashingLinks = []
 // ========================== Bot Declaration =================================================== //
 const bot = new Eris.CommandClient(config.token, {}, {
   description: info.description,
-  owner: info.author,
-  prefix: config.prefix
+  owner: config.owner,
+  prefix: config.prefix,
+  name: 'Tron'
 })
 
 // ========================== Socket.io code for JarJar ========================================= //
