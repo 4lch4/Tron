@@ -2768,7 +2768,9 @@ bot.on('messageCreate', (msg) => {
     })
   }
 
-  if (!isNaN(msg.author.id) && msg.channel.guild !== undefined && msg.channel.guild.id === config.ownerServer) {
+  if (msg.channel.guild !== undefined &&
+    msg.channel.guild.id === config.ownerServer &&
+    parseInt(msg.author.id) !== 258162570622533635) {
     if (msg.content.includes('@everyone')) {
       let everyoneMention = ':mega: ``[' + tools.getFormattedTimestamp() + ']``' +
         '<@' + msg.author.id + '> has used the ``@everyone`` mention in the <#' + msg.channel.id + '> channel.'
