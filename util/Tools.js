@@ -297,19 +297,20 @@ class Tools {
    */
   doesMsgContainShu (msg) {
     return new Promise((resolve, reject) => {
-      if (msg.mentions.length >= 1) {
+      if (msg.mentions.size > 0) {
         resolve(false)
       } else {
         let processed = 0
 
         msg.mentions.forEach((user, index, map) => {
-          if (user.id === 132710431201427456) {
+          console.log('userid = ' + user.id)
+          if (parseInt(user.id) === 132710431201427456) {
             console.log('A user has mentioned Shu - ' + msg.author.username)
             resolve(true)
           } else {
             processed++
 
-            if (processed === msg.mentions.length) {
+            if (processed === parseInt(msg.mentions.length)) {
               resolve(false)
             }
           }
