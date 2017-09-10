@@ -9,6 +9,12 @@ const ioTools = new IOTools()
 /** Stores images for the Snow command */
 let kaylaImages = []
 
+let foupaImages = []
+let foupaFilenames = []
+
+let coffeeImages = []
+let coffeeFilenames = []
+
 let sunlessImages = []
 let sunlessFilenames = []
 
@@ -443,6 +449,83 @@ class Reactions {
           resolve({
             file: sunlessImages[random],
             name: sunlessFilenames[random]
+          })
+        }
+      }
+    })
+  }
+
+  pickFoupaImage (imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (foupaImages.length === 0) {
+        ioTools.getImages('foupa', (images, filenames) => {
+          foupaImages = foupaImages.concat(images)
+          foupaFilenames = foupaFilenames.concat(filenames)
+
+          if (imgIndex < foupaImages.length) {
+            resolve({
+              file: foupaImages[imgIndex],
+              name: foupaFilenames[imgIndex]
+            })
+          } else {
+            let random = tools.getRandom(0, foupaImages.length)
+
+            resolve({
+              file: foupaImages[random],
+              name: foupaFilenames[random]
+            })
+          }
+        })
+      } else {
+        if (imgIndex < foupaImages.length) {
+          resolve({
+            file: foupaImages[imgIndex],
+            name: foupaFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, foupaImages.length)
+
+          resolve({
+            file: foupaImages[random],
+            name: foupaFilenames[random]
+          })
+        }
+      }
+    })
+  }
+  pickCoffeeImage (imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (coffeeImages.length === 0) {
+        ioTools.getImages('coffee', (images, filenames) => {
+          coffeeImages = coffeeImages.concat(images)
+          coffeeFilenames = coffeeFilenames.concat(filenames)
+
+          if (imgIndex < coffeeImages.length) {
+            resolve({
+              file: coffeeImages[imgIndex],
+              name: coffeeFilenames[imgIndex]
+            })
+          } else {
+            let random = tools.getRandom(0, coffeeImages.length)
+
+            resolve({
+              file: coffeeImages[random],
+              name: coffeeFilenames[random]
+            })
+          }
+        })
+      } else {
+        if (imgIndex < coffeeImages.length) {
+          resolve({
+            file: coffeeImages[imgIndex],
+            name: coffeeFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, coffeeImages.length)
+
+          resolve({
+            file: coffeeImages[random],
+            name: coffeeFilenames[random]
           })
         }
       }

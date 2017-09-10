@@ -30,8 +30,9 @@ let PowerWashingLinks = []
 // ========================== Bot Declaration =================================================== //
 const bot = new Eris.CommandClient(config.token, {}, {
   description: info.description,
-  owner: info.author,
-  prefix: config.prefix
+  owner: config.owner,
+  prefix: config.prefix,
+  name: 'Tron'
 })
 
 // ========================== Socket.io code for JarJar ========================================= //
@@ -231,34 +232,6 @@ bot.registerCommand('mute', (msg, args) => {
   }
 })
 
-bot.registerCommand('jay', (msg, args) => {
-  ioTools.getImage('/root/tron/images/Jay.png', (img) => {
-    bot.createMessage(msg.channel.id, '', {
-      file: img,
-      name: 'Jay.png'
-    })
-  })
-}, {
-  caseInsensitive: true
-})
-
-bot.registerCommand('key', (msg, args) => {
-  ioTools.getImage('/root/tron/images/Key.jpg', (img) => {
-    bot.createMessage(msg.channel.id, '<@140183864076140544>', {
-      file: img,
-      name: 'Key.jpg'
-    })
-  })
-}, {
-  caseInsensitive: true
-})
-
-bot.registerCommand('ami', (msg, args) => {
-  return '𝓽𝓱𝓮 𝓲𝓶𝓹𝓾𝓻𝓮 𝓱𝓮𝓷𝓽𝓪𝓲 𝓺𝓾𝓮𝓮𝓷'
-}, {
-  caseInsensitive: true
-})
-
 // ========================== Unmute Command ==================================================== //
 bot.registerCommand('unmute', (msg, args) => {
   if (msg.mentions[0] !== undefined && msg.channel.guild !== undefined) {
@@ -284,6 +257,40 @@ bot.registerCommand('unmute', (msg, args) => {
   }
 })
 
+bot.registerCommand('jay', (msg, args) => {
+  ioTools.getImage('/root/tron/images/Jay.png', (img) => {
+    bot.createMessage(msg.channel.id, '', {
+      file: img,
+      name: 'Jay.png'
+    })
+  })
+}, {
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  caseInsensitive: true
+})
+
+bot.registerCommand('key', (msg, args) => {
+  ioTools.getImage('/root/tron/images/Key.jpg', (img) => {
+    bot.createMessage(msg.channel.id, '<@140183864076140544>', {
+      file: img,
+      name: 'Key.jpg'
+    })
+  })
+}, {
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  caseInsensitive: true
+})
+
+bot.registerCommand('ami', (msg, args) => {
+  return '𝓽𝓱𝓮 𝓲𝓶𝓹𝓾𝓻𝓮 𝓱𝓮𝓷𝓽𝓪𝓲 𝓺𝓾𝓮𝓮𝓷'
+}, {
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
+  caseInsensitive: true
+})
+
 // ========================== Cats Command (Requested by Neko) ================================== //
 bot.registerCommand('cat', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
@@ -304,6 +311,8 @@ bot.registerCommand('cat', (msg, args) => {
 
   ioTools.incrementCommandUse('cat')
 }, {
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   argsRequired: false,
   caseInsensitive: true,
   description: 'Displays a random cat image or gif.',
@@ -342,6 +351,9 @@ bot.registerCommand('powerwashingporn', (msg, args) => {
 
     ioTools.incrementCommandUse('powerwashing')
   }
+}, {
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN
 })
 
 bot.registerCommand('reddit', (msg, args) => {
@@ -371,6 +383,8 @@ bot.registerCommand('reddit', (msg, args) => {
     ioTools.incrementCommandUse('reddit')
   })
 }, {
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   aliases: ['r']
 })
 
@@ -394,6 +408,8 @@ bot.registerCommand('rose', (msg, args) => {
 
   ioTools.incrementCommandUse('rose')
 }, {
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   argsRequired: false,
   caseInsensitive: true,
   description: 'Displays a random Eevee gif.',
@@ -409,6 +425,8 @@ bot.registerCommand('meh', (msg, args) => {
     })
   })
 }, {
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   caseInsensitive: true
 })
 
@@ -428,6 +446,10 @@ bot.registerCommand('lewd', (msg, args) => {
       })
     })
   }
+}, {
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
+  caseInsensitive: true
 })
 
 bot.registerCommand('squirtle', (msg, args) => {
@@ -447,6 +469,8 @@ bot.registerCommand('squirtle', (msg, args) => {
     })
   }
 }, {
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   caseInsensitive: true
 })
 
@@ -481,7 +505,9 @@ bot.registerCommand('nobulli', (msg, args) => {
 }, {
   aliases: ['bulli', 'bully', 'nobully'],
   argsRequired: true,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   caseInsensitive: true,
+  cooldown: config.DEFAULT_COOLDOWN,
   description: 'Displays a random nobulli gif.',
   fullDescription: 'Displays a random nobulli gif and the name of the user you mention.',
   guildOnly: true
@@ -508,6 +534,8 @@ bot.registerCommand('dodge', (msg, args) => {
   ioTools.incrementCommandUse('dodge')
 }, {
   aliases: ['dodges'],
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   caseInsensitive: true
 })
 
@@ -523,6 +551,8 @@ bot.registerCommand('dreamy', (msg, args) => {
   ioTools.incrementCommandUse('dreamy')
 }, {
   caseInsensitive: true,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   description: 'Displays random dreamy gif.',
   fullDescription: 'Displays a random dreamy gif.'
 })
@@ -554,6 +584,8 @@ bot.registerCommand('vn', (msg, args) => {
 }, {
   aliases: ['vapenash', 'vape'],
   description: "Vape nation, y'all.",
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   caseInsensitive: true,
   fullDescription: 'Displays a random vape nation gif.'
 })
@@ -571,6 +603,8 @@ bot.registerCommand('cry', (msg, args) => {
 }, {
   aliases: ['crys', 'cried'],
   caseInsensitive: true,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   description: 'Displays random cry gif.',
   fullDescription: 'Displays a random cry gif.'
 })
@@ -602,7 +636,9 @@ bot.registerCommand('love', (msg, args) => {
   })
 }, {
   aliases: ['loves'],
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   caseInsensitive: true,
+  cooldown: config.DEFAULT_COOLDOWN,
   description: 'Displays random love gif.',
   fullDescription: 'Displays a random love gif and the name of the person you mention.'
 })
@@ -686,7 +722,9 @@ bot.registerCommand('slap', (msg, args) => {
 }, {
   aliases: ['slaps'],
   argsRequired: true,
+  cooldown: config.DEFAULT_COOLDOWN,
   caseInsensitive: true,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   description: 'Displays a random slap gif.',
   fullDescription: 'Displays a random slap gif and the name of the user you mention.',
   guildOnly: true,
@@ -745,7 +783,9 @@ bot.registerCommand('kiss', (msg, args) => {
   ioTools.incrementCommandUse('kiss')
 }, {
   aliases: ['kisses'],
+  cooldown: config.DEFAULT_COOLDOWN,
   caseInsensitive: true,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   description: 'Displays a random kiss gif.',
   fullDescription: 'Displays a random kissing reaction gif and the name of the individual mentioned.'
 })
@@ -786,6 +826,8 @@ bot.registerCommand('lick', (msg, args) => {
 }, {
   aliases: ['licks'],
   caseInsensitive: true,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   description: 'Displays a random lick gif.',
   fullDescription: 'Displays a random licking gif and the name of the individual mentioned.'
 })
@@ -823,6 +865,8 @@ bot.registerCommand('pat', (msg, args) => {
   ioTools.incrementCommandUse('pat')
 }, {
   aliases: ['pats', 'tap', 'taps'],
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   caseInsensitive: true
 })
 
@@ -1105,10 +1149,6 @@ divorce.registerSubcommand('deny', (msg, args) => {
   guildOnly: true
 })
 
-/**
- * mysql> SELECT * FROM DIVORCES WHERE (DIVORCER_ID = 219270060936527873 AND DIVORCEE_ID = 265102393308479488) OR (DIVORCER_ID = 265102393308479488 AND DIVORCEE_ID = 219270060936527873) UNION SELECT * FROM DIVORCE_PROPOSALS WHERE (DIVORCER_ID = 219270060936527873 AND DIVORCEE_ID = 265102393308479488) OR (DIVORCER_ID = 265102393308479488 AND DIVORCEE_ID = 219270060936527873);
- */
-
 divorce.registerSubcommand('list', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
@@ -1156,7 +1196,9 @@ let quoteCmd = bot.registerCommand('quote', (msg, args) => {
   })
 }, {
   aliases: ['quotes'],
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   caseInsensitive: true,
+  cooldown: config.DEFAULT_COOLDOWN,
   description: 'Returns a random quote.'
 })
 
@@ -1167,6 +1209,10 @@ quoteCmd.registerSubcommand('cm', (msg, args) => {
 
     bot.createMessage(msg.channel.id, temp[random])
   })
+}, {
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  caseInsensitive: true
 })
 
 // ========================== Kill Command ====================================================== //
@@ -1208,6 +1254,8 @@ bot.registerCommand('kill', (msg, args) => {
   ioTools.incrementCommandUse('kill')
 }, {
   aliases: ['kills'],
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   caseInsensitive: true,
   description: 'Displays a random killing gif.',
   fullDescription: 'Displays a random killing reaction gif and the name of the individual mentioned.'
@@ -1246,7 +1294,9 @@ bot.registerCommand('punch', (msg, args) => {
   ioTools.incrementCommandUse('punch')
 }, {
   aliases: ['punches'],
+  cooldown: config.DEFAULT_COOLDOWN,
   caseInsensitive: true,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   description: 'Displays a random punching gif.',
   fullDescription: 'Displays a random punching reaction gif and the name of the individual mentioned.'
 })
@@ -1264,6 +1314,8 @@ bot.registerCommand('kayla', (msg, args) => {
     return 'This command is unavailable to you.'
   }
 }, {
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   aliases: ['yoana']
 })
 
@@ -1278,6 +1330,8 @@ bot.registerCommand('confused', (msg, args) => {
     ioTools.incrementCommandUse('confused')
   })
 }, {
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   caseInsensitive: true
 })
 
@@ -1292,6 +1346,8 @@ bot.registerCommand('dance', (msg, args) => {
     ioTools.incrementCommandUse('dance')
   })
 }, {
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   caseInsensitive: true
 })
 
@@ -1315,6 +1371,8 @@ bot.registerCommand('pout', (msg, args) => {
 
   ioTools.incrementCommandUse('pout')
 }, {
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   aliases: ['pouts'],
   caseInsensitive: true
 })
@@ -1330,6 +1388,8 @@ bot.registerCommand('wave', (msg, args) => {
     ioTools.incrementCommandUse('wave')
   })
 }, {
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   aliases: ['waves'],
   caseInsensitive: true
 })
@@ -1354,6 +1414,8 @@ bot.registerCommand('spank', (msg, args) => {
     }
   })
 }, {
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   aliases: ['spanks'],
   caseInsensitive: true
 })
@@ -1370,6 +1432,8 @@ bot.registerCommand('killme', (msg, args) => {
 
   ioTools.incrementCommandUse('killme')
 }, {
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   aliases: ['kms'],
   caseInsensitive: true
 })
@@ -1686,22 +1750,30 @@ bot.registerCommand('ratewaifu', (msg, args) => {
       bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (msg.channel.guild !== undefined && msg.mentions.length === 1) {
-        if (msg.mentions[0].id === 219270060936527873) {
+        let mentionId = parseInt(msg.mentions[0].id)
+
+        if (mentionId === 219270060936527873) {
           // Alcha
           bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**-senpai, I'd rate you 11/10. \n\n_notice me_")
-        } else if (msg.mentions[0].id === 158740486352273409) {
+        } else if (mentionId === 317138587491631104) {
+          // Travis
+          bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + '**-dono, I\'d rate you 11/10. :fire:')
+        } else if (mentionId === 158740486352273409) {
           // Micaww
           bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you 0/10 waifu.")
-        } else if (msg.mentions[0].id === 142092834260910080) {
+        } else if (mentionId === 142092834260910080) {
           // Snow/Daddy Yoana
           bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you -69/10 waifu.")
-        } else if (msg.mentions[0].id === 120797492865400832) {
+        } else if (mentionId === 146023112008400896) {
+          // Aaron/Mamba
+          bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + '**, I\'d rate you 0/10 waifu.')
+        } else if (mentionId === 120797492865400832) {
           // Bella
           bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you 12/10 waifu. :fire: :fire:")
-        } else if (msg.mentions[0].id === 139474184089632769) {
+        } else if (mentionId === 139474184089632769) {
           // Utah
           bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you -∞/10 waifu.")
-        } else if (msg.mentions[0].id === 167546638758445056) {
+        } else if (mentionId === 167546638758445056) {
           bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you ∞/10 waifu. The best of the best.")
         } else {
           let random = tools.getRandom(0, 11)
@@ -1717,12 +1789,18 @@ bot.registerCommand('ratewaifu', (msg, args) => {
 }, {
   aliases: ['rate'],
   caseInsensitive: true,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   description: 'Randomly rates a mentioned user 0 - 10.',
   fullDescription: 'Generates a random number to rate the mentioned user on a scale of 0 to 10.'
 })
 
 bot.registerCommand('derp', (msg, args) => {
   return 'Is loved by <@219270060936527873> more than anyone.'
+}, {
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  caseInsensitive: true
 })
 
 bot.registerCommand('potato', (msg, args) => {
@@ -1733,6 +1811,8 @@ bot.registerCommand('potato', (msg, args) => {
     })
   })
 }, {
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   caseInsensitive: true
 })
 
@@ -1760,6 +1840,8 @@ bot.registerCommand('hug', (msg, args) => {
     }
   })
 }, {
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   aliases: ['hugs', 'cuddles'],
   caseInsensitive: true
 })
@@ -1809,6 +1891,8 @@ bot.registerCommand('stats', (msg, args) => {
 }, {
   aliases: ['stat'],
   caseInsensitive: true,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   description: 'Display commands and how much list of use count',
   fullDescription: "Displays a list of available commands and how many times they've been used."
 })
@@ -1839,6 +1923,8 @@ bot.registerCommand('poke', (msg, args) => {
   aliases: ['pokes'],
   caseInsensitive: true,
   description: 'Poke a user.',
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   fullDescription: 'Displays a random poke gif for the mentioned user.'
 })
 
@@ -1869,6 +1955,8 @@ bot.registerCommand('kick', (msg, args) => {
   aliases: ['kicks'],
   caseInsensitive: true,
   description: 'Displays random kick gif',
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   fullDescription: 'Displays a random kick gif and the name of the person you mention.'
 })
 
@@ -1898,6 +1986,8 @@ bot.registerCommand('bite', (msg, args) => {
 }, {
   aliases: ['bites'],
   caseInsensitive: true,
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   description: 'Displays a random bite gif.',
   fullDescription: 'Displays a random bite gif and the name of the user you mention.'
 })
@@ -1956,6 +2046,8 @@ bot.registerCommand('blush', (msg, args) => {
   })
 }, {
   caseInsensitive: true,
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   description: 'Displays a random blush gif.'
 })
 
@@ -1971,7 +2063,9 @@ bot.registerCommand('rawr', (msg, args) => {
 
   ioTools.incrementCommandUse('rawr')
 }, {
+  cooldown: config.DEFAULT_COOLDOWN,
   caseInsensitive: true,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   description: 'Displays a random rawr gif.'
 })
 
@@ -1987,6 +2081,8 @@ bot.registerCommand('rekt', (msg, args) => {
   ioTools.incrementCommandUse('rekt')
 }, {
   caseInsensitive: true,
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   description: 'Displays a random rekt gif.'
 })
 
@@ -2021,6 +2117,8 @@ trumpCmd.registerSubcommand('fake', (msg, args) => {
   ioTools.incrementCommandUse('trump-fake')
 }, {
   aliases: ['cnn'],
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   caseInsensitive: true
 })
 
@@ -2042,6 +2140,8 @@ trumpCmd.registerSubcommand('wrong', (msg, args) => {
 
   ioTools.incrementCommandUse('trump-wrong')
 }, {
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   caseInsensitive: true
 })
 
@@ -2068,6 +2168,8 @@ bot.registerCommand('Avatar', (msg, args) => {
     return 'Please only mention one user at a time.'
   }
 }, {
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   aliases: ['profile'],
   caseInsensitive: true
 })
@@ -2108,6 +2210,8 @@ bot.registerCommand('Ship', (msg, args) => {
   })
 }, {
   caseInsensitive: true,
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   description: 'Ship two users.',
   fullDescription: 'Takes the two mentioned users and mashes their names into a lovely mess.'
 })
@@ -2235,6 +2339,8 @@ bot.registerCommand('batts', (msg, args) => {
   }
 }, {
   aliases: ['battsie'],
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   caseInsensitive: true
 })
 
@@ -2249,6 +2355,8 @@ bot.registerCommand('sunless', (msg, args) => {
     })
   }
 }, {
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   aliases: ['aimer'],
   caseInsensitive: true
 })
@@ -2268,10 +2376,52 @@ bot.registerCommand('alcha', (msg, args) => {
   ioTools.incrementCommandUse('alcha')
 }, {
   aliases: ['morty', 'jerry'],
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   argsRequired: false,
   caseInsensitive: true,
   guildOnly: true
+})
 
+// ========================== Foupa Command ===================================================== //
+bot.registerCommand('foupa', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickFoupaImage(args[0]).then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  } else {
+    reactions.pickFoupaImage().then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  }
+}, {
+  aliases: ['friendlyneighborhoodpedo'],
+  requirements: {
+    userIDs: ['219270060936527873', '159844469464760320']
+  },
+  caseInsensitive: true,
+  permissionMessage: 'This command is unavailable to you.',
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE
+})
+
+// ========================== Coffee Command =================================================== //
+bot.registerCommand('coffee', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickCoffeeImage(args[0]).then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  } else {
+    reactions.pickCoffeeImage().then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  }
+}, {
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
+  argsRequired: false,
+  caseInsensitive: true,
+  guildOnly: true
 })
 
 // ========================== Utah Command ====================================================== //
@@ -2292,6 +2442,8 @@ bot.registerCommand('utah', (msg, args) => {
   }
 }, {
   caseInsensitive: true,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
   description: 'A command to poke fun at a good friend.',
   fullDescription: 'A command used to poke fun at a good friend. -Alcha'
 })
@@ -2591,13 +2743,15 @@ malSearchCmd.registerSubcommand('manga', (msg, args) => {
 // ========================== Alex Command ====================================================== //
 bot.registerCommand('alex', (msg, args) => {
   if (msg.channel.guild !== undefined) {
-    if (msg.channel.guild.id === 254496813552238594) {
+    if (parseInt(msg.channel.guild.id) === 254496813552238594) {
       bot.createMessage(msg.channel.id, '<@!191316261299290112> 🖕')
       ioTools.incrementCommandUse('alex')
     }
   }
 }, {
   caseInsensitive: true,
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   description: 'A command to show my love for a good friend.',
   fullDescription: 'A command used to show my love for a good friend. -Alcha'
 })
@@ -2609,14 +2763,14 @@ bot.on('messageCreate', (msg) => {
     let input = urlencode(msg.cleanContent)
     url += '&input=' + input
 
-    console.log('input = ' + input)
-
     Cleverbot.get(url, (data, response) => {
       bot.createMessage(msg.channel.id, data.clever_output)
     })
   }
 
-  if (!isNaN(msg.author.id) && msg.channel.guild !== undefined && msg.channel.guild.id === config.ownerServer) {
+  if (msg.channel.guild !== undefined &&
+    msg.channel.guild.id === config.ownerServer &&
+    parseInt(msg.author.id) !== 258162570622533635) {
     if (msg.content.includes('@everyone')) {
       let everyoneMention = ':mega: ``[' + tools.getFormattedTimestamp() + ']``' +
         '<@' + msg.author.id + '> has used the ``@everyone`` mention in the <#' + msg.channel.id + '> channel.'
@@ -2627,15 +2781,6 @@ bot.on('messageCreate', (msg) => {
         '<@' + msg.author.id + '> has used the ``@here`` mention in the <#' + msg.channel.id + '> channel.'
 
       bot.createMessage(config.notificationChannel, hereMention)
-    } else if (tools.messageIs(msg, 'hello')) {
-      bot.createMessage(msg.channel.id, 'New fone who dis?')
-    } else if (tools.messageIs(msg, 'bye')) {
-      ioTools.getImage('bye.png', (img) => {
-        bot.createMessage(msg.channel.id, '', {
-          file: img,
-          name: 'Bye.png'
-        })
-      })
     } else if (tools.messageIs(msg, 'god damn')) {
       bot.createMessage(msg.channel.id, 'https://i.imgur.com/ULUZMtV.gifv')
     } else if (tools.messageIs(msg, 'o/') && msg.author.id !== 258162570622533635) {
