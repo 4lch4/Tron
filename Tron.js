@@ -1934,7 +1934,17 @@ bot.registerCommand('kick', (msg, args) => {
     if (shuFlag) {
       bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
-      if (msg.author.id !== config.mika && msg.mentions[0] !== undefined) {
+      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
+        reactions.pickKickImage((img) => {
+          let user = msg.mentions[0].username
+          let message = '**' + user + "**, you've been kicked by **" + msg.author.username + '**.'
+
+          bot.createMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Kick.gif'
+          })
+        }, args[0])
+      } else if (msg.mentions.length > 0) {
         reactions.pickKickImage((img) => {
           let user = msg.mentions[0].username
           let message = '**' + user + "**, you've been kicked by **" + msg.author.username + '**.'

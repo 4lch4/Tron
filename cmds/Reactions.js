@@ -100,6 +100,7 @@ let pokeImages = []
 
 /** Stores images for the Kick command */
 let kickImages = []
+let kickFilenames = []
 
 /** Stores images for the Love command */
 let loveImages = []
@@ -221,6 +222,31 @@ class Reactions {
         }
       }
     })
+  }
+
+  pickKickImage (callback, imgIndex) {
+    if (kickImages.length === 0) {
+      ioTools.getImages('kick', (images, filenames) => {
+        kickImages = kickImages.concat(images)
+        kickFilenames = filenames
+
+        if (imgIndex < kickImages.length) {
+          callback(kickImages[imgIndex], kickFilenames[imgIndex])
+        } else {
+          let random = tools.getRandom(0, kickImages.length)
+
+          callback(kickImages[random], kickFilenames[random])
+        }
+      })
+    } else {
+      if (imgIndex < kickImages.length) {
+        callback(kickImages[imgIndex], kickFilenames[imgIndex])
+      } else {
+        let random = tools.getRandom(0, kickImages.length)
+
+        callback(kickImages[random], kickFilenames[random])
+      }
+    }
   }
 
   pickRoseImage (callback, imgIndex) {
@@ -770,21 +796,6 @@ class Reactions {
       let random = tools.getRandom(0, spankImages.length)
 
       callback(spankImages[random])
-    }
-  }
-
-  pickKickImage (callback) {
-    if (kickImages.length === 0) {
-      ioTools.getImages('kick', (images) => {
-        let random = tools.getRandom(0, images.length)
-        kickImages = kickImages.concat(images)
-
-        callback(kickImages[random])
-      })
-    } else {
-      let random = tools.getRandom(0, kickImages.length)
-
-      callback(kickImages[random])
     }
   }
 
