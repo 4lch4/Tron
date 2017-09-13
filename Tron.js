@@ -81,16 +81,6 @@ function setupRssReaders () {
 }
 */
 
-// ========================== GiveawayBot Code Begins =========================================== //
-const GiveawayBot = require('./util/GiveawayBot.js')
-const giveawayBot = new GiveawayBot().getGiveawayBot()
-
-giveawayBot.login(config.token).then(() => {
-  console.log('Logged in')
-}).catch((e) => {
-  throw e
-})
-
 // ========================== Admin Commands ==================================================== //
 let adminCmd = bot.registerCommand('admin', (msg, args) => {
 
