@@ -21,7 +21,6 @@ const Raven = require('raven')
 Raven.config('https://48c87e30f01f45a7a112e0b033715f3d:d9b9df5b82914180b48856a41140df34@sentry.io/181885').install()
 
 const NodeRestClient = require('node-rest-client').Client
-const Cleverbot = new NodeRestClient()
 
 const urlencode = require('urlencode')
 
@@ -80,16 +79,6 @@ function setupRssReaders () {
   })
 }
 */
-
-// ========================== GiveawayBot Code Begins =========================================== //
-const GiveawayBot = require('./util/GiveawayBot.js')
-const giveawayBot = new GiveawayBot().getGiveawayBot()
-
-giveawayBot.login(config.token).then(() => {
-  console.log('Logged in')
-}).catch((e) => {
-  throw e
-})
 
 // ========================== Admin Commands ==================================================== //
 let adminCmd = bot.registerCommand('admin', (msg, args) => {
@@ -258,7 +247,7 @@ bot.registerCommand('unmute', (msg, args) => {
 })
 
 bot.registerCommand('jay', (msg, args) => {
-  ioTools.getImage('/root/tron/images/Jay.png', (img) => {
+  ioTools.getImage('/var/tron/images/Jay.png', (img) => {
     bot.createMessage(msg.channel.id, '', {
       file: img,
       name: 'Jay.png'
@@ -271,7 +260,7 @@ bot.registerCommand('jay', (msg, args) => {
 })
 
 bot.registerCommand('key', (msg, args) => {
-  ioTools.getImage('/root/tron/images/Key.jpg', (img) => {
+  ioTools.getImage('/var/tron/images/Key.jpg', (img) => {
     bot.createMessage(msg.channel.id, '<@140183864076140544>', {
       file: img,
       name: 'Key.jpg'
@@ -418,7 +407,7 @@ bot.registerCommand('rose', (msg, args) => {
 })
 
 bot.registerCommand('meh', (msg, args) => {
-  ioTools.getImage('/root/tron/images/meh.gif', (img) => {
+  ioTools.getImage('/var/tron/images/meh.gif', (img) => {
     bot.createMessage(msg.channel.id, '', {
       file: img,
       name: 'meh.gif'
@@ -959,9 +948,9 @@ marry.registerSubcommand('list', (msg, args) => {
         message = 'You are currently married to:\n```\n'
         for (let x = 0; x < marriages.length; x++) {
           if (marriages[x].SPOUSE_A_ID !== msg.author.id) {
-            message += '- **' + tools.getUsernameFromId(marriages[x].SPOUSE_A_ID, bot) + '** since ' + marriages[x].MARRIAGE_DATE + '\n'
+            message += '- ' + tools.getUsernameFromId(marriages[x].SPOUSE_A_ID, bot) + ' since ' + marriages[x].MARRIAGE_DATE + '\n'
           } else if (marriages[x].SPOUSE_B_ID !== msg.author.id) {
-            message += '- **' + tools.getUsernameFromId(marriages[x].SPOUSE_B_ID, bot) + '** since ' + marriages[x].MARRIAGE_DATE + '\n'
+            message += '- ' + tools.getUsernameFromId(marriages[x].SPOUSE_B_ID, bot) + ' since ' + marriages[x].MARRIAGE_DATE + '\n'
           }
         }
         message += '```'
@@ -1165,12 +1154,12 @@ divorce.registerSubcommand('list', (msg, args) => {
             if (divorces[x].DIVORCER_ID !== msg.author.id) {
               let username = tools.getUsernameFromId(divorces[x].DIVORCER_ID)
               if (username.length > 0) {
-                message += '- **' + username + '** since ' + divorces[x].DIVORCE_DATE + '\n'
+                message += '- ' + username + ' since ' + divorces[x].DIVORCE_DATE + '\n'
               }
             } else if (divorces[x].DIVORCEE_ID !== msg.author.id) {
               let username = tools.getUsernameFromId(divorces[x].DIVORCEE_ID)
               if (username.length > 0) {
-                message += '- **' + username + '** since ' + divorces[x].DIVORCE_DATE + '\n'
+                message += '- ' + username + ' since ' + divorces[x].DIVORCE_DATE + '\n'
               }
             }
           }
@@ -1804,7 +1793,7 @@ bot.registerCommand('derp', (msg, args) => {
 })
 
 bot.registerCommand('potato', (msg, args) => {
-  ioTools.getImage('/root/tron/images/potato.png', (img) => {
+  ioTools.getImage('/var/tron/images/potato.png', (img) => {
     bot.createMessage(msg.channel.id, '', {
       file: img,
       name: 'Potato.png'
@@ -1934,7 +1923,17 @@ bot.registerCommand('kick', (msg, args) => {
     if (shuFlag) {
       bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
-      if (msg.author.id !== config.mika && msg.mentions[0] !== undefined) {
+      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
+        reactions.pickKickImage((img) => {
+          let user = msg.mentions[0].username
+          let message = '**' + user + "**, you've been kicked by **" + msg.author.username + '**.'
+
+          bot.createMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Kick.gif'
+          })
+        }, args[0])
+      } else if (msg.mentions.length > 0) {
         reactions.pickKickImage((img) => {
           let user = msg.mentions[0].username
           let message = '**' + user + "**, you've been kicked by **" + msg.author.username + '**.'
@@ -2053,13 +2052,15 @@ bot.registerCommand('blush', (msg, args) => {
 
 // ========================== Rawr Command ====================================================== //
 bot.registerCommand('rawr', (msg, args) => {
-  bot.createMessage(msg.channel.id, {
-    embed: {
-      image: {
-        url: 'https://cdn.discordapp.com/attachments/254496813552238594/278798600505393152/raw.gif'
-      }
-    }
-  })
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickRawrImage(args[0]).then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  } else {
+    reactions.pickRawrImage().then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  }
 
   ioTools.incrementCommandUse('rawr')
 }, {
@@ -2153,7 +2154,7 @@ bot.registerCommand('Avatar', (msg, args) => {
 
     ioTools.downloadFiles([{
       url: url,
-      dest: '/root/tron/images/avatar/' + origFilename
+      dest: '/var/tron/images/avatar/' + origFilename
     }], (filenames) => {
       filenames.forEach((filename, key, array) => {
         ioTools.getImage(filename, (image) => {
@@ -2758,16 +2759,6 @@ bot.registerCommand('alex', (msg, args) => {
 
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on('messageCreate', (msg) => {
-  if (msg.mentions.length === 1 && msg.mentions[0].id === 258162570622533635) {
-    let url = 'https://www.cleverbot.com/getreply?key=' + config.cleverbot
-    let input = urlencode(msg.cleanContent)
-    url += '&input=' + input
-
-    Cleverbot.get(url, (data, response) => {
-      bot.createMessage(msg.channel.id, data.clever_output)
-    })
-  }
-
   if (msg.channel.guild !== undefined &&
     msg.channel.guild.id === config.ownerServer &&
     parseInt(msg.author.id) !== 258162570622533635) {

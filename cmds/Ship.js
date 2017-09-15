@@ -22,7 +22,7 @@ class Ship {
     this.getPngUrls(urls, (pngUrls) => {
       this.processUrls(pngUrls, (options) => {
         this.downloadImages(options, (filenames) => {
-          filenames.splice(1, 0, '/root/tron/images/ship/heart.png')
+          filenames.splice(1, 0, '/var/tron/images/ship/heart.png')
           let imagesProcessed = 0
           let images = []
 
@@ -87,7 +87,7 @@ class Ship {
 
       options.push({
         url: url,
-        dest: '/root/tron/images/ship/' + filename
+        dest: '/var/tron/images/ship/' + filename
       })
     }
 
