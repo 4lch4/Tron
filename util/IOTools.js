@@ -82,7 +82,7 @@ class IOTools {
 
       options.push({
         url: url,
-        dest: '/root/tron/images/' + filename
+        dest: '/var/tron/images/' + filename
       })
     }
 
@@ -121,8 +121,8 @@ class IOTools {
   }
 
   getImage (path, onComplete) {
-    if (!path.startsWith('/root/tron/')) {
-      path = '/root/tron/images/' + path
+    if (!path.startsWith('/var/tron/')) {
+      path = '/var/tron/images/' + path
     }
 
     fs.readFile(path, (err, content) => {
@@ -135,7 +135,7 @@ class IOTools {
   }
 
   getImages (dirnameIn, onComplete) {
-    let dirname = '/root/tron/images/' + dirnameIn + '/'
+    let dirname = '/var/tron/images/' + dirnameIn + '/'
     let images = []
     let filenames = []
 
@@ -152,7 +152,7 @@ class IOTools {
 
   storeComic (comic, callback) {
     let date = tools.formatTimeString(comic.date)
-    let filename = '/root/tron/feeds/' +
+    let filename = '/var/tron/feeds/' +
       comic.feedName + '/' +
       date + '.json'
 

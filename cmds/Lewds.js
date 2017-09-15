@@ -24,7 +24,7 @@ class Lewds {
 
   /**
    * Standard function to get the content of a Butt image for +newd command. If this is the first
-   * time the function is called, /root/tron/ButtImages.txt is parsed and all the links available
+   * time the function is called, /var/tron/ButtImages.txt is parsed and all the links available
    * there are added to an array that's split by the \n character.
    *
    * A random number is generated between 0 and the amount of links available and one is picked.
@@ -35,7 +35,7 @@ class Lewds {
    */
   getButt (callback) {
     if (buttLinks.length === undefined) {
-      ioTools.readFile('/root/tron/ButtImages.txt', (file) => {
+      ioTools.readFile('/var/tron/ButtImages.txt', (file) => {
         buttLinks = file.split('\n')
 
         let random = tools.getRandom(0, buttLinks.length)
@@ -65,7 +65,7 @@ class Lewds {
 
     download.image({
       url: buttLink,
-      dest: '/root/tron/images/butts/' + shortFilename
+      dest: '/var/tron/images/butts/' + shortFilename
     }).then(({
       filename,
       image
