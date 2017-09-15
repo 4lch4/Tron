@@ -248,7 +248,7 @@ bot.registerCommand('unmute', (msg, args) => {
 })
 
 bot.registerCommand('jay', (msg, args) => {
-  ioTools.getImage('/root/tron/images/Jay.png', (img) => {
+  ioTools.getImage('/var/tron/images/Jay.png', (img) => {
     bot.createMessage(msg.channel.id, '', {
       file: img,
       name: 'Jay.png'
@@ -261,7 +261,7 @@ bot.registerCommand('jay', (msg, args) => {
 })
 
 bot.registerCommand('key', (msg, args) => {
-  ioTools.getImage('/root/tron/images/Key.jpg', (img) => {
+  ioTools.getImage('/var/tron/images/Key.jpg', (img) => {
     bot.createMessage(msg.channel.id, '<@140183864076140544>', {
       file: img,
       name: 'Key.jpg'
@@ -408,7 +408,7 @@ bot.registerCommand('rose', (msg, args) => {
 })
 
 bot.registerCommand('meh', (msg, args) => {
-  ioTools.getImage('/root/tron/images/meh.gif', (img) => {
+  ioTools.getImage('/var/tron/images/meh.gif', (img) => {
     bot.createMessage(msg.channel.id, '', {
       file: img,
       name: 'meh.gif'
@@ -1794,7 +1794,7 @@ bot.registerCommand('derp', (msg, args) => {
 })
 
 bot.registerCommand('potato', (msg, args) => {
-  ioTools.getImage('/root/tron/images/potato.png', (img) => {
+  ioTools.getImage('/var/tron/images/potato.png', (img) => {
     bot.createMessage(msg.channel.id, '', {
       file: img,
       name: 'Potato.png'
@@ -2053,13 +2053,15 @@ bot.registerCommand('blush', (msg, args) => {
 
 // ========================== Rawr Command ====================================================== //
 bot.registerCommand('rawr', (msg, args) => {
-  bot.createMessage(msg.channel.id, {
-    embed: {
-      image: {
-        url: 'https://cdn.discordapp.com/attachments/254496813552238594/278798600505393152/raw.gif'
-      }
-    }
-  })
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickRawrImage(args[0]).then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  } else {
+    reactions.pickRawrImage().then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  }
 
   ioTools.incrementCommandUse('rawr')
 }, {
@@ -2153,7 +2155,7 @@ bot.registerCommand('Avatar', (msg, args) => {
 
     ioTools.downloadFiles([{
       url: url,
-      dest: '/root/tron/images/avatar/' + origFilename
+      dest: '/var/tron/images/avatar/' + origFilename
     }], (filenames) => {
       filenames.forEach((filename, key, array) => {
         ioTools.getImage(filename, (image) => {

@@ -9,6 +9,9 @@ const ioTools = new IOTools()
 /** Stores images for the Snow command */
 let kaylaImages = []
 
+let rawrImages = []
+let rawrFilenames = []
+
 let foupaImages = []
 let foupaFilenames = []
 
@@ -591,6 +594,45 @@ class Reactions {
           resolve({
             file: battsieImages[random],
             name: battsieFilenames[random]
+          })
+        }
+      }
+    })
+  }
+
+  pickRawrImage (imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (rawrImages.length === 0) {
+        ioTools.getImages('rawr', (images, filenames) => {
+          rawrImages = rawrImages.concat(images)
+          rawrFilenames = rawrFilenames.concat(filenames)
+
+          if (imgIndex < rawrImages.length) {
+            resolve({
+              file: rawrImages[imgIndex],
+              name: rawrFilenames[imgIndex]
+            })
+          } else {
+            let random = tools.getRandom(0, rawrImages.length)
+
+            resolve({
+              file: rawrImages[random],
+              name: rawrFilenames[random]
+            })
+          }
+        })
+      } else {
+        if (imgIndex < rawrImages.length) {
+          resolve({
+            file: rawrImages[imgIndex],
+            name: rawrFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, rawrImages.length)
+
+          resolve({
+            file: rawrImages[random],
+            name: rawrFilenames[random]
           })
         }
       }
