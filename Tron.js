@@ -21,7 +21,6 @@ const Raven = require('raven')
 Raven.config('https://48c87e30f01f45a7a112e0b033715f3d:d9b9df5b82914180b48856a41140df34@sentry.io/181885').install()
 
 const NodeRestClient = require('node-rest-client').Client
-const Cleverbot = new NodeRestClient()
 
 const urlencode = require('urlencode')
 
@@ -2760,16 +2759,6 @@ bot.registerCommand('alex', (msg, args) => {
 
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on('messageCreate', (msg) => {
-  if (msg.mentions.length === 1 && msg.mentions[0].id === 258162570622533635) {
-    let url = 'https://www.cleverbot.com/getreply?key=' + config.cleverbot
-    let input = urlencode(msg.cleanContent)
-    url += '&input=' + input
-
-    Cleverbot.get(url, (data, response) => {
-      bot.createMessage(msg.channel.id, data.clever_output)
-    })
-  }
-
   if (msg.channel.guild !== undefined &&
     msg.channel.guild.id === config.ownerServer &&
     parseInt(msg.author.id) !== 258162570622533635) {
