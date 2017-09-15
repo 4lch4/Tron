@@ -949,9 +949,9 @@ marry.registerSubcommand('list', (msg, args) => {
         message = 'You are currently married to:\n```\n'
         for (let x = 0; x < marriages.length; x++) {
           if (marriages[x].SPOUSE_A_ID !== msg.author.id) {
-            message += '- **' + tools.getUsernameFromId(marriages[x].SPOUSE_A_ID, bot) + '** since ' + marriages[x].MARRIAGE_DATE + '\n'
+            message += '- ' + tools.getUsernameFromId(marriages[x].SPOUSE_A_ID, bot) + ' since ' + marriages[x].MARRIAGE_DATE + '\n'
           } else if (marriages[x].SPOUSE_B_ID !== msg.author.id) {
-            message += '- **' + tools.getUsernameFromId(marriages[x].SPOUSE_B_ID, bot) + '** since ' + marriages[x].MARRIAGE_DATE + '\n'
+            message += '- ' + tools.getUsernameFromId(marriages[x].SPOUSE_B_ID, bot) + ' since ' + marriages[x].MARRIAGE_DATE + '\n'
           }
         }
         message += '```'
@@ -1155,12 +1155,12 @@ divorce.registerSubcommand('list', (msg, args) => {
             if (divorces[x].DIVORCER_ID !== msg.author.id) {
               let username = tools.getUsernameFromId(divorces[x].DIVORCER_ID)
               if (username.length > 0) {
-                message += '- **' + username + '** since ' + divorces[x].DIVORCE_DATE + '\n'
+                message += '- ' + username + ' since ' + divorces[x].DIVORCE_DATE + '\n'
               }
             } else if (divorces[x].DIVORCEE_ID !== msg.author.id) {
               let username = tools.getUsernameFromId(divorces[x].DIVORCEE_ID)
               if (username.length > 0) {
-                message += '- **' + username + '** since ' + divorces[x].DIVORCE_DATE + '\n'
+                message += '- ' + username + ' since ' + divorces[x].DIVORCE_DATE + '\n'
               }
             }
           }
