@@ -268,12 +268,15 @@ bot.registerCommand('jay', (msg, args) => {
 })
 
 bot.registerCommand('key', (msg, args) => {
-  ioTools.getImage('/var/tron/images/Key.jpg', (img) => {
-    bot.createMessage(msg.channel.id, '<@140183864076140544>', {
-      file: img,
-      name: 'Key.jpg'
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickKeyImage(args[0]).then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
     })
-  })
+  } else {
+    reactions.pickKeyImage().then((data) => {
+      bot.createMessage(msg.channel.id, '', data)
+    })
+  }
 }, {
   cooldown: config.DEFAULT_COOLDOWN,
   cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
