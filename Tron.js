@@ -2788,7 +2788,7 @@ bot.on('messageCreate', (msg) => {
     parseInt(msg.author.id) !== 258162570622533635) {
     if (msg.content.includes('@everyone')) {
       let everyoneMention = ':mega: ``[' + tools.getFormattedTimestamp() + ']``' +
-        '<@' + msg.author.id + '> has used the ``@everyone`` mention in the <#' + msg.channel.id + '> channel.'
+        '' + msg.author.username + ' has used the ``@everyone`` mention in the <#' + msg.channel.id + '> channel.'
 
       bot.createMessage(config.notificationChannel, everyoneMention)
     } else if (msg.content.includes('@here')) {
