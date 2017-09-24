@@ -9,6 +9,9 @@ const ioTools = new IOTools()
 /** Stores images for the Snow command */
 let kaylaImages = []
 
+let winkImages = []
+let winkFilenames = []
+
 let keyImages = []
 let keyFilenames = []
 
@@ -603,6 +606,44 @@ class Reactions {
     })
   }
 
+  pickWinkImage (imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (winkImages.length === 0) {
+        ioTools.getImages('wink', (images, filenames) => {
+          winkImages = winkImages.concat(images)
+          winkFilenames = winkFilenames.concat(filenames)
+
+          if (imgIndex < winkImages.length) {
+            resolve({
+              file: winkImages[imgIndex],
+              name: winkFilenames[imgIndex]
+            })
+          } else {
+            let random = tools.getRandom(0, winkImages.length)
+
+            resolve({
+              file: winkImages[random],
+              name: winkFilenames[random]
+            })
+          }
+        })
+      } else {
+        if (imgIndex < winkImages.length) {
+          resolve({
+            file: winkImages[imgIndex],
+            name: winkFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, winkImages.length)
+
+          resolve({
+            file: winkImages[random],
+            name: winkFilenames[random]
+          })
+        }
+      }
+    })
+  }
 
   pickKeyImage (imgIndex) {
     return new Promise((resolve, reject) => {

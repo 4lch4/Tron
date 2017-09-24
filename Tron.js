@@ -2373,6 +2373,19 @@ bot.registerCommand('sunless', (msg, args) => {
   caseInsensitive: true
 })
 
+// ========================== Wink Command (Suggested by Thriller) ============================== //
+bot.registerCommand('wink', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickWinkImage(args[0]).then(data => {
+      bot.createMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickWinkImage().then(data => {
+      bot.createMessage(msg.channel.id, undefined, data)
+    })
+  }
+})
+
 // ========================== Alcha Command (Requested by Utah) ================================= //
 bot.registerCommand('alcha', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
