@@ -1188,11 +1188,13 @@ divorce.registerSubcommand('list', (msg, args) => {
 
 // ========================== Quote Command ===================================================== //
 let quoteCmd = bot.registerCommand('quote', (msg, args) => {
-  ioTools.readFile('Quotes.txt', (content) => {
-    let temp = content.split('\n')
-    let random = tools.getRandom(0, temp.length)
+  ioTools.readFile('/var/tron/Quotes.txt', (content) => {
+    if (content !== undefined) {
+      let temp = content.split('\n')
+      let random = tools.getRandom(0, temp.length)
 
-    bot.createMessage(msg.channel.id, temp[random])
+      bot.createMessage(msg.channel.id, temp[random])
+    }
   })
 }, {
   aliases: ['quotes'],
