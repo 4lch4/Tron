@@ -246,6 +246,14 @@ bot.registerCommand('unmute', (msg, args) => {
   }
 })
 
+
+bot.registerCommand('zorika', (msg, args) => {
+  return 'God Damn It Jay!'
+}, {
+  aliases: ['zori'],
+  caseInsensitive: true
+})
+
 bot.registerCommand('jay', (msg, args) => {
   ioTools.getImage('/var/tron/images/Jay.png', (img) => {
     bot.createMessage(msg.channel.id, '', {
