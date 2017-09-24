@@ -283,7 +283,7 @@ class Tools {
         }
       })
     } else {
-      str = args[0].toLowerCase()
+      if (args[0] !== undefined) str = args[0].toLowerCase()
     }
 
     return str
