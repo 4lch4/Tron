@@ -117,18 +117,23 @@ class Marriage {
    */
   addMarriage (spouseA, spouseB, callback) {
     let currDate = tools.getFormattedTimestamp()
+    let spouseAId = 0
+    let spouseBId = 0
+    if (spouseA.id !== undefined) spouseAId = spouseA.id
+    if (spouseB.id !== undefined) spouseBId = spouseB.id
+
     let sqlQuery = 'INSERT INTO MARRIAGES (SPOUSE_A_ID, SPOUSE_B_ID, MARRIAGE_DATE) VALUES (' +
-      spouseA.id + ', ' + spouseB.id + ", '" + currDate + "');"
+      spouseAId + ', ' + spouseBId + ", '" + currDate + "');"
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback instanceof function () {}) {
         callback(results)
       }
     })
 
-    this.getDivorce(spouseA.id, spouseB.id, (divorce) => {
+    this.getDivorce(spouseAId, spouseBId, (divorce) => {
       if (divorce.length > 0) {
-        this.removeDivorce(spouseA.id, spouseB.id)
+        this.removeDivorce(spouseAId, spouseBId)
       }
     })
   }
@@ -248,8 +253,13 @@ class Marriage {
 
   addDivorce (divorcer, divorcee, callback) {
     let currDate = tools.getFormattedTimestamp()
+    let divorcerId = 0
+    let divorceeId = 0
+    if (divorcer.id !== undefined) divorcerId = divorcer.id
+    if (divorcee.id !== undefined) divorceeId = divorcee.id
+
     let sqlQuery = 'INSERT INTO DIVORCES (DIVORCER_ID, DIVORCEE_ID, DIVORCE_DATE) VALUES ' +
-      '(' + divorcer.id + ', ' + divorcee.id + ', "' + currDate + '");'
+      '(' + divorcerId + ', ' + divorceeId + ', "' + currDate + '");'
 
     ioTools.executeSql(sqlQuery, (results) => {
       if (callback !== null) {
@@ -315,8 +325,13 @@ class Marriage {
   }
 
   addDivorceProposal (divorcer, divorcee, callback) {
+    let divorcerId = 0
+    let divorceeId = 0
+    if (divorcer.id !== undefined) divorcerId = divorcer.id
+    if (divorcee.id !== undefined) divorceeId = divorcee.id
+
     let sqlQuery = 'INSERT INTO DIVORCE_PROPOSALS (DIVORCER_ID, DIVORCEE_ID) VALUES (' +
-      divorcer.id + ', ' + divorcee.id + ');'
+    divorcerId + ', ' + divorceeId + ');'
 
     ioTools.executeSql(sqlQuery, (results) => {
       if (callback !== null) {
