@@ -2358,23 +2358,6 @@ bot.registerCommand('batts', (msg, args) => {
   caseInsensitive: true
 })
 
-bot.registerCommand('sunless', (msg, args) => {
-  if (!isNaN(parseInt(args[0]))) {
-    reactions.pickSunlessImage(args[0]).then((data) => {
-      bot.createMessage(msg.channel.id, '', data)
-    })
-  } else {
-    reactions.pickSunlessImage().then((data) => {
-      bot.createMessage(msg.channel.id, '', data)
-    })
-  }
-}, {
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  aliases: ['aimer'],
-  caseInsensitive: true
-})
-
 // ========================== Wink Command (Suggested by Thriller) ============================== //
 bot.registerCommand('wink', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
