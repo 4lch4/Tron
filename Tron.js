@@ -262,7 +262,7 @@ bot.registerCommand('zorika', (msg, args) => {
 
 bot.registerCommand('jay', (msg, args) => {
   ioTools.getImage('/var/tron/images/Jay.png', (img) => {
-    sendMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, undefined, {
       file: img,
       name: 'Jay.png'
     })
@@ -276,11 +276,11 @@ bot.registerCommand('jay', (msg, args) => {
 bot.registerCommand('key', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickKeyImage(args[0]).then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   } else {
     reactions.pickKeyImage().then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   }
 }, {
@@ -301,14 +301,14 @@ bot.registerCommand('ami', (msg, args) => {
 bot.registerCommand('cat', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickCatImage((img, filename) => {
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: img,
         name: filename
       })
     }, args[0])
   } else {
     reactions.pickCatImage((img, filename) => {
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: img,
         name: filename
       })
@@ -398,14 +398,14 @@ bot.registerCommand('reddit', (msg, args) => {
 bot.registerCommand('rose', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickRoseImage((img, filename) => {
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: img,
         name: filename
       })
     }, args[0])
   } else {
     reactions.pickRoseImage((img, filename) => {
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: img,
         name: filename
       })
@@ -425,7 +425,7 @@ bot.registerCommand('rose', (msg, args) => {
 
 bot.registerCommand('meh', (msg, args) => {
   ioTools.getImage('/var/tron/images/meh.gif', (img) => {
-    sendMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, undefined, {
       file: img,
       name: 'meh.gif'
     })
@@ -439,14 +439,14 @@ bot.registerCommand('meh', (msg, args) => {
 bot.registerCommand('lewd', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickLewdImage(args[0]).then(imgObject => {
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: imgObject.image,
         name: imgObject.filename
       })
     })
   } else {
     reactions.pickLewdImage().then(imgObject => {
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: imgObject.image,
         name: imgObject.filename
       })
@@ -461,14 +461,14 @@ bot.registerCommand('lewd', (msg, args) => {
 bot.registerCommand('squirtle', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickSquirtleImage(args[0]).then(imgObject => {
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: imgObject.image,
         name: imgObject.filename
       })
     })
   } else {
     reactions.pickSquirtleImage().then(imgObject => {
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: imgObject.image,
         name: imgObject.filename
       })
@@ -523,14 +523,14 @@ bot.registerCommand('nobulli', (msg, args) => {
 bot.registerCommand('dodge', (msg, args) => {
   if (args.length === 1 && !isNaN(parseInt(args[0]))) {
     reactions.pickDodgeImage(args[0]).then((img) => {
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: img,
         name: 'Dodge.gif'
       })
     })
   } else {
     reactions.pickDodgeImage().then((img) => {
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: img,
         name: 'Dodge.gif'
       })
@@ -548,7 +548,7 @@ bot.registerCommand('dodge', (msg, args) => {
 // ========================== Dreamy Command (Requested by Dreamy) ============================== //
 bot.registerCommand('dreamy', (msg, args) => {
   reactions.pickDreamyImage((dreamyImage) => {
-    sendMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, undefined, {
       file: dreamyImage,
       name: 'Dreamy.gif'
     })
@@ -580,7 +580,7 @@ bot.registerCommand('change', (msg, args) => {
 // ========================== Vape Nation Command (Requested by Lagucci Mane) =================== //
 bot.registerCommand('vn', (msg, args) => {
   reactions.pickVNImage((img) => {
-    sendMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, undefined, {
       file: img,
       name: 'VapeNation.gif'
     })
@@ -599,7 +599,7 @@ bot.registerCommand('vn', (msg, args) => {
 // ========================== Cry Command ======================================================= //
 bot.registerCommand('cry', (msg, args) => {
   reactions.pickCryImage((cryImage) => {
-    sendMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, undefined, {
       file: cryImage,
       name: 'Cry.gif'
     })
@@ -1313,7 +1313,7 @@ bot.registerCommand('punch', (msg, args) => {
 bot.registerCommand('kayla', (msg, args) => {
   if (parseInt(msg.author.id) === 142092834260910080 || parseInt(msg.author.id) === 217870035090276374 || msg.author.id === config.owner) {
     reactions.pickKaylaImage().then(img => {
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: img,
         name: 'Kayla.gif'
       })
@@ -1330,7 +1330,7 @@ bot.registerCommand('kayla', (msg, args) => {
 // ========================== Confused Command ================================================== //
 bot.registerCommand('confused', (msg, args) => {
   reactions.pickConfusedImage((img) => {
-    sendMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, undefined, {
       file: img,
       name: 'Confused.gif'
     })
@@ -1346,7 +1346,7 @@ bot.registerCommand('confused', (msg, args) => {
 // ========================== Dance Command ===================================================== //
 bot.registerCommand('dance', (msg, args) => {
   reactions.pickDanceImage((img) => {
-    sendMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, undefined, {
       file: img,
       name: 'Dance.gif'
     })
@@ -1363,14 +1363,14 @@ bot.registerCommand('dance', (msg, args) => {
 bot.registerCommand('pout', (msg, args) => {
   if (args.length === 1 && !isNaN(parseInt(args[0]))) {
     reactions.pickPoutImage(args[0]).then((img) => {
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: img,
         name: 'Pout.gif'
       })
     })
   } else {
     reactions.pickPoutImage().then((img) => {
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: img,
         name: 'Pout.gif'
       })
@@ -1388,7 +1388,7 @@ bot.registerCommand('pout', (msg, args) => {
 // ========================== Wave Command ====================================================== //
 bot.registerCommand('wave', (msg, args) => {
   reactions.pickWaveImage((img) => {
-    sendMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, undefined, {
       file: img,
       name: 'Wave.gif'
     })
@@ -1432,7 +1432,7 @@ bot.registerCommand('spank', (msg, args) => {
 bot.registerCommand('killme', (msg, args) => {
   reactions.pickKillMeImage((killMeImage) => {
     // Mika's requested killme command
-    sendMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, undefined, {
       file: killMeImage,
       name: 'KillMe.gif'
     })
@@ -1819,7 +1819,7 @@ bot.registerCommand('derp', (msg, args) => {
 
 bot.registerCommand('potato', (msg, args) => {
   ioTools.getImage('/var/tron/images/potato.png', (img) => {
-    sendMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, undefined, {
       file: img,
       name: 'Potato.png'
     })
@@ -2061,7 +2061,7 @@ bot.registerCommand('git', (msg, args) => {
 // ========================== Blush Command ===================================================== //
 bot.registerCommand('blush', (msg, args) => {
   reactions.pickBlushImage((blushImage) => {
-    sendMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, undefined, {
       file: blushImage,
       name: 'Blush.gif'
     })
@@ -2079,11 +2079,11 @@ bot.registerCommand('blush', (msg, args) => {
 bot.registerCommand('rawr', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickRawrImage(args[0]).then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   } else {
     reactions.pickRawrImage().then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   }
 
@@ -2098,7 +2098,7 @@ bot.registerCommand('rawr', (msg, args) => {
 // ========================== Rekt Command ====================================================== //
 bot.registerCommand('rekt', (msg, args) => {
   reactions.pickRektImage((rektImage) => {
-    sendMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, undefined, {
       file: rektImage,
       name: 'Rekt.gif'
     })
@@ -2128,13 +2128,13 @@ trumpCmd.registerSubcommand('fake', (msg, args) => {
   if (trumpWrong === null) {
     ioTools.getImage('trump/fake.gif', (img) => {
       trumpFake = img
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: img,
         name: 'Fake.gif'
       })
     })
   } else {
-    sendMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, undefined, {
       file: trumpFake,
       name: 'Fake.gif'
     })
@@ -2152,13 +2152,13 @@ trumpCmd.registerSubcommand('wrong', (msg, args) => {
   if (trumpWrong === null) {
     ioTools.getImage('trump/wrong.gif', (img) => {
       trumpWrong = img
-      sendMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, undefined, {
         file: img,
         name: 'Wrong.gif'
       })
     })
   } else {
-    sendMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, undefined, {
       file: trumpWrong,
       name: 'Wrong.gif'
     })
@@ -2183,7 +2183,7 @@ bot.registerCommand('Avatar', (msg, args) => {
     }], (filenames) => {
       filenames.forEach((filename, key, array) => {
         ioTools.getImage(filename, (image) => {
-          sendMessage(msg.channel.id, '', {
+          sendMessage(msg.channel.id, undefined, {
             file: image,
             name: origFilename
           })
@@ -2356,11 +2356,11 @@ bot.registerCommand('exhentai', (msg, args) => {
 bot.registerCommand('batts', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickBattsieImage(args[0]).then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   } else {
     reactions.pickBattsieImage().then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   }
 }, {
@@ -2422,11 +2422,11 @@ bot.registerCommand('alcha', (msg, args) => {
 bot.registerCommand('shocked', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickShockedImage(args[0]).then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   } else {
     reactions.pickShockedImage().then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   }
 })
@@ -2435,11 +2435,11 @@ bot.registerCommand('shocked', (msg, args) => {
 bot.registerCommand('disgusted', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickDisgustedImage(args[0]).then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   } else {
     reactions.pickDisgustedImage().then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   }
 }, {
@@ -2451,11 +2451,11 @@ bot.registerCommand('disgusted', (msg, args) => {
 bot.registerCommand('smug', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickSmugImage(args[0]).then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   } else {
     reactions.pickSmugImage().then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   }
 })
@@ -2464,11 +2464,11 @@ bot.registerCommand('smug', (msg, args) => {
 bot.registerCommand('foupa', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickFoupaImage(args[0]).then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   } else {
     reactions.pickFoupaImage().then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   }
 }, {
@@ -2486,11 +2486,11 @@ bot.registerCommand('foupa', (msg, args) => {
 bot.registerCommand('coffee', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickCoffeeImage(args[0]).then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   } else {
     reactions.pickCoffeeImage().then((data) => {
-      sendMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   }
 }, {
