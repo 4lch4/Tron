@@ -22,8 +22,6 @@ Raven.config('https://48c87e30f01f45a7a112e0b033715f3d:d9b9df5b82914180b48856a41
 
 const NodeRestClient = require('node-rest-client').Client
 
-const urlencode = require('urlencode')
-
 let PowerWashingLinks = []
 
 // ========================== Bot Declaration =================================================== //
