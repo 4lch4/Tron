@@ -25,7 +25,7 @@ class IOTools {
     connection.query(sql, (err, results, fields) => {
       if (err) throw err
 
-      if (callback !== null) {
+      if (callback instanceof function () {}) {
         callback(results, fields)
       }
     })
@@ -142,8 +142,8 @@ class IOTools {
     this.readFiles(dirname, (filename, content) => {
       images.push(content)
       filenames.push(filename)
-    }, (err) => {
-      console.log('Error occured.')
+    }, err => {
+      console.log('An error has occured while getting images...')
       console.log(err)
     }, () => {
       onComplete(images, filenames)
