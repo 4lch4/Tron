@@ -260,6 +260,20 @@ bot.registerCommand('zorika', (msg, args) => {
   caseInsensitive: true
 })
 
+const evaluate = (msg, args) => {
+  try {
+    return eval(args.join(' '))
+  } catch (err) {
+    return err.message
+  }
+}
+
+bot.registerCommand('eval', (msg, args) => {
+  if (msg.author.id === config.owner) {
+    sendMessage(msg.channel.id, '`' + evaluate(msg, args) + '`', undefined)
+  }
+})
+
 bot.registerCommand('jay', (msg, args) => {
   ioTools.getImage('/var/tron/images/Jay.png', (img) => {
     sendMessage(msg.channel.id, undefined, {
