@@ -2418,6 +2418,48 @@ bot.registerCommand('alcha', (msg, args) => {
   guildOnly: true
 })
 
+// ========================== Shocked Command (Requested by Thriller) =========================== //
+bot.registerCommand('shocked', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickShockedImage(args[0]).then((data) => {
+      sendMessage(msg.channel.id, '', data)
+    })
+  } else {
+    reactions.pickShockedImage().then((data) => {
+      sendMessage(msg.channel.id, '', data)
+    })
+  }
+})
+
+// ========================== Disgusted Command (Requested by Neko) ============================= //
+bot.registerCommand('disgusted', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickDisgustedImage(args[0]).then((data) => {
+      sendMessage(msg.channel.id, '', data)
+    })
+  } else {
+    reactions.pickDisgustedImage().then((data) => {
+      sendMessage(msg.channel.id, '', data)
+    })
+  }
+}, {
+  aliases: ['disgust', 'gross'],
+  caseInsensitive: true
+})
+
+// ========================== Smug Command (Requested by Thriller) ============================== //
+bot.registerCommand('smug', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickSmugImage(args[0]).then((data) => {
+      sendMessage(msg.channel.id, '', data)
+    })
+  } else {
+    reactions.pickSmugImage().then((data) => {
+      sendMessage(msg.channel.id, '', data)
+    })
+  }
+})
+
 // ========================== Foupa Command ===================================================== //
 bot.registerCommand('foupa', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
