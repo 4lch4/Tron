@@ -52,7 +52,7 @@ const Ship = require('./cmds/Ship')
 const ship = new Ship()
 
 const Reactions = require('./cmds/Reactions')
-const reactions = new Reactions(bot)
+const reactions = new Reactions()
 
 const Marriage = require('./cmds/Marriage')
 const marriage = new Marriage()
@@ -2378,6 +2378,19 @@ bot.registerCommand('wink', (msg, args) => {
     })
   } else {
     reactions.pickWinkImage().then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+})
+
+// ========================== Wink Command (Suggested by Blake) ================================= //
+bot.registerCommand('dead', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickDeadImage(args[0]).then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickDeadImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
