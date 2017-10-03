@@ -38,6 +38,14 @@ const io = require('socket.io')(80)
 io.on('connection', (socket) => {
   console.log('Connection received from ' + socket.conn.remoteAddress + ' at ' + tools.getCurrDateTimestamp())
 })
+let sendMessage = (channelId, message, data) => {
+  bot.createMessage(channelId, message, data).catch(err => {
+    if (err) {
+      console.log('There was an error...')
+      console.log(err)
+    }
+  })
+}
 
 // ========================== External Cmd Files ================================================ //
 const Ship = require('./cmds/Ship')
@@ -71,7 +79,7 @@ function setupRssReaders () {
   }).parseFeed((comic) => {
     ioTools.storeComic(comic, (success) => {
       if (success) {
-        bot.createMessage(config.crComics, 'New ' + comic.feedName.toUpperCase() + ' comic!\n' + comic.url)
+        sendMessage(config.crComics, 'New ' + comic.feedName.toUpperCase() + ' comic!\n' + comic.url)
       }
     })
   })
@@ -100,7 +108,7 @@ adminCmd.registerSubcommand('ban', (msg, args) => {
         tools.getMember(msg, mention).then((member) => {
           msg.channel.guild.banMember(member.id, 0, reason)
 
-          bot.createMessage(msg.channel.id, member.username + ' has been banned from the server.')
+          sendMessage(msg.channel.id, member.username + ' has been banned from the server.')
         })
       })
     } else {
@@ -108,7 +116,7 @@ adminCmd.registerSubcommand('ban', (msg, args) => {
         tools.getMember(msg, mention).then((member) => {
           msg.channel.guild.banMember(member.id)
 
-          bot.createMessage(msg.channel.id, member.username + ' has been banned from the server.')
+          sendMessage(msg.channel.id, member.username + ' has been banned from the server.')
         })
       })
     }
@@ -117,7 +125,7 @@ adminCmd.registerSubcommand('ban', (msg, args) => {
       tools.getMember(msg, mention).then((member) => {
         msg.channel.guild.banMember(member.id)
 
-        bot.createMessage(msg.channel.id, member.username + ' has been banned from the server.')
+        sendMessage(msg.channel.id, member.username + ' has been banned from the server.')
       })
     })
   } else {
@@ -138,7 +146,7 @@ adminCmd.registerSubcommand('kick', (msg, args) => {
         tools.getMember(msg, mention).then((member) => {
           msg.channel.guild.kickMember(member.id, reason)
 
-          bot.createMessage(msg.channel.id, member.username + ' has been kicked from the server.')
+          sendMessage(msg.channel.id, member.username + ' has been kicked from the server.')
         })
       })
     } else {
@@ -146,7 +154,7 @@ adminCmd.registerSubcommand('kick', (msg, args) => {
         tools.getMember(msg, mention).then((member) => {
           msg.channel.guild.kickMember(member.id)
 
-          bot.createMessage(msg.channel.id, member.username + ' has been kicked from the server.')
+          sendMessage(msg.channel.id, member.username + ' has been kicked from the server.')
         })
       })
     }
@@ -155,7 +163,7 @@ adminCmd.registerSubcommand('kick', (msg, args) => {
       tools.getMember(msg, mention).then((member) => {
         msg.channel.guild.kickMember(member.id)
 
-        bot.createMessage(msg.channel.id, member.username + ' has been kicked from the server.')
+        sendMessage(msg.channel.id, member.username + ' has been kicked from the server.')
       })
     })
   } else {
@@ -186,7 +194,7 @@ bot.registerCommand('initialize', (msg, args) => {
       }
     })
 
-    bot.createMessage(msg.channel.id, 'Permissions have been initalized.')
+    sendMessage(msg.channel.id, 'Permissions have been initalized.')
   })
 }, {
   requirements: {
@@ -200,7 +208,7 @@ bot.registerCommand('mute', (msg, args) => {
     msg.mentions.forEach((user, index, array) => {
       muteCmd.muteUser(msg, user).then((muted) => {
         if (muted) {
-          bot.createMessage(msg.channel.id, {
+          sendMessage(msg.channel.id, {
             embed: {
               description: '**' + user.username + '** has been muted from text and voice by **' + msg.author.username + '**.',
               color: 0x008000
@@ -225,7 +233,7 @@ bot.registerCommand('unmute', (msg, args) => {
     msg.mentions.forEach((user, index, array) => {
       muteCmd.unmuteUser(msg, user).then((muted) => {
         if (muted) {
-          bot.createMessage(msg.channel.id, {
+          sendMessage(msg.channel.id, {
             embed: {
               description: '**' + user.username + '** has been unmuted from text and voice by **' + msg.author.username + '**.',
               color: 0x008000
@@ -254,7 +262,7 @@ bot.registerCommand('zorika', (msg, args) => {
 
 bot.registerCommand('jay', (msg, args) => {
   ioTools.getImage('/var/tron/images/Jay.png', (img) => {
-    bot.createMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, '', {
       file: img,
       name: 'Jay.png'
     })
@@ -268,11 +276,11 @@ bot.registerCommand('jay', (msg, args) => {
 bot.registerCommand('key', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickKeyImage(args[0]).then((data) => {
-      bot.createMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, '', data)
     })
   } else {
     reactions.pickKeyImage().then((data) => {
-      bot.createMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, '', data)
     })
   }
 }, {
@@ -293,14 +301,14 @@ bot.registerCommand('ami', (msg, args) => {
 bot.registerCommand('cat', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickCatImage((img, filename) => {
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: img,
         name: filename
       })
     }, args[0])
   } else {
     reactions.pickCatImage((img, filename) => {
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: img,
         name: filename
       })
@@ -337,7 +345,7 @@ bot.registerCommand('powerwashingporn', (msg, args) => {
       res.on('end', () => {
         let randomUrl = tools.getRandom(0, PowerWashingLinks.length)
 
-        bot.createMessage(msg.channel.id, PowerWashingLinks[randomUrl])
+        sendMessage(msg.channel.id, PowerWashingLinks[randomUrl])
       })
 
       ioTools.incrementCommandUse('powerwashing')
@@ -345,7 +353,7 @@ bot.registerCommand('powerwashingporn', (msg, args) => {
   } else {
     let randomUrl = tools.getRandom(0, PowerWashingLinks.length)
 
-    bot.createMessage(msg.channel.id, PowerWashingLinks[randomUrl])
+    sendMessage(msg.channel.id, PowerWashingLinks[randomUrl])
 
     ioTools.incrementCommandUse('powerwashing')
   }
@@ -366,16 +374,16 @@ bot.registerCommand('reddit', (msg, args) => {
 
     if (data.data.children[randomPost] !== undefined) {
       if (data.data.children[randomPost].data.over_18 && !msg.channel.nsfw) {
-        bot.createMessage(msg.channel.id, 'It appears the result of this search is NSFW and this channel is not flagged for NSFW content. Please try in another channel.')
+        sendMessage(msg.channel.id, 'It appears the result of this search is NSFW and this channel is not flagged for NSFW content. Please try in another channel.')
       } else {
-        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url)
+        sendMessage(msg.channel.id, data.data.children[randomPost].data.url)
       }
     } else {
       console.log('data.data.children[randomPost].data===undefined')
       console.log('subreddit = ' + subreddit)
       console.log('randomPost = ' + randomPost)
       console.log(data.data.children)
-      bot.createMessage(msg.channel.id, 'Unfortunately, something went wrong and the developers have been alerted. Please try again.')
+      sendMessage(msg.channel.id, 'Unfortunately, something went wrong and the developers have been alerted. Please try again.')
     }
 
     ioTools.incrementCommandUse('reddit')
@@ -390,14 +398,14 @@ bot.registerCommand('reddit', (msg, args) => {
 bot.registerCommand('rose', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickRoseImage((img, filename) => {
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: img,
         name: filename
       })
     }, args[0])
   } else {
     reactions.pickRoseImage((img, filename) => {
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: img,
         name: filename
       })
@@ -417,7 +425,7 @@ bot.registerCommand('rose', (msg, args) => {
 
 bot.registerCommand('meh', (msg, args) => {
   ioTools.getImage('/var/tron/images/meh.gif', (img) => {
-    bot.createMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, '', {
       file: img,
       name: 'meh.gif'
     })
@@ -431,14 +439,14 @@ bot.registerCommand('meh', (msg, args) => {
 bot.registerCommand('lewd', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickLewdImage(args[0]).then(imgObject => {
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: imgObject.image,
         name: imgObject.filename
       })
     })
   } else {
     reactions.pickLewdImage().then(imgObject => {
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: imgObject.image,
         name: imgObject.filename
       })
@@ -453,14 +461,14 @@ bot.registerCommand('lewd', (msg, args) => {
 bot.registerCommand('squirtle', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickSquirtleImage(args[0]).then(imgObject => {
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: imgObject.image,
         name: imgObject.filename
       })
     })
   } else {
     reactions.pickSquirtleImage().then(imgObject => {
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: imgObject.image,
         name: imgObject.filename
       })
@@ -476,7 +484,7 @@ bot.registerCommand('squirtle', (msg, args) => {
 bot.registerCommand('nobulli', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (args.length === 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickNobulliImage((img) => {
@@ -487,7 +495,7 @@ bot.registerCommand('nobulli', (msg, args) => {
               message = '**' + usernames[0] + "**, don't you dare bulli **" + usernames[1] + '**!'
             }
 
-            bot.createMessage(msg.channel.id, message, {
+            sendMessage(msg.channel.id, message, {
               file: img,
               name: 'Nobulli.gif'
             })
@@ -515,14 +523,14 @@ bot.registerCommand('nobulli', (msg, args) => {
 bot.registerCommand('dodge', (msg, args) => {
   if (args.length === 1 && !isNaN(parseInt(args[0]))) {
     reactions.pickDodgeImage(args[0]).then((img) => {
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: img,
         name: 'Dodge.gif'
       })
     })
   } else {
     reactions.pickDodgeImage().then((img) => {
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: img,
         name: 'Dodge.gif'
       })
@@ -540,7 +548,7 @@ bot.registerCommand('dodge', (msg, args) => {
 // ========================== Dreamy Command (Requested by Dreamy) ============================== //
 bot.registerCommand('dreamy', (msg, args) => {
   reactions.pickDreamyImage((dreamyImage) => {
-    bot.createMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, '', {
       file: dreamyImage,
       name: 'Dreamy.gif'
     })
@@ -561,7 +569,7 @@ bot.registerCommand('change', (msg, args) => {
   if (config.adminids.indexOf(msg.author.id) > -1) {
     if (args[0] === 'notification') {
       config.notificationChannel = msg.channel.id
-      bot.createMessage(msg.channel.id, 'The NotificationChannel has been changed to - ' + msg.channel.name)
+      sendMessage(msg.channel.id, 'The NotificationChannel has been changed to - ' + msg.channel.name)
     }
   }
 }, {
@@ -572,7 +580,7 @@ bot.registerCommand('change', (msg, args) => {
 // ========================== Vape Nation Command (Requested by Lagucci Mane) =================== //
 bot.registerCommand('vn', (msg, args) => {
   reactions.pickVNImage((img) => {
-    bot.createMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, '', {
       file: img,
       name: 'VapeNation.gif'
     })
@@ -591,7 +599,7 @@ bot.registerCommand('vn', (msg, args) => {
 // ========================== Cry Command ======================================================= //
 bot.registerCommand('cry', (msg, args) => {
   reactions.pickCryImage((cryImage) => {
-    bot.createMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, '', {
       file: cryImage,
       name: 'Cry.gif'
     })
@@ -611,7 +619,7 @@ bot.registerCommand('cry', (msg, args) => {
 bot.registerCommand('love', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (msg.channel.guild !== undefined) {
         reactions.pickLoveImage((loveImage) => {
@@ -622,7 +630,7 @@ bot.registerCommand('love', (msg, args) => {
             message = '**' + user + "**, you've been loved by **" + msg.author.username + '**. :heart:'
           }
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: loveImage,
             name: 'Love.gif'
           })
@@ -686,7 +694,7 @@ bot.registerCommand('ping', (msg, args) => {
 bot.registerCommand('slap', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (args.length === 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickSlapImage((img) => {
@@ -695,7 +703,7 @@ bot.registerCommand('slap', (msg, args) => {
             message = '**' + msg.mentions[0].username + "**, you've been slapped by **" + msg.author.username + '**.'
           }
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Slap.gif'
           })
@@ -707,7 +715,7 @@ bot.registerCommand('slap', (msg, args) => {
             message = '**' + msg.mentions[0].username + "**, you've been slapped by **" + msg.author.username + '**.'
           }
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Slap.gif'
           })
@@ -750,14 +758,14 @@ bot.registerCommand('suggestion', (msg, args) => {
 bot.registerCommand('kiss', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (args.length === 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickKissImage((img) => {
           let user = msg.mentions[0].username
           let message = '**' + user + "**, you've been kissed by **" + msg.author.username + '**. :kiss:'
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Kiss.gif'
           })
@@ -767,13 +775,13 @@ bot.registerCommand('kiss', (msg, args) => {
           let user = msg.mentions[0].username
           let message = '**' + user + "**, you've been kissed by **" + msg.author.username + '**. :kiss:'
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Kiss.gif'
           })
         })
       } else {
-        bot.createMessage(msg.channel.id, 'Please make sure to mention one or more users in order to use this command.')
+        sendMessage(msg.channel.id, 'Please make sure to mention one or more users in order to use this command.')
       }
     }
   })
@@ -792,14 +800,14 @@ bot.registerCommand('kiss', (msg, args) => {
 bot.registerCommand('lick', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (args.length === 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickLickImage(args[0]).then((img) => {
           let user = msg.mentions[0].username
           let message = '**' + user + "**, you've been licked by **" + msg.author.username + '**. :tongue:'
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Lick.gif'
           })
@@ -809,13 +817,13 @@ bot.registerCommand('lick', (msg, args) => {
           let user = msg.mentions[0].username
           let message = '**' + user + "**, you've been licked by **" + msg.author.username + '**. :tongue:'
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Lick.gif'
           })
         })
       } else {
-        bot.createMessage(msg.channel.id, 'Please make sure to mention one or more users in order to use this command')
+        sendMessage(msg.channel.id, 'Please make sure to mention one or more users in order to use this command')
       }
     }
   })
@@ -834,14 +842,14 @@ bot.registerCommand('lick', (msg, args) => {
 bot.registerCommand('pat', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (args.length === 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickPatImage((img) => {
           let user = msg.mentions[0].username
           let message = '**' + user + '**, you got a pat from **' + msg.author.username + '**.'
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Pat.gif'
           })
@@ -851,7 +859,7 @@ bot.registerCommand('pat', (msg, args) => {
           let user = msg.mentions[0].username
           let message = '**' + user + '**, you got a pat from **' + msg.author.username + '**.'
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Pat.gif'
           })
@@ -872,13 +880,13 @@ bot.registerCommand('pat', (msg, args) => {
 let marry = bot.registerCommand('marry', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       // Verify at least one user was mentioned
       if (msg.mentions.length > 0) {
         // Verify the first mentioned user wasn't the author to avoid trying to marry just yourself
         if (msg.mentions[0].id === msg.author.id) {
-          bot.createMessage(msg.channel.id, "You can't marry yourself! What kind of a backwards country you think this is?")
+          sendMessage(msg.channel.id, "You can't marry yourself! What kind of a backwards country you think this is?")
         } else {
           // Pass mentioned users to verifyProposal to determine if a proposal is valid
           marriage.verifyProposal(msg, (cleanUsers, allVerified) => {
@@ -890,7 +898,7 @@ let marry = bot.registerCommand('marry', (msg, args) => {
               marriage.addProposal(msg.author.id, mention.id,
                 (results) => {
                   if (results.message.length > 0) {
-                    bot.createMessage(msg.channel.id, results.message + ' - _If this was an error, please contact the developer._')
+                    sendMessage(msg.channel.id, results.message + ' - _If this was an error, please contact the developer._')
                   }
                 })
             })
@@ -898,12 +906,12 @@ let marry = bot.registerCommand('marry', (msg, args) => {
             // If one of the users weren't verified for some reason, let the proposer know
             // TODO: Provide more information on which user wasn't verified and possibly why
             if (allVerified === false) {
-              bot.createMessage(msg.channel.id, 'Unfortunately, one or more of the users you proposed to is already married to you or you have a pending proposal.')
+              sendMessage(msg.channel.id, 'Unfortunately, one or more of the users you proposed to is already married to you or you have a pending proposal.')
             }
           })
         }
       } else {
-        bot.createMessage(msg.channel.id, 'Please make sure to mention one or more users in order to use this command.')
+        sendMessage(msg.channel.id, 'Please make sure to mention one or more users in order to use this command.')
       }
     }
   })
@@ -920,7 +928,7 @@ marry.registerSubcommand('list', (msg, args) => {
   if (msg.mentions.length !== 0) {
     tools.doesMsgContainShu(msg).then((shuFlag) => {
       if (shuFlag) {
-        bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+        sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
       } else {
         let userId = msg.mentions[0].id
         marriage.getMarriages(userId, (marriages) => {
@@ -946,7 +954,7 @@ marry.registerSubcommand('list', (msg, args) => {
             message = "Unfortunately, you're not currently married to anyone. :cry:"
           }
 
-          bot.createMessage(msg.channel.id, message)
+          sendMessage(msg.channel.id, message)
         })
       }
     })
@@ -967,7 +975,7 @@ marry.registerSubcommand('list', (msg, args) => {
         message = "Unfortunately, you're not currently married to anyone. :cry:"
       }
 
-      bot.createMessage(msg.channel.id, message)
+      sendMessage(msg.channel.id, message)
     })
   }
 }, {
@@ -985,7 +993,7 @@ marry.registerSubcommand('accept', (msg, args) => {
         marriage.formatProposals(results, (formattedMsg) => {
           formattedMsg = 'You currently have ' + results.length + ' proposals, please indicate which one you wish to accept (e.g. +marry accept 1):\n\n' + formattedMsg
 
-          bot.createMessage(msg.channel.id, formattedMsg)
+          sendMessage(msg.channel.id, formattedMsg)
         })
       } else if (args.length === 1) {
         if (!isNaN(args[0])) {
@@ -997,7 +1005,7 @@ marry.registerSubcommand('accept', (msg, args) => {
             username: msg.author.username
           }, (err, success) => {
             if (err) console.log(err)
-            else if (success) bot.createMessage(msg.channel.id, "Congratulations, you're now married to <@" + results[args[0]].PROPOSER_ID + '>')
+            else if (success) sendMessage(msg.channel.id, "Congratulations, you're now married to <@" + results[args[0]].PROPOSER_ID + '>')
           })
         }
       }
@@ -1010,10 +1018,10 @@ marry.registerSubcommand('accept', (msg, args) => {
         username: msg.author.username
       }, (err, success) => {
         if (err) console.log(err)
-        else if (success) bot.createMessage(msg.channel.id, "Congratulations, you're now married to <@" + results[0].PROPOSER_ID + '>')
+        else if (success) sendMessage(msg.channel.id, "Congratulations, you're now married to <@" + results[0].PROPOSER_ID + '>')
       })
     } else {
-      bot.createMessage(msg.channel.id, "Unfortunately, it appears you don't have any pending proposals. :slight_frown:")
+      sendMessage(msg.channel.id, "Unfortunately, it appears you don't have any pending proposals. :slight_frown:")
     }
   })
 }, {
@@ -1026,23 +1034,23 @@ marry.registerSubcommand('deny', (msg, args) => {
       if (args.length === 0) {
         marriage.formatProposals(results, (formattedMsg) => {
           formattedMsg = 'You currently have ' + results.length + ' proposals, please indicate which one you wish to deny (e.g. +marry deny 1):\n\n' + formattedMsg
-          bot.createMessage(msg.channel.id, formattedMsg)
+          sendMessage(msg.channel.id, formattedMsg)
         })
       } else if (args.length === 1) {
         marriage.removeProposal(results[args[0]].PROPOSER_ID, msg.author.id, (results) => {
           if (results.message.length === 0) {
-            bot.createMessage(msg.channel.id, "Aww, you've successfully denied the proposal.")
+            sendMessage(msg.channel.id, "Aww, you've successfully denied the proposal.")
           }
         })
       }
     } else if (results.length === 1) {
       marriage.removeProposal(results[0].PROPOSER_ID, msg.author.id, (results) => {
         if (results.message.length === 0) {
-          bot.createMessage(msg.channel.id, "Aww, you've successfully denied the proposal.")
+          sendMessage(msg.channel.id, "Aww, you've successfully denied the proposal.")
         }
       })
     } else {
-      bot.createMessage(msg.channel.id, "It appears you don't have any pending proposals, please try again later.")
+      sendMessage(msg.channel.id, "It appears you don't have any pending proposals, please try again later.")
     }
   })
 }, {
@@ -1053,7 +1061,7 @@ marry.registerSubcommand('deny', (msg, args) => {
 let divorce = bot.registerCommand('divorce', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (msg.mentions.length > 0) {
         let userId1 = msg.author.id
@@ -1063,12 +1071,12 @@ let divorce = bot.registerCommand('divorce', (msg, args) => {
           if (marriageIn !== null) {
             marriage.addDivorceProposal(userId1, userId2, (success) => {
               if (success) {
-                bot.createMessage(msg.channel.id, "I'm sorry <@" + userId2 + '>, it appears ' + msg.author.username + ' wants a divorce. :slight_frown:\n\n' +
+                sendMessage(msg.channel.id, "I'm sorry <@" + userId2 + '>, it appears ' + msg.author.username + ' wants a divorce. :slight_frown:\n\n' +
                   'Please use `+divorce accept` or `+divorce deny` to accept or deny the divorce request. Keep in mind, denying a divorce for too long without good reason _may_ have some side effects...')
               }
             })
           } else {
-            bot.createMessage(msg.channel.id, 'Unfortunately, the divorce could not be verified. This could happen for a number of reasons:\n\n' +
+            sendMessage(msg.channel.id, 'Unfortunately, the divorce could not be verified. This could happen for a number of reasons:\n\n' +
               '- You already have a pending divorce with this user.\n' +
               "- You aren't actually married to this user.\n" +
               "- The bot is down and nothing is really working, so you most likely won't see this... :sweat_smile:")
@@ -1089,23 +1097,23 @@ divorce.registerSubcommand('accept', (msg, args) => {
         marriage.formatDivorceProposals(results, (formattedMsg) => {
           formattedMsg = 'You currently have ' + results.length + ' divorce proposals, please indicate which one you wish to accept (e.g. +divorce accept 1):\n\n' + formattedMsg
 
-          bot.createMessage(msg.channel.id, formattedMsg)
+          sendMessage(msg.channel.id, formattedMsg)
         })
       } else if (args.length === 1) {
         if (!isNaN(args[0])) {
           marriage.acceptDivorceProposal(results[args[0]].DIVORCER_ID, msg.author.id, (err, success) => {
             if (err) console.log(err)
-            else if (success) bot.createMessage(msg.channel.id, "You've successfuly divorced <@" + results[args[0]].DIVORCER_ID + '>')
+            else if (success) sendMessage(msg.channel.id, "You've successfuly divorced <@" + results[args[0]].DIVORCER_ID + '>')
           })
         }
       }
     } else if (results.length === 1) {
       marriage.acceptDivorceProposal(results[0].DIVORCER_ID, msg.author.id, (err, success) => {
         if (err) console.log(err)
-        else if (success) bot.createMessage(msg.channel.id, "You've successfuly divorced <@" + results[0].DIVORCER_ID + '>')
+        else if (success) sendMessage(msg.channel.id, "You've successfuly divorced <@" + results[0].DIVORCER_ID + '>')
       })
     } else {
-      bot.createMessage(msg.channel.id, 'It appears as though you do not have any pending divorces! :tada:')
+      sendMessage(msg.channel.id, 'It appears as though you do not have any pending divorces! :tada:')
     }
   })
 }, {
@@ -1126,18 +1134,18 @@ divorce.registerSubcommand('deny', (msg, args) => {
       } else if (args.length === 1) {
         marriage.removeDivorceProposal(results[args[0]].id, msg.author.id, (results) => {
           if (results.message.length === 0) {
-            bot.createMessage(msg.channel.id, "You've successfully denied the proposal.")
+            sendMessage(msg.channel.id, "You've successfully denied the proposal.")
           }
         })
       }
     } else if (results.length === 1) {
       marriage.removeDivorceProposal(results[0].DIVORCER_ID, msg.author.id, (results) => {
         if (results.message.length === 0) {
-          bot.createMessage(msg.channel.id, "You've successfully denied the proposal.")
+          sendMessage(msg.channel.id, "You've successfully denied the proposal.")
         }
       })
     } else {
-      bot.createMessage(msg.channel.id, "It appears you don't have any pending divorce proposals, please try again later.")
+      sendMessage(msg.channel.id, "It appears you don't have any pending divorce proposals, please try again later.")
     }
   })
 }, {
@@ -1150,12 +1158,12 @@ divorce.registerSubcommand('deny', (msg, args) => {
 divorce.registerSubcommand('list', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       // List current divorces of author or provided mention
       marriage.getDivorces(msg.author.id, (divorces) => {
         if (divorces.length === 0) {
-          bot.createMessage(msg.channel.id, 'It appears as though you do not have any divorces! :tada:')
+          sendMessage(msg.channel.id, 'It appears as though you do not have any divorces! :tada:')
         } else {
           let message = 'Here is a list of your current divorces:\n```\n'
 
@@ -1175,7 +1183,7 @@ divorce.registerSubcommand('list', (msg, args) => {
 
           message += '```'
 
-          bot.createMessage(msg.channel.id, message)
+          sendMessage(msg.channel.id, message)
         }
       })
     }
@@ -1191,7 +1199,7 @@ let quoteCmd = bot.registerCommand('quote', (msg, args) => {
       let temp = content.split('\n')
       let random = tools.getRandom(0, temp.length)
 
-      bot.createMessage(msg.channel.id, temp[random])
+      sendMessage(msg.channel.id, temp[random])
     }
   })
 }, {
@@ -1207,7 +1215,7 @@ quoteCmd.registerSubcommand('cm', (msg, args) => {
     let temp = content.split('\n')
     let random = tools.getRandom(0, temp.length)
 
-    bot.createMessage(msg.channel.id, temp[random])
+    sendMessage(msg.channel.id, temp[random])
   })
 }, {
   cooldown: config.DEFAULT_COOLDOWN,
@@ -1219,7 +1227,7 @@ quoteCmd.registerSubcommand('cm', (msg, args) => {
 bot.registerCommand('kill', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (args.length === 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickKillImage((img) => {
@@ -1229,7 +1237,7 @@ bot.registerCommand('kill', (msg, args) => {
             message = '**' + user + "**, you've been killed by **" + msg.author.username + '**. :knife:'
           }
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Kill.gif'
           })
@@ -1242,7 +1250,7 @@ bot.registerCommand('kill', (msg, args) => {
             message = '**' + user + "**, you've been killed by **" + msg.author.username + '**. :knife:'
           }
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Kill.gif'
           })
@@ -1265,14 +1273,14 @@ bot.registerCommand('kill', (msg, args) => {
 bot.registerCommand('punch', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (args.length === 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickPunchImage((img) => {
           let user = msg.mentions[0].username
           let message = '**' + user + "**, you've been punched by **" + msg.author.username + '**. :punch:'
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Punch.gif'
           })
@@ -1282,7 +1290,7 @@ bot.registerCommand('punch', (msg, args) => {
           let user = msg.mentions[0].username
           let message = '**' + user + "**, you've been punched by **" + msg.author.username + '**. :punch:'
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Punch.gif'
           })
@@ -1305,7 +1313,7 @@ bot.registerCommand('punch', (msg, args) => {
 bot.registerCommand('kayla', (msg, args) => {
   if (parseInt(msg.author.id) === 142092834260910080 || parseInt(msg.author.id) === 217870035090276374 || msg.author.id === config.owner) {
     reactions.pickKaylaImage().then(img => {
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: img,
         name: 'Kayla.gif'
       })
@@ -1322,7 +1330,7 @@ bot.registerCommand('kayla', (msg, args) => {
 // ========================== Confused Command ================================================== //
 bot.registerCommand('confused', (msg, args) => {
   reactions.pickConfusedImage((img) => {
-    bot.createMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, '', {
       file: img,
       name: 'Confused.gif'
     })
@@ -1338,7 +1346,7 @@ bot.registerCommand('confused', (msg, args) => {
 // ========================== Dance Command ===================================================== //
 bot.registerCommand('dance', (msg, args) => {
   reactions.pickDanceImage((img) => {
-    bot.createMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, '', {
       file: img,
       name: 'Dance.gif'
     })
@@ -1355,14 +1363,14 @@ bot.registerCommand('dance', (msg, args) => {
 bot.registerCommand('pout', (msg, args) => {
   if (args.length === 1 && !isNaN(parseInt(args[0]))) {
     reactions.pickPoutImage(args[0]).then((img) => {
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: img,
         name: 'Pout.gif'
       })
     })
   } else {
     reactions.pickPoutImage().then((img) => {
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: img,
         name: 'Pout.gif'
       })
@@ -1380,7 +1388,7 @@ bot.registerCommand('pout', (msg, args) => {
 // ========================== Wave Command ====================================================== //
 bot.registerCommand('wave', (msg, args) => {
   reactions.pickWaveImage((img) => {
-    bot.createMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, '', {
       file: img,
       name: 'Wave.gif'
     })
@@ -1398,13 +1406,13 @@ bot.registerCommand('wave', (msg, args) => {
 bot.registerCommand('spank', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       reactions.pickSpankImage((img) => {
         let user = msg.mentions[0].username
         let message = '**' + user + "**, you've been spanked by **" + msg.author.username + '**. :wave:'
 
-        bot.createMessage(msg.channel.id, message, {
+        sendMessage(msg.channel.id, message, {
           file: img,
           name: 'Spank.gif'
         })
@@ -1424,7 +1432,7 @@ bot.registerCommand('spank', (msg, args) => {
 bot.registerCommand('killme', (msg, args) => {
   reactions.pickKillMeImage((killMeImage) => {
     // Mika's requested killme command
-    bot.createMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, '', {
       file: killMeImage,
       name: 'KillMe.gif'
     })
@@ -1441,7 +1449,7 @@ bot.registerCommand('killme', (msg, args) => {
 // ========================== NSFW Commands ===================================================== //
 let nsfwCmd = bot.registerCommand('nsfw', (msg, args) => {
   if (!msg.channel.nsfw) {
-    bot.createMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
+    sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
   }
 }, {
   defaultSubcommandOptions: {
@@ -1452,9 +1460,9 @@ let nsfwCmd = bot.registerCommand('nsfw', (msg, args) => {
   }
 })
 
-nsfwCmd.registerSubcommand('tattoo', (msg, args) => {
+bot.registerCommand('tattoo', (msg, args) => {
   if (!msg.channel.nsfw) {
-    bot.createMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
+    sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
   } else {
     let tatSubs = [
       'HotChicksWithTattoos',
@@ -1474,24 +1482,24 @@ nsfwCmd.registerSubcommand('tattoo', (msg, args) => {
       let randomPost = tools.getRandom(0, data.data.children.length)
 
       if (data.data.children[randomPost] !== undefined) {
-        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url)
+        sendMessage(msg.channel.id, data.data.children[randomPost].data.url)
       } else {
         console.log('data.data.children[randomPost].data===undefined')
         console.log('subreddit = ' + tatSubs[random])
         console.log(data.data.children)
-        bot.createMessage(msg.channel.id, 'Unfortunately, something went wrong and the developers have been alerted. Please try again.')
+        sendMessage(msg.channel.id, 'Unfortunately, something went wrong and the developers have been alerted. Please try again.')
       }
     })
   }
 })
 
-nsfwCmd.registerSubcommand('newd', (msg, args) => {
+bot.registerCommand('newd', (msg, args) => {
   if (!msg.channel.nsfw) {
-    bot.createMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
+    sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
   } else {
     tools.doesMsgContainShu(msg).then((shuFlag) => {
       if (shuFlag) {
-        bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+        sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
       } else {
         if (msg.channel.guild === undefined) {
           // Private message channel
@@ -1503,9 +1511,9 @@ nsfwCmd.registerSubcommand('newd', (msg, args) => {
               msg.mentions.forEach((mention, index, array) => {
                 mention.getDMChannel().then((channel) => {
                   if (mention.bot) {
-                    bot.createMessage(msg.channel.id, "You can't send private messages to a bot.")
+                    sendMessage(msg.channel.id, "You can't send private messages to a bot.")
                   } else {
-                    bot.createMessage(channel.id, '', {
+                    sendMessage(channel.id, '', {
                       file: butt,
                       name: filename
                     }).then((message) => {
@@ -1513,7 +1521,7 @@ nsfwCmd.registerSubcommand('newd', (msg, args) => {
                       console.log(msg.author.username + ' sent a lewd message to ' + mention.username + '.')
                     }).catch((err) => {
                       if (err.code === 20009) {
-                        bot.createMessage(channel.id, "Unfortunately, it appears you can't receive explicit content. Please add Tron to your friends and try again.")
+                        sendMessage(channel.id, "Unfortunately, it appears you can't receive explicit content. Please add Tron to your friends and try again.")
                       }
                     })
                   }
@@ -1521,9 +1529,9 @@ nsfwCmd.registerSubcommand('newd', (msg, args) => {
               })
 
               if (msg.mentions.length === 1) {
-                bot.createMessage(msg.channel.id, 'Your message has most likely been sent. :wink:')
+                sendMessage(msg.channel.id, 'Your message has most likely been sent. :wink:')
               } else {
-                bot.createMessage(msg.channel.id, 'Your messages have most likely been sent. :wink:')
+                sendMessage(msg.channel.id, 'Your messages have most likely been sent. :wink:')
               }
             })
           }
@@ -1543,9 +1551,9 @@ nsfwCmd.registerSubcommand('newd', (msg, args) => {
 })
 
 // ========================== Hentai Command ==================================================== //
-nsfwCmd.registerSubcommand('boobs', (msg, args) => {
+bot.registerCommand('boobs', (msg, args) => {
   if (!msg.channel.nsfw) {
-    bot.createMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
+    sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
   } else {
     let boobSubs = [
       'boobs',
@@ -1563,11 +1571,11 @@ nsfwCmd.registerSubcommand('boobs', (msg, args) => {
     reddit.r(boobSubs[randomSub], (err, data, res) => {
       if (err) {
         Raven.captureException(err)
-        bot.createMessage(msg.channel.id, err)
+        sendMessage(msg.channel.id, err)
       } else {
         let randomPost = tools.getRandom(0, data.data.children.length)
 
-        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url)
+        sendMessage(msg.channel.id, data.data.children[randomPost].data.url)
 
         ioTools.incrementCommandUse('boobs')
       }
@@ -1578,9 +1586,9 @@ nsfwCmd.registerSubcommand('boobs', (msg, args) => {
 })
 
 // ========================== Hentai Command ==================================================== //
-nsfwCmd.registerSubcommand('hentai', (msg, args) => {
+bot.registerCommand('hentai', (msg, args) => {
   if (!msg.channel.nsfw) {
-    bot.createMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
+    sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
   } else {
     let hentaiSubs = [
       'hentai',
@@ -1593,11 +1601,11 @@ nsfwCmd.registerSubcommand('hentai', (msg, args) => {
     reddit.r(hentaiSubs[randomSub], (err, data, res) => {
       if (err) {
         Raven.captureException(err)
-        bot.createMessage(msg.channel.id, err)
+        sendMessage(msg.channel.id, err)
       } else {
         let randomPost = tools.getRandom(0, data.data.children.length)
 
-        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url)
+        sendMessage(msg.channel.id, data.data.children[randomPost].data.url)
 
         ioTools.incrementCommandUse('hentai')
       }
@@ -1608,9 +1616,9 @@ nsfwCmd.registerSubcommand('hentai', (msg, args) => {
 })
 
 // ========================== Butt Command ====================================================== //
-nsfwCmd.registerSubcommand('butt', (msg, args) => {
+bot.registerCommand('butt', (msg, args) => {
   if (!msg.channel.nsfw) {
-    bot.createMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
+    sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
   } else {
     let buttSubs = [
       'asstastic',
@@ -1631,11 +1639,11 @@ nsfwCmd.registerSubcommand('butt', (msg, args) => {
     reddit.r(buttSubs[randomSub], (err, data, res) => {
       if (err) {
         Raven.captureException(err)
-        bot.createMessage(msg.channel.id, err)
+        sendMessage(msg.channel.id, err)
       } else {
         let randomPost = tools.getRandom(0, data.data.children.length)
 
-        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url)
+        sendMessage(msg.channel.id, data.data.children[randomPost].data.url)
 
         ioTools.incrementCommandUse('butt')
       }
@@ -1646,9 +1654,9 @@ nsfwCmd.registerSubcommand('butt', (msg, args) => {
 })
 
 // ========================== Feet Command (Requested by Rosa) ================================== //
-nsfwCmd.registerSubcommand('feet', (msg, args) => {
+bot.registerCommand('feet', (msg, args) => {
   if (!msg.channel.nsfw) {
-    bot.createMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
+    sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
   } else {
     let feetSubs = [
       'CelebrityFeet',
@@ -1679,11 +1687,11 @@ nsfwCmd.registerSubcommand('feet', (msg, args) => {
     reddit.r(feetSubs[randomSub], (err, data, res) => {
       if (err) {
         Raven.captureException(err)
-        bot.createMessage(msg.channel.id, err)
+        sendMessage(msg.channel.id, err)
       } else {
         let randomPost = tools.getRandom(0, data.data.children.length)
 
-        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url)
+        sendMessage(msg.channel.id, data.data.children[randomPost].data.url)
 
         ioTools.incrementCommandUse('feet')
       }
@@ -1694,9 +1702,9 @@ nsfwCmd.registerSubcommand('feet', (msg, args) => {
 })
 
 // ========================== Gay Command (Requested by Mimiru) ================================= //
-nsfwCmd.registerSubcommand('gay', (msg, args) => {
+bot.registerCommand('gay', (msg, args) => {
   if (!msg.channel.nsfw) {
-    bot.createMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
+    sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
   } else {
     let gaySubs = [
       'cockrating',
@@ -1716,11 +1724,11 @@ nsfwCmd.registerSubcommand('gay', (msg, args) => {
     reddit.r(gaySubs[randomSub], (err, data, res) => {
       if (err) {
         Raven.captureException(err)
-        bot.createMessage(msg.channel.id, err)
+        sendMessage(msg.channel.id, err)
       } else {
         let randomPost = tools.getRandom(0, data.data.children.length)
 
-        bot.createMessage(msg.channel.id, data.data.children[randomPost].data.url)
+        sendMessage(msg.channel.id, data.data.children[randomPost].data.url)
 
         ioTools.incrementCommandUse('gay')
       }
@@ -1731,12 +1739,12 @@ nsfwCmd.registerSubcommand('gay', (msg, args) => {
 })
 
 // ========================== Yaoi Command (Requested by Mimiru) ================================ //
-nsfwCmd.registerSubcommand('yaoi', (msg, args) => {
+bot.registerCommand('yaoi', (msg, args) => {
   if (!msg.channel.nsfw) {
-    bot.createMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
+    sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
   } else {
     yaoiCmd.getYaoiPhoto().then((photoUrl) => {
-      bot.createMessage(msg.channel.id, photoUrl)
+      sendMessage(msg.channel.id, photoUrl)
 
       ioTools.incrementCommandUse('yaoi')
     })
@@ -1747,39 +1755,45 @@ nsfwCmd.registerSubcommand('yaoi', (msg, args) => {
 bot.registerCommand('ratewaifu', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (msg.channel.guild !== undefined && msg.mentions.length === 1) {
         let mentionId = parseInt(msg.mentions[0].id)
 
         if (mentionId === 219270060936527873) {
           // Alcha
-          bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**-senpai, I'd rate you 11/10. \n\n_notice me_")
+          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**-senpai, I'd rate you 11/10. \n\n_notice me_")
         } else if (mentionId === 317138587491631104) {
           // Travis
-          bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + '**-dono, I\'d rate you 11/10. :fire:')
+          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + '**-dono, I\'d rate you 11/10. :fire:')
         } else if (mentionId === 158740486352273409) {
           // Micaww
-          bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you 0/10 waifu.")
+          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you 0/10 waifu.")
         } else if (mentionId === 142092834260910080) {
           // Snow/Daddy Yoana
-          bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you -69/10 waifu.")
+          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you -69/10 waifu.")
         } else if (mentionId === 146023112008400896) {
           // Aaron/Mamba
-          bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + '**, I\'d rate you 0/10 waifu.')
+          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + '**, I\'d rate you 0/10 waifu.')
         } else if (mentionId === 120797492865400832) {
           // Bella
-          bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you 12/10 waifu. :fire: :fire:")
+          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you 12/10 waifu. :fire: :fire:")
         } else if (mentionId === 139474184089632769) {
           // Utah
-          bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you -∞/10 waifu.")
+          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you -∞/10 waifu.")
         } else if (mentionId === 167546638758445056) {
-          bot.createMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you ∞/10 waifu. The best of the best.")
+          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you ∞/10 waifu. The best of the best.")
+        } else if (mentionId === 351967369247326209) {
+          // Heather
+          let random = tools.getRandom(6, 11)
+          let message = '**' + msg.mentions[0].username + "**, I'd rate you " + random + '/10 waifu.'
+
+          sendMessage(msg.channel.id, message)
         } else {
           let random = tools.getRandom(0, 11)
           let message = '**' + msg.mentions[0].username + "**, I'd rate you " + random + '/10 waifu.'
 
-          bot.createMessage(msg.channel.id, message)
+          sendMessage(msg.channel.id, message)
         }
       }
     }
@@ -1805,7 +1819,7 @@ bot.registerCommand('derp', (msg, args) => {
 
 bot.registerCommand('potato', (msg, args) => {
   ioTools.getImage('/var/tron/images/potato.png', (img) => {
-    bot.createMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, '', {
       file: img,
       name: 'Potato.png'
     })
@@ -1820,14 +1834,14 @@ bot.registerCommand('potato', (msg, args) => {
 bot.registerCommand('hug', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (msg.mentions[0] !== undefined) {
         reactions.pickHugImage((hugImage) => {
           let user = msg.mentions[0].username
           let message = '**' + user + '**, has received hugs from **' + msg.author.username + '**. :hugging:'
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: hugImage,
             name: 'Hugs.gif'
           })
@@ -1860,7 +1874,7 @@ bot.registerCommand('stats', (msg, args) => {
         }
       }
 
-      bot.createMessage(msg.channel.id, {
+      sendMessage(msg.channel.id, {
         embed: {
           title: 'Command Stats', // Title of the embed
           description: "Here's a list of the commands available and how many times they've been used.",
@@ -1872,7 +1886,7 @@ bot.registerCommand('stats', (msg, args) => {
   } else {
     ioTools.getCommandUsage(args[0], (results) => {
       if (results[0] !== undefined) {
-        bot.createMessage(msg.channel.id, {
+        sendMessage(msg.channel.id, {
           embed: {
             color: 0x008000,
             fields: [{
@@ -1882,7 +1896,7 @@ bot.registerCommand('stats', (msg, args) => {
           }
         })
       } else {
-        bot.createMessage(msg.channel.id, 'Please use a valid command, this does not exist in the database.')
+        sendMessage(msg.channel.id, 'Please use a valid command, this does not exist in the database.')
       }
     })
   }
@@ -1901,13 +1915,13 @@ bot.registerCommand('stats', (msg, args) => {
 bot.registerCommand('poke', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (msg.mentions.length === 1) {
         reactions.pickPokeImage((img) => {
           let message = '**' + msg.mentions[0].username + "**, you've been poked by **" + msg.author.username + '**.'
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Poke.gif'
           })
@@ -1932,14 +1946,14 @@ bot.registerCommand('poke', (msg, args) => {
 bot.registerCommand('kick', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (args.length === 2 && !isNaN(parseInt(args[0]))) {
         reactions.pickKickImage((img) => {
           let user = msg.mentions[0].username
           let message = '**' + user + "**, you've been kicked by **" + msg.author.username + '**.'
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Kick.gif'
           })
@@ -1949,7 +1963,7 @@ bot.registerCommand('kick', (msg, args) => {
           let user = msg.mentions[0].username
           let message = '**' + user + "**, you've been kicked by **" + msg.author.username + '**.'
 
-          bot.createMessage(msg.channel.id, message, {
+          sendMessage(msg.channel.id, message, {
             file: img,
             name: 'Kick.gif'
           })
@@ -1974,7 +1988,7 @@ bot.registerCommand('kick', (msg, args) => {
 bot.registerCommand('bite', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       reactions.pickBiteImage((biteImage) => {
         var message = ''
@@ -1984,7 +1998,7 @@ bot.registerCommand('bite', (msg, args) => {
           message = '**' + user + "**, you've been bitten by **" + msg.author.username + '**.'
         }
 
-        bot.createMessage(msg.channel.id, message, {
+        sendMessage(msg.channel.id, message, {
           file: biteImage,
           name: 'Bite.gif'
         })
@@ -2004,14 +2018,14 @@ bot.registerCommand('bite', (msg, args) => {
 
 // ========================== Jova Command ====================================================== //
 bot.registerCommand('jova', (msg, args) => {
-  bot.createMessage(msg.channel.id, 'Who is <@78694002332803072>? Does <@78694002332803072> is gay?')
+  sendMessage(msg.channel.id, 'Who is <@78694002332803072>? Does <@78694002332803072> is gay?')
 
   ioTools.incrementCommandUse('jova')
 })
 
 // ========================== Boo Command ======================================================= //
 bot.registerCommand('boo', (msg, args) => {
-  bot.createMessage(msg.channel.id, '<@160372598734061568> is <@219270060936527873>\'s boo. :heart:')
+  sendMessage(msg.channel.id, '<@160372598734061568> is <@219270060936527873>\'s boo. :heart:')
 
   ioTools.incrementCommandUse('boo')
 })
@@ -2020,7 +2034,7 @@ bot.registerCommand('boo', (msg, args) => {
 bot.on('ready', () => {
   console.log('Tron is ready!')
   if (!isNaN(config.notificationChannel)) {
-    bot.createMessage(config.notificationChannel, config.notificationMessage + ' > ' + tools.getFormattedTimestamp())
+    sendMessage(config.notificationChannel, config.notificationMessage + ' > ' + tools.getFormattedTimestamp())
   }
 
   bot.editStatus('busy', {
@@ -2034,7 +2048,7 @@ bot.on('ready', () => {
 
 // ========================== Git Command ======================================================= //
 bot.registerCommand('git', (msg, args) => {
-  bot.createMessage(msg.channel.id, 'You can find the git repo for Tron here: https://github.com/Paranoid-Devs/Tron')
+  sendMessage(msg.channel.id, 'You can find the git repo for Tron here: https://github.com/Paranoid-Devs/Tron')
 
   ioTools.incrementCommandUse('git')
 }, {
@@ -2047,7 +2061,7 @@ bot.registerCommand('git', (msg, args) => {
 // ========================== Blush Command ===================================================== //
 bot.registerCommand('blush', (msg, args) => {
   reactions.pickBlushImage((blushImage) => {
-    bot.createMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, '', {
       file: blushImage,
       name: 'Blush.gif'
     })
@@ -2065,11 +2079,11 @@ bot.registerCommand('blush', (msg, args) => {
 bot.registerCommand('rawr', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickRawrImage(args[0]).then((data) => {
-      bot.createMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, '', data)
     })
   } else {
     reactions.pickRawrImage().then((data) => {
-      bot.createMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, '', data)
     })
   }
 
@@ -2084,7 +2098,7 @@ bot.registerCommand('rawr', (msg, args) => {
 // ========================== Rekt Command ====================================================== //
 bot.registerCommand('rekt', (msg, args) => {
   reactions.pickRektImage((rektImage) => {
-    bot.createMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, '', {
       file: rektImage,
       name: 'Rekt.gif'
     })
@@ -2114,13 +2128,13 @@ trumpCmd.registerSubcommand('fake', (msg, args) => {
   if (trumpWrong === null) {
     ioTools.getImage('trump/fake.gif', (img) => {
       trumpFake = img
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: img,
         name: 'Fake.gif'
       })
     })
   } else {
-    bot.createMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, '', {
       file: trumpFake,
       name: 'Fake.gif'
     })
@@ -2138,13 +2152,13 @@ trumpCmd.registerSubcommand('wrong', (msg, args) => {
   if (trumpWrong === null) {
     ioTools.getImage('trump/wrong.gif', (img) => {
       trumpWrong = img
-      bot.createMessage(msg.channel.id, '', {
+      sendMessage(msg.channel.id, '', {
         file: img,
         name: 'Wrong.gif'
       })
     })
   } else {
-    bot.createMessage(msg.channel.id, '', {
+    sendMessage(msg.channel.id, '', {
       file: trumpWrong,
       name: 'Wrong.gif'
     })
@@ -2169,7 +2183,7 @@ bot.registerCommand('Avatar', (msg, args) => {
     }], (filenames) => {
       filenames.forEach((filename, key, array) => {
         ioTools.getImage(filename, (image) => {
-          bot.createMessage(msg.channel.id, '', {
+          sendMessage(msg.channel.id, '', {
             file: image,
             name: origFilename
           })
@@ -2190,7 +2204,7 @@ bot.registerCommand('Avatar', (msg, args) => {
 bot.registerCommand('Ship', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
-      bot.createMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
       if (msg.channel.guild !== undefined && msg.mentions.length === 2) {
         const urls = [msg.mentions[0].avatarURL, msg.mentions[1].avatarURL]
@@ -2207,7 +2221,7 @@ bot.registerCommand('Ship', (msg, args) => {
                 let shipMsg = 'Lovely shipping!\n' +
                   'Ship name: **' + shipName + '**'
 
-                bot.createMessage(msg.channel.id, shipMsg, {
+                sendMessage(msg.channel.id, shipMsg, {
                   file: avatarCanvas.toBuffer(),
                   name: shipName + '.png'
                 })
@@ -2242,7 +2256,7 @@ bot.registerCommand('addr', (msg, args) => {
 
           if (name === comparison) {
             roleNames.push(value.name)
-            bot.createMessage(msg.channel.id, 'Added ' + value.name + ' to list of available roles.')
+            sendMessage(msg.channel.id, 'Added ' + value.name + ' to list of available roles.')
           }
         }
       })
@@ -2262,7 +2276,7 @@ bot.registerCommand('listr', (msg, args) => {
     message += '- **' + curr + '**\n'
   })
 
-  bot.createMessage(msg.channel.id, message)
+  sendMessage(msg.channel.id, message)
 }, {
   caseInsensitive: true,
   description: 'List roles that are available to join.',
@@ -2284,7 +2298,7 @@ bot.registerCommand('leaver', (msg, args) => {
       if (roleId.length > 1) {
         if (tools.allowedRole(comparison)) {
           msg.channel.guild.removeMemberRole(userId, roleId)
-          bot.createMessage(msg.channel.id, ":outbox_tray: You've successfully been removed from your requested group.")
+          sendMessage(msg.channel.id, ":outbox_tray: You've successfully been removed from your requested group.")
           msg.delete()
           ioTools.incrementCommandUse('leaver')
         }
@@ -2312,7 +2326,7 @@ bot.registerCommand('joinr', (msg, args) => {
       if (roleId.length > 1) {
         if (tools.allowedRole(comparison)) {
           msg.channel.guild.addMemberRole(userId, roleId)
-          bot.createMessage(msg.channel.id, ":inbox_tray: You've successfully been added to your requested group.")
+          sendMessage(msg.channel.id, ":inbox_tray: You've successfully been added to your requested group.")
           msg.delete()
           ioTools.incrementCommandUse('joinr')
         }
@@ -2328,7 +2342,7 @@ bot.registerCommand('joinr', (msg, args) => {
 // ========================== List Peeps (Not for public) ======================================= //
 bot.registerCommand('listPeeps', (msg, args) => {
   if (msg.author.id === config.owner) {
-    if (args[0] !== null) {}
+    if (args[0] !== null) { }
   }
 })
 
@@ -2342,11 +2356,11 @@ bot.registerCommand('exhentai', (msg, args) => {
 bot.registerCommand('batts', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickBattsieImage(args[0]).then((data) => {
-      bot.createMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, '', data)
     })
   } else {
     reactions.pickBattsieImage().then((data) => {
-      bot.createMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, '', data)
     })
   }
 }, {
@@ -2360,11 +2374,11 @@ bot.registerCommand('batts', (msg, args) => {
 bot.registerCommand('wink', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickWinkImage(args[0]).then(data => {
-      bot.createMessage(msg.channel.id, undefined, data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   } else {
     reactions.pickWinkImage().then(data => {
-      bot.createMessage(msg.channel.id, undefined, data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   }
 })
@@ -2373,11 +2387,11 @@ bot.registerCommand('wink', (msg, args) => {
 bot.registerCommand('alcha', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickJerryImage(args[0]).then((data) => {
-      bot.createMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   } else {
     reactions.pickJerryImage().then((data) => {
-      bot.createMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, undefined, data)
     })
   }
 
@@ -2395,11 +2409,11 @@ bot.registerCommand('alcha', (msg, args) => {
 bot.registerCommand('foupa', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickFoupaImage(args[0]).then((data) => {
-      bot.createMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, '', data)
     })
   } else {
     reactions.pickFoupaImage().then((data) => {
-      bot.createMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, '', data)
     })
   }
 }, {
@@ -2417,11 +2431,11 @@ bot.registerCommand('foupa', (msg, args) => {
 bot.registerCommand('coffee', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickCoffeeImage(args[0]).then((data) => {
-      bot.createMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, '', data)
     })
   } else {
     reactions.pickCoffeeImage().then((data) => {
-      bot.createMessage(msg.channel.id, '', data)
+      sendMessage(msg.channel.id, '', data)
     })
   }
 }, {
@@ -2436,11 +2450,11 @@ bot.registerCommand('coffee', (msg, args) => {
 bot.registerCommand('utah', (msg, args) => {
   if (msg.channel.guild !== undefined) {
     if (parseInt(msg.channel.guild.id) === 254496813552238594) {
-      bot.createMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:256668458480041985>')
+      sendMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:256668458480041985>')
     } else if (parseInt(msg.channel.guild.id) === 197846974408556544) {
-      bot.createMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:298313391444066305>')
+      sendMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:298313391444066305>')
     } else if (parseInt(msg.channel.guild.id) === 325420023705370625) {
-      bot.createMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:327634830483259393>')
+      sendMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:327634830483259393>')
     } else {
       console.log('Guild = ' + msg.channel.guild.name)
       console.log('id = ' + msg.channel.guild.id)
@@ -2460,9 +2474,9 @@ bot.registerCommand('utah', (msg, args) => {
 const popura = require('popura')
 const malClient = popura(config.malUsername, config.malPassword)
 
-let malCmd = bot.registerCommand('mal', (msg, args) => {})
+let malCmd = bot.registerCommand('mal', (msg, args) => { })
 
-let malSearchCmd = malCmd.registerSubcommand('search', (msg, args) => {})
+let malSearchCmd = malCmd.registerSubcommand('search', (msg, args) => { })
 
 malSearchCmd.registerSubcommand('anime', (msg, args) => {
   if (args.length === 0) {
@@ -2474,7 +2488,7 @@ malSearchCmd.registerSubcommand('anime', (msg, args) => {
       animes.forEach((anime, index, map) => {
         let animeUrl = 'https://myanimelist.net/anime/' + anime.id + '/' + anime.title.replace(/ /g, '_')
 
-        bot.createMessage(msg.channel.id, {
+        sendMessage(msg.channel.id, {
           embed: {
             title: anime.title,
             description: 'Score: **' + anime.score.toString() + '**',
@@ -2560,7 +2574,7 @@ malSearchCmd.registerSubcommand('manga', (msg, args) => {
 
           let mangaUrl = 'https://myanimelist.net/manga/' + manga.id + '/' + title.replace(/ /g, '_')
 
-          bot.createMessage(msg.channel.id, {
+          sendMessage(msg.channel.id, {
             embed: {
               title: title,
               thumbnail: {
@@ -2608,7 +2622,7 @@ malSearchCmd.registerSubcommand('manga', (msg, args) => {
 
 /* let malUserCmd = */malCmd.registerSubcommand('user', (msg, args) => {
   if (args.length === 0) {
-    bot.createMessage(msg.channel.id, 'You must include the username of an account on MAL.')
+    sendMessage(msg.channel.id, 'You must include the username of an account on MAL.')
   } else {
     let username = args[0]
     if (args[1] !== undefined && args[1].toLowerCase() === 'anime') {
@@ -2630,7 +2644,7 @@ malSearchCmd.registerSubcommand('manga', (msg, args) => {
           }
         }
 
-        bot.createMessage(msg.channel.id, {
+        sendMessage(msg.channel.id, {
           embed: {
             title: 'Currently watching ' + res.myinfo.user_watching + ' anime.', // Title of the embed
             description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days watching anime.',
@@ -2649,7 +2663,7 @@ malSearchCmd.registerSubcommand('manga', (msg, args) => {
         }).catch(err => console.log(err))
       }).catch(err => {
         console.log(err)
-        bot.createMessage(msg.channel.id, 'Unfortunately, it appears this username does not exist. Please verify and try again.')
+        sendMessage(msg.channel.id, 'Unfortunately, it appears this username does not exist. Please verify and try again.')
       })
     } else if (args[1] !== undefined && args[1].toLowerCase() === 'manga') {
       malClient.getMangaList(username).then((res) => {
@@ -2677,7 +2691,7 @@ malSearchCmd.registerSubcommand('manga', (msg, args) => {
           }
         })
 
-        bot.createMessage(msg.channel.id, {
+        sendMessage(msg.channel.id, {
           embed: {
             title: 'Currently reading ' + res.myinfo.user_reading + ' manga', // Title of the embed
             description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days reading manga.',
@@ -2699,11 +2713,11 @@ malSearchCmd.registerSubcommand('manga', (msg, args) => {
         })
       }).catch((err) => {
         console.log(err)
-        bot.createMessage(msg.channel.id, 'Unfortunately, it appears this username does not exist. Please verify and try again.')
+        sendMessage(msg.channel.id, 'Unfortunately, it appears this username does not exist. Please verify and try again.')
       })
     } else if (args[1] === undefined) {
       malClient.getAnimeList(username).then((res) => {
-        bot.createMessage(msg.channel.id, {
+        sendMessage(msg.channel.id, {
           embed: {
             title: 'Currently watching ' + res.myinfo.user_watching + ' anime', // Title of the embed
             description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days watching anime.',
@@ -2742,7 +2756,7 @@ malSearchCmd.registerSubcommand('manga', (msg, args) => {
         })
       }).catch((err) => {
         console.log(err)
-        bot.createMessage(msg.channel.id, 'Unfortunately, it appears this username does not exist. Please verify and try again.')
+        sendMessage(msg.channel.id, 'Unfortunately, it appears this username does not exist. Please verify and try again.')
       })
     }
   }
@@ -2752,7 +2766,7 @@ malSearchCmd.registerSubcommand('manga', (msg, args) => {
 bot.registerCommand('alex', (msg, args) => {
   if (msg.channel.guild !== undefined) {
     if (parseInt(msg.channel.guild.id) === 254496813552238594) {
-      bot.createMessage(msg.channel.id, '<@!191316261299290112> 🖕')
+      sendMessage(msg.channel.id, '<@!191316261299290112> 🖕')
       ioTools.incrementCommandUse('alex')
     }
   }
@@ -2773,20 +2787,20 @@ bot.on('messageCreate', (msg) => {
       let everyoneMention = ':mega: ``[' + tools.getFormattedTimestamp() + ']``' +
         '' + msg.author.username + ' has used the ``@everyone`` mention in the <#' + msg.channel.id + '> channel.'
 
-      bot.createMessage(config.notificationChannel, everyoneMention)
+      sendMessage(config.notificationChannel, everyoneMention)
     } else if (msg.content.includes('@here')) {
       let hereMention = ':mega: ``[' + tools.getFormattedTimestamp() + ']``' +
         '<@' + msg.author.id + '> has used the ``@here`` mention in the <#' + msg.channel.id + '> channel.'
 
-      bot.createMessage(config.notificationChannel, hereMention)
+      sendMessage(config.notificationChannel, hereMention)
     } else if (tools.messageIs(msg, 'god damn')) {
-      bot.createMessage(msg.channel.id, 'https://i.imgur.com/ULUZMtV.gifv')
+      sendMessage(msg.channel.id, 'https://i.imgur.com/ULUZMtV.gifv')
     } else if (tools.messageIs(msg, 'o/') && msg.author.id !== 258162570622533635) {
-      bot.createMessage(msg.channel.id, '\\o')
+      sendMessage(msg.channel.id, '\\o')
     } else if (tools.messageIs(msg, '\\o') && msg.author.id !== 258162570622533635) {
-      bot.createMessage(msg.channel.id, 'o/')
+      sendMessage(msg.channel.id, 'o/')
     } else if (tools.messageIs(msg, 'ayy') && msg.author.id !== 258162570622533635) {
-      bot.createMessage(msg.channel.id, 'lmao')
+      sendMessage(msg.channel.id, 'lmao')
     }
   }
 })
