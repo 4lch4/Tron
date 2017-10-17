@@ -1,12 +1,12 @@
 'use strict'
 
-const INVALID_INPUT = 'Invalid input, please make sure to mention a user.'
-// ============================================================================================== //
+// #region Const and requires declarations
 const config = require('./util/config.json')
-const IOTools = require('./util/IOTools.js')
-const Tools = require('./util/Tools.js')
+const IOTools = require('./util/IOTools')
+const Tools = require('./util/Tools')
 const info = require('./package.json')
 const Canvas = require('canvas')
+const Moment = require('moment')
 
 const ioTools = new IOTools()
 const tools = new Tools()
@@ -22,9 +22,12 @@ Raven.config('https://48c87e30f01f45a7a112e0b033715f3d:d9b9df5b82914180b48856a41
 
 const NodeRestClient = require('node-rest-client').Client
 
+const popura = require('popura')
+const malClient = popura(config.malUsername, config.malPassword)
+
 let PowerWashingLinks = []
 
-// ========================== Bot Declaration =================================================== //
+// Bot declaration
 const bot = new Eris.CommandClient(config.token, {}, {
   description: info.description,
   owner: config.owner,
@@ -32,13 +35,34 @@ const bot = new Eris.CommandClient(config.token, {}, {
   name: 'Tron'
 })
 
-// ========================== Socket.io code for JarJar ========================================= //
-const io = require('socket.io')(80)
+/**
+ * Returns the default command options for most commands. Sets the cooldown and
+ * cooldown message to the values set in the project config.json. Accepts an
+ * optional array of aliases to be included for the command and if nothing is
+ * passed in, it is ignored.
+ *
+ * @example commandOptions(['pang', 'peng', 'pling'])
+ * @param {*} aliasesIn
+ */
+const commandOptions = aliasesIn => {
+  return {
+    aliases: aliasesIn,
+    cooldown: config.DEFAULT_COOLDOWN,
+    cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+    caseInsensitive: true
+  }
+}
 
-io.on('connection', (socket) => {
-  console.log('Connection received from ' + socket.conn.remoteAddress + ' at ' + tools.getCurrDateTimestamp())
-})
-let sendMessage = (channelId, message, data) => {
+/**
+ * Sends a message to the given channel using the bot constant. The first two
+ * fields are required as they say where to send what. The third, data, field,
+ * is optional as it can be used for sending files or embed objects.
+ *
+ * @param {number} channelId
+ * @param {*} message
+ * @param {*} data
+ */
+const sendMessage = (channelId, message, data) => {
   bot.createMessage(channelId, message, data).catch(err => {
     if (err) {
       console.log('There was an error...')
@@ -47,7 +71,6 @@ let sendMessage = (channelId, message, data) => {
   })
 }
 
-// ========================== External Cmd Files ================================================ //
 const Ship = require('./cmds/Ship')
 const ship = new Ship()
 
@@ -65,40 +88,34 @@ const muteCmd = new Mute()
 
 const Yaoi = require('./cmds/Yaoi')
 const yaoiCmd = new Yaoi()
+// #endregion Const and requires declarations
 
-// ========================== RSS Reader ======================================================== //
-/*
-const RSSReader = require('./util/RSSReader.js')
-
-let xkcdReader
-
-function setupRssReaders () {
-  xkcdReader = new RSSReader({
-    url: 'https://xkcd.com/rss.xml',
-    feedName: 'xkcd'
-  }).parseFeed((comic) => {
-    ioTools.storeComic(comic, (success) => {
-      if (success) {
-        sendMessage(config.crComics, 'New ' + comic.feedName.toUpperCase() + ' comic!\n' + comic.url)
-      }
-    })
-  })
+// #region Admin Commands
+const adminCmd = bot.registerCommand('admin', (msg, args) => {})
+const adminCmdOptions = {
+  commandOptions,
+  requirements: {
+    roleNames: ['tron-mod']
+  }
 }
+
+/**
+* Command Name: Admin List
+* Description : Lists various info for admins, such as the server count using the
+* servers argument.
 */
-
-// ========================== Admin Commands ==================================================== //
-let adminCmd = bot.registerCommand('admin', (msg, args) => {
-
-})
-
 adminCmd.registerSubcommand('list', (msg, args) => {
   if (config.adminids.includes(msg.author.id) && args.length === 1) {
     if (args[0].toLowerCase() === 'servers') {
       return 'Server count = ' + bot.guilds.size
     }
   }
-})
+}, adminCmdOptions)
 
+/**
+* Command Name: Ban
+* Description : Bans a user from the server it is executed on.
+*/
 adminCmd.registerSubcommand('ban', (msg, args) => {
   if (args.length > 1 && msg.mentions.length > 0) {
     let reason = args.slice(msg.mentions.length).join(' ')
@@ -131,12 +148,13 @@ adminCmd.registerSubcommand('ban', (msg, args) => {
   } else {
     return 'Please mention at least one user to ban and an optional reason after the mentioned user(s).'
   }
-}, {
-  requirements: {
-    roleNames: ['tron-mod']
-  }
-})
+}, adminCmdOptions)
 
+/**
+* Command Name: Kick User
+* Description : Kicks the mentioned users from the server the command is executed
+* on.
+*/
 adminCmd.registerSubcommand('kick', (msg, args) => {
   if (args.length > 1 && msg.mentions.length > 0) {
     let reason = args.slice(msg.mentions.length).join(' ')
@@ -169,12 +187,15 @@ adminCmd.registerSubcommand('kick', (msg, args) => {
   } else {
     return 'Please mention at least one user to kick and an optional reason after the mentioned user(s).'
   }
-}, {
-  requirements: {
-    roleNames: ['tron-mod']
-  }
-})
+}, adminCmdOptions)
 
+/**
+* Command Name: Initialize
+* Description : Some early alpha stage stuff when I working on RSS feeds. Only
+* leaving it in case it becomes useful when I come back to adding web comic
+* support.
+* Requested By: Me? I think.
+*/
 bot.registerCommand('initialize', (msg, args) => {
   msg.channel.guild.createRole({
     name: 'tron-mod'
@@ -196,13 +217,37 @@ bot.registerCommand('initialize', (msg, args) => {
 
     sendMessage(msg.channel.id, 'Permissions have been initalized.')
   })
-}, {
-  requirements: {
-    roleNames: ['tron-mod']
-  }
-})
+}, adminCmdOptions)
 
-// ========================== Mute Command ====================================================== //
+/**
+ * Evaluates and returns the given args value as Javascript.
+ * @param {*} args
+ */
+const evaluate = args => {
+  try {
+    return eval(args.join(' '))
+  } catch (err) {
+    return err.message
+  }
+}
+
+/**
+* Command Name: Evaluate
+* Description : The eval command for Tron that is *only* available to me (Alcha).
+* Requested By: Alcha (heh)
+*/
+bot.registerCommand('evaluate', (msg, args) => {
+  if (msg.author.id === config.owner) {
+    sendMessage(msg.channel.id, '`' + evaluate(args) + '`', undefined)
+  }
+}, commandOptions(['eval']))
+
+/**
+* Command Name: Mute
+* Description : Will mute all of the users mentioned in the message using the
+    tron-mute role.
+* Requested By: Alcha
+*/
 bot.registerCommand('mute', (msg, args) => {
   if (msg.mentions[0] !== undefined && msg.channel.guild !== undefined) {
     msg.mentions.forEach((user, index, array) => {
@@ -220,14 +265,13 @@ bot.registerCommand('mute', (msg, args) => {
   } else {
     return 'Please mention at least one user to mute.'
   }
-}, {
-  guildOnly: true,
-  requirements: {
-    roleNames: ['tron-mod']
-  }
-})
+}, adminCmdOptions)
 
-// ========================== Unmute Command ==================================================== //
+/**
+* Command Name: Unmute
+* Description : Will unmute all mentioned users.
+* Requested By: Alcha
+*/
 bot.registerCommand('unmute', (msg, args) => {
   if (msg.mentions[0] !== undefined && msg.channel.guild !== undefined) {
     msg.mentions.forEach((user, index, array) => {
@@ -245,35 +289,212 @@ bot.registerCommand('unmute', (msg, args) => {
   } else {
     return 'Please mention at least one user to mute.'
   }
-}, {
-  guildOnly: true,
-  requirements: {
-    roleNames: ['tron-mod']
-  }
+}, adminCmdOptions)
+// #endregion Admin Commands
+
+// #region Commands in Test
+/**
+* Command Name: Affix
+* Description : Displays specific information about a mythic affix in
+* Requested By:
+*/
+
+// ========================== LoL API Commands ================================================== //
+const LoLAid = require('./cmds/LoL')
+const lolAid = new LoLAid()
+
+let lolCmd = bot.registerCommand('lol', (msg, args) => {
+
 })
 
+lolCmd.registerSubcommand('matches', (msg, args) => {
+  let username = tools.concatArgs(args)
 
-bot.registerCommand('zorika', (msg, args) => {
-  return 'God Damn It Jay!'
-}, {
-  aliases: ['zori'],
-  caseInsensitive: true
+  lolAid.getMatchlistBySummonerName(username, 10)
+    .then(data => {
+      console.log('data.length = ' + data.length)
+      let message = 'A list of the requested users last ten games:\n'
+
+      for (let x = 0; x < data.length; x++) {
+        message += '- Game id: ' + data[x].gameId + '\n'
+        message += '  - Role: ' + data[x].role + '\n'
+        message += '  - Lane: ' + data[x].lane + '\n\n'
+      }
+
+      sendMessage(msg.channel.id, message)
+    })
+    .catch(err => {
+      console.log(err)
+      sendMessage(msg.channel.id, 'Unfortunately, there was an error: ' + err.message)
+    })
 })
 
-const evaluate = (msg, args) => {
-  try {
-    return eval(args.join(' '))
-  } catch (err) {
-    return err.message
+let convertContentFilter = guild => {
+  switch (guild.explicitContentFilter) {
+    case 0:
+      return 'OFF'
+
+    case 1:
+      return 'On for people without roles'
+
+    case 2:
+      return 'On for all'
+
+    default:
+      break
   }
 }
 
-bot.registerCommand('eval', (msg, args) => {
-  if (msg.author.id === config.owner) {
-    sendMessage(msg.channel.id, '`' + evaluate(msg, args) + '`', undefined)
+bot.registerCommand('server', (msg, args) => {
+  let guild = msg.channel.guild
+  let member
+  if (msg.member !== undefined) member = msg.member
+  else member = msg.author
+
+  let guildOwner
+
+  if (parseInt(msg.author.id) === 140183864076140544) {
+    guildOwner = '<@' + msg.author.id + '>'
+  } else {
+    guildOwner = '<@' + guild.ownerID + '>'
   }
+
+  sendMessage(msg.channel.id, {
+    'embed': {
+      'title': guild.name,
+      'description': 'Server Id: ' + guild.id + '\nServer Region: ' + guild.region.toUpperCase(),
+      'color': 4682777,
+      'timestamp': new Moment().toDate(),
+      'thumbnail': {
+        'url': guild.iconURL
+      },
+      'author': {
+        'name': member.username,
+        'icon_url': member.avatarURL
+      },
+      'fields': [{
+        'name': 'Explicit Content Filter',
+        'value': convertContentFilter(guild),
+        'inline': true
+      },
+      {
+        'name': 'Emojis',
+        'value': guild.emojis.length,
+        'inline': true
+      },
+      {
+        'name': 'Members',
+        'value': guild.members.size,
+        'inline': true
+      },
+      {
+        'name': 'Roles',
+        'value': guild.roles.size,
+        'inline': true
+      },
+      {
+        'name': 'Tron Joined On',
+        'value': new Moment(guild.joinedAt).format('MMMM Do YYYY @ HH:mm:ss')
+      },
+      {
+        'name': 'Server Created On',
+        'value': new Moment(guild.createdAt).format('MMMM Do YYYY @ HH:mm:ss')
+      },
+      {
+        'name': 'Currently Owned By',
+        'value': guildOwner
+      }
+      ]
+    }
+  })
+}, {
+  caseInsensitive: true
 })
 
+// ========================== Trivia Game Command =============================================== //
+const Trivia = require('./cmds/Trivia')
+const trivia = new Trivia()
+const Entities = require('html-entities').AllHtmlEntities
+const entities = new Entities()
+
+let triviaCmd = bot.registerCommand('trivia', (msg, args) => {
+  return tools.incorrectUsage(msg, '+trivia <start | stop | categories>', '+trivia start')
+}, {
+  caseInsensitive: true
+})
+
+triviaCmd.registerSubcommand('start', (msg, args) => {
+  if (args.length === 1) {
+    trivia.getQuestions(parseInt(args[0])).then(questions => {
+      console.log('question = ' + questions[0].question)
+      console.log('answers = ')
+      console.log(questions[0].correct_answer)
+      console.log(questions[0].incorrect_answers)
+      let content = entities.decode(questions[0].question) + '\n\n' +
+      '```\n' + '1. ' + entities.decode(questions[0].correct_answer) + '\n' +
+      '2. ' + entities.decode(questions[0].incorrect_answers[0]) + '\n' +
+      '3. ' + entities.decode(questions[0].incorrect_answers[1]) + '\n' +
+      '4. ' + entities.decode(questions[0].incorrect_answers[2]) + '```'
+
+      bot.createMessage(msg.channel.id, content).then(msg => {
+        console.log('Message sent.')
+      }).catch(err => console.log(err))
+    }).catch(err => console.log(err))
+  } else {
+    // Incorrect command usage, display help info
+    return tools.incorrectUsage(msg, '+trivia start <category id>', '+trivia start 1', 'Get a list of categories with `+trivia categories`')
+  }
+}, {
+  caseInsensitive: true
+})
+
+triviaCmd.registerSubcommand('categories', (msg, args) => {
+  return trivia.categories
+}, {
+  aliases: ['cat', 'cats'],
+  caseInsensitive: true
+})
+
+// ========================== Meme Command ====================================================== //
+const memeClient = new NodeRestClient()
+let memeCmd = bot.registerCommand('meme', (msg, args) => {
+
+}, {
+  caseInsensitive: true
+})
+
+memeCmd.registerSubcommand('doge', (msg, args) => {
+  let url = 'https://api.imgflip.com/caption_image'
+  let opts = {
+    template_id: 8072285,
+    username: 'Alcha',
+    password: config.imgFlipPass,
+    text0: 'This is a test.',
+    text1: 'this is also a test'
+  }
+  memeClient.post(url, opts, (data, resp) => {
+    console.log(data)
+  })
+}, {
+  caseInsensitive: true
+})
+
+// #endregion Commands in Test
+
+// #region User Commands
+/**
+* Command Name: Zorika
+* Description : Returns a random phrase that Zori wants.
+* Requested By: Zorika/Zori
+*/
+bot.registerCommand('zorika', (msg, args) => {
+  return 'God Damn It Jay!'
+}, commandOptions(['zori']))
+
+/**
+* Command Name: Jay
+* Description : Returns an image of Stitch.
+*/
 bot.registerCommand('jay', (msg, args) => {
   ioTools.getImage('/var/tron/images/Jay.png', (img) => {
     sendMessage(msg.channel.id, undefined, {
@@ -281,12 +502,13 @@ bot.registerCommand('jay', (msg, args) => {
       name: 'Jay.png'
     })
   })
-}, {
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  caseInsensitive: true
-})
+}, commandOptions(['jaydawg', 'dajaydawg']))
 
+/**
+* Command Name: Key
+* Description : Returns a random image that Key has placed in his key folder.
+* Requested By: Key
+*/
 bot.registerCommand('key', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickKeyImage(args[0]).then((data) => {
@@ -298,20 +520,787 @@ bot.registerCommand('key', (msg, args) => {
     })
   }
 }, {
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   caseInsensitive: true
 })
 
+/**
+* Command Name: Ami
+* Description : Returns whatever Ami has requested.
+* Requested By: Ami
+*/
 bot.registerCommand('ami', (msg, args) => {
   return '𝓽𝓱𝓮 𝓲𝓶𝓹𝓾𝓻𝓮 𝓱𝓮𝓷𝓽𝓪𝓲 𝓺𝓾𝓮𝓮𝓷'
+}, commandOptions)
+
+/**
+ * Command Name: Rose
+ * Description : Returns a random image that Rose has stored in her rose folder.
+ * Requested By: PrimRose/WolfieRose
+ */
+bot.registerCommand('rose', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickRoseImage((img, filename) => {
+      sendMessage(msg.channel.id, undefined, {
+        file: img,
+        name: filename
+      })
+    }, args[0])
+  } else {
+    reactions.pickRoseImage((img, filename) => {
+      sendMessage(msg.channel.id, undefined, {
+        file: img,
+        name: filename
+      })
+    })
+  }
+
+  ioTools.incrementCommandUse('rose')
+}, commandOptions(['eevee']))
+// #endregion User Commands
+
+// #region Feature Commands
+const quoteCmd = bot.registerCommand('quote', (msg, args) => {
+  ioTools.readFile('/var/tron/Quotes.txt', (content) => {
+    if (content !== undefined) {
+      let temp = content.split('\n')
+      let random = tools.getRandom(0, temp.length)
+
+      sendMessage(msg.channel.id, temp[random])
+    }
+  })
+}, commandOptions(['quotes']))
+
+quoteCmd.registerSubcommand('cm', (msg, args) => {
+  ioTools.readFile('CM_Quotes.txt', (content) => {
+    let temp = content.split('\n')
+    let random = tools.getRandom(0, temp.length)
+
+    sendMessage(msg.channel.id, temp[random])
+  })
+}, commandOptions)
+
+/**
+* Command Name: Ping
+* Description : Pings the bot.
+*/
+bot.registerCommand('ping', (msg, args) => {
+  return 'Pong!'
 }, {
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  description: 'Pong!',
+  fullDescription: 'Used to check if the bot is up.'
+})
+
+/**
+* Command Name: Invite
+* Description : Returns the link to invite Tron to another server.
+*/
+bot.registerCommand('invite', (msg, args) => {
+  return 'Would you like me to join your server? :smiley: \n' + config.invitelink
+}, commandOptions)
+
+/**
+* Command Name: Stats
+* Description : Returns the overall stats of command usage or the numbers for a
+* particular command.
+*/
+bot.registerCommand('stats', (msg, args) => {
+  if (args.length === 0) {
+    ioTools.getAllCommandUsage((results) => {
+      let fields = []
+
+      for (let i = 0; i < results.length; i++) {
+        fields[i] = {
+          name: results[i].COMMAND_NAME,
+          value: results[i].COMMAND_USE_COUNT,
+          inline: true
+        }
+      }
+
+      sendMessage(msg.channel.id, {
+        embed: {
+          title: 'Command Stats', // Title of the embed
+          description: "Here's a list of the commands available and how many times they've been used.",
+          color: 0x008000, // Color, either in hex (show), or a base-10 integer
+          fields: fields
+        }
+      })
+    })
+  } else {
+    ioTools.getCommandUsage(args[0], (results) => {
+      if (results[0] !== undefined) {
+        sendMessage(msg.channel.id, {
+          embed: {
+            color: 0x008000,
+            fields: [{
+              name: results[0].COMMAND_NAME,
+              value: results[0].COMMAND_USE_COUNT
+            }]
+          }
+        })
+      } else {
+        sendMessage(msg.channel.id, 'Please use a valid command, this does not exist in the database.')
+      }
+    })
+  }
+
+  ioTools.incrementCommandUse('stats')
+}, commandOptions(['stat']))
+
+/**
+* Command Name: RateWaifu
+* Description : Randomly rates a user on a scale of 0 - 10. Some "special" users
+* have their scores locked to interesting replies. When a special case is added,
+* I do my best to place their name in a comment to make later debugging much
+* easier.
+* Requested By: Bella and Kayla
+*/
+bot.registerCommand('ratewaifu', (msg, args) => {
+  tools.doesMsgContainShu(msg).then((shuFlag) => {
+    if (shuFlag) {
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+    } else {
+      if (msg.channel.guild !== undefined && msg.mentions.length === 1) {
+        switch (parseInt(msg.mentions[0].id)) {
+          case 219270060936527873:    // Alcha
+            sendMessage(msg.channel.id, '**' + msg.mentions[0].username + '**-senpai, I\'d rate you 11/10. \n\n_notice me_')
+            break
+          case 317138587491631104:    // Travis
+            sendMessage(msg.channel.id, '**' + msg.mentions[0].username + '**-dono, I\'d rate you 11/10. :fire:')
+            break
+          case 158740486352273409:    // Micaww
+            sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you 0/10 waifu.")
+            break
+          case 142092834260910080:    // Snow/Daddy Yoana
+            sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you -69/10 waifu.")
+            break
+          case 146023112008400896:    // Aaron/Mamba
+            sendMessage(msg.channel.id, '**' + msg.mentions[0].username + '**, I\'d rate you 0/10 waifu.')
+            break
+          case 120797492865400832:    // Bella
+            sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you 12/10 waifu. :fire: :fire:")
+            break
+          case 139474184089632769:    // Utah
+            sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you -∞/10 waifu.")
+            break
+          case 167546638758445056:    // DerpDeSerp
+            sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you ∞/10 waifu. The best of the best.")
+            break
+          case 351967369247326209:    // Heather/Kristina
+            sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you " + tools.getRandom(6, 11) + '/10 waifu.')
+            break
+          case 271499964109029377:    // Daddy Zee
+            sendMessage(msg.channel.id, '**' + msg.mentions[0].username + '**, I\'d rate you ' + tools.getRandom(8, 13) + '/10 waifu.')
+            break
+
+          default:
+            const random = tools.getRandom(0, 11)
+            const message = '**' + msg.mentions[0].username + "**, I'd rate you " + random + '/10 waifu.'
+
+            sendMessage(msg.channel.id, message)
+            break
+        }
+      }
+    }
+
+    ioTools.incrementCommandUse('rate')
+  })
+}, commandOptions(['rate']))
+
+/**
+* Command Name: Git
+* Description : Returns a link to the Github repository for Tron.
+*/
+bot.registerCommand('git', (msg, args) => {
+  sendMessage(msg.channel.id, 'You can find the git repo for Tron here: https://github.com/Paranoid-Devs/Tron')
+
+  ioTools.incrementCommandUse('git')
+}, commandOptions(['repo', 'github', 'codebase']))
+
+// #region Role Based Commands
+/**
+* Command Name: Add Role
+* Description : Add a role to the list of currently available roles on a given
+* server. Only usable by those with the tron-mod role or server administration
+* privelages.
+*/
+bot.registerCommand('addr', (msg, args) => {
+  if (msg.channel.guild !== null) {
+    if (tools.memberIsMod(msg)) {
+      const comparison = tools.concatArgs(args)
+      const roles = msg.channel.guild.roles
+
+      roles.forEach((value, key, mapObj) => {
+        if (value.name !== null) {
+          const name = value.name.toLowerCase()
+
+          if (name === comparison) {
+            roleNames.push(value.name)
+            sendMessage(msg.channel.id, 'Added ' + value.name + ' to list of available roles.')
+          }
+        }
+      })
+    }
+  }
+}, commandOptions(['addrole', 'plusrole']))
+
+/**
+* Command Name: List Roles
+* Description : Returns a list of the currently available
+* Requested By:
+*/
+bot.registerCommand('listr', (msg, args) => {
+  let message = 'List of currently available roles:\n'
+
+  roleNames.forEach((curr, index, arr) => {
+    message += '- **' + curr + '**\n'
+  })
+
+  sendMessage(msg.channel.id, message)
+}, {
+  caseInsensitive: true,
+  description: 'List roles that are available to join.',
+  fullDescription: 'Lists the roles that have been added by an administrator that are available.'
+})
+
+/**
+* Command Name: Leave Role
+* Description : Leaves a role or roles that have been specified by the user.
+* Requested By:
+*/
+bot.registerCommand('leaver', (msg, args) => {
+  let comparison = tools.concatArgs(args)
+
+  if (msg.channel.guild !== null) {
+    let userId = msg.author.id
+
+    if (comparison === 'all') {
+      tools.removeAllRoles(userId, msg, bot)
+    } else {
+      let roleId = tools.getRoleId(msg, comparison)
+
+      if (roleId.length > 1) {
+        if (tools.allowedRole(comparison)) {
+          msg.channel.guild.removeMemberRole(userId, roleId)
+          sendMessage(msg.channel.id, ":outbox_tray: You've successfully been removed from your requested group.")
+          msg.delete()
+          ioTools.incrementCommandUse('leaver')
+        }
+      }
+    }
+  }
+}, {
+  caseInsensitive: true,
+  description: 'Leave a role.',
+  fullDescription: 'Used to leave a specific role, usually to also leave an associated channel.'
+})
+
+/**
+* Command Name: Join Role
+* Description : Allows a user to join a role for any number of reasons.
+*/
+bot.registerCommand('joinr', (msg, args) => {
+  let comparison = tools.concatArgs(args)
+
+  if (msg.channel.guild !== undefined) {
+    let userId = msg.author.id
+
+    if (comparison === 'all') {
+      tools.addAllRoles(userId, msg, bot)
+    } else {
+      let roleId = tools.getRoleId(msg, comparison)
+
+      if (roleId.length > 1) {
+        if (tools.allowedRole(comparison)) {
+          msg.channel.guild.addMemberRole(userId, roleId)
+          sendMessage(msg.channel.id, ":inbox_tray: You've successfully been added to your requested group.")
+          msg.delete()
+          ioTools.incrementCommandUse('joinr')
+        }
+      }
+    }
+  }
+}, commandOptions)
+// #endregion Role Based Commands
+
+/**
+* Command Name: Avatar
+* Description : Attemptes to retrieve a 1024x1024 version of the mentioned user
+* in the provided msg object. If there isn't an image of that size, the next
+* largest is located and returned.
+* Requested By: Battsie
+*/
+bot.registerCommand('Avatar', (msg, args) => {
+  if (msg.mentions.length === 1) {
+    let url = msg.mentions[0].dynamicAvatarURL(null, 1024)
+    let origFilename = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('?'))
+
+    ioTools.downloadFiles([{
+      url: url,
+      dest: '/var/tron/images/avatar/' + origFilename
+    }], (filenames) => {
+      filenames.forEach((filename, key, array) => {
+        ioTools.getImage(filename, (image) => {
+          sendMessage(msg.channel.id, undefined, {
+            file: image,
+            name: origFilename
+          })
+        })
+      })
+    })
+  } else {
+    return 'Please only mention one user at a time.'
+  }
+}, {
   cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  aliases: ['profile'],
   caseInsensitive: true
 })
 
-// ========================== Cats Command (Requested by Neko) ================================== //
+/**
+* Command Name: Ship
+* Description : Ship two users and generate a random couple name for them.
+*/
+bot.registerCommand('Ship', (msg, args) => {
+  tools.doesMsgContainShu(msg).then((shuFlag) => {
+    if (shuFlag) {
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+    } else {
+      if (msg.channel.guild !== undefined && msg.mentions.length === 2) {
+        const urls = [msg.mentions[0].avatarURL, msg.mentions[1].avatarURL]
+
+        ship.getShipImages(urls, (images) => {
+          let avatarCanvas = new Canvas(384, 128)
+          let ctx = avatarCanvas.getContext('2d')
+
+          for (let i = 0; i < 3; i++) {
+            ctx.drawImage(images[i], (i * 128), 0, 128, 128)
+
+            if (i === 2) {
+              ship.getShipName(msg, (shipName) => {
+                let shipMsg = 'Lovely shipping!\n' +
+                  'Ship name: **' + shipName + '**'
+
+                sendMessage(msg.channel.id, shipMsg, {
+                  file: avatarCanvas.toBuffer(),
+                  name: shipName + '.png'
+                })
+              })
+            }
+          }
+        })
+      }
+    }
+
+    ioTools.incrementCommandUse('ship')
+  })
+}, {
+  caseInsensitive: true,
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  description: 'Ship two users.',
+  fullDescription: 'Takes the two mentioned users and mashes their names into a lovely mess.'
+})
+
+/**
+* Command Name: Reddit
+* Description : Allows users to select a random image from a given subreddit.
+*/
+bot.registerCommand('reddit', (msg, args) => {
+  let subreddit = args.join('')
+
+  reddit.r(subreddit, (err, data, res) => {
+    if (err) {
+      console.log(err)
+      return
+    }
+    let randomPost = tools.getRandom(0, data.data.children.length)
+
+    if (data.data.children[randomPost] !== undefined) {
+      if (data.data.children[randomPost].data.over_18 && !msg.channel.nsfw) {
+        sendMessage(msg.channel.id, 'It appears the result of this search is NSFW and this channel is not flagged for NSFW content. Please try in another channel.')
+      } else {
+        sendMessage(msg.channel.id, data.data.children[randomPost].data.url)
+      }
+    } else {
+      console.log('data.data.children[randomPost].data===undefined')
+      console.log('subreddit = ' + subreddit)
+      console.log('randomPost = ' + randomPost)
+      console.log(data.data.children)
+      sendMessage(msg.channel.id, 'Unfortunately, something went wrong and the developers have been alerted. Please try again.')
+    }
+
+    ioTools.incrementCommandUse('reddit')
+  })
+}, commandOptions(['r']))
+
+// ========================= Suggestion Command ================================================= //
+bot.registerCommand('suggestion', (msg, args) => {
+  let sqlQuery = 'INSERT INTO SUGGESTIONS (AUTHOR_ID, SUGGESTION_TEXT) VALUES ' +
+    '("' + msg.author.id + '", ' + ' "' + args.join(' ') + '");'
+
+  ioTools.executeSql(sqlQuery)
+
+  return 'Thank you for your suggestion!'
+}, {
+  argsRequired: true,
+  caseInsensitive: true,
+  description: 'Provide a suggestion to the bot authors.',
+  fullDescription: 'Provide a suggestion for a command or new feature you would like to see in Tron.',
+  guildOnly: false,
+  usage: '`+suggestion Give me all your money.`'
+})
+
+let malCmd = bot.registerCommand('mal', (msg, args) => {})
+
+let malSearchCmd = malCmd.registerSubcommand('search', (msg, args) => {})
+
+malSearchCmd.registerSubcommand('anime', (msg, args) => {
+  if (args.length === 0) {
+
+  } else {
+    let name = tools.concatArgs(args)
+
+    malClient.searchAnimes(name).then(animes => {
+      animes.forEach((anime, index, map) => {
+        let animeUrl = 'https://myanimelist.net/anime/' + anime.id + '/' + anime.title.replace(/ /g, '_')
+
+        sendMessage(msg.channel.id, {
+          embed: {
+            title: anime.title,
+            description: 'Score: **' + anime.score.toString() + '**',
+            color: 0x336699,
+            url: animeUrl,
+            fields: [ // Array of field objects
+              {
+                name: 'Type',
+                value: anime.type,
+                inline: true
+              },
+              {
+                name: 'Episodes',
+                value: anime.episodes,
+                inline: true
+              },
+              {
+                name: 'Status',
+                value: anime.status,
+                inline: true
+              },
+              {
+                name: 'Synopsis',
+                value: anime.synopsis,
+                inline: false
+              }
+            ],
+            footer: {
+              text: 'Data retrieved from MyAnimeList.net.',
+              icon_url: 'https://myanimelist.cdn-dena.com/images/faviconv5.ico'
+            }
+          }
+        })
+      })
+    }).catch(err => console.log(err))
+  }
+})
+
+malSearchCmd.registerSubcommand('manga', (msg, args) => {
+  if (args.length === 0) {
+
+  } else {
+    let name = tools.concatArgs(args)
+
+    malClient.searchMangas(name).then(mangas => {
+      mangas.forEach((manga, index, map) => {
+        if (index + 1 !== mangas.length) {
+          let synopsis
+          let type
+          let volumes
+          let status
+          let score
+          let title
+          let image
+
+          if (manga.synopsis === null || manga.synopsis === undefined || manga.synopsis.length < 2) {
+            synopsis = 'N/A'
+          } else {
+            synopsis = manga.synopsis.replace(/\[\/?i]/g, '_')
+              .replace(/\[\/?b]/g, '**')
+              .replace(/(\[url=)/g, '(')
+              .replace(/]\b/g, ') ')
+              .replace(/(\[\/url\])/g, ' ')
+          }
+
+          if (manga.type === null) type = 'N/A'
+          else type = manga.type
+
+          if (manga.volumes === null) volumes = 'N/A'
+          else volumes = manga.volumes
+
+          if (manga.status === null) status = 'N/A'
+          else status = manga.status
+
+          if (manga.score === undefined || manga.score === null || manga.score.length === 0) score = 'N/A'
+          else score = manga.score
+
+          if (manga.title === undefined || manga.title === null || manga.title.length < 2) title = 'N/A'
+          else title = manga.title
+
+          if (manga.image === undefined || manga.image === null || manga.image.length < 2) image = 'N/A'
+          else image = manga.image
+
+          let mangaUrl = 'https://myanimelist.net/manga/' + manga.id + '/' + title.replace(/ /g, '_')
+
+          sendMessage(msg.channel.id, {
+            embed: {
+              title: title,
+              thumbnail: {
+                url: image
+              },
+              description: 'Score: **' + score.toString() + '**',
+              color: 0x336699,
+              url: mangaUrl,
+              fields: [ // Array of field objects
+                {
+                  name: 'Type',
+                  value: type,
+                  inline: true
+                },
+                {
+                  name: 'Volumes',
+                  value: volumes,
+                  inline: true
+                },
+                {
+                  name: 'Status',
+                  value: status,
+                  inline: true
+                },
+                {
+                  name: 'Synopsis',
+                  value: synopsis,
+                  inline: false
+                }
+              ],
+              footer: {
+                text: 'Data retrieved from MyAnimeList.net.',
+                icon_url: 'https://myanimelist.cdn-dena.com/images/faviconv5.ico'
+              }
+            }
+          }).catch((err) => {
+            console.log('Error occured searching for manga.')
+            console.log(err)
+          })
+        }
+      })
+    }).catch(err => console.log(err))
+  }
+}, commandOptions)
+
+/* let malUserCmd = */
+malCmd.registerSubcommand('user', (msg, args) => {
+  if (args.length === 0) {
+    sendMessage(msg.channel.id, 'You must include the username of an account on MAL.')
+  } else {
+    let username = args[0]
+    if (args[1] !== undefined && args[1].toLowerCase() === 'anime') {
+      malClient.getAnimeList(username).then((res) => {
+        let fields = []
+        res.list.sort((a, b) => {
+          if (a.my_score > b.my_score) return 1
+          else if (a.my_score < b.my_score) return -1
+          else return 0
+        })
+
+        for (let i = res.list.length; fields.length < 30; i--) {
+          if (res.list[i] !== undefined && res.list[i].my_score !== 0) {
+            fields.push({
+              name: res.list[i].series_title,
+              value: res.list[i].my_score,
+              inline: true
+            })
+          }
+        }
+
+        sendMessage(msg.channel.id, {
+          embed: {
+            title: 'Currently watching ' + res.myinfo.user_watching + ' anime.', // Title of the embed
+            description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days watching anime.',
+            author: { // Author property
+              name: res.myinfo.user_name,
+              url: 'https://myanimelist.net/profile/' + res.myinfo.user_name,
+              icon_url: 'https://myanimelist.cdn-dena.com/images/userimages/' + res.myinfo.user_id + '.jpg'
+            },
+            color: 0x336699,
+            fields: fields,
+            footer: {
+              text: 'Data retrieved from MyAnimeList.net.',
+              icon_url: 'https://myanimelist.cdn-dena.com/images/faviconv5.ico'
+            }
+          }
+        }).catch(err => console.log(err))
+      }).catch(err => {
+        console.log(err)
+        sendMessage(msg.channel.id, 'Unfortunately, it appears this username does not exist. Please verify and try again.')
+      })
+    } else if (args[1] !== undefined && args[1].toLowerCase() === 'manga') {
+      malClient.getMangaList(username).then((res) => {
+        let fields = []
+
+        res.list.sort((a, b) => {
+          if (a.my_score < b.my_score) return 1
+          else if (a.my_score > b.my_score) return -1
+          else return 0
+        })
+
+        res.list.forEach((manga, index, map) => {
+          if (manga.my_score === 0 && manga.my_status === 2) {
+            fields.push({
+              name: manga.series_title,
+              value: manga.my_score,
+              inline: true
+            })
+          } else if (manga.my_score !== 0) {
+            fields.push({
+              name: manga.series_title,
+              value: manga.my_score,
+              inline: true
+            })
+          }
+        })
+
+        sendMessage(msg.channel.id, {
+          embed: {
+            title: 'Currently reading ' + res.myinfo.user_reading + ' manga', // Title of the embed
+            description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days reading manga.',
+            url: 'https://myanimelist.net/animelist/' + res.myinfo.user_name + '?status=1',
+            author: { // Author property
+              name: res.myinfo.user_name,
+              url: 'https://myanimelist.net/profile/' + res.myinfo.user_name,
+              icon_url: 'https://myanimelist.cdn-dena.com/images/userimages/' + res.myinfo.user_id + '.jpg'
+            },
+            color: 0x336699, // Color, either in hex (show), or a base-10 integer
+            fields: fields,
+            footer: {
+              text: 'Data retrieved from MyAnimeList.net.',
+              icon_url: 'https://myanimelist.cdn-dena.com/images/faviconv5.ico'
+            }
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      }).catch((err) => {
+        console.log(err)
+        sendMessage(msg.channel.id, 'Unfortunately, it appears this username does not exist. Please verify and try again.')
+      })
+    } else if (args[1] === undefined) {
+      malClient.getAnimeList(username).then((res) => {
+        sendMessage(msg.channel.id, {
+          embed: {
+            title: 'Currently watching ' + res.myinfo.user_watching + ' anime', // Title of the embed
+            description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days watching anime.',
+            url: 'https://myanimelist.net/animelist/' + res.myinfo.user_name + '?status=1',
+            author: { // Author property
+              name: res.myinfo.user_name,
+              url: 'https://myanimelist.net/profile/' + res.myinfo.user_name,
+              icon_url: 'https://myanimelist.cdn-dena.com/images/userimages/' + res.myinfo.user_id + '.jpg'
+            },
+            color: 0x336699, // Color, either in hex (show), or a base-10 integer
+            thumbnail: {},
+            fields: [ // Array of field objects
+              {
+                name: 'Completed',
+                value: res.myinfo.user_completed,
+                inline: true
+              },
+              {
+                name: 'On Hold',
+                value: res.myinfo.user_onhold,
+                inline: true
+              },
+              {
+                name: 'Dropped',
+                value: res.myinfo.user_dropped,
+                inline: true
+              }
+            ],
+            footer: {
+              text: 'Data retrieved from MyAnimeList.net.',
+              icon_url: 'https://myanimelist.cdn-dena.com/images/faviconv5.ico'
+            }
+          }
+        }).catch(err => {
+          console.log(err)
+        })
+      }).catch((err) => {
+        console.log(err)
+        sendMessage(msg.channel.id, 'Unfortunately, it appears this username does not exist. Please verify and try again.')
+      })
+    }
+  }
+}, commandOptions)
+// #endregion Feature Commands
+
+// #region Reaction Commands
+/**
+* Command Name: Cry
+* Description : Returns a random gif of someone crying.
+*/
+bot.registerCommand('cry', (msg, args) => {
+  reactions.pickCryImage((cryImage) => {
+    sendMessage(msg.channel.id, undefined, {
+      file: cryImage,
+      name: 'Cry.gif'
+    })
+
+    ioTools.incrementCommandUse('cry')
+  })
+}, {
+  aliases: ['crys', 'cried'],
+  caseInsensitive: true,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldown: config.DEFAULT_COOLDOWN,
+  description: 'Displays random cry gif.',
+  fullDescription: 'Displays a random cry gif.'
+})
+
+/**
+* Command Name: Meh
+* Description : Returns a random gif that illustrates the feeling of meh.
+* Requested By: Alcha
+*/
+bot.registerCommand('meh', (msg, args) => {
+  ioTools.getImage('/var/tron/images/meh.gif', (img) => {
+    sendMessage(msg.channel.id, undefined, {
+      file: img,
+      name: 'meh.gif'
+    })
+  })
+}, commandOptions)
+
+bot.registerCommand('lewd', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickLewdImage(args[0]).then(imgObject => {
+      sendMessage(msg.channel.id, undefined, {
+        file: imgObject.image,
+        name: imgObject.filename
+      })
+    })
+  } else {
+    reactions.pickLewdImage().then(imgObject => {
+      sendMessage(msg.channel.id, undefined, {
+        file: imgObject.image,
+        name: imgObject.filename
+      })
+    })
+  }
+}, commandOptions)
+
+/**
+* Command Name: Cat
+* Description : Returns a random cat image/gif.
+* Requested By: Neko
+*/
 bot.registerCommand('cat', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickCatImage((img, filename) => {
@@ -330,16 +1319,15 @@ bot.registerCommand('cat', (msg, args) => {
   }
 
   ioTools.incrementCommandUse('cat')
-}, {
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  argsRequired: false,
-  caseInsensitive: true,
-  description: 'Displays a random cat image or gif.',
-  fullDescription: 'Displays a random cat image or gif that was supplied by Neko.',
-  guildOnly: true
-})
+}, commandOptions(['neko']))
 
+// #endregion Reaction Commands
+
+/**
+* Command Name: PowerWashingPorn
+* Description : Pulls random images from the top page images of all time on the
+* r/PowerWashingPorn subreddit.
+*/
 bot.registerCommand('powerwashingporn', (msg, args) => {
   if (PowerWashingLinks.length === 0) {
     reddit.r('powerwashingporn').top().from('all').all((res) => {
@@ -371,107 +1359,13 @@ bot.registerCommand('powerwashingporn', (msg, args) => {
 
     ioTools.incrementCommandUse('powerwashing')
   }
-}, {
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN
-})
+}, commandOptions)
 
-bot.registerCommand('reddit', (msg, args) => {
-  let subreddit = args.join('')
-
-  reddit.r(subreddit, (err, data, res) => {
-    if (err) {
-      console.log(err)
-      return
-    }
-    let randomPost = tools.getRandom(0, data.data.children.length)
-
-    if (data.data.children[randomPost] !== undefined) {
-      if (data.data.children[randomPost].data.over_18 && !msg.channel.nsfw) {
-        sendMessage(msg.channel.id, 'It appears the result of this search is NSFW and this channel is not flagged for NSFW content. Please try in another channel.')
-      } else {
-        sendMessage(msg.channel.id, data.data.children[randomPost].data.url)
-      }
-    } else {
-      console.log('data.data.children[randomPost].data===undefined')
-      console.log('subreddit = ' + subreddit)
-      console.log('randomPost = ' + randomPost)
-      console.log(data.data.children)
-      sendMessage(msg.channel.id, 'Unfortunately, something went wrong and the developers have been alerted. Please try again.')
-    }
-
-    ioTools.incrementCommandUse('reddit')
-  })
-}, {
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  aliases: ['r']
-})
-
-// ========================== Rose Command (Requested by PrimRose) ============================== //
-bot.registerCommand('rose', (msg, args) => {
-  if (!isNaN(parseInt(args[0]))) {
-    reactions.pickRoseImage((img, filename) => {
-      sendMessage(msg.channel.id, undefined, {
-        file: img,
-        name: filename
-      })
-    }, args[0])
-  } else {
-    reactions.pickRoseImage((img, filename) => {
-      sendMessage(msg.channel.id, undefined, {
-        file: img,
-        name: filename
-      })
-    })
-  }
-
-  ioTools.incrementCommandUse('rose')
-}, {
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  argsRequired: false,
-  caseInsensitive: true,
-  description: 'Displays a random Eevee gif.',
-  fullDescription: 'Displays a random Eevee gif that was supplied by Prim.',
-  guildOnly: true
-})
-
-bot.registerCommand('meh', (msg, args) => {
-  ioTools.getImage('/var/tron/images/meh.gif', (img) => {
-    sendMessage(msg.channel.id, undefined, {
-      file: img,
-      name: 'meh.gif'
-    })
-  })
-}, {
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  caseInsensitive: true
-})
-
-bot.registerCommand('lewd', (msg, args) => {
-  if (!isNaN(parseInt(args[0]))) {
-    reactions.pickLewdImage(args[0]).then(imgObject => {
-      sendMessage(msg.channel.id, undefined, {
-        file: imgObject.image,
-        name: imgObject.filename
-      })
-    })
-  } else {
-    reactions.pickLewdImage().then(imgObject => {
-      sendMessage(msg.channel.id, undefined, {
-        file: imgObject.image,
-        name: imgObject.filename
-      })
-    })
-  }
-}, {
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  caseInsensitive: true
-})
-
+/**
+* Command Name: Squirtle
+* Description : Returns a random Squirtle image/gif.
+* Requested By: Alex/SquirtleGirl
+*/
 bot.registerCommand('squirtle', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickSquirtleImage(args[0]).then(imgObject => {
@@ -488,13 +1382,13 @@ bot.registerCommand('squirtle', (msg, args) => {
       })
     })
   }
-}, {
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  caseInsensitive: true
-})
+}, commandOptions)
 
-// ========================== Nobulli Command (Compromise on request from Onyx) ================= //
+/**
+* Command Name: Nobulli
+* Description : Returns a random bully gif and tells a user not to bully another.
+* Requested By: Onyx
+*/
 bot.registerCommand('nobulli', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
@@ -522,18 +1416,13 @@ bot.registerCommand('nobulli', (msg, args) => {
   })
 
   ioTools.incrementCommandUse('nobulli')
-}, {
-  aliases: ['bulli', 'bully', 'nobully'],
-  argsRequired: true,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  caseInsensitive: true,
-  cooldown: config.DEFAULT_COOLDOWN,
-  description: 'Displays a random nobulli gif.',
-  fullDescription: 'Displays a random nobulli gif and the name of the user you mention.',
-  guildOnly: true
-})
+}, commandOptions(['bulli', 'bully', 'nobully']))
 
-// ========================== Dodge Command (Requested by Rose) ================================= //
+/**
+* Command Name: Dodge
+* Description : Returns a random dodge gif.
+* Requested By: PrimRose
+*/
 bot.registerCommand('dodge', (msg, args) => {
   if (args.length === 1 && !isNaN(parseInt(args[0]))) {
     reactions.pickDodgeImage(args[0]).then((img) => {
@@ -552,14 +1441,13 @@ bot.registerCommand('dodge', (msg, args) => {
   }
 
   ioTools.incrementCommandUse('dodge')
-}, {
-  aliases: ['dodges'],
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  caseInsensitive: true
-})
+}, commandOptions(['dodges']))
 
-// ========================== Dreamy Command (Requested by Dreamy) ============================== //
+/**
+* Command Name: Dreamy
+* Description : Returns a random image from a collection given to me by Dreamy.
+* Requested By: Dreamy
+*/
 bot.registerCommand('dreamy', (msg, args) => {
   reactions.pickDreamyImage((dreamyImage) => {
     sendMessage(msg.channel.id, undefined, {
@@ -575,20 +1463,6 @@ bot.registerCommand('dreamy', (msg, args) => {
   cooldown: config.DEFAULT_COOLDOWN,
   description: 'Displays random dreamy gif.',
   fullDescription: 'Displays a random dreamy gif.'
-})
-
-// ========================== Change Command ==================================================== //
-bot.registerCommand('change', (msg, args) => {
-  // Verify user is part of admins
-  if (config.adminids.indexOf(msg.author.id) > -1) {
-    if (args[0] === 'notification') {
-      config.notificationChannel = msg.channel.id
-      sendMessage(msg.channel.id, 'The NotificationChannel has been changed to - ' + msg.channel.name)
-    }
-  }
-}, {
-  description: 'Change notification channel.',
-  fullDescription: 'Used to change the notification channel.'
 })
 
 // ========================== Vape Nation Command (Requested by Lagucci Mane) =================== //
@@ -608,25 +1482,6 @@ bot.registerCommand('vn', (msg, args) => {
   cooldown: config.DEFAULT_COOLDOWN,
   caseInsensitive: true,
   fullDescription: 'Displays a random vape nation gif.'
-})
-
-// ========================== Cry Command ======================================================= //
-bot.registerCommand('cry', (msg, args) => {
-  reactions.pickCryImage((cryImage) => {
-    sendMessage(msg.channel.id, undefined, {
-      file: cryImage,
-      name: 'Cry.gif'
-    })
-
-    ioTools.incrementCommandUse('cry')
-  })
-}, {
-  aliases: ['crys', 'cried'],
-  caseInsensitive: true,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  description: 'Displays random cry gif.',
-  fullDescription: 'Displays a random cry gif.'
 })
 
 // ========================== Love Command ====================================================== //
@@ -661,47 +1516,6 @@ bot.registerCommand('love', (msg, args) => {
   cooldown: config.DEFAULT_COOLDOWN,
   description: 'Displays random love gif.',
   fullDescription: 'Displays a random love gif and the name of the person you mention.'
-})
-
-// ========================== Invite Command ==================================================== //
-bot.registerCommand('invite', (msg, args) => {
-  if (msg.channel.guild !== undefined) {
-    if (args.length < 1) {
-      return 'Would you like me to join your server? :smiley: \n' + config.invitelink
-    } else {
-      let comparison = args[0].toLowerCase()
-      let members = msg.channel.guild.members
-
-      members.forEach((value, key, mapObj) => {
-        if (value.user !== undefined) {
-          let username = value.user.username.toLowerCase()
-
-          if (value.nick !== undefined) {
-            username = value.nick.toLowerCase()
-          }
-
-          if (username === comparison) {
-            msg.channel.editPermission(value.user.id, 1024, null, 'member')
-          }
-        }
-      })
-    }
-  } else {
-    console.log('In isNan else loop.')
-  }
-}, {
-  caseInsensitive: true,
-  description: 'Generate an invite link or invite a user to your channel.',
-  fullDescription: 'If you provide a username, the user will be added to your channel. ' +
-    'Otherwise, the invite link for Tron is returned.'
-})
-
-// ========================== Ping Command ====================================================== //
-bot.registerCommand('ping', (msg, args) => {
-  return 'Pong!'
-}, {
-  description: 'Pong!',
-  fullDescription: 'Used to check if the bot is up.'
 })
 
 // ========================== Slap Command ====================================================== //
@@ -749,23 +1563,6 @@ bot.registerCommand('slap', (msg, args) => {
   fullDescription: 'Displays a random slap gif and the name of the user you mention.',
   guildOnly: true,
   usage: '@user e.g. `+slap @Alcha#2621`'
-})
-
-// ========================= Suggestion Command ================================================= //
-bot.registerCommand('suggestion', (msg, args) => {
-  let sqlQuery = 'INSERT INTO SUGGESTIONS (AUTHOR_ID, SUGGESTION_TEXT) VALUES ' +
-    '("' + msg.author.id + '", ' + ' "' + args.join(' ') + '");'
-
-  ioTools.executeSql(sqlQuery)
-
-  return 'Thank you for your suggestion!'
-}, {
-  argsRequired: true,
-  caseInsensitive: true,
-  description: 'Provide a suggestion to the bot authors.',
-  fullDescription: 'Provide a suggestion for a command or new feature you would like to see in Tron.',
-  guildOnly: false,
-  usage: '`+suggestion Give me all your money.`'
 })
 
 // ========================== Kiss Command ====================================================== //
@@ -1206,37 +2003,6 @@ divorce.registerSubcommand('list', (msg, args) => {
   caseInsensitive: true
 })
 
-// ========================== Quote Command ===================================================== //
-let quoteCmd = bot.registerCommand('quote', (msg, args) => {
-  ioTools.readFile('/var/tron/Quotes.txt', (content) => {
-    if (content !== undefined) {
-      let temp = content.split('\n')
-      let random = tools.getRandom(0, temp.length)
-
-      sendMessage(msg.channel.id, temp[random])
-    }
-  })
-}, {
-  aliases: ['quotes'],
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  caseInsensitive: true,
-  cooldown: config.DEFAULT_COOLDOWN,
-  description: 'Returns a random quote.'
-})
-
-quoteCmd.registerSubcommand('cm', (msg, args) => {
-  ioTools.readFile('CM_Quotes.txt', (content) => {
-    let temp = content.split('\n')
-    let random = tools.getRandom(0, temp.length)
-
-    sendMessage(msg.channel.id, temp[random])
-  })
-}, {
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  caseInsensitive: true
-})
-
 // ========================== Kill Command ====================================================== //
 bot.registerCommand('kill', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
@@ -1336,67 +2102,10 @@ bot.registerCommand('kayla', (msg, args) => {
     return 'This command is unavailable to you.'
   }
 }, {
+  caseInsensitive: true,
   cooldown: config.DEFAULT_COOLDOWN,
   cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   aliases: ['yoana']
-})
-
-// ========================== Confused Command ================================================== //
-bot.registerCommand('confused', (msg, args) => {
-  reactions.pickConfusedImage((img) => {
-    sendMessage(msg.channel.id, undefined, {
-      file: img,
-      name: 'Confused.gif'
-    })
-
-    ioTools.incrementCommandUse('confused')
-  })
-}, {
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  caseInsensitive: true
-})
-
-// ========================== Dance Command ===================================================== //
-bot.registerCommand('dance', (msg, args) => {
-  reactions.pickDanceImage((img) => {
-    sendMessage(msg.channel.id, undefined, {
-      file: img,
-      name: 'Dance.gif'
-    })
-
-    ioTools.incrementCommandUse('dance')
-  })
-}, {
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  caseInsensitive: true
-})
-
-// ========================== Pout Command ====================================================== //
-bot.registerCommand('pout', (msg, args) => {
-  if (args.length === 1 && !isNaN(parseInt(args[0]))) {
-    reactions.pickPoutImage(args[0]).then((img) => {
-      sendMessage(msg.channel.id, undefined, {
-        file: img,
-        name: 'Pout.gif'
-      })
-    })
-  } else {
-    reactions.pickPoutImage().then((img) => {
-      sendMessage(msg.channel.id, undefined, {
-        file: img,
-        name: 'Pout.gif'
-      })
-    })
-  }
-
-  ioTools.incrementCommandUse('pout')
-}, {
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  aliases: ['pouts'],
-  caseInsensitive: true
 })
 
 // ========================== Wave Command ====================================================== //
@@ -1461,19 +2170,6 @@ bot.registerCommand('killme', (msg, args) => {
 })
 
 // ========================== NSFW Commands ===================================================== //
-let nsfwCmd = bot.registerCommand('nsfw', (msg, args) => {
-  if (!msg.channel.nsfw) {
-    sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
-  }
-}, {
-  defaultSubcommandOptions: {
-    caseInsensitive: true,
-    cooldown: 5000,
-    cooldownMessage: 'Please wait 5 seconds between uses of this command.',
-    guildOnly: false
-  }
-})
-
 bot.registerCommand('tattoo', (msg, args) => {
   if (!msg.channel.nsfw) {
     sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
@@ -1564,7 +2260,6 @@ bot.registerCommand('newd', (msg, args) => {
   usage: '[@users] e.g. `+sendnudes @Alcha#2621 @MissBella#6480`'
 })
 
-// ========================== Hentai Command ==================================================== //
 bot.registerCommand('boobs', (msg, args) => {
   if (!msg.channel.nsfw) {
     sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
@@ -1599,7 +2294,6 @@ bot.registerCommand('boobs', (msg, args) => {
   aliases: ['boob', 'breasts', 'tits']
 })
 
-// ========================== Hentai Command ==================================================== //
 bot.registerCommand('hentai', (msg, args) => {
   if (!msg.channel.nsfw) {
     sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
@@ -1629,7 +2323,6 @@ bot.registerCommand('hentai', (msg, args) => {
   aliases: ['boob', 'breasts', 'tits']
 })
 
-// ========================== Butt Command ====================================================== //
 bot.registerCommand('butt', (msg, args) => {
   if (!msg.channel.nsfw) {
     sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
@@ -1667,7 +2360,6 @@ bot.registerCommand('butt', (msg, args) => {
   aliases: ['butts', 'booty', 'ass']
 })
 
-// ========================== Feet Command (Requested by Rosa) ================================== //
 bot.registerCommand('feet', (msg, args) => {
   if (!msg.channel.nsfw) {
     sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
@@ -1715,7 +2407,6 @@ bot.registerCommand('feet', (msg, args) => {
   aliases: ['feets', 'foot']
 })
 
-// ========================== Gay Command (Requested by Mimiru) ================================= //
 bot.registerCommand('gay', (msg, args) => {
   if (!msg.channel.nsfw) {
     sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
@@ -1752,7 +2443,6 @@ bot.registerCommand('gay', (msg, args) => {
   aliases: ['dick', 'dicks', 'cock', 'penis']
 })
 
-// ========================== Yaoi Command (Requested by Mimiru) ================================ //
 bot.registerCommand('yaoi', (msg, args) => {
   if (!msg.channel.nsfw) {
     sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
@@ -1763,64 +2453,6 @@ bot.registerCommand('yaoi', (msg, args) => {
       ioTools.incrementCommandUse('yaoi')
     })
   }
-})
-
-// ========================== Rate Waifu Command (Requested by Bella and Kayla) ================= //
-bot.registerCommand('ratewaifu', (msg, args) => {
-  tools.doesMsgContainShu(msg).then((shuFlag) => {
-    if (shuFlag) {
-      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
-    } else {
-      if (msg.channel.guild !== undefined && msg.mentions.length === 1) {
-        let mentionId = parseInt(msg.mentions[0].id)
-
-        if (mentionId === 219270060936527873) {
-          // Alcha
-          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**-senpai, I'd rate you 11/10. \n\n_notice me_")
-        } else if (mentionId === 317138587491631104) {
-          // Travis
-          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + '**-dono, I\'d rate you 11/10. :fire:')
-        } else if (mentionId === 158740486352273409) {
-          // Micaww
-          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you 0/10 waifu.")
-        } else if (mentionId === 142092834260910080) {
-          // Snow/Daddy Yoana
-          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you -69/10 waifu.")
-        } else if (mentionId === 146023112008400896) {
-          // Aaron/Mamba
-          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + '**, I\'d rate you 0/10 waifu.')
-        } else if (mentionId === 120797492865400832) {
-          // Bella
-          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you 12/10 waifu. :fire: :fire:")
-        } else if (mentionId === 139474184089632769) {
-          // Utah
-          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you -∞/10 waifu.")
-        } else if (mentionId === 167546638758445056) {
-          sendMessage(msg.channel.id, '**' + msg.mentions[0].username + "**, I'd rate you ∞/10 waifu. The best of the best.")
-        } else if (mentionId === 351967369247326209) {
-          // Heather
-          let random = tools.getRandom(6, 11)
-          let message = '**' + msg.mentions[0].username + "**, I'd rate you " + random + '/10 waifu.'
-
-          sendMessage(msg.channel.id, message)
-        } else {
-          let random = tools.getRandom(0, 11)
-          let message = '**' + msg.mentions[0].username + "**, I'd rate you " + random + '/10 waifu.'
-
-          sendMessage(msg.channel.id, message)
-        }
-      }
-    }
-
-    ioTools.incrementCommandUse('rate')
-  })
-}, {
-  aliases: ['rate'],
-  caseInsensitive: true,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  description: 'Randomly rates a mentioned user 0 - 10.',
-  fullDescription: 'Generates a random number to rate the mentioned user on a scale of 0 to 10.'
 })
 
 bot.registerCommand('derp', (msg, args) => {
@@ -1874,57 +2506,6 @@ bot.registerCommand('hug', (msg, args) => {
   caseInsensitive: true
 })
 
-// ========================== Stats Commands ==================================================== //
-bot.registerCommand('stats', (msg, args) => {
-  if (args.length === 0) {
-    ioTools.getAllCommandUsage((results) => {
-      let fields = []
-
-      for (let i = 0; i < results.length; i++) {
-        fields[i] = {
-          name: results[i].COMMAND_NAME,
-          value: results[i].COMMAND_USE_COUNT,
-          inline: true
-        }
-      }
-
-      sendMessage(msg.channel.id, {
-        embed: {
-          title: 'Command Stats', // Title of the embed
-          description: "Here's a list of the commands available and how many times they've been used.",
-          color: 0x008000, // Color, either in hex (show), or a base-10 integer
-          fields: fields
-        }
-      })
-    })
-  } else {
-    ioTools.getCommandUsage(args[0], (results) => {
-      if (results[0] !== undefined) {
-        sendMessage(msg.channel.id, {
-          embed: {
-            color: 0x008000,
-            fields: [{
-              name: results[0].COMMAND_NAME,
-              value: results[0].COMMAND_USE_COUNT
-            }]
-          }
-        })
-      } else {
-        sendMessage(msg.channel.id, 'Please use a valid command, this does not exist in the database.')
-      }
-    })
-  }
-
-  ioTools.incrementCommandUse('stats')
-}, {
-  aliases: ['stat'],
-  caseInsensitive: true,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  description: 'Display commands and how much list of use count',
-  fullDescription: "Displays a list of available commands and how many times they've been used."
-})
-
 // ========================== Poke Command ====================================================== //
 bot.registerCommand('poke', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
@@ -1943,7 +2524,7 @@ bot.registerCommand('poke', (msg, args) => {
           ioTools.incrementCommandUse('poke')
         })
       } else {
-        return INVALID_INPUT
+        return 'Invalid input, please make sure to mention a user.'
       }
     }
   })
@@ -1983,7 +2564,7 @@ bot.registerCommand('kick', (msg, args) => {
           })
         })
       } else {
-        return INVALID_INPUT
+        return 'Invalid input, please make sure to mention a user.'
       }
     }
 
@@ -2058,18 +2639,6 @@ bot.on('ready', () => {
   })
 
   // setupRssReaders()
-})
-
-// ========================== Git Command ======================================================= //
-bot.registerCommand('git', (msg, args) => {
-  sendMessage(msg.channel.id, 'You can find the git repo for Tron here: https://github.com/Paranoid-Devs/Tron')
-
-  ioTools.incrementCommandUse('git')
-}, {
-  aliases: ['repo', 'github', 'codebase'],
-  caseInsensitive: true,
-  description: 'Display link to online git repository.',
-  fullDescription: 'Displays the link to the git repository on GitHub.'
 })
 
 // ========================== Blush Command ===================================================== //
@@ -2183,188 +2752,6 @@ trumpCmd.registerSubcommand('wrong', (msg, args) => {
   cooldown: config.DEFAULT_COOLDOWN,
   cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   caseInsensitive: true
-})
-
-// ========================== Avatar Command (requested by Battsie) ============================= //
-bot.registerCommand('Avatar', (msg, args) => {
-  if (msg.mentions.length === 1) {
-    let url = msg.mentions[0].dynamicAvatarURL(null, 1024)
-    let origFilename = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('?'))
-
-    ioTools.downloadFiles([{
-      url: url,
-      dest: '/var/tron/images/avatar/' + origFilename
-    }], (filenames) => {
-      filenames.forEach((filename, key, array) => {
-        ioTools.getImage(filename, (image) => {
-          sendMessage(msg.channel.id, undefined, {
-            file: image,
-            name: origFilename
-          })
-        })
-      })
-    })
-  } else {
-    return 'Please only mention one user at a time.'
-  }
-}, {
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  aliases: ['profile'],
-  caseInsensitive: true
-})
-
-// ========================== Ship Command ====================================================== //
-bot.registerCommand('Ship', (msg, args) => {
-  tools.doesMsgContainShu(msg).then((shuFlag) => {
-    if (shuFlag) {
-      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
-    } else {
-      if (msg.channel.guild !== undefined && msg.mentions.length === 2) {
-        const urls = [msg.mentions[0].avatarURL, msg.mentions[1].avatarURL]
-
-        ship.getShipImages(urls, (images) => {
-          let avatarCanvas = new Canvas(384, 128)
-          let ctx = avatarCanvas.getContext('2d')
-
-          for (let i = 0; i < 3; i++) {
-            ctx.drawImage(images[i], (i * 128), 0, 128, 128)
-
-            if (i === 2) {
-              ship.getShipName(msg, (shipName) => {
-                let shipMsg = 'Lovely shipping!\n' +
-                  'Ship name: **' + shipName + '**'
-
-                sendMessage(msg.channel.id, shipMsg, {
-                  file: avatarCanvas.toBuffer(),
-                  name: shipName + '.png'
-                })
-              })
-            }
-          }
-        })
-      }
-    }
-
-    ioTools.incrementCommandUse('ship')
-  })
-}, {
-  caseInsensitive: true,
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  description: 'Ship two users.',
-  fullDescription: 'Takes the two mentioned users and mashes their names into a lovely mess.'
-})
-
-// ========================== Add Role Command ================================================== //
-bot.registerCommand('addr', (msg, args) => {
-  if (msg.channel.guild !== null) {
-    if (tools.memberIsMod(msg)) {
-      let comparison = tools.concatArgs(args)
-
-      let roles = msg.channel.guild.roles
-
-      roles.forEach((value, key, mapObj) => {
-        if (value.name !== null) {
-          let name = value.name.toLowerCase()
-
-          if (name === comparison) {
-            roleNames.push(value.name)
-            sendMessage(msg.channel.id, 'Added ' + value.name + ' to list of available roles.')
-          }
-        }
-      })
-    }
-  }
-}, {
-  aliases: ['addrole', 'plusrole'],
-  caseInsensitive: true,
-  description: 'Add a role for users to gain access to a role.'
-})
-
-// ========================== List Roles Command ================================================ //
-bot.registerCommand('listr', (msg, args) => {
-  let message = 'List of currently available roles:\n'
-
-  roleNames.forEach((curr, index, arr) => {
-    message += '- **' + curr + '**\n'
-  })
-
-  sendMessage(msg.channel.id, message)
-}, {
-  caseInsensitive: true,
-  description: 'List roles that are available to join.',
-  fullDescription: 'Lists the roles that have been added by an administrator that are available.'
-})
-
-// ========================== Leave Role Command ================================================ //
-bot.registerCommand('leaver', (msg, args) => {
-  let comparison = tools.concatArgs(args)
-
-  if (msg.channel.guild !== null) {
-    let userId = msg.author.id
-
-    if (comparison === 'all') {
-      tools.removeAllRoles(userId, msg, bot)
-    } else {
-      let roleId = tools.getRoleId(msg, comparison)
-
-      if (roleId.length > 1) {
-        if (tools.allowedRole(comparison)) {
-          msg.channel.guild.removeMemberRole(userId, roleId)
-          sendMessage(msg.channel.id, ":outbox_tray: You've successfully been removed from your requested group.")
-          msg.delete()
-          ioTools.incrementCommandUse('leaver')
-        }
-      }
-    }
-  }
-}, {
-  caseInsensitive: true,
-  description: 'Leave a role.',
-  fullDescription: 'Used to leave a specific role, usually to also leave an associated channel.'
-})
-
-// ========================== Join Role Command ================================================= //
-bot.registerCommand('joinr', (msg, args) => {
-  let comparison = tools.concatArgs(args)
-
-  if (msg.channel.guild !== undefined) {
-    let userId = msg.author.id
-
-    if (comparison === 'all') {
-      tools.addAllRoles(userId, msg, bot)
-    } else {
-      let roleId = tools.getRoleId(msg, comparison)
-
-      if (roleId.length > 1) {
-        if (tools.allowedRole(comparison)) {
-          msg.channel.guild.addMemberRole(userId, roleId)
-          sendMessage(msg.channel.id, ":inbox_tray: You've successfully been added to your requested group.")
-          msg.delete()
-          ioTools.incrementCommandUse('joinr')
-        }
-      }
-    }
-  }
-}, {
-  caseInsensitive: true,
-  description: 'Places you into the requested server role.',
-  fullDescription: 'Server admins are able to add select roles to the bot so that anyone can join the role with this command.'
-})
-
-// ========================== List Peeps (Not for public) ======================================= //
-bot.registerCommand('listPeeps', (msg, args) => {
-  if (msg.author.id === config.owner) {
-    if (args[0] !== null) { }
-  }
-})
-
-// ========================== Exhentai Command ================================================== //
-bot.registerCommand('exhentai', (msg, args) => {
-  if (msg.channel.id !== undefined) {
-    return tools.getExhentaiCookies().toString()
-  }
 })
 
 bot.registerCommand('batts', (msg, args) => {
@@ -2539,298 +2926,6 @@ bot.registerCommand('utah', (msg, args) => {
   fullDescription: 'A command used to poke fun at a good friend. -Alcha'
 })
 
-// ========================== MyAnimeList Commands ============================================== //
-const popura = require('popura')
-const malClient = popura(config.malUsername, config.malPassword)
-
-let malCmd = bot.registerCommand('mal', (msg, args) => { })
-
-let malSearchCmd = malCmd.registerSubcommand('search', (msg, args) => { })
-
-malSearchCmd.registerSubcommand('anime', (msg, args) => {
-  if (args.length === 0) {
-
-  } else {
-    let name = tools.concatArgs(args)
-
-    malClient.searchAnimes(name).then(animes => {
-      animes.forEach((anime, index, map) => {
-        let animeUrl = 'https://myanimelist.net/anime/' + anime.id + '/' + anime.title.replace(/ /g, '_')
-
-        sendMessage(msg.channel.id, {
-          embed: {
-            title: anime.title,
-            description: 'Score: **' + anime.score.toString() + '**',
-            color: 0x336699,
-            url: animeUrl,
-            fields: [ // Array of field objects
-              {
-                name: 'Type',
-                value: anime.type,
-                inline: true
-              },
-              {
-                name: 'Episodes',
-                value: anime.episodes,
-                inline: true
-              },
-              {
-                name: 'Status',
-                value: anime.status,
-                inline: true
-              },
-              {
-                name: 'Synopsis',
-                value: anime.synopsis,
-                inline: false
-              }
-            ],
-            footer: {
-              text: 'Data retrieved from MyAnimeList.net.',
-              icon_url: 'https://myanimelist.cdn-dena.com/images/faviconv5.ico'
-            }
-          }
-        })
-      })
-    }).catch(err => console.log(err))
-  }
-})
-
-malSearchCmd.registerSubcommand('manga', (msg, args) => {
-  if (args.length === 0) {
-
-  } else {
-    let name = tools.concatArgs(args)
-
-    malClient.searchMangas(name).then(mangas => {
-      mangas.forEach((manga, index, map) => {
-        if (index + 1 !== mangas.length) {
-          let synopsis
-          let type
-          let volumes
-          let status
-          let score
-          let title
-          let image
-
-          if (manga.synopsis === null || manga.synopsis === undefined || manga.synopsis.length < 2) {
-            synopsis = 'N/A'
-          } else {
-            synopsis = manga.synopsis.replace(/\[\/?i]/g, '_')
-              .replace(/\[\/?b]/g, '**')
-              .replace(/(\[url=)/g, '(')
-              .replace(/]\b/g, ') ')
-              .replace(/(\[\/url\])/g, ' ')
-          }
-
-          if (manga.type === null) type = 'N/A'
-          else type = manga.type
-
-          if (manga.volumes === null) volumes = 'N/A'
-          else volumes = manga.volumes
-
-          if (manga.status === null) status = 'N/A'
-          else status = manga.status
-
-          if (manga.score === undefined || manga.score === null || manga.score.length === 0) score = 'N/A'
-          else score = manga.score
-
-          if (manga.title === undefined || manga.title === null || manga.title.length < 2) title = 'N/A'
-          else title = manga.title
-
-          if (manga.image === undefined || manga.image === null || manga.image.length < 2) image = 'N/A'
-          else image = manga.image
-
-          let mangaUrl = 'https://myanimelist.net/manga/' + manga.id + '/' + title.replace(/ /g, '_')
-
-          sendMessage(msg.channel.id, {
-            embed: {
-              title: title,
-              thumbnail: {
-                url: image
-              },
-              description: 'Score: **' + score.toString() + '**',
-              color: 0x336699,
-              url: mangaUrl,
-              fields: [ // Array of field objects
-                {
-                  name: 'Type',
-                  value: type,
-                  inline: true
-                },
-                {
-                  name: 'Volumes',
-                  value: volumes,
-                  inline: true
-                },
-                {
-                  name: 'Status',
-                  value: status,
-                  inline: true
-                },
-                {
-                  name: 'Synopsis',
-                  value: synopsis,
-                  inline: false
-                }
-              ],
-              footer: {
-                text: 'Data retrieved from MyAnimeList.net.',
-                icon_url: 'https://myanimelist.cdn-dena.com/images/faviconv5.ico'
-              }
-            }
-          }).catch((err) => {
-            console.log('Error occured searching for manga.')
-            console.log(err)
-          })
-        }
-      })
-    }).catch(err => console.log(err))
-  }
-})
-
-/* let malUserCmd = */malCmd.registerSubcommand('user', (msg, args) => {
-  if (args.length === 0) {
-    sendMessage(msg.channel.id, 'You must include the username of an account on MAL.')
-  } else {
-    let username = args[0]
-    if (args[1] !== undefined && args[1].toLowerCase() === 'anime') {
-      malClient.getAnimeList(username).then((res) => {
-        let fields = []
-        res.list.sort((a, b) => {
-          if (a.my_score > b.my_score) return 1
-          else if (a.my_score < b.my_score) return -1
-          else return 0
-        })
-
-        for (let i = res.list.length; fields.length < 30; i--) {
-          if (res.list[i] !== undefined && res.list[i].my_score !== 0) {
-            fields.push({
-              name: res.list[i].series_title,
-              value: res.list[i].my_score,
-              inline: true
-            })
-          }
-        }
-
-        sendMessage(msg.channel.id, {
-          embed: {
-            title: 'Currently watching ' + res.myinfo.user_watching + ' anime.', // Title of the embed
-            description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days watching anime.',
-            author: { // Author property
-              name: res.myinfo.user_name,
-              url: 'https://myanimelist.net/profile/' + res.myinfo.user_name,
-              icon_url: 'https://myanimelist.cdn-dena.com/images/userimages/' + res.myinfo.user_id + '.jpg'
-            },
-            color: 0x336699,
-            fields: fields,
-            footer: {
-              text: 'Data retrieved from MyAnimeList.net.',
-              icon_url: 'https://myanimelist.cdn-dena.com/images/faviconv5.ico'
-            }
-          }
-        }).catch(err => console.log(err))
-      }).catch(err => {
-        console.log(err)
-        sendMessage(msg.channel.id, 'Unfortunately, it appears this username does not exist. Please verify and try again.')
-      })
-    } else if (args[1] !== undefined && args[1].toLowerCase() === 'manga') {
-      malClient.getMangaList(username).then((res) => {
-        let fields = []
-
-        res.list.sort((a, b) => {
-          if (a.my_score < b.my_score) return 1
-          else if (a.my_score > b.my_score) return -1
-          else return 0
-        })
-
-        res.list.forEach((manga, index, map) => {
-          if (manga.my_score === 0 && manga.my_status === 2) {
-            fields.push({
-              name: manga.series_title,
-              value: manga.my_score,
-              inline: true
-            })
-          } else if (manga.my_score !== 0) {
-            fields.push({
-              name: manga.series_title,
-              value: manga.my_score,
-              inline: true
-            })
-          }
-        })
-
-        sendMessage(msg.channel.id, {
-          embed: {
-            title: 'Currently reading ' + res.myinfo.user_reading + ' manga', // Title of the embed
-            description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days reading manga.',
-            url: 'https://myanimelist.net/animelist/' + res.myinfo.user_name + '?status=1',
-            author: { // Author property
-              name: res.myinfo.user_name,
-              url: 'https://myanimelist.net/profile/' + res.myinfo.user_name,
-              icon_url: 'https://myanimelist.cdn-dena.com/images/userimages/' + res.myinfo.user_id + '.jpg'
-            },
-            color: 0x336699, // Color, either in hex (show), or a base-10 integer
-            fields: fields,
-            footer: {
-              text: 'Data retrieved from MyAnimeList.net.',
-              icon_url: 'https://myanimelist.cdn-dena.com/images/faviconv5.ico'
-            }
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-      }).catch((err) => {
-        console.log(err)
-        sendMessage(msg.channel.id, 'Unfortunately, it appears this username does not exist. Please verify and try again.')
-      })
-    } else if (args[1] === undefined) {
-      malClient.getAnimeList(username).then((res) => {
-        sendMessage(msg.channel.id, {
-          embed: {
-            title: 'Currently watching ' + res.myinfo.user_watching + ' anime', // Title of the embed
-            description: 'Has spent ' + res.myinfo.user_days_spent_watching + ' days watching anime.',
-            url: 'https://myanimelist.net/animelist/' + res.myinfo.user_name + '?status=1',
-            author: { // Author property
-              name: res.myinfo.user_name,
-              url: 'https://myanimelist.net/profile/' + res.myinfo.user_name,
-              icon_url: 'https://myanimelist.cdn-dena.com/images/userimages/' + res.myinfo.user_id + '.jpg'
-            },
-            color: 0x336699, // Color, either in hex (show), or a base-10 integer
-            thumbnail: {},
-            fields: [ // Array of field objects
-              {
-                name: 'Completed',
-                value: res.myinfo.user_completed,
-                inline: true
-              },
-              {
-                name: 'On Hold',
-                value: res.myinfo.user_onhold,
-                inline: true
-              },
-              {
-                name: 'Dropped',
-                value: res.myinfo.user_dropped,
-                inline: true
-              }
-            ],
-            footer: {
-              text: 'Data retrieved from MyAnimeList.net.',
-              icon_url: 'https://myanimelist.cdn-dena.com/images/faviconv5.ico'
-            }
-          }
-        }).catch(err => {
-          console.log(err)
-        })
-      }).catch((err) => {
-        console.log(err)
-        sendMessage(msg.channel.id, 'Unfortunately, it appears this username does not exist. Please verify and try again.')
-      })
-    }
-  }
-})
-
 // ========================== Alex Command ====================================================== //
 bot.registerCommand('alex', (msg, args) => {
   if (msg.channel.guild !== undefined) {
@@ -2874,6 +2969,7 @@ bot.on('messageCreate', (msg) => {
   }
 })
 
+// #region Help Commands
 // ========================== Help Commands ===================================================== //
 let helpText = require('./util/HelpText.json')
 
@@ -2996,14 +3092,6 @@ helpCmd.registerSubcommand('avatar', (msg, args) => {
 
 helpCmd.registerSubcommand('ship', (msg, args) => {
   return helpText.features.ship.join('')
-}, {
-  argsRequired: false,
-  caseInsensitive: true,
-  guildOnly: false
-})
-
-helpCmd.registerSubcommand('exhentai', (msg, args) => {
-  return helpText.features.exhentai.join('')
 }, {
   argsRequired: false,
   caseInsensitive: true,
@@ -3331,6 +3419,7 @@ trumpHelp.registerSubcommand('fake', (msg, args) => {
   caseInsensitive: true,
   guildOnly: false
 })
+// #endregion
 
 // ========================== Connect Bot ======================================================= //
 bot.connect()
