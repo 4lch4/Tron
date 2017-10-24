@@ -8,6 +8,8 @@ const info = require('./package.json')
 const Canvas = require('canvas')
 const Moment = require('moment')
 
+const insultCompliment = require('insult-compliment')
+
 const ioTools = new IOTools()
 const tools = new Tools()
 
@@ -29,6 +31,7 @@ let PowerWashingLinks = []
 
 // Bot declaration
 const bot = new Eris.CommandClient(config.token, {}, {
+  defaultHelpCommand: false,
   description: info.description,
   owner: config.owner,
   prefix: config.prefix,
@@ -38,8 +41,7 @@ const bot = new Eris.CommandClient(config.token, {}, {
 /**
  * Returns the default command options for most commands. Sets the cooldown and
  * cooldown message to the values set in the project config.json. Accepts an
- * optional array of aliases to be included for the command and if nothing is
- * passed in, it is ignored.
+ * optional array of aliases to be included for the command.
  *
  * @example commandOptions(['pang', 'peng', 'pling'])
  * @param {*} aliasesIn
@@ -55,17 +57,17 @@ const commandOptions = aliasesIn => {
 
 /**
  * Sends a message to the given channel using the bot constant. The first two
- * fields are required as they say where to send what. The third, data, field,
- * is optional as it can be used for sending files or embed objects.
+ * fields are required as they say where to send what. The third, file, field,
+ * is optional as it can be used for sending files.
  *
  * @param {number} channelId
  * @param {*} message
- * @param {*} data
+ * @param {*} file
  */
-const sendMessage = (channelId, message, data) => {
-  bot.createMessage(channelId, message, data).catch(err => {
+const sendMessage = (channelId, message, file) => {
+  bot.createMessage(channelId, message, file).catch(err => {
     if (err) {
-      console.log('There was an error...')
+      console.log('There was an error when attempting to send a message:')
       console.log(err)
     }
   })
@@ -93,11 +95,21 @@ const yaoiCmd = new Yaoi()
 // #region Admin Commands
 const adminCmd = bot.registerCommand('admin', (msg, args) => {})
 const adminCmdOptions = {
-  commandOptions,
   requirements: {
     roleNames: ['tron-mod']
   }
 }
+
+adminCmd.registerSubcommand('user', (msg, args) => {
+  tools.getUserFromId(args[0], bot, (user) => {
+    if (user !== null) {
+      console.log(user)
+      user.getDMChannel().then(privChannel => {
+        console.log(privChannel)
+      })
+    }
+  })
+})
 
 /**
 * Command Name: Admin List
@@ -240,7 +252,7 @@ bot.registerCommand('evaluate', (msg, args) => {
   if (msg.author.id === config.owner) {
     sendMessage(msg.channel.id, '`' + evaluate(args) + '`', undefined)
   }
-}, commandOptions(['eval']))
+})
 
 /**
 * Command Name: Mute
@@ -556,9 +568,144 @@ bot.registerCommand('rose', (msg, args) => {
 
   ioTools.incrementCommandUse('rose')
 }, commandOptions(['eevee']))
+
+// ========================== Alcha Command (Requested by Utah) ================================= //
+bot.registerCommand('alcha', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickJerryImage(args[0]).then((data) => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickJerryImage().then((data) => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+
+  ioTools.incrementCommandUse('alcha')
+}, commandOptions(['morty', 'jerry']))
+
+// ========================== Foupa Command ===================================================== //
+bot.registerCommand('foupa', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickFoupaImage(args[0]).then((data) => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickFoupaImage().then((data) => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+}, {
+  aliases: ['friendlyneighborhoodpedo'],
+  requirements: {
+    userIDs: ['219270060936527873', '159844469464760320']
+  },
+  caseInsensitive: true,
+  permissionMessage: 'This command is unavailable to you.',
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE
+})
+
+// ========================== Utah Command ====================================================== //
+bot.registerCommand('utah', (msg, args) => {
+  if (msg.channel.guild !== undefined) {
+    if (parseInt(msg.channel.guild.id) === 254496813552238594) {
+      sendMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:256668458480041985>')
+    } else if (parseInt(msg.channel.guild.id) === 197846974408556544) {
+      sendMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:298313391444066305>')
+    } else if (parseInt(msg.channel.guild.id) === 325420023705370625) {
+      sendMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:327634830483259393>')
+    } else {
+      console.log('Guild = ' + msg.channel.guild.name)
+      console.log('id = ' + msg.channel.guild.id)
+    }
+
+    ioTools.incrementCommandUse('utah')
+  }
+}, commandOptions)
+
+// ========================== Alex Command ====================================================== //
+bot.registerCommand('alex', (msg, args) => {
+  if (msg.channel.guild !== undefined) {
+    if (parseInt(msg.channel.guild.id) === 254496813552238594) {
+      sendMessage(msg.channel.id, '<@!191316261299290112> 🖕')
+      ioTools.incrementCommandUse('alex')
+    }
+  }
+}, commandOptions)
+
+bot.registerCommand('batts', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickBattsieImage(args[0]).then((data) => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickBattsieImage().then((data) => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+}, commandOptions(['battsie']))
+
+bot.registerCommand('derp', (msg, args) => {
+  return 'Is loved by <@219270060936527873> more than anyone.'
+}, commandOptions)
+
+bot.registerCommand('potato', (msg, args) => {
+  ioTools.getImage('/var/tron/images/potato.png', (img) => {
+    sendMessage(msg.channel.id, undefined, {
+      file: img,
+      name: 'Potato.png'
+    })
+  })
+}, commandOptions)
 // #endregion User Commands
 
 // #region Feature Commands
+/**
+* Command Name: Bot Command
+* Description : Lists bot info.
+* Requested By: Alcha
+*/
+bot.registerCommand('bot', (msg, args) => {
+  let member
+  if (msg.member !== undefined) member = msg.member
+  else member = msg.author
+
+  const pkg = require('./package')
+  sendMessage(msg.channel.id, {
+    'embed': {
+      'title': bot.user.username,
+      'description': pkg.description,
+      'url': 'https://paranoiddevs.com/tron',
+      'color': 4682777,
+      'timestamp': new Moment().toDate(),
+      'footer': {
+        'icon_url': bot.user.avatarURL,
+        'text': 'Tron Info'
+      },
+      'thumbnail': {
+        'url': bot.user.avatarURL
+      },
+      'author': {
+        'name': member.username,
+        'icon_url': member.avatarURL
+      },
+      'fields': [{
+        'name': 'Server Count',
+        'value': bot.guilds.size,
+        'inline': true
+      }, {
+        'name': 'User Count',
+        'value': bot.users.size,
+        'inline': true
+      }, {
+        'name': 'Uptime',
+        'value': Math.round(bot.uptime / 1000 / 60) + ' mins'
+      }]
+    }
+  })
+})
+
 const quoteCmd = bot.registerCommand('quote', (msg, args) => {
   ioTools.readFile('/var/tron/Quotes.txt', (content) => {
     if (content !== undefined) {
@@ -935,13 +1082,58 @@ bot.registerCommand('reddit', (msg, args) => {
 }, commandOptions(['r']))
 
 // ========================= Suggestion Command ================================================= //
+const mongo = require('mongodb').MongoClient
+const mongoInsertSuggestion = (suggestion, db, cb) => {
+  db.collection('suggestions').insertOne({
+    'author': suggestion.author,
+    'timestamp': suggestion.timestamp,
+    'content': suggestion.content
+  }, (err, res) => {
+    if (err) console.log(err)
+    else cb()
+  })
+}
+
+const listCmd = bot.registerCommand('list', (msg, args) => {
+
+})
+
+listCmd.registerSubcommand('suggestions', (msg, args) => {
+  if (msg.author.id === config.owner) {
+    mongo.connect(config.mongoURI, (err, db) => {
+      if (err) console.log(err)
+      else {
+        let cursor = db.collection('suggestions').find()
+        cursor.each((err, doc) => {
+          if (doc !== null) console.log(doc)
+          if (err) console.log(err)
+        })
+      }
+    })
+  }
+})
+
 bot.registerCommand('suggestion', (msg, args) => {
-  let sqlQuery = 'INSERT INTO SUGGESTIONS (AUTHOR_ID, SUGGESTION_TEXT) VALUES ' +
-    '("' + msg.author.id + '", ' + ' "' + args.join(' ') + '");'
+  mongo.connect(config.mongoURI, (err, db) => {
+    if (err) {
+      console.log('There was an error attempting to connect to the MongoDB:\n')
+      console.log(err.errors)
+    } else {
+      mongoInsertSuggestion({
+        'author': msg.author.username,
+        'timestamp': msg.timestamp,
+        'content': tools.concatArgs(args)
+      }, db, () => {
+        tools.getUserFromId(config.owner, bot, owner => {
+          owner.getDMChannel().then(dmChannel => {
+            sendMessage(dmChannel.id, ':inbox_tray: A suggestion has been received!')
+          })
+        })
 
-  ioTools.executeSql(sqlQuery)
-
-  return 'Thank you for your suggestion!'
+        sendMessage(msg.channel.id, 'Your suggestion has been received, thank you!')
+      })
+    }
+  })
 }, {
   argsRequired: true,
   caseInsensitive: true,
@@ -1323,372 +1515,13 @@ bot.registerCommand('cat', (msg, args) => {
 
 // #endregion Reaction Commands
 
+// #region Action Commands
 /**
-* Command Name: PowerWashingPorn
-* Description : Pulls random images from the top page images of all time on the
-* r/PowerWashingPorn subreddit.
-*/
-bot.registerCommand('powerwashingporn', (msg, args) => {
-  if (PowerWashingLinks.length === 0) {
-    reddit.r('powerwashingporn').top().from('all').all((res) => {
-      res.on('data', (data, res) => {
-        data.data.children.forEach((child, index, mapObj) => {
-          if (child.data.url !== undefined) {
-            PowerWashingLinks.push(child.data.url)
-          }
-        })
-      })
-
-      res.on('error', (err) => {
-        console.log('Error while parsing powerwashingporn:')
-        console.log(err)
-      })
-
-      res.on('end', () => {
-        let randomUrl = tools.getRandom(0, PowerWashingLinks.length)
-
-        sendMessage(msg.channel.id, PowerWashingLinks[randomUrl])
-      })
-
-      ioTools.incrementCommandUse('powerwashing')
-    })
-  } else {
-    let randomUrl = tools.getRandom(0, PowerWashingLinks.length)
-
-    sendMessage(msg.channel.id, PowerWashingLinks[randomUrl])
-
-    ioTools.incrementCommandUse('powerwashing')
-  }
-}, commandOptions)
-
-/**
-* Command Name: Squirtle
-* Description : Returns a random Squirtle image/gif.
-* Requested By: Alex/SquirtleGirl
-*/
-bot.registerCommand('squirtle', (msg, args) => {
-  if (!isNaN(parseInt(args[0]))) {
-    reactions.pickSquirtleImage(args[0]).then(imgObject => {
-      sendMessage(msg.channel.id, undefined, {
-        file: imgObject.image,
-        name: imgObject.filename
-      })
-    })
-  } else {
-    reactions.pickSquirtleImage().then(imgObject => {
-      sendMessage(msg.channel.id, undefined, {
-        file: imgObject.image,
-        name: imgObject.filename
-      })
-    })
-  }
-}, commandOptions)
-
-/**
-* Command Name: Nobulli
-* Description : Returns a random bully gif and tells a user not to bully another.
-* Requested By: Onyx
-*/
-bot.registerCommand('nobulli', (msg, args) => {
-  tools.doesMsgContainShu(msg).then((shuFlag) => {
-    if (shuFlag) {
-      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
-    } else {
-      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
-        reactions.pickNobulliImage((img) => {
-          tools.getUsernames(args, bot, (usernames) => {
-            let message = ''
-
-            if (usernames.length === 2) {
-              message = '**' + usernames[0] + "**, don't you dare bulli **" + usernames[1] + '**!'
-            }
-
-            sendMessage(msg.channel.id, message, {
-              file: img,
-              name: 'Nobulli.gif'
-            })
-          })
-        }, args[0])
-      } else {
-        return 'Please mention 2 users to include in the message.'
-      }
-    }
-  })
-
-  ioTools.incrementCommandUse('nobulli')
-}, commandOptions(['bulli', 'bully', 'nobully']))
-
-/**
-* Command Name: Dodge
-* Description : Returns a random dodge gif.
+* Command Name: Marry
+* Description : Propose to a user or use any of the subcommands.
 * Requested By: PrimRose
 */
-bot.registerCommand('dodge', (msg, args) => {
-  if (args.length === 1 && !isNaN(parseInt(args[0]))) {
-    reactions.pickDodgeImage(args[0]).then((img) => {
-      sendMessage(msg.channel.id, undefined, {
-        file: img,
-        name: 'Dodge.gif'
-      })
-    })
-  } else {
-    reactions.pickDodgeImage().then((img) => {
-      sendMessage(msg.channel.id, undefined, {
-        file: img,
-        name: 'Dodge.gif'
-      })
-    })
-  }
-
-  ioTools.incrementCommandUse('dodge')
-}, commandOptions(['dodges']))
-
-/**
-* Command Name: Dreamy
-* Description : Returns a random image from a collection given to me by Dreamy.
-* Requested By: Dreamy
-*/
-bot.registerCommand('dreamy', (msg, args) => {
-  reactions.pickDreamyImage((dreamyImage) => {
-    sendMessage(msg.channel.id, undefined, {
-      file: dreamyImage,
-      name: 'Dreamy.gif'
-    })
-  })
-
-  ioTools.incrementCommandUse('dreamy')
-}, {
-  caseInsensitive: true,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  description: 'Displays random dreamy gif.',
-  fullDescription: 'Displays a random dreamy gif.'
-})
-
-// ========================== Vape Nation Command (Requested by Lagucci Mane) =================== //
-bot.registerCommand('vn', (msg, args) => {
-  reactions.pickVNImage((img) => {
-    sendMessage(msg.channel.id, undefined, {
-      file: img,
-      name: 'VapeNation.gif'
-    })
-  })
-
-  ioTools.incrementCommandUse('vapenation')
-}, {
-  aliases: ['vapenash', 'vape'],
-  description: "Vape nation, y'all.",
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  caseInsensitive: true,
-  fullDescription: 'Displays a random vape nation gif.'
-})
-
-// ========================== Love Command ====================================================== //
-bot.registerCommand('love', (msg, args) => {
-  tools.doesMsgContainShu(msg).then((shuFlag) => {
-    if (shuFlag) {
-      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
-    } else {
-      if (msg.channel.guild !== undefined) {
-        reactions.pickLoveImage((loveImage) => {
-          let message = ''
-
-          if (msg.mentions[0] !== undefined) {
-            let user = msg.mentions[0].username
-            message = '**' + user + "**, you've been loved by **" + msg.author.username + '**. :heart:'
-          }
-
-          sendMessage(msg.channel.id, message, {
-            file: loveImage,
-            name: 'Love.gif'
-          })
-        })
-      }
-    }
-
-    ioTools.incrementCommandUse('love')
-  })
-}, {
-  aliases: ['loves'],
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  caseInsensitive: true,
-  cooldown: config.DEFAULT_COOLDOWN,
-  description: 'Displays random love gif.',
-  fullDescription: 'Displays a random love gif and the name of the person you mention.'
-})
-
-// ========================== Slap Command ====================================================== //
-bot.registerCommand('slap', (msg, args) => {
-  tools.doesMsgContainShu(msg).then((shuFlag) => {
-    if (shuFlag) {
-      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
-    } else {
-      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
-        reactions.pickSlapImage((img) => {
-          let message = ''
-          if (msg.mentions.length > 0) {
-            message = '**' + msg.mentions[0].username + "**, you've been slapped by **" + msg.author.username + '**.'
-          }
-
-          sendMessage(msg.channel.id, message, {
-            file: img,
-            name: 'Slap.gif'
-          })
-        }, args[0])
-      } else if (msg.mentions.length > 0) {
-        reactions.pickSlapImage((img) => {
-          let message = ''
-          if (msg.mentions.length > 0) {
-            message = '**' + msg.mentions[0].username + "**, you've been slapped by **" + msg.author.username + '**.'
-          }
-
-          sendMessage(msg.channel.id, message, {
-            file: img,
-            name: 'Slap.gif'
-          })
-        })
-      }
-    }
-  })
-
-  ioTools.incrementCommandUse('slap')
-}, {
-  aliases: ['slaps'],
-  argsRequired: true,
-  cooldown: config.DEFAULT_COOLDOWN,
-  caseInsensitive: true,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  description: 'Displays a random slap gif.',
-  fullDescription: 'Displays a random slap gif and the name of the user you mention.',
-  guildOnly: true,
-  usage: '@user e.g. `+slap @Alcha#2621`'
-})
-
-// ========================== Kiss Command ====================================================== //
-bot.registerCommand('kiss', (msg, args) => {
-  tools.doesMsgContainShu(msg).then((shuFlag) => {
-    if (shuFlag) {
-      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
-    } else {
-      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
-        reactions.pickKissImage((img) => {
-          let user = msg.mentions[0].username
-          let message = '**' + user + "**, you've been kissed by **" + msg.author.username + '**. :kiss:'
-
-          sendMessage(msg.channel.id, message, {
-            file: img,
-            name: 'Kiss.gif'
-          })
-        }, args[0])
-      } else if (msg.mentions.length > 0) {
-        reactions.pickKissImage((img) => {
-          let user = msg.mentions[0].username
-          let message = '**' + user + "**, you've been kissed by **" + msg.author.username + '**. :kiss:'
-
-          sendMessage(msg.channel.id, message, {
-            file: img,
-            name: 'Kiss.gif'
-          })
-        })
-      } else {
-        sendMessage(msg.channel.id, 'Please make sure to mention one or more users in order to use this command.')
-      }
-    }
-  })
-
-  ioTools.incrementCommandUse('kiss')
-}, {
-  aliases: ['kisses'],
-  cooldown: config.DEFAULT_COOLDOWN,
-  caseInsensitive: true,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  description: 'Displays a random kiss gif.',
-  fullDescription: 'Displays a random kissing reaction gif and the name of the individual mentioned.'
-})
-
-// ========================== Lick Command ====================================================== //
-bot.registerCommand('lick', (msg, args) => {
-  tools.doesMsgContainShu(msg).then((shuFlag) => {
-    if (shuFlag) {
-      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
-    } else {
-      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
-        reactions.pickLickImage(args[0]).then((img) => {
-          let user = msg.mentions[0].username
-          let message = '**' + user + "**, you've been licked by **" + msg.author.username + '**. :tongue:'
-
-          sendMessage(msg.channel.id, message, {
-            file: img,
-            name: 'Lick.gif'
-          })
-        }, args[0])
-      } else if (msg.mentions.length > 0) {
-        reactions.pickLickImage().then((img) => {
-          let user = msg.mentions[0].username
-          let message = '**' + user + "**, you've been licked by **" + msg.author.username + '**. :tongue:'
-
-          sendMessage(msg.channel.id, message, {
-            file: img,
-            name: 'Lick.gif'
-          })
-        })
-      } else {
-        sendMessage(msg.channel.id, 'Please make sure to mention one or more users in order to use this command')
-      }
-    }
-  })
-
-  ioTools.incrementCommandUse('lick')
-}, {
-  aliases: ['licks'],
-  caseInsensitive: true,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  description: 'Displays a random lick gif.',
-  fullDescription: 'Displays a random licking gif and the name of the individual mentioned.'
-})
-
-// ========================== Pat Command ======================================================= //
-bot.registerCommand('pat', (msg, args) => {
-  tools.doesMsgContainShu(msg).then((shuFlag) => {
-    if (shuFlag) {
-      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
-    } else {
-      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
-        reactions.pickPatImage((img) => {
-          let user = msg.mentions[0].username
-          let message = '**' + user + '**, you got a pat from **' + msg.author.username + '**.'
-
-          sendMessage(msg.channel.id, message, {
-            file: img,
-            name: 'Pat.gif'
-          })
-        }, args[0])
-      } else {
-        reactions.pickPatImage((img) => {
-          let user = msg.mentions[0].username
-          let message = '**' + user + '**, you got a pat from **' + msg.author.username + '**.'
-
-          sendMessage(msg.channel.id, message, {
-            file: img,
-            name: 'Pat.gif'
-          })
-        })
-      }
-    }
-  })
-
-  ioTools.incrementCommandUse('pat')
-}, {
-  aliases: ['pats', 'tap', 'taps'],
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  caseInsensitive: true
-})
-
-// ========================== Marriage Commands (requested by Prim) ============================= //
-let marry = bot.registerCommand('marry', (msg, args) => {
+const marry = bot.registerCommand('marry', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
       sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
@@ -1726,15 +1559,12 @@ let marry = bot.registerCommand('marry', (msg, args) => {
       }
     }
   })
-}, {
-  aliases: ['propose'],
-  caseInsensitive: true,
-  description: 'Proposes to the given users.',
-  fullDescription: "Proposes to all of the users that are mentioned so long as you don't already " +
-    'have a pending proposal or exiting marriage to the user.',
-  usage: '[@users] e.g. `+marry @Alcha#2621 @Bugs#2413`'
-})
+}, commandOptions(['propose']))
 
+/**
+* Command Name: Marriage List
+* Description : Displays a list of marriages a given user is in (if any exist)
+*/
 marry.registerSubcommand('list', (msg, args) => {
   if (msg.mentions.length !== 0) {
     tools.doesMsgContainShu(msg).then((shuFlag) => {
@@ -1789,14 +1619,12 @@ marry.registerSubcommand('list', (msg, args) => {
       sendMessage(msg.channel.id, message)
     })
   }
-}, {
-  aliases: ['lists', 'fuckbook', 'history'],
-  caseInsensitive: true,
-  description: 'List all current marriages.',
-  fullDescription: 'Lists all current marriages of the author or mentioned user if one is given.',
-  usage: '[@user] e.g. `+marry list @Alcha#2621`'
-})
+}, commandOptions(['lists', 'fuckbook', 'history']))
 
+/**
+* Command Name: Marriage Accept
+* Description : Accept a marriage proposal.
+*/
 marry.registerSubcommand('accept', (msg, args) => {
   marriage.getProposalType(msg.author.id, 1, (results) => {
     if (results !== null && results.length > 1) {
@@ -1835,10 +1663,12 @@ marry.registerSubcommand('accept', (msg, args) => {
       sendMessage(msg.channel.id, "Unfortunately, it appears you don't have any pending proposals. :slight_frown:")
     }
   })
-}, {
-  caseInsensitive: true
-})
+}, commandOptions)
 
+/**
+* Command Name: Marriage Deny
+* Description : Deny a marriage proposal.
+*/
 marry.registerSubcommand('deny', (msg, args) => {
   marriage.getProposals(msg.author.id, (results) => {
     if (results !== null && results.length > 1) {
@@ -1864,12 +1694,13 @@ marry.registerSubcommand('deny', (msg, args) => {
       sendMessage(msg.channel.id, "It appears you don't have any pending proposals, please try again later.")
     }
   })
-}, {
-  aliases: ['reject', 'rejected', 'refuse'],
-  caseInsensitive: true
-})
+}, commandOptions(['reject', 'rejected', 'refuse']))
 
-let divorce = bot.registerCommand('divorce', (msg, args) => {
+/**
+* Command Name: Divorce
+* Description : Proposes a divorce to a given user.
+*/
+const divorce = bot.registerCommand('divorce', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
       sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
@@ -1896,11 +1727,12 @@ let divorce = bot.registerCommand('divorce', (msg, args) => {
       }
     }
   })
-}, {
-  aliases: ['divorces', 'alienate', 'separate'],
-  caseInsensitive: true
-})
+}, commandOptions(['divorces', 'alienate', 'separate']))
 
+/**
+* Command Name: Divorce Accept
+* Description : Accept a divorce proposal.
+*/
 divorce.registerSubcommand('accept', (msg, args) => {
   marriage.getDivorceProposals(msg.author.id, (results) => {
     if (results !== null && results.length > 1) {
@@ -1927,13 +1759,12 @@ divorce.registerSubcommand('accept', (msg, args) => {
       sendMessage(msg.channel.id, 'It appears as though you do not have any pending divorces! :tada:')
     }
   })
-}, {
-  caseInsensitive: true,
-  argsRequired: false,
-  description: 'Accepts a pending divorce proposal.',
-  guildOnly: true
-})
+}, commandOptions)
 
+/**
+* Command Name: Divorce Deny
+* Description : Deny a divorce request.
+*/
 divorce.registerSubcommand('deny', (msg, args) => {
   marriage.getDivorceProposals(msg.author.id, (results) => {
     if (results !== null && results.length > 1) {
@@ -1959,13 +1790,12 @@ divorce.registerSubcommand('deny', (msg, args) => {
       sendMessage(msg.channel.id, "It appears you don't have any pending divorce proposals, please try again later.")
     }
   })
-}, {
-  aliases: ['reject', 'rejected'],
-  caseInsensitive: true,
-  description: 'Rejects a pending divorce proposal.',
-  guildOnly: true
-})
+}, commandOptions(['reject', 'rejected']))
 
+/**
+* Command Name: Divorce List
+* Description : Displays a list of divorces (if any exist) of the given user.
+*/
 divorce.registerSubcommand('list', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
@@ -1999,11 +1829,216 @@ divorce.registerSubcommand('list', (msg, args) => {
       })
     }
   })
-}, {
-  caseInsensitive: true
-})
+}, commandOptions)
 
-// ========================== Kill Command ====================================================== //
+/**
+* Command Name: Compliment
+* Description : Compliment a user.
+*/
+bot.registerCommand('compliment', (msg, args) => {
+  let compliment = insultCompliment.Compliment()
+
+  if (msg.mentions[0] !== undefined) {
+    if (compliment.startsWith('I')) return '<@' + msg.mentions[0].id + '>, ' + compliment
+    else return '<@' + msg.mentions[0].id + '>, ' + tools.lowerFirstC(compliment)
+  } else {
+    if (compliment.startsWith('I')) return '<@' + msg.author.id + '>, ' + compliment
+    else return '<@' + msg.author.id + '>, ' + tools.lowerFirstC(compliment)
+  }
+}, commandOptions(['comp', 'nice']))
+
+/**
+* Command Name: Insult
+* Description : Insults a user.
+* Requested By: Key
+*/
+bot.registerCommand('insult', (msg, args) => {
+  let insult = insultCompliment.Insult()
+
+  if (msg.mentions[0] !== undefined) {
+    if (insult.startsWith('I')) return '<@' + msg.mentions[0].id + '>, ' + insult
+    else return '<@' + msg.mentions[0].id + '>, ' + tools.lowerFirstC(insult)
+  } else {
+    if (insult.startsWith('I')) return '<@' + msg.author.id + '>, ' + insult
+    else return '<@' + msg.author.id + '>, ' + tools.lowerFirstC(insult)
+  }
+}, commandOptions(['rude']))
+
+/**
+* Command Name: Love
+* Description : Displays a random Love gif.
+*/
+bot.registerCommand('love', (msg, args) => {
+  tools.doesMsgContainShu(msg).then((shuFlag) => {
+    if (shuFlag) {
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+    } else {
+      if (msg.channel.guild !== undefined) {
+        reactions.pickLoveImage((loveImage) => {
+          let message = ''
+
+          if (msg.mentions[0] !== undefined) {
+            let user = msg.mentions[0].username
+            message = '**' + user + "**, you've been loved by **" + msg.author.username + '**. :heart:'
+          }
+
+          sendMessage(msg.channel.id, message, {
+            file: loveImage,
+            name: 'Love.gif'
+          })
+        })
+      }
+    }
+
+    ioTools.incrementCommandUse('love')
+  })
+}, commandOptions(['loves']))
+
+/**
+* Command Name: Poke
+* Description : Displays a random Poke gif.
+*/
+bot.registerCommand('poke', (msg, args) => {
+  tools.doesMsgContainShu(msg).then((shuFlag) => {
+    if (shuFlag) {
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+    } else {
+      if (msg.mentions.length === 1) {
+        reactions.pickPokeImage((img) => {
+          let message = '**' + msg.mentions[0].username + "**, you've been poked by **" + msg.author.username + '**.'
+
+          sendMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Poke.gif'
+          })
+
+          ioTools.incrementCommandUse('poke')
+        })
+      } else {
+        return 'Invalid input, please make sure to mention a user.'
+      }
+    }
+  })
+}, commandOptions(['pokes']))
+
+/**
+* Command Name: Slap
+* Description : Displays a random Slap gif.
+*/
+bot.registerCommand('slap', (msg, args) => {
+  tools.doesMsgContainShu(msg).then((shuFlag) => {
+    if (shuFlag) {
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+    } else {
+      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
+        reactions.pickSlapImage((img) => {
+          let message = ''
+          if (msg.mentions.length > 0) {
+            message = '**' + msg.mentions[0].username + "**, you've been slapped by **" + msg.author.username + '**.'
+          }
+
+          sendMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Slap.gif'
+          })
+        }, args[0])
+      } else if (msg.mentions.length > 0) {
+        reactions.pickSlapImage((img) => {
+          let message = ''
+          if (msg.mentions.length > 0) {
+            message = '**' + msg.mentions[0].username + "**, you've been slapped by **" + msg.author.username + '**.'
+          }
+
+          sendMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Slap.gif'
+          })
+        })
+      }
+    }
+  })
+
+  ioTools.incrementCommandUse('slap')
+}, commandOptions(['slaps']))
+
+/**
+* Command Name: Kiss
+* Description : Displays a random Kiss gif.
+*/
+bot.registerCommand('kiss', (msg, args) => {
+  tools.doesMsgContainShu(msg).then((shuFlag) => {
+    if (shuFlag) {
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+    } else {
+      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
+        reactions.pickKissImage((img) => {
+          let user = msg.mentions[0].username
+          let message = '**' + user + "**, you've been kissed by **" + msg.author.username + '**. :kiss:'
+
+          sendMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Kiss.gif'
+          })
+        }, args[0])
+      } else if (msg.mentions.length > 0) {
+        reactions.pickKissImage((img) => {
+          let user = msg.mentions[0].username
+          let message = '**' + user + "**, you've been kissed by **" + msg.author.username + '**. :kiss:'
+
+          sendMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Kiss.gif'
+          })
+        })
+      } else {
+        sendMessage(msg.channel.id, 'Please make sure to mention one or more users in order to use this command.')
+      }
+    }
+  })
+
+  ioTools.incrementCommandUse('kiss')
+}, commandOptions(['kisses']))
+
+/**
+* Command Name: Pat
+* Description : Displays a random Pat gif.
+*/
+bot.registerCommand('pat', (msg, args) => {
+  tools.doesMsgContainShu(msg).then((shuFlag) => {
+    if (shuFlag) {
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+    } else {
+      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
+        reactions.pickPatImage((img) => {
+          let user = msg.mentions[0].username
+          let message = '**' + user + '**, you got a pat from **' + msg.author.username + '**.'
+
+          sendMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Pat.gif'
+          })
+        }, args[0])
+      } else {
+        reactions.pickPatImage((img) => {
+          let user = msg.mentions[0].username
+          let message = '**' + user + '**, you got a pat from **' + msg.author.username + '**.'
+
+          sendMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Pat.gif'
+          })
+        })
+      }
+    }
+  })
+
+  ioTools.incrementCommandUse('pat')
+}, commandOptions(['pats', 'tap', 'taps']))
+
+/**
+* Command Name: Kill
+* Description : Displays a random Kill gif.
+*/
 bot.registerCommand('kill', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
@@ -2040,16 +2075,12 @@ bot.registerCommand('kill', (msg, args) => {
   })
 
   ioTools.incrementCommandUse('kill')
-}, {
-  aliases: ['kills'],
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  caseInsensitive: true,
-  description: 'Displays a random killing gif.',
-  fullDescription: 'Displays a random killing reaction gif and the name of the individual mentioned.'
-})
+}, commandOptions(['kills']))
 
-// ========================== Punch Command ===================================================== //
+/**
+* Command Name: Punch
+* Description : Displays a random Punch gif.
+*/
 bot.registerCommand('punch', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
@@ -2080,35 +2111,12 @@ bot.registerCommand('punch', (msg, args) => {
   })
 
   ioTools.incrementCommandUse('punch')
-}, {
-  aliases: ['punches'],
-  cooldown: config.DEFAULT_COOLDOWN,
-  caseInsensitive: true,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  description: 'Displays a random punching gif.',
-  fullDescription: 'Displays a random punching reaction gif and the name of the individual mentioned.'
-})
+}, commandOptions(['punches']))
 
-// ========================== Kayla Command (Requested by Snow) ================================= //
-bot.registerCommand('kayla', (msg, args) => {
-  if (parseInt(msg.author.id) === 142092834260910080 || parseInt(msg.author.id) === 217870035090276374 || msg.author.id === config.owner) {
-    reactions.pickKaylaImage().then(img => {
-      sendMessage(msg.channel.id, undefined, {
-        file: img,
-        name: 'Kayla.gif'
-      })
-    })
-  } else {
-    return 'This command is unavailable to you.'
-  }
-}, {
-  caseInsensitive: true,
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  aliases: ['yoana']
-})
-
-// ========================== Wave Command ====================================================== //
+/**
+* Command Name: Wave
+* Description : Displays a random Wave gif.
+*/
 bot.registerCommand('wave', (msg, args) => {
   reactions.pickWaveImage((img) => {
     sendMessage(msg.channel.id, undefined, {
@@ -2118,14 +2126,12 @@ bot.registerCommand('wave', (msg, args) => {
 
     ioTools.incrementCommandUse('wave')
   })
-}, {
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  aliases: ['waves'],
-  caseInsensitive: true
-})
+}, commandOptions(['waves']))
 
-// ========================== Spank Command ===================================================== //
+/**
+* Command Name: Spank
+* Description : Displays a random Spank gif.
+*/
 bot.registerCommand('spank', (msg, args) => {
   tools.doesMsgContainShu(msg).then((shuFlag) => {
     if (shuFlag) {
@@ -2151,25 +2157,179 @@ bot.registerCommand('spank', (msg, args) => {
   caseInsensitive: true
 })
 
-// ========================== Kill Me Command =================================================== //
-bot.registerCommand('killme', (msg, args) => {
-  reactions.pickKillMeImage((killMeImage) => {
-    // Mika's requested killme command
-    sendMessage(msg.channel.id, undefined, {
-      file: killMeImage,
-      name: 'KillMe.gif'
-    })
+/**
+* Command Name: Kick
+* Description : Displays a random Kick gif.
+*/
+bot.registerCommand('kick', (msg, args) => {
+  tools.doesMsgContainShu(msg).then((shuFlag) => {
+    if (shuFlag) {
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+    } else {
+      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
+        reactions.pickKickImage((img) => {
+          let user = msg.mentions[0].username
+          let message = '**' + user + "**, you've been kicked by **" + msg.author.username + '**.'
+
+          sendMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Kick.gif'
+          })
+        }, args[0])
+      } else if (msg.mentions.length > 0) {
+        reactions.pickKickImage((img) => {
+          let user = msg.mentions[0].username
+          let message = '**' + user + "**, you've been kicked by **" + msg.author.username + '**.'
+
+          sendMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Kick.gif'
+          })
+        })
+      } else {
+        return 'Invalid input, please make sure to mention a user.'
+      }
+    }
+
+    ioTools.incrementCommandUse('kick')
+  })
+}, commandOptions(['kicks']))
+
+/**
+* Command Name: Bite
+* Description : Displays a random Bite gif.
+*/
+bot.registerCommand('bite', (msg, args) => {
+  tools.doesMsgContainShu(msg).then((shuFlag) => {
+    if (shuFlag) {
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+    } else {
+      reactions.pickBiteImage((biteImage) => {
+        var message = ''
+
+        if (msg.mentions[0] !== undefined) {
+          var user = msg.mentions[0].username
+          message = '**' + user + "**, you've been bitten by **" + msg.author.username + '**.'
+        }
+
+        sendMessage(msg.channel.id, message, {
+          file: biteImage,
+          name: 'Bite.gif'
+        })
+      })
+    }
+
+    ioTools.incrementCommandUse('bite')
+  })
+}, commandOptions(['bites']))
+
+/**
+* Command Name: Nobulli
+* Description : Returns a random bully gif and tells a user not to bully another.
+* Requested By: Onyx
+*/
+bot.registerCommand('nobulli', (msg, args) => {
+  tools.doesMsgContainShu(msg).then((shuFlag) => {
+    if (shuFlag) {
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+    } else {
+      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
+        reactions.pickNobulliImage((img) => {
+          tools.getUsernames(args, bot, (usernames) => {
+            let message = ''
+
+            if (usernames.length === 2) {
+              message = '**' + usernames[0] + "**, don't you dare bulli **" + usernames[1] + '**!'
+            }
+
+            sendMessage(msg.channel.id, message, {
+              file: img,
+              name: 'Nobulli.gif'
+            })
+          })
+        }, args[0])
+      } else {
+        return 'Please mention 2 users to include in the message.'
+      }
+    }
   })
 
-  ioTools.incrementCommandUse('killme')
-}, {
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  aliases: ['kms'],
-  caseInsensitive: true
-})
+  ioTools.incrementCommandUse('nobulli')
+}, commandOptions(['bulli', 'bully', 'nobully']))
 
-// ========================== NSFW Commands ===================================================== //
+/**
+* Command Name: Lick
+* Description : Displays a random Lick gif.
+*/
+bot.registerCommand('lick', (msg, args) => {
+  tools.doesMsgContainShu(msg).then((shuFlag) => {
+    if (shuFlag) {
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+    } else {
+      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
+        reactions.pickLickImage(args[0]).then((img) => {
+          let user = msg.mentions[0].username
+          let message = '**' + user + "**, you've been licked by **" + msg.author.username + '**. :tongue:'
+
+          sendMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Lick.gif'
+          })
+        }, args[0])
+      } else if (msg.mentions.length > 0) {
+        reactions.pickLickImage().then((img) => {
+          let user = msg.mentions[0].username
+          let message = '**' + user + "**, you've been licked by **" + msg.author.username + '**. :tongue:'
+
+          sendMessage(msg.channel.id, message, {
+            file: img,
+            name: 'Lick.gif'
+          })
+        })
+      } else {
+        sendMessage(msg.channel.id, 'Please make sure to mention one or more users in order to use this command')
+      }
+    }
+  })
+
+  ioTools.incrementCommandUse('lick')
+}, commandOptions(['licks']))
+
+/**
+* Command Name: Hug
+* Description : Displays a random Hug gif.
+*/
+bot.registerCommand('hug', (msg, args) => {
+  tools.doesMsgContainShu(msg).then((shuFlag) => {
+    if (shuFlag) {
+      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
+    } else {
+      if (msg.mentions[0] !== undefined) {
+        reactions.pickHugImage((hugImage) => {
+          let user = msg.mentions[0].username
+          let message = '**' + user + '**, has received hugs from **' + msg.author.username + '**. :hugging:'
+
+          sendMessage(msg.channel.id, message, {
+            file: hugImage,
+            name: 'Hugs.gif'
+          })
+
+          ioTools.incrementCommandUse('hugs')
+        })
+      } else {
+        return 'Invalid input, please make sure to mention a user.'
+      }
+    }
+  })
+}, commandOptions(['hugs', 'cuddles']))
+// #endregion Action Commands
+
+// #region NSFW Commands
+/**
+* Command Name: Tattoo
+* Description : Displays a random NSFW Tattoo image to the given channel so long
+*   as it's tagged for NSFW content.
+*/
 bot.registerCommand('tattoo', (msg, args) => {
   if (!msg.channel.nsfw) {
     sendMessage(msg.channel.id, 'NSFW commands can only be executed in a channel flagged NSFW.')
@@ -2183,7 +2343,7 @@ bot.registerCommand('tattoo', (msg, args) => {
 
     let random = tools.getRandom(0, tatSubs.length)
 
-    reddit.r('HotChicksWithTattoos', (err, data, res) => {
+    reddit.r(tatSubs[random], (err, data, res) => {
       if (err) {
         console.log(err)
         return err
@@ -2454,176 +2614,136 @@ bot.registerCommand('yaoi', (msg, args) => {
     })
   }
 })
+// #endregion NSFW Commands
 
-bot.registerCommand('derp', (msg, args) => {
-  return 'Is loved by <@219270060936527873> more than anyone.'
-}, {
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  caseInsensitive: true
-})
-
-bot.registerCommand('potato', (msg, args) => {
-  ioTools.getImage('/var/tron/images/potato.png', (img) => {
-    sendMessage(msg.channel.id, undefined, {
-      file: img,
-      name: 'Potato.png'
-    })
-  })
-}, {
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  caseInsensitive: true
-})
-
-// ========================== Hugs Command ====================================================== //
-bot.registerCommand('hug', (msg, args) => {
-  tools.doesMsgContainShu(msg).then((shuFlag) => {
-    if (shuFlag) {
-      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
-    } else {
-      if (msg.mentions[0] !== undefined) {
-        reactions.pickHugImage((hugImage) => {
-          let user = msg.mentions[0].username
-          let message = '**' + user + '**, has received hugs from **' + msg.author.username + '**. :hugging:'
-
-          sendMessage(msg.channel.id, message, {
-            file: hugImage,
-            name: 'Hugs.gif'
-          })
-
-          ioTools.incrementCommandUse('hugs')
-        })
-      } else {
-        return 'Invalid input, please make sure to mention a user.'
-      }
-    }
-  })
-}, {
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  aliases: ['hugs', 'cuddles'],
-  caseInsensitive: true
-})
-
-// ========================== Poke Command ====================================================== //
-bot.registerCommand('poke', (msg, args) => {
-  tools.doesMsgContainShu(msg).then((shuFlag) => {
-    if (shuFlag) {
-      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
-    } else {
-      if (msg.mentions.length === 1) {
-        reactions.pickPokeImage((img) => {
-          let message = '**' + msg.mentions[0].username + "**, you've been poked by **" + msg.author.username + '**.'
-
-          sendMessage(msg.channel.id, message, {
-            file: img,
-            name: 'Poke.gif'
-          })
-
-          ioTools.incrementCommandUse('poke')
-        })
-      } else {
-        return 'Invalid input, please make sure to mention a user.'
-      }
-    }
-  })
-}, {
-  aliases: ['pokes'],
-  caseInsensitive: true,
-  description: 'Poke a user.',
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  fullDescription: 'Displays a random poke gif for the mentioned user.'
-})
-
-// ========================== Kick Command ====================================================== //
-bot.registerCommand('kick', (msg, args) => {
-  tools.doesMsgContainShu(msg).then((shuFlag) => {
-    if (shuFlag) {
-      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
-    } else {
-      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
-        reactions.pickKickImage((img) => {
-          let user = msg.mentions[0].username
-          let message = '**' + user + "**, you've been kicked by **" + msg.author.username + '**.'
-
-          sendMessage(msg.channel.id, message, {
-            file: img,
-            name: 'Kick.gif'
-          })
-        }, args[0])
-      } else if (msg.mentions.length > 0) {
-        reactions.pickKickImage((img) => {
-          let user = msg.mentions[0].username
-          let message = '**' + user + "**, you've been kicked by **" + msg.author.username + '**.'
-
-          sendMessage(msg.channel.id, message, {
-            file: img,
-            name: 'Kick.gif'
-          })
-        })
-      } else {
-        return 'Invalid input, please make sure to mention a user.'
-      }
-    }
-
-    ioTools.incrementCommandUse('kick')
-  })
-}, {
-  aliases: ['kicks'],
-  caseInsensitive: true,
-  description: 'Displays random kick gif',
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  fullDescription: 'Displays a random kick gif and the name of the person you mention.'
-})
-
-// ========================== Bite Command ====================================================== //
-bot.registerCommand('bite', (msg, args) => {
-  tools.doesMsgContainShu(msg).then((shuFlag) => {
-    if (shuFlag) {
-      sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
-    } else {
-      reactions.pickBiteImage((biteImage) => {
-        var message = ''
-
-        if (msg.mentions[0] !== undefined) {
-          var user = msg.mentions[0].username
-          message = '**' + user + "**, you've been bitten by **" + msg.author.username + '**.'
-        }
-
-        sendMessage(msg.channel.id, message, {
-          file: biteImage,
-          name: 'Bite.gif'
+// #region Uncategorized
+/**
+* Command Name: PowerWashingPorn
+* Description : Pulls random images from the top page images of all time on the
+* r/PowerWashingPorn subreddit.
+*/
+bot.registerCommand('powerwashingporn', (msg, args) => {
+  if (PowerWashingLinks.length === 0) {
+    reddit.r('powerwashingporn').top().from('all').all((res) => {
+      res.on('data', (data, res) => {
+        data.data.children.forEach((child, index, mapObj) => {
+          if (child.data.url !== undefined) {
+            PowerWashingLinks.push(child.data.url)
+          }
         })
       })
-    }
 
-    ioTools.incrementCommandUse('bite')
+      res.on('error', (err) => {
+        console.log('Error while parsing powerwashingporn:')
+        console.log(err)
+      })
+
+      res.on('end', () => {
+        let randomUrl = tools.getRandom(0, PowerWashingLinks.length)
+
+        sendMessage(msg.channel.id, PowerWashingLinks[randomUrl])
+      })
+
+      ioTools.incrementCommandUse('powerwashing')
+    })
+  } else {
+    let randomUrl = tools.getRandom(0, PowerWashingLinks.length)
+
+    sendMessage(msg.channel.id, PowerWashingLinks[randomUrl])
+
+    ioTools.incrementCommandUse('powerwashing')
+  }
+}, commandOptions)
+
+/**
+* Command Name: Dodge
+* Description : Returns a random dodge gif.
+* Requested By: PrimRose
+*/
+bot.registerCommand('dodge', (msg, args) => {
+  if (args.length === 1 && !isNaN(parseInt(args[0]))) {
+    reactions.pickDodgeImage(args[0]).then((img) => {
+      sendMessage(msg.channel.id, undefined, {
+        file: img,
+        name: 'Dodge.gif'
+      })
+    })
+  } else {
+    reactions.pickDodgeImage().then((img) => {
+      sendMessage(msg.channel.id, undefined, {
+        file: img,
+        name: 'Dodge.gif'
+      })
+    })
+  }
+
+  ioTools.incrementCommandUse('dodge')
+}, commandOptions(['dodges']))
+
+/**
+* Command Name: Dreamy
+* Description : Returns a random image from a collection given to me by Dreamy.
+* Requested By: Dreamy
+*/
+bot.registerCommand('dreamy', (msg, args) => {
+  reactions.pickDreamyImage((dreamyImage) => {
+    sendMessage(msg.channel.id, undefined, {
+      file: dreamyImage,
+      name: 'Dreamy.gif'
+    })
   })
-}, {
-  aliases: ['bites'],
-  caseInsensitive: true,
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  description: 'Displays a random bite gif.',
-  fullDescription: 'Displays a random bite gif and the name of the user you mention.'
-})
 
-// ========================== Jova Command ====================================================== //
-bot.registerCommand('jova', (msg, args) => {
-  sendMessage(msg.channel.id, 'Who is <@78694002332803072>? Does <@78694002332803072> is gay?')
+  ioTools.incrementCommandUse('dreamy')
+}, commandOptions)
 
-  ioTools.incrementCommandUse('jova')
-})
+/**
+* Command Name: VapeNash
+* Description : Displays a random VapeNash gif.
+* Requested By: Lagucci Mane
+*/
+bot.registerCommand('vn', (msg, args) => {
+  reactions.pickVNImage((img) => {
+    sendMessage(msg.channel.id, undefined, {
+      file: img,
+      name: 'VapeNation.gif'
+    })
+  })
 
-// ========================== Boo Command ======================================================= //
-bot.registerCommand('boo', (msg, args) => {
-  sendMessage(msg.channel.id, '<@160372598734061568> is <@219270060936527873>\'s boo. :heart:')
+  ioTools.incrementCommandUse('vapenation')
+}, commandOptions(['vapenash', 'vape']))
+/**
+* Command Name: Kayla/Yoana
+* Description : Displays a random gif selected by Snow/Yoana.
+* Requested By: Snow
+*/
+bot.registerCommand('kayla', (msg, args) => {
+  if (parseInt(msg.author.id) === 142092834260910080 || parseInt(msg.author.id) === 217870035090276374 || msg.author.id === config.owner) {
+    reactions.pickKaylaImage().then(img => {
+      sendMessage(msg.channel.id, undefined, {
+        file: img,
+        name: 'Kayla.gif'
+      })
+    })
+  } else {
+    return 'This command is unavailable to you.'
+  }
+}, commandOptions(['yoana']))
 
-  ioTools.incrementCommandUse('boo')
-})
+/**
+* Command Name: KillMe
+* Description : Displays a random KillMe gif.
+*/
+bot.registerCommand('killme', (msg, args) => {
+  reactions.pickKillMeImage((killMeImage) => {
+    // Mika's requested killme command
+    sendMessage(msg.channel.id, undefined, {
+      file: killMeImage,
+      name: 'KillMe.gif'
+    })
+  })
+
+  ioTools.incrementCommandUse('killme')
+}, commandOptions(['kms']))
 
 // ========================== onReady Event Handler ============================================= //
 bot.on('ready', () => {
@@ -2641,7 +2761,10 @@ bot.on('ready', () => {
   // setupRssReaders()
 })
 
-// ========================== Blush Command ===================================================== //
+/**
+* Command Name: Blush
+* Description : Displays a random Blush gif.
+*/
 bot.registerCommand('blush', (msg, args) => {
   reactions.pickBlushImage((blushImage) => {
     sendMessage(msg.channel.id, undefined, {
@@ -2651,14 +2774,13 @@ bot.registerCommand('blush', (msg, args) => {
 
     ioTools.incrementCommandUse('blush')
   })
-}, {
-  caseInsensitive: true,
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  description: 'Displays a random blush gif.'
-})
+}, commandOptions)
 
-// ========================== Rawr Command ====================================================== //
+/**
+* Command Name: Rawr
+* Description : Displays a random Rawr gif.
+* Requested By: Squirts/Alex
+*/
 bot.registerCommand('rawr', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickRawrImage(args[0]).then((data) => {
@@ -2671,14 +2793,12 @@ bot.registerCommand('rawr', (msg, args) => {
   }
 
   ioTools.incrementCommandUse('rawr')
-}, {
-  cooldown: config.DEFAULT_COOLDOWN,
-  caseInsensitive: true,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  description: 'Displays a random rawr gif.'
-})
+}, commandOptions)
 
-// ========================== Rekt Command ====================================================== //
+/**
+* Command Name: Rekt
+* Description : Displays a random Rekt gif.
+*/
 bot.registerCommand('rekt', (msg, args) => {
   reactions.pickRektImage((rektImage) => {
     sendMessage(msg.channel.id, undefined, {
@@ -2688,24 +2808,17 @@ bot.registerCommand('rekt', (msg, args) => {
   })
 
   ioTools.incrementCommandUse('rekt')
-}, {
-  caseInsensitive: true,
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  description: 'Displays a random rekt gif.'
-})
+}, commandOptions)
 
 // ========================== Trump Commands ==================================================== //
 let trumpFake = null
 let trumpWrong = null
 
-let trumpCmd = bot.registerCommand('trump', (msg, args) => {
+const trumpCmd = bot.registerCommand('trump', (msg, args) => {
   if (args.length === 0) {
     return 'Invalid input, arguments required. Try `+trump fake` or `+trump wrong`.'
   }
-}, {
-  caseInsensitive: true
-})
+}, commandOptions)
 
 trumpCmd.registerSubcommand('fake', (msg, args) => {
   if (trumpWrong === null) {
@@ -2724,12 +2837,7 @@ trumpCmd.registerSubcommand('fake', (msg, args) => {
   }
 
   ioTools.incrementCommandUse('trump-fake')
-}, {
-  aliases: ['cnn'],
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  caseInsensitive: true
-})
+}, commandOptions(['cnn']))
 
 trumpCmd.registerSubcommand('wrong', (msg, args) => {
   if (trumpWrong === null) {
@@ -2748,30 +2856,13 @@ trumpCmd.registerSubcommand('wrong', (msg, args) => {
   }
 
   ioTools.incrementCommandUse('trump-wrong')
-}, {
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  caseInsensitive: true
-})
+}, commandOptions)
 
-bot.registerCommand('batts', (msg, args) => {
-  if (!isNaN(parseInt(args[0]))) {
-    reactions.pickBattsieImage(args[0]).then((data) => {
-      sendMessage(msg.channel.id, undefined, data)
-    })
-  } else {
-    reactions.pickBattsieImage().then((data) => {
-      sendMessage(msg.channel.id, undefined, data)
-    })
-  }
-}, {
-  aliases: ['battsie'],
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  caseInsensitive: true
-})
-
-// ========================== Wink Command (Suggested by Thriller) ============================== //
+/**
+* Command Name: Wink
+* Description : Displays a random Wink gif.
+* Requested By: Thriller
+*/
 bot.registerCommand('wink', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickWinkImage(args[0]).then(data => {
@@ -2782,9 +2873,13 @@ bot.registerCommand('wink', (msg, args) => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
-})
+}, commandOptions)
 
-// ========================== Wink Command (Suggested by Blake) ================================= //
+/**
+* Command Name: Dead
+* Description : Displays an image for a dead chat.
+* Requested By: Blake
+*/
 bot.registerCommand('dead', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickDeadImage(args[0]).then(data => {
@@ -2795,31 +2890,13 @@ bot.registerCommand('dead', (msg, args) => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
-})
+}, commandOptions)
 
-// ========================== Alcha Command (Requested by Utah) ================================= //
-bot.registerCommand('alcha', (msg, args) => {
-  if (!isNaN(parseInt(args[0]))) {
-    reactions.pickJerryImage(args[0]).then((data) => {
-      sendMessage(msg.channel.id, undefined, data)
-    })
-  } else {
-    reactions.pickJerryImage().then((data) => {
-      sendMessage(msg.channel.id, undefined, data)
-    })
-  }
-
-  ioTools.incrementCommandUse('alcha')
-}, {
-  aliases: ['morty', 'jerry'],
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  argsRequired: false,
-  caseInsensitive: true,
-  guildOnly: true
-})
-
-// ========================== Shocked Command (Requested by Thriller) =========================== //
+/**
+* Command Name: Shocked
+* Description : Displays a shocked gif.
+* Requested By: Thriller
+*/
 bot.registerCommand('shocked', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickShockedImage(args[0]).then((data) => {
@@ -2832,7 +2909,11 @@ bot.registerCommand('shocked', (msg, args) => {
   }
 })
 
-// ========================== Disgusted Command (Requested by Neko) ============================= //
+/**
+* Command Name: Disgusted
+* Description : Displays a Disgusted gif.
+* Requested By: Neko
+*/
 bot.registerCommand('disgusted', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickDisgustedImage(args[0]).then((data) => {
@@ -2848,7 +2929,11 @@ bot.registerCommand('disgusted', (msg, args) => {
   caseInsensitive: true
 })
 
-// ========================== Smug Command (Requested by Thriller) ============================== //
+/**
+* Command Name: Smug
+* Description : Displays a Smug gif.
+* Requested By: Thriller
+*/
 bot.registerCommand('smug', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickSmugImage(args[0]).then((data) => {
@@ -2861,29 +2946,11 @@ bot.registerCommand('smug', (msg, args) => {
   }
 })
 
-// ========================== Foupa Command ===================================================== //
-bot.registerCommand('foupa', (msg, args) => {
-  if (!isNaN(parseInt(args[0]))) {
-    reactions.pickFoupaImage(args[0]).then((data) => {
-      sendMessage(msg.channel.id, undefined, data)
-    })
-  } else {
-    reactions.pickFoupaImage().then((data) => {
-      sendMessage(msg.channel.id, undefined, data)
-    })
-  }
-}, {
-  aliases: ['friendlyneighborhoodpedo'],
-  requirements: {
-    userIDs: ['219270060936527873', '159844469464760320']
-  },
-  caseInsensitive: true,
-  permissionMessage: 'This command is unavailable to you.',
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE
-})
-
-// ========================== Coffee Command =================================================== //
+/**
+* Command Name: Coffee
+* Description : Displays a Coffee gif/image.
+* Requested By: Alcha
+*/
 bot.registerCommand('coffee', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
     reactions.pickCoffeeImage(args[0]).then((data) => {
@@ -2894,53 +2961,7 @@ bot.registerCommand('coffee', (msg, args) => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
-}, {
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  argsRequired: false,
-  caseInsensitive: true,
-  guildOnly: true
-})
-
-// ========================== Utah Command ====================================================== //
-bot.registerCommand('utah', (msg, args) => {
-  if (msg.channel.guild !== undefined) {
-    if (parseInt(msg.channel.guild.id) === 254496813552238594) {
-      sendMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:256668458480041985>')
-    } else if (parseInt(msg.channel.guild.id) === 197846974408556544) {
-      sendMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:298313391444066305>')
-    } else if (parseInt(msg.channel.guild.id) === 325420023705370625) {
-      sendMessage(msg.channel.id, '<@139474184089632769> <:Tiggered:327634830483259393>')
-    } else {
-      console.log('Guild = ' + msg.channel.guild.name)
-      console.log('id = ' + msg.channel.guild.id)
-    }
-
-    ioTools.incrementCommandUse('utah')
-  }
-}, {
-  caseInsensitive: true,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  cooldown: config.DEFAULT_COOLDOWN,
-  description: 'A command to poke fun at a good friend.',
-  fullDescription: 'A command used to poke fun at a good friend. -Alcha'
-})
-
-// ========================== Alex Command ====================================================== //
-bot.registerCommand('alex', (msg, args) => {
-  if (msg.channel.guild !== undefined) {
-    if (parseInt(msg.channel.guild.id) === 254496813552238594) {
-      sendMessage(msg.channel.id, '<@!191316261299290112> 🖕')
-      ioTools.incrementCommandUse('alex')
-    }
-  }
-}, {
-  caseInsensitive: true,
-  cooldown: config.DEFAULT_COOLDOWN,
-  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
-  description: 'A command to show my love for a good friend.',
-  fullDescription: 'A command used to show my love for a good friend. -Alcha'
-})
+}, commandOptions)
 
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on('messageCreate', (msg) => {
@@ -2968,6 +2989,7 @@ bot.on('messageCreate', (msg) => {
     }
   }
 })
+// #endregion Uncategorized
 
 // #region Help Commands
 // ========================== Help Commands ===================================================== //

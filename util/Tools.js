@@ -52,19 +52,17 @@ class Tools {
    * @param {*} callback      A callback to receive the username upon finding it (optional).
    */
   getUsernameFromId (userId, bot, callback) {
-    let username = 'Unknown'
-
     bot.users.forEach((user, index, array) => {
       if (user.id === userId) {
         if (callback instanceof function () {}) {
           callback(user.username)
-        } else {
-          username = user.username
         }
       }
     })
+  }
 
-    return username
+  getUserFromId (userId, bot, callback) {
+    bot.users.forEach((user, index, array) => { if (user.id === userId) { callback(user) } })
   }
 
   /**
@@ -109,6 +107,10 @@ class Tools {
   upperFirstC (string) {
     let temp = string.toLowerCase()
     return temp.charAt(0).toUpperCase() + temp.slice(1)
+  }
+
+  lowerFirstC (string) {
+    return string.charAt(0).toLowerCase() + string.substring(1)
   }
 
   /**

@@ -3,6 +3,7 @@
 const download = require('image-downloader')
 const Canvas = require('canvas')
 const Tools = require('../util/Tools.js')
+const shuffle = require('shuffle-array')
 const Image = Canvas.Image
 const tools = new Tools()
 const fs = require('fs')
@@ -112,43 +113,12 @@ class Ship {
   }
 
   getShipName (msg, callback) {
-    let usernames = [
-      msg.mentions[0].username,
-      msg.mentions[1].username
-    ]
-
-    let limit0 = tools.getRandom(0, usernames[0].length)
-    let limit1 = tools.getRandom(0, usernames[1].length)
-    let firstChoice = tools.getRandom(0, 1)
-    let start = tools.getRandom(0, 1)
-    let shipName = ''
-
-    switch (firstChoice) {
-      case 0:
-        switch (start) {
-          case 0:
-            shipName = usernames[0].substring(limit0) + usernames[1].substring(limit1)
-            break
-          case 1:
-            shipName = usernames[0].substring(limit1) + usernames[1].substring(limit0)
-            break
-        }
-        break
-      case 1:
-        switch (start) {
-          case 0:
-            shipName = usernames[1].substring(limit0) + usernames[0].substring(limit1)
-            break
-          case 1:
-            shipName = usernames[1].substring(limit1) + usernames[0].substring(limit0)
-            break
-        }
-        break
-    }
-
-    callback(tools.upperFirstC(
-      shipName.replace(/^\W/gi, '')
-    ))
+    const combined = msg.mentions[0].username + msg.mentions[1].username
+    const shuffled = shuffle(combined.split(''))
+    const randomLength = tools.getRandom(0, shuffled.length)
+    const shipName = shuffled.toString().substring(0, randomLength)
+    console.log('shipName = ' + shipName)
+    callback(tools.upperFirstC(shipName.replace('/,/g', '')))
   }
 }
 
