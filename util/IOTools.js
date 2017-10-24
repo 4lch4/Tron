@@ -25,7 +25,7 @@ class IOTools {
     connection.query(sql, (err, results, fields) => {
       if (err) throw err
 
-      if (callback !== null) {
+      if (callback instanceof function () {}) {
         callback(results, fields)
       }
     })
@@ -125,13 +125,15 @@ class IOTools {
       path = '/var/tron/images/' + path
     }
 
-    fs.readFile(path, (err, content) => {
-      if (err) {
-        throw err
-      }
+    if (this.getFileSize(path) < 8000000) {
+      fs.readFile(path, (err, content) => {
+        if (err) {
+          throw err
+        }
 
-      onComplete(content)
-    })
+        onComplete(content)
+      })
+    }
   }
 
   getImages (dirnameIn, onComplete) {
@@ -139,11 +141,11 @@ class IOTools {
     let images = []
     let filenames = []
 
-    this.readFiles(dirname, (filename, content) => {
+    this.getImageFiles(dirname, (filename, content) => {
       images.push(content)
       filenames.push(filename)
     }, (err) => {
-      console.log('Error occured.')
+      console.log('An error has occured while getting images...')
       console.log(err)
     }, () => {
       onComplete(images, filenames)
@@ -168,30 +170,27 @@ class IOTools {
     }
   }
 
-  readFiles (dirname, onFileContent, onError, onComplete) {
-    let processNum = 0
+  getFileSize (filename) {
+    const stats = fs.statSync(filename)
+    const fileSizeInBytes = stats.size
+    return fileSizeInBytes
+  }
 
+  getImageFiles (dirname, onFileContent, onError, onComplete) {
     fs.readdir(dirname, (err, filenames) => {
       if (err) {
         onError(err)
         return
       }
 
-      filenames.forEach((filename, index, array) => {
-        fs.readFile(dirname + filename, (err, content) => {
-          if (err) {
-            onError(err)
-            return
-          }
+      for (let x = 0; x < filenames.length; x++) {
+        let filename = dirname + filenames[x]
+        if (this.getFileSize(filename) < 8000000) {
+          onFileContent(filename, fs.readFileSync(filename))
+        }
+      }
 
-          onFileContent(filename, content)
-
-          processNum++
-          if (processNum === array.length) {
-            onComplete()
-          }
-        })
-      })
+      onComplete()
     })
   }
 

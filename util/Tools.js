@@ -6,91 +6,6 @@ const roleNames = config.roleNames
 const Chance = require('chance')
 const chance = new Chance()
 const fs = require('fs')
-const exhentaiCookies = `\`\`\`
-{
-    "domain": ".exhentai.org",
-    "expirationDate": 1513272210.164014,
-    "hostOnly": false,
-    "httpOnly": false,
-    "name": "igneous",
-    "path": "/",
-    "sameSite": "no_restriction",
-    "secure": false,
-    "session": false,
-    "storeId": "0",
-    "value": "a6e7d2f5a",
-    "id": 1
-},
-{
-    "domain": ".exhentai.org",
-    "expirationDate": 1513272210.013624,
-    "hostOnly": false,
-    "httpOnly": false,
-    "name": "ipb_member_id",
-    "path": "/",
-    "sameSite": "no_restriction",
-    "secure": false,
-    "session": false,
-    "storeId": "0",
-    "value": "2769344",
-    "id": 2
-},
-{
-    "domain": ".exhentai.org",
-    "expirationDate": 1513272210.013661,
-    "hostOnly": false,
-    "httpOnly": false,
-    "name": "ipb_pass_hash",
-    "path": "/",
-    "sameSite": "no_restriction",
-    "secure": false,
-    "session": false,
-    "storeId": "0",
-    "value": "76b3c7545dc4e7a7419e6cdcf66c0258",
-    "id": 3
-},
-{
-    "domain": ".exhentai.org",
-    "expirationDate": 1513460376.567466,
-    "hostOnly": false,
-    "httpOnly": false,
-    "name": "s",
-    "path": "/",
-    "sameSite": "no_restriction",
-    "secure": false,
-    "session": false,
-    "storeId": "0",
-    "value": "59dccef4b",
-    "id": 4
-},
-{
-    "domain": ".exhentai.org",
-    "expirationDate": 1513272213.181294,
-    "hostOnly": false,
-    "httpOnly": false,
-    "name": "uconfig",
-    "path": "/",
-    "sameSite": "no_restriction",
-    "secure": false,
-    "session": false,
-    "storeId": "0",
-    "value": "dm_t",
-    "id": 5
-},
-{
-    "domain": "exhentai.org",
-    "expirationDate": 1518929873.965958,
-    "hostOnly": true,
-    "httpOnly": false,
-    "name": "lv",
-    "path": "/",
-    "sameSite": "no_restriction",
-    "secure": false,
-    "session": false,
-    "storeId": "0",
-    "value": "1487307036-1487393875",
-    "id": 6
-}\`\`\``
 
 // ============================================================================================== //
 class Tools {
@@ -98,8 +13,29 @@ class Tools {
     this.options = options || {}
   }
 
-  getExhentaiCookies () {
-    return exhentaiCookies
+  /**
+   * Using the provided message object, this method creates a message to display the proper usage
+   * for a command to the user. The message, usage, and eg parameters are all required and the help
+   * parameter is optional.
+   *
+   * @method
+   * @example
+   * tools.incorrectUsage(msg, '+trivia start <category id>', '+trivia start 1','Get a list of
+   * categories with &#96;+trivia categories&#96;')
+   * @param {*} msg Message object of the incorrectly used command
+   * @param {string} usage Defines the correct usage of the command
+   * @param {string} eg An example of how to use the command correctly
+   * @param {string} help (optional) Additional help information to display
+   */
+  incorrectUsage (msg, usage, eg, help) {
+    let message = ':x: | **' + msg.author.username + '**, the correct usage is: `' + usage + '`\n' +
+    ':white_small_square: | e.g. `' + eg + '`'
+
+    if (help !== undefined) {
+      message += '\n:white_small_square: | ' + help
+    }
+
+    return message
   }
 
   formatTimeString (string) {
@@ -116,19 +52,17 @@ class Tools {
    * @param {*} callback      A callback to receive the username upon finding it (optional).
    */
   getUsernameFromId (userId, bot, callback) {
-    let username = 'Unknown'
-
     bot.users.forEach((user, index, array) => {
       if (user.id === userId) {
         if (callback instanceof function () {}) {
           callback(user.username)
-        } else {
-          username = user.username
         }
       }
     })
+  }
 
-    return username
+  getUserFromId (userId, bot, callback) {
+    bot.users.forEach((user, index, array) => { if (user.id === userId) { callback(user) } })
   }
 
   /**
@@ -173,6 +107,10 @@ class Tools {
   upperFirstC (string) {
     let temp = string.toLowerCase()
     return temp.charAt(0).toUpperCase() + temp.slice(1)
+  }
+
+  lowerFirstC (string) {
+    return string.charAt(0).toLowerCase() + string.substring(1)
   }
 
   /**
@@ -283,7 +221,7 @@ class Tools {
         }
       })
     } else {
-      str = args[0].toLowerCase()
+      if (args[0] !== undefined) str = args[0].toLowerCase()
     }
 
     return str
