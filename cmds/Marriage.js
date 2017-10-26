@@ -126,7 +126,7 @@ class Marriage {
       spouseAId + ', ' + spouseBId + ", '" + currDate + "');"
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback instanceof function () {}) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -170,7 +170,7 @@ class Marriage {
       ' || SPOUSE_B_ID = ' + userId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })

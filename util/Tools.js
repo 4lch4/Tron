@@ -52,13 +52,14 @@ class Tools {
    * @param {*} callback      A callback to receive the username upon finding it (optional).
    */
   getUsernameFromId (userId, bot, callback) {
-    bot.users.forEach((user, index, array) => {
-      if (user.id === userId) {
-        if (callback instanceof function () {}) {
-          callback(user.username)
-        }
-      }
-    })
+    if (bot.users.get(userId) === undefined) {
+      if (callback === undefined) return 'Unknown'
+      else callback()
+    } else {
+      let user = bot.users.get(userId)
+      if (callback === undefined) return user.username
+      else callback(user.username)
+    }
   }
 
   getUserFromId (userId, bot, callback) {

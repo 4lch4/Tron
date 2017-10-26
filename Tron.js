@@ -1578,15 +1578,9 @@ marry.registerSubcommand('list', (msg, args) => {
             message = msg.mentions[0].username + ' is currently married to:\n```\n'
             for (let x = 0; x < marriages.length; x++) {
               if (marriages[x].SPOUSE_A_ID !== userId) {
-                let username = tools.getUsernameFromId(marriages[x].SPOUSE_A_ID, bot)
-                if (username.length > 0) {
-                  message += '- ' + username + ' since ' + marriages[x].MARRIAGE_DATE + '\n'
-                }
+                message += '- ' + tools.getUsernameFromId(marriages[x].SPOUSE_A_ID, bot) + ' since ' + marriages[x].MARRIAGE_DATE + '\n'
               } else if (marriages[x].SPOUSE_B_ID !== userId) {
-                let username = tools.getUsernameFromId(marriages[x].SPOUSE_B_ID, bot)
-                if (username.length > 0) {
-                  message += '- ' + username + ' since ' + marriages[x].MARRIAGE_DATE + '\n'
-                }
+                message += '- ' + tools.getUsernameFromId(marriages[x].SPOUSE_B_ID, bot) + ' since ' + marriages[x].MARRIAGE_DATE + '\n'
               }
             }
 

@@ -25,7 +25,7 @@ class IOTools {
     connection.query(sql, (err, results, fields) => {
       if (err) throw err
 
-      if (callback instanceof function () {}) {
+      if (callback !== undefined) {
         callback(results, fields)
       }
     })
