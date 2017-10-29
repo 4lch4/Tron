@@ -495,6 +495,40 @@ memeCmd.registerSubcommand('doge', (msg, args) => {
 
 // #region User Commands
 /**
+* Command Name: Dreamy
+* Description : Returns a random image from a collection given to me by Dreamy.
+* Requested By: Dreamy
+*/
+bot.registerCommand('dreamy', (msg, args) => {
+  reactions.pickDreamyImage((dreamyImage) => {
+    sendMessage(msg.channel.id, undefined, {
+      file: dreamyImage,
+      name: 'Dreamy.gif'
+    })
+  })
+
+  ioTools.incrementCommandUse('dreamy')
+}, commandOptions)
+
+/**
+* Command Name: Kayla/Yoana
+* Description : Displays a random gif selected by Snow/Yoana.
+* Requested By: Snow
+*/
+bot.registerCommand('kayla', (msg, args) => {
+  if (parseInt(msg.author.id) === 142092834260910080 || parseInt(msg.author.id) === 217870035090276374 || msg.author.id === config.owner) {
+    reactions.pickKaylaImage().then(img => {
+      sendMessage(msg.channel.id, undefined, {
+        file: img,
+        name: 'Kayla.gif'
+      })
+    })
+  } else {
+    return 'This command is unavailable to you.'
+  }
+}, commandOptions(['yoana']))
+
+/**
 * Command Name: Zorika
 * Description : Returns a random phrase that Zori wants.
 * Requested By: Zorika/Zori
@@ -1804,12 +1838,12 @@ divorce.registerSubcommand('list', (msg, args) => {
 
           for (let x = 0; x < divorces.length; x++) {
             if (divorces[x].DIVORCER_ID !== msg.author.id) {
-              let username = tools.getUsernameFromId(divorces[x].DIVORCER_ID)
+              let username = tools.getUsernameFromId(divorces[x].DIVORCER_ID, bot)
               if (username.length > 0) {
                 message += '- ' + username + ' since ' + divorces[x].DIVORCE_DATE + '\n'
               }
             } else if (divorces[x].DIVORCEE_ID !== msg.author.id) {
-              let username = tools.getUsernameFromId(divorces[x].DIVORCEE_ID)
+              let username = tools.getUsernameFromId(divorces[x].DIVORCEE_ID, bot)
               if (username.length > 0) {
                 message += '- ' + username + ' since ' + divorces[x].DIVORCE_DATE + '\n'
               }
@@ -2675,22 +2709,6 @@ bot.registerCommand('dodge', (msg, args) => {
 }, commandOptions(['dodges']))
 
 /**
-* Command Name: Dreamy
-* Description : Returns a random image from a collection given to me by Dreamy.
-* Requested By: Dreamy
-*/
-bot.registerCommand('dreamy', (msg, args) => {
-  reactions.pickDreamyImage((dreamyImage) => {
-    sendMessage(msg.channel.id, undefined, {
-      file: dreamyImage,
-      name: 'Dreamy.gif'
-    })
-  })
-
-  ioTools.incrementCommandUse('dreamy')
-}, commandOptions)
-
-/**
 * Command Name: VapeNash
 * Description : Displays a random VapeNash gif.
 * Requested By: Lagucci Mane
@@ -2705,23 +2723,6 @@ bot.registerCommand('vn', (msg, args) => {
 
   ioTools.incrementCommandUse('vapenation')
 }, commandOptions(['vapenash', 'vape']))
-/**
-* Command Name: Kayla/Yoana
-* Description : Displays a random gif selected by Snow/Yoana.
-* Requested By: Snow
-*/
-bot.registerCommand('kayla', (msg, args) => {
-  if (parseInt(msg.author.id) === 142092834260910080 || parseInt(msg.author.id) === 217870035090276374 || msg.author.id === config.owner) {
-    reactions.pickKaylaImage().then(img => {
-      sendMessage(msg.channel.id, undefined, {
-        file: img,
-        name: 'Kayla.gif'
-      })
-    })
-  } else {
-    return 'This command is unavailable to you.'
-  }
-}, commandOptions(['yoana']))
 
 /**
 * Command Name: KillMe
