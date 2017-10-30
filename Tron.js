@@ -1646,7 +1646,7 @@ marry.registerSubcommand('accept', (msg, args) => {
   marriage.getProposalType(msg.author.id, 1, (results) => {
     if (results !== null && results.length > 1) {
       if (args.length === 0) {
-        marriage.formatProposals(results, (formattedMsg) => {
+        marriage.formatProposals(results, bot, (formattedMsg) => {
           formattedMsg = 'You currently have ' + results.length + ' proposals, please indicate which one you wish to accept (e.g. +marry accept 1):\n\n' + formattedMsg
 
           sendMessage(msg.channel.id, formattedMsg)
@@ -1690,7 +1690,7 @@ marry.registerSubcommand('deny', (msg, args) => {
   marriage.getProposals(msg.author.id, (results) => {
     if (results !== null && results.length > 1) {
       if (args.length === 0) {
-        marriage.formatProposals(results, (formattedMsg) => {
+        marriage.formatProposals(results, bot, (formattedMsg) => {
           formattedMsg = 'You currently have ' + results.length + ' proposals, please indicate which one you wish to deny (e.g. +marry deny 1):\n\n' + formattedMsg
           sendMessage(msg.channel.id, formattedMsg)
         })

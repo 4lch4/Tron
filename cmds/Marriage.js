@@ -34,7 +34,7 @@ class Marriage {
       proposer + ', ' + proposee + ", '" + currDate + "');"
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -54,7 +54,7 @@ class Marriage {
       'PROPOSEE_ID = ' + proposeeId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -72,7 +72,7 @@ class Marriage {
       ' || PROPOSEE_ID = ' + userId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -87,7 +87,7 @@ class Marriage {
     }
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -98,7 +98,7 @@ class Marriage {
 
     ioTools.executeSql(sqlQuery, (results) => {
       if (results !== null && results.length === 1) {
-        this.removeProposal(proposer.id, proposee.id, null)
+        this.removeProposal(proposer.id, proposee.id)
 
         this.addMarriage(proposer, proposee)
 
@@ -152,7 +152,7 @@ class Marriage {
       '(SPOUSE_A_ID = ' + spouseBId + ' AND SPOUSE_B_ID = ' + spouseAId + ');'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -235,19 +235,21 @@ class Marriage {
    * @param {*} proposals
    * @param {*} callback
    */
-  formatProposals (proposals, callback) {
+  formatProposals (proposals, bot, callback) {
     let processed = 0
     let message = '```'
 
     proposals.forEach((proposal, index, array) => {
-      message += '(' + processed + ') ' + proposal.PROPOSER_USERNAME + '\n'
+      tools.getUsernameFromId(proposal.PROPOSER_ID, bot, username => {
+        message += '(' + processed + ') ' + username + '\n'
 
-      processed++
+        processed++
 
-      if (processed === proposals.length) {
-        message += '```'
-        callback(message)
-      }
+        if (processed === proposals.length) {
+          message += '```'
+          callback(message)
+        }
+      })
     })
   }
 
@@ -262,7 +264,7 @@ class Marriage {
       '(' + divorcerId + ', ' + divorceeId + ', "' + currDate + '");'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -334,7 +336,7 @@ class Marriage {
     divorcerId + ', ' + divorceeId + ');'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -345,7 +347,7 @@ class Marriage {
       ' || DIVORCEE_ID = ' + userId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -365,7 +367,7 @@ class Marriage {
       'DIVORCEE_ID = ' + divorceeId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -377,7 +379,7 @@ class Marriage {
       '(DIVORCER_ID = ' + divorceeId + ' AND DIVORCEE_ID = ' + divorcerId + ');'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
