@@ -4,6 +4,7 @@
 const config = require('./util/config.json')
 const IOTools = require('./util/IOTools')
 const Tools = require('./util/Tools')
+const AdminTools = require('./util/AdminTools')
 const info = require('./package.json')
 const Canvas = require('canvas')
 const Moment = require('moment')
@@ -12,6 +13,7 @@ const insultCompliment = require('insult-compliment')
 
 const ioTools = new IOTools()
 const tools = new Tools()
+const adminTools = new AdminTools()
 
 const reddit = require('redwrap')
 
@@ -96,7 +98,7 @@ const yaoiCmd = new Yaoi()
 const adminCmd = bot.registerCommand('admin', (msg, args) => {})
 const adminCmdOptions = {
   requirements: {
-    roleNames: ['tron-mod']
+    roleNames: ['tron-mod', 'Mods']
   }
 }
 
@@ -209,27 +211,14 @@ adminCmd.registerSubcommand('kick', (msg, args) => {
 * Requested By: Me? I think.
 */
 bot.registerCommand('initialize', (msg, args) => {
-  msg.channel.guild.createRole({
-    name: 'tron-mod'
-  })
-  msg.channel.guild.createRole({
-    name: 'tron-mute'
-  }).then((role) => {
-    msg.channel.guild.channels.forEach((channel, index, collection) => {
-      if (channel.type === 0) {
-        channel.editPermission(role.id, undefined, 2048, 'role').then((err) => {
-          if (err) Raven.captureException(err)
-        })
-      } else {
-        channel.editPermission(role.id, undefined, 2097152, 'role').then((err) => {
-          if (err) Raven.captureException(err)
-        })
-      }
+  if (msg.author.id === config.owner) {
+    adminTools.initializeServer(bot, msg).then(success => {
+      if (success) sendMessage(msg.channel.id, 'Server initialized!')
     })
-
-    sendMessage(msg.channel.id, 'Permissions have been initalized.')
-  })
-}, adminCmdOptions)
+  }
+}, {
+  aliases: ['init']
+})
 
 /**
  * Evaluates and returns the given args value as Javascript.
