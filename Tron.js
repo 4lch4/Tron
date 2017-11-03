@@ -1,5 +1,3 @@
-'use strict'
-
 // #region Const and requires declarations
 const config = require('./util/config.json')
 const IOTools = require('./util/IOTools')

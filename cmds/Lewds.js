@@ -1,5 +1,3 @@
-'use strict'
-
 const Tools = require('../util/Tools')
 const tools = new Tools()
 

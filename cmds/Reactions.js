@@ -1,5 +1,3 @@
-'use strict'
-
 const IOTools = require('../util/IOTools.js')
 const Tools = require('../util/Tools.js')
 

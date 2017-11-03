@@ -1,5 +1,3 @@
-'use strict'
-
 const moment = require('moment-timezone')
 const config = require('./config.json')
 const roleNames = config.roleNames
@@ -242,7 +240,6 @@ class Tools {
         let processed = 0
 
         msg.mentions.forEach((user, index, map) => {
-          console.log('userid = ' + user.id)
           if (parseInt(user.id) === 132710431201427456) {
             console.log('A user has mentioned Shu - ' + msg.author.username)
             resolve(true)

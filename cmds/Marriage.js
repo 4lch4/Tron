@@ -1,5 +1,3 @@
-'use strict'
-
 // ========================== Tool Declarations ================================================= //
 const Tools = require('../util/Tools.js')
 const tools = new Tools()

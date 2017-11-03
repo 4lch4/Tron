@@ -1,11 +1,12 @@
-'use strict'
-
+// #region Const Declarations
 const download = require('image-downloader')
 const config = require('./config.json')
 const Tools = require('./Tools.js')
 const tools = new Tools()
 const fs = require('fs')
+// #endregion Cont Declaration
 
+// #region MySQL Consts
 const mysql = require('mysql')
 const connection = mysql.createConnection({
   host: config.mysql.host,
@@ -15,6 +16,7 @@ const connection = mysql.createConnection({
 })
 
 connection.connect()
+// #endregion MySQL Consts
 
 class IOTools {
   constructor (options) {
