@@ -41,6 +41,16 @@ class Tools {
   }
 
   /**
+   * Formats the given number with commas where they should be to display a
+   * number whose value is greater than or equal to 1,000.
+   *
+   * @param {number} num
+   */
+  numberWithCommas (num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  }
+
+  /**
    * Using the provided bot object, search the map of visible users and return the username of the
    * user with the provided user id. If a callback is provided, the value is sent to it, otherwise
    * the username is simply returned.

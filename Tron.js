@@ -683,7 +683,7 @@ bot.registerCommand('potato', (msg, args) => {
 
 // #region Feature Commands
 /**
-* Command Name: Bot Command
+* Command Name: Bot
 * Description : Lists bot info.
 * Requested By: Alcha
 */
@@ -693,6 +693,8 @@ bot.registerCommand('bot', (msg, args) => {
   else member = msg.author
 
   const pkg = require('./package')
+  const erisVersion = require('eris/package.json').version
+
   sendMessage(msg.channel.id, {
     'embed': {
       'title': bot.user.username,
@@ -702,7 +704,7 @@ bot.registerCommand('bot', (msg, args) => {
       'timestamp': new Moment().toDate(),
       'footer': {
         'icon_url': bot.user.avatarURL,
-        'text': 'Tron Info'
+        'text': 'Tron ' + info.version
       },
       'thumbnail': {
         'url': bot.user.avatarURL
@@ -717,11 +719,16 @@ bot.registerCommand('bot', (msg, args) => {
         'inline': true
       }, {
         'name': 'User Count',
-        'value': bot.users.size,
+        'value': tools.numberWithCommas(bot.users.size),
         'inline': true
       }, {
         'name': 'Uptime',
-        'value': Math.round(bot.uptime / 1000 / 60) + ' mins'
+        'value': tools.numberWithCommas(Math.round(bot.uptime / 1000 / 60)) + ' mins',
+        'inline': true
+      }, {
+        'name': 'Eris Version',
+        'value': erisVersion,
+        'inline': true
       }]
     }
   })
