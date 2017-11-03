@@ -1,5 +1,3 @@
-'use strict'
-
 // ========================== Tool Declarations ================================================= //
 const Tools = require('../util/Tools.js')
 const tools = new Tools()
@@ -34,7 +32,7 @@ class Marriage {
       proposer + ', ' + proposee + ", '" + currDate + "');"
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -54,7 +52,7 @@ class Marriage {
       'PROPOSEE_ID = ' + proposeeId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -72,7 +70,7 @@ class Marriage {
       ' || PROPOSEE_ID = ' + userId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -87,7 +85,7 @@ class Marriage {
     }
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -98,7 +96,7 @@ class Marriage {
 
     ioTools.executeSql(sqlQuery, (results) => {
       if (results !== null && results.length === 1) {
-        this.removeProposal(proposer.id, proposee.id, null)
+        this.removeProposal(proposer.id, proposee.id)
 
         this.addMarriage(proposer, proposee)
 
@@ -126,7 +124,7 @@ class Marriage {
       spouseAId + ', ' + spouseBId + ", '" + currDate + "');"
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback instanceof function () {}) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -152,7 +150,7 @@ class Marriage {
       '(SPOUSE_A_ID = ' + spouseBId + ' AND SPOUSE_B_ID = ' + spouseAId + ');'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -170,7 +168,7 @@ class Marriage {
       ' || SPOUSE_B_ID = ' + userId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -235,41 +233,37 @@ class Marriage {
    * @param {*} proposals
    * @param {*} callback
    */
-  formatProposals (proposals, callback) {
+  formatProposals (proposals, bot, callback) {
     let processed = 0
     let message = '```'
 
     proposals.forEach((proposal, index, array) => {
-      message += '(' + processed + ') ' + proposal.PROPOSER_USERNAME + '\n'
+      tools.getUsernameFromId(proposal.PROPOSER_ID, bot, username => {
+        message += '(' + processed + ') ' + username + '\n'
 
-      processed++
+        processed++
 
-      if (processed === proposals.length) {
-        message += '```'
-        callback(message)
-      }
+        if (processed === proposals.length) {
+          message += '```'
+          callback(message)
+        }
+      })
     })
   }
 
-  addDivorce (divorcer, divorcee, callback) {
+  addDivorce (divorcerId, divorceeId, callback) {
     let currDate = tools.getFormattedTimestamp()
-    let divorcerId = 0
-    let divorceeId = 0
-    if (divorcer.id !== undefined) divorcerId = divorcer.id
-    if (divorcee.id !== undefined) divorceeId = divorcee.id
 
     let sqlQuery = 'INSERT INTO DIVORCES (DIVORCER_ID, DIVORCEE_ID, DIVORCE_DATE) VALUES ' +
       '(' + divorcerId + ', ' + divorceeId + ', "' + currDate + '");'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
   }
 
-  // SELECT * FROM DIVORCES WHERE (DIVORCER_ID = userId1 AND DIVORCEE_ID = userId2) OR
-  // (DIVORCER_ID = userId2 AND DIVORCEE_ID = userId1) UNION SELECT * FROM DIVORCE_PROPOSALS(DIVORCER_ID = userId1 AND DIVORCEE_ID = userId2) OR(DIVORCER_ID = userId2 AND DIVORCEE_ID = userId1);
   getDivorce (userId1, userId2, callback) {
     let sqlQuery = 'SELECT DIVORCER_ID FROM DIVORCES WHERE (DIVORCER_ID = ' + userId1 + ' AND DIVORCEE_ID = ' + userId2 + ') OR ' +
       '(DIVORCER_ID = ' + userId2 + ' AND DIVORCEE_ID = ' + userId1 + ') UNION SELECT DIVORCER_ID FROM DIVORCE_PROPOSALS WHERE (DIVORCER_ID = ' + userId1 + ' AND DIVORCEE_ID = ' + userId2 + ') OR (DIVORCER_ID = ' + userId2 + ' AND DIVORCEE_ID = ' + userId1 + ');'
@@ -294,19 +288,21 @@ class Marriage {
    * @param {*} proposals
    * @param {*} callback
    */
-  formatDivorceProposals (proposals, callback) {
+  formatDivorceProposals (proposals, bot, callback) {
     let processed = 0
     let message = '```'
 
     proposals.forEach((proposal, index, array) => {
-      message += '(' + processed + ') ' + proposal.DIVORCER_USERNAME + '\n'
+      tools.getUsernameFromId(proposal.DIVORCER_ID, bot, username => {
+        message += '(' + processed + ') ' + username + '\n'
 
-      processed++
+        processed++
 
-      if (processed === proposals.length) {
-        message += '```'
-        callback(message)
-      }
+        if (processed === proposals.length) {
+          message += '```'
+          callback(message)
+        }
+      })
     })
   }
 
@@ -324,28 +320,22 @@ class Marriage {
     })
   }
 
-  addDivorceProposal (divorcer, divorcee, callback) {
-    let divorcerId = 0
-    let divorceeId = 0
-    if (divorcer.id !== undefined) divorcerId = divorcer.id
-    if (divorcee.id !== undefined) divorceeId = divorcee.id
-
+  addDivorceProposal (divorcerId, divorceeId, callback) {
     let sqlQuery = 'INSERT INTO DIVORCE_PROPOSALS (DIVORCER_ID, DIVORCEE_ID) VALUES (' +
     divorcerId + ', ' + divorceeId + ');'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
   }
 
   getDivorceProposals (userId, callback) {
-    let sqlQuery = 'SELECT * FROM DIVORCE_PROPOSALS WHERE DIVORCER_ID = ' + userId +
-      ' || DIVORCEE_ID = ' + userId + ';'
+    let sqlQuery = 'SELECT * FROM DIVORCE_PROPOSALS WHERE DIVORCEE_ID = ' + userId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -365,7 +355,7 @@ class Marriage {
       'DIVORCEE_ID = ' + divorceeId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
@@ -377,22 +367,22 @@ class Marriage {
       '(DIVORCER_ID = ' + divorceeId + ' AND DIVORCEE_ID = ' + divorcerId + ');'
 
     ioTools.executeSql(sqlQuery, (results) => {
-      if (callback !== null) {
+      if (callback !== undefined) {
         callback(results)
       }
     })
   }
 
-  acceptDivorceProposal (divorcer, divorcee, callback) {
-    let sqlQuery = 'SELECT * FROM DIVORCE_PROPOSALS WHERE DIVORCER_ID = ' + divorcer.id + ' AND DIVORCEE_ID = ' + divorcee.id + ';'
+  acceptDivorceProposal (divorcerId, divorceeId, callback) {
+    let sqlQuery = 'SELECT * FROM DIVORCE_PROPOSALS WHERE DIVORCER_ID = ' + divorcerId + ' AND DIVORCEE_ID = ' + divorceeId + ';'
 
     ioTools.executeSql(sqlQuery, (results) => {
       if (results !== null && results.length === 1) {
-        this.removeDivorceProposal(divorcer.id, divorcee.id)
+        this.removeDivorceProposal(divorcerId, divorceeId)
 
-        this.addDivorce(divorcer, divorcee)
+        this.addDivorce(divorcerId, divorceeId)
 
-        this.removeMarriage(divorcer.id, divorcee.id)
+        this.removeMarriage(divorcerId, divorceeId)
 
         callback(null, true)
       }

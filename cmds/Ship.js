@@ -1,5 +1,3 @@
-'use strict'
-
 const download = require('image-downloader')
 const Canvas = require('canvas')
 const Tools = require('../util/Tools.js')

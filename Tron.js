@@ -1,9 +1,8 @@
-'use strict'
-
 // #region Const and requires declarations
 const config = require('./util/config.json')
 const IOTools = require('./util/IOTools')
 const Tools = require('./util/Tools')
+const AdminTools = require('./util/AdminTools')
 const info = require('./package.json')
 const Canvas = require('canvas')
 const Moment = require('moment')
@@ -12,6 +11,7 @@ const insultCompliment = require('insult-compliment')
 
 const ioTools = new IOTools()
 const tools = new Tools()
+const adminTools = new AdminTools()
 
 const reddit = require('redwrap')
 
@@ -96,7 +96,7 @@ const yaoiCmd = new Yaoi()
 const adminCmd = bot.registerCommand('admin', (msg, args) => {})
 const adminCmdOptions = {
   requirements: {
-    roleNames: ['tron-mod']
+    roleNames: ['tron-mod', 'Mods']
   }
 }
 
@@ -209,27 +209,14 @@ adminCmd.registerSubcommand('kick', (msg, args) => {
 * Requested By: Me? I think.
 */
 bot.registerCommand('initialize', (msg, args) => {
-  msg.channel.guild.createRole({
-    name: 'tron-mod'
-  })
-  msg.channel.guild.createRole({
-    name: 'tron-mute'
-  }).then((role) => {
-    msg.channel.guild.channels.forEach((channel, index, collection) => {
-      if (channel.type === 0) {
-        channel.editPermission(role.id, undefined, 2048, 'role').then((err) => {
-          if (err) Raven.captureException(err)
-        })
-      } else {
-        channel.editPermission(role.id, undefined, 2097152, 'role').then((err) => {
-          if (err) Raven.captureException(err)
-        })
-      }
+  if (msg.author.id === config.owner) {
+    adminTools.initializeServer(bot, msg).then(success => {
+      if (success) sendMessage(msg.channel.id, 'Server initialized!')
     })
-
-    sendMessage(msg.channel.id, 'Permissions have been initalized.')
-  })
-}, adminCmdOptions)
+  }
+}, {
+  aliases: ['init']
+})
 
 /**
  * Evaluates and returns the given args value as Javascript.
@@ -495,6 +482,40 @@ memeCmd.registerSubcommand('doge', (msg, args) => {
 
 // #region User Commands
 /**
+* Command Name: Dreamy
+* Description : Returns a random image from a collection given to me by Dreamy.
+* Requested By: Dreamy
+*/
+bot.registerCommand('dreamy', (msg, args) => {
+  reactions.pickDreamyImage((dreamyImage) => {
+    sendMessage(msg.channel.id, undefined, {
+      file: dreamyImage,
+      name: 'Dreamy.gif'
+    })
+  })
+
+  ioTools.incrementCommandUse('dreamy')
+}, commandOptions)
+
+/**
+* Command Name: Kayla/Yoana
+* Description : Displays a random gif selected by Snow/Yoana.
+* Requested By: Snow
+*/
+bot.registerCommand('kayla', (msg, args) => {
+  if (parseInt(msg.author.id) === 142092834260910080 || parseInt(msg.author.id) === 217870035090276374 || msg.author.id === config.owner) {
+    reactions.pickKaylaImage().then(img => {
+      sendMessage(msg.channel.id, undefined, {
+        file: img,
+        name: 'Kayla.gif'
+      })
+    })
+  } else {
+    return 'This command is unavailable to you.'
+  }
+}, commandOptions(['yoana']))
+
+/**
 * Command Name: Zorika
 * Description : Returns a random phrase that Zori wants.
 * Requested By: Zorika/Zori
@@ -662,7 +683,7 @@ bot.registerCommand('potato', (msg, args) => {
 
 // #region Feature Commands
 /**
-* Command Name: Bot Command
+* Command Name: Bot
 * Description : Lists bot info.
 * Requested By: Alcha
 */
@@ -672,6 +693,8 @@ bot.registerCommand('bot', (msg, args) => {
   else member = msg.author
 
   const pkg = require('./package')
+  const erisVersion = require('eris/package.json').version
+
   sendMessage(msg.channel.id, {
     'embed': {
       'title': bot.user.username,
@@ -681,7 +704,7 @@ bot.registerCommand('bot', (msg, args) => {
       'timestamp': new Moment().toDate(),
       'footer': {
         'icon_url': bot.user.avatarURL,
-        'text': 'Tron Info'
+        'text': 'Tron ' + info.version
       },
       'thumbnail': {
         'url': bot.user.avatarURL
@@ -696,11 +719,16 @@ bot.registerCommand('bot', (msg, args) => {
         'inline': true
       }, {
         'name': 'User Count',
-        'value': bot.users.size,
+        'value': tools.numberWithCommas(bot.users.size),
         'inline': true
       }, {
         'name': 'Uptime',
-        'value': Math.round(bot.uptime / 1000 / 60) + ' mins'
+        'value': tools.numberWithCommas(Math.round(bot.uptime / 1000 / 60)) + ' mins',
+        'inline': true
+      }, {
+        'name': 'Eris Version',
+        'value': erisVersion,
+        'inline': true
       }]
     }
   })
@@ -1578,15 +1606,9 @@ marry.registerSubcommand('list', (msg, args) => {
             message = msg.mentions[0].username + ' is currently married to:\n```\n'
             for (let x = 0; x < marriages.length; x++) {
               if (marriages[x].SPOUSE_A_ID !== userId) {
-                let username = tools.getUsernameFromId(marriages[x].SPOUSE_A_ID, bot)
-                if (username.length > 0) {
-                  message += '- ' + username + ' since ' + marriages[x].MARRIAGE_DATE + '\n'
-                }
+                message += '- ' + tools.getUsernameFromId(marriages[x].SPOUSE_A_ID, bot) + ' since ' + marriages[x].MARRIAGE_DATE + '\n'
               } else if (marriages[x].SPOUSE_B_ID !== userId) {
-                let username = tools.getUsernameFromId(marriages[x].SPOUSE_B_ID, bot)
-                if (username.length > 0) {
-                  message += '- ' + username + ' since ' + marriages[x].MARRIAGE_DATE + '\n'
-                }
+                message += '- ' + tools.getUsernameFromId(marriages[x].SPOUSE_B_ID, bot) + ' since ' + marriages[x].MARRIAGE_DATE + '\n'
               }
             }
 
@@ -1629,7 +1651,7 @@ marry.registerSubcommand('accept', (msg, args) => {
   marriage.getProposalType(msg.author.id, 1, (results) => {
     if (results !== null && results.length > 1) {
       if (args.length === 0) {
-        marriage.formatProposals(results, (formattedMsg) => {
+        marriage.formatProposals(results, bot, (formattedMsg) => {
           formattedMsg = 'You currently have ' + results.length + ' proposals, please indicate which one you wish to accept (e.g. +marry accept 1):\n\n' + formattedMsg
 
           sendMessage(msg.channel.id, formattedMsg)
@@ -1673,7 +1695,7 @@ marry.registerSubcommand('deny', (msg, args) => {
   marriage.getProposals(msg.author.id, (results) => {
     if (results !== null && results.length > 1) {
       if (args.length === 0) {
-        marriage.formatProposals(results, (formattedMsg) => {
+        marriage.formatProposals(results, bot, (formattedMsg) => {
           formattedMsg = 'You currently have ' + results.length + ' proposals, please indicate which one you wish to deny (e.g. +marry deny 1):\n\n' + formattedMsg
           sendMessage(msg.channel.id, formattedMsg)
         })
@@ -1737,7 +1759,7 @@ divorce.registerSubcommand('accept', (msg, args) => {
   marriage.getDivorceProposals(msg.author.id, (results) => {
     if (results !== null && results.length > 1) {
       if (args.length === 0) {
-        marriage.formatDivorceProposals(results, (formattedMsg) => {
+        marriage.formatDivorceProposals(results, bot, (formattedMsg) => {
           formattedMsg = 'You currently have ' + results.length + ' divorce proposals, please indicate which one you wish to accept (e.g. +divorce accept 1):\n\n' + formattedMsg
 
           sendMessage(msg.channel.id, formattedMsg)
@@ -1769,9 +1791,9 @@ divorce.registerSubcommand('deny', (msg, args) => {
   marriage.getDivorceProposals(msg.author.id, (results) => {
     if (results !== null && results.length > 1) {
       if (args.length === 0) {
-        marriage.formatDivorceProposals(results, (formattedMsg) => {
+        marriage.formatDivorceProposals(results, bot, (formattedMsg) => {
           formattedMsg = 'You currently have ' + results.length + ' divorce proposals, please indicate which one you wish to deny (e.g. +divorce deny 1):\n\n' + formattedMsg
-          bot.create(msg.channel.id, formattedMsg)
+          sendMessage(msg.channel.id, formattedMsg)
         })
       } else if (args.length === 1) {
         marriage.removeDivorceProposal(results[args[0]].id, msg.author.id, (results) => {
@@ -1810,12 +1832,12 @@ divorce.registerSubcommand('list', (msg, args) => {
 
           for (let x = 0; x < divorces.length; x++) {
             if (divorces[x].DIVORCER_ID !== msg.author.id) {
-              let username = tools.getUsernameFromId(divorces[x].DIVORCER_ID)
+              let username = tools.getUsernameFromId(divorces[x].DIVORCER_ID, bot)
               if (username.length > 0) {
                 message += '- ' + username + ' since ' + divorces[x].DIVORCE_DATE + '\n'
               }
             } else if (divorces[x].DIVORCEE_ID !== msg.author.id) {
-              let username = tools.getUsernameFromId(divorces[x].DIVORCEE_ID)
+              let username = tools.getUsernameFromId(divorces[x].DIVORCEE_ID, bot)
               if (username.length > 0) {
                 message += '- ' + username + ' since ' + divorces[x].DIVORCE_DATE + '\n'
               }
@@ -2681,22 +2703,6 @@ bot.registerCommand('dodge', (msg, args) => {
 }, commandOptions(['dodges']))
 
 /**
-* Command Name: Dreamy
-* Description : Returns a random image from a collection given to me by Dreamy.
-* Requested By: Dreamy
-*/
-bot.registerCommand('dreamy', (msg, args) => {
-  reactions.pickDreamyImage((dreamyImage) => {
-    sendMessage(msg.channel.id, undefined, {
-      file: dreamyImage,
-      name: 'Dreamy.gif'
-    })
-  })
-
-  ioTools.incrementCommandUse('dreamy')
-}, commandOptions)
-
-/**
 * Command Name: VapeNash
 * Description : Displays a random VapeNash gif.
 * Requested By: Lagucci Mane
@@ -2711,23 +2717,6 @@ bot.registerCommand('vn', (msg, args) => {
 
   ioTools.incrementCommandUse('vapenation')
 }, commandOptions(['vapenash', 'vape']))
-/**
-* Command Name: Kayla/Yoana
-* Description : Displays a random gif selected by Snow/Yoana.
-* Requested By: Snow
-*/
-bot.registerCommand('kayla', (msg, args) => {
-  if (parseInt(msg.author.id) === 142092834260910080 || parseInt(msg.author.id) === 217870035090276374 || msg.author.id === config.owner) {
-    reactions.pickKaylaImage().then(img => {
-      sendMessage(msg.channel.id, undefined, {
-        file: img,
-        name: 'Kayla.gif'
-      })
-    })
-  } else {
-    return 'This command is unavailable to you.'
-  }
-}, commandOptions(['yoana']))
 
 /**
 * Command Name: KillMe
