@@ -1,10 +1,16 @@
 {
   "name": "tron",
+  "displayName": "Tron",
   "version": "0.2.4",
   "description": "Our bot that makes socializing on our servers more entertaining.",
   "main": "Tron.js",
+  "homepage": "https://paranoiddevs.com/Tron",
   "author": "Alcha",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Paranoid-Devs/Tron"
+  },
   "dependencies": {
     "canvas": "1.6.7",
     "chance": "1.0.11",
@@ -12,7 +18,7 @@
     "decode-html": "2.0.0",
     "discord.js": "11.2.1",
     "entities": "1.1.1",
-    "eris": "0.8.0",
+    "eris": "0.8.1",
     "feedparser": "2.2.2",
     "html-entities": "1.2.1",
     "hubot-memegeneration": "2.2.0",
@@ -23,6 +29,7 @@
     "lodash": "4.17.4",
     "moment": "2.19.1",
     "moment-timezone": "0.5.13",
+    "mongodb": "2.2.33",
     "mysql": "2.15.0",
     "node-rest-client": "3.1.0",
     "popura": "1.2.5",
