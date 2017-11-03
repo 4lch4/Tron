@@ -1754,7 +1754,7 @@ divorce.registerSubcommand('accept', (msg, args) => {
   marriage.getDivorceProposals(msg.author.id, (results) => {
     if (results !== null && results.length > 1) {
       if (args.length === 0) {
-        marriage.formatDivorceProposals(results, (formattedMsg) => {
+        marriage.formatDivorceProposals(results, bot, (formattedMsg) => {
           formattedMsg = 'You currently have ' + results.length + ' divorce proposals, please indicate which one you wish to accept (e.g. +divorce accept 1):\n\n' + formattedMsg
 
           sendMessage(msg.channel.id, formattedMsg)
@@ -1786,9 +1786,9 @@ divorce.registerSubcommand('deny', (msg, args) => {
   marriage.getDivorceProposals(msg.author.id, (results) => {
     if (results !== null && results.length > 1) {
       if (args.length === 0) {
-        marriage.formatDivorceProposals(results, (formattedMsg) => {
+        marriage.formatDivorceProposals(results, bot, (formattedMsg) => {
           formattedMsg = 'You currently have ' + results.length + ' divorce proposals, please indicate which one you wish to deny (e.g. +divorce deny 1):\n\n' + formattedMsg
-          bot.create(msg.channel.id, formattedMsg)
+          sendMessage(msg.channel.id, formattedMsg)
         })
       } else if (args.length === 1) {
         marriage.removeDivorceProposal(results[args[0]].id, msg.author.id, (results) => {
