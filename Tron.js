@@ -222,7 +222,7 @@ bot.registerCommand('initialize', (msg, args) => {
  * Evaluates and returns the given args value as Javascript.
  * @param {*} args
  */
-const evaluate = args => {
+const evaluate = (msg, args) => {
   try {
     return eval(args.join(' '))
   } catch (err) {
@@ -237,8 +237,10 @@ const evaluate = args => {
 */
 bot.registerCommand('evaluate', (msg, args) => {
   if (msg.author.id === config.owner) {
-    sendMessage(msg.channel.id, '`' + evaluate(args) + '`', undefined)
+    sendMessage(msg.channel.id, '`' + evaluate(msg, args) + '`', undefined)
   }
+}, {
+  aliases: ['eval']
 })
 
 /**
