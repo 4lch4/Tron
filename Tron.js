@@ -1086,7 +1086,7 @@ bot.registerCommand('Ship', (msg, args) => {
 bot.registerCommand('reddit', (msg, args) => {
   let subreddit = args.join('')
 
-  reddit.r(subreddit).limit(100, (err, data, res) => {
+  reddit.r(subreddit).sort('top').from('day').limit(50, (err, data, res) => {
     if (err) {
       console.log(err)
       return
@@ -2367,7 +2367,7 @@ bot.registerCommand('tattoo', (msg, args) => {
 
     let random = tools.getRandom(0, tatSubs.length)
 
-    reddit.r(tatSubs[random]).limit(100, (err, data, res) => {
+    reddit.r(tatSubs[random]).sort('top').from('day').limit(50, (err, data, res) => {
       if (err) {
         console.log(err)
         return err
@@ -2461,7 +2461,7 @@ bot.registerCommand('boobs', (msg, args) => {
 
     let randomSub = tools.getRandom(0, boobSubs.length)
 
-    reddit.r(boobSubs[randomSub]).limit(100, (err, data, res) => {
+    reddit.r(boobSubs[randomSub]).sort('top').from('day').limit(50, (err, data, res) => {
       if (err) {
         Raven.captureException(err)
         sendMessage(msg.channel.id, err)
@@ -2475,7 +2475,7 @@ bot.registerCommand('boobs', (msg, args) => {
     })
   }
 }, {
-  aliases: ['boob', 'breasts', 'tits']
+  aliases: ['boob', 'breasts', 'tits', 'bewbs', 'bewb']
 })
 
 bot.registerCommand('hentai', (msg, args) => {
@@ -2490,7 +2490,7 @@ bot.registerCommand('hentai', (msg, args) => {
 
     let randomSub = tools.getRandom(0, hentaiSubs.length)
 
-    reddit.r(hentaiSubs[randomSub]).limit(100, (err, data, res) => {
+    reddit.r(hentaiSubs[randomSub]).sort('top').from('day').limit(50, (err, data, res) => {
       if (err) {
         Raven.captureException(err)
         sendMessage(msg.channel.id, err)
@@ -2527,7 +2527,7 @@ bot.registerCommand('butt', (msg, args) => {
 
     let randomSub = tools.getRandom(0, buttSubs.length)
 
-    reddit.r(buttSubs[randomSub]).limit(100, (err, data, res) => {
+    reddit.r(buttSubs[randomSub]).sort('top').from('day').limit(50, (err, data, res) => {
       if (err) {
         Raven.captureException(err)
         sendMessage(msg.channel.id, err)
@@ -2574,7 +2574,7 @@ bot.registerCommand('feet', (msg, args) => {
 
     let randomSub = tools.getRandom(0, feetSubs.length)
 
-    reddit.r(feetSubs[randomSub]).limit(100, (err, data, res) => {
+    reddit.r(feetSubs[randomSub]).sort('top').from('day').limit(50, (err, data, res) => {
       if (err) {
         Raven.captureException(err)
         sendMessage(msg.channel.id, err)
@@ -2610,7 +2610,7 @@ bot.registerCommand('gay', (msg, args) => {
 
     let randomSub = tools.getRandom(0, gaySubs.length)
 
-    reddit.r(gaySubs[randomSub]).limit(100, (err, data, res) => {
+    reddit.r(gaySubs[randomSub]).sort('top').from('day').limit(50, (err, data, res) => {
       if (err) {
         Raven.captureException(err)
         sendMessage(msg.channel.id, err)
