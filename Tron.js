@@ -427,15 +427,18 @@ let triviaCmd = bot.registerCommand('trivia', (msg, args) => {
 triviaCmd.registerSubcommand('start', (msg, args) => {
   if (args.length === 1) {
     trivia.getQuestions(parseInt(args[0])).then(questions => {
-      console.log('question = ' + questions[0].question)
-      console.log('answers = ')
-      console.log(questions[0].correct_answer)
-      console.log(questions[0].incorrect_answers)
-      let content = entities.decode(questions[0].question) + '\n\n' +
-      '```\n' + '1. ' + entities.decode(questions[0].correct_answer) + '\n' +
-      '2. ' + entities.decode(questions[0].incorrect_answers[0]) + '\n' +
-      '3. ' + entities.decode(questions[0].incorrect_answers[1]) + '\n' +
-      '4. ' + entities.decode(questions[0].incorrect_answers[2]) + '```'
+      const answers = tools.shuffle([
+        questions[0].correct_answer,
+        questions[0].incorrect_answers[0],
+        questions[0].incorrect_answers[1],
+        questions[0].incorrect_answers[2]
+      ])
+
+      const content = entities.decode(questions[0].question) + '\n\n' +
+      '```\n' + '1. ' + entities.decode(answers[0]) + '\n' +
+      '2. ' + entities.decode(answers[1]) + '\n' +
+      '3. ' + entities.decode(answers[2]) + '\n' +
+      '4. ' + entities.decode(answers[3]) + '```'
 
       bot.createMessage(msg.channel.id, content).then(msg => {
         console.log('Message sent.')

@@ -41,6 +41,30 @@ class Tools {
   }
 
   /**
+   * Shuffles array in place. ES6 version
+   * @param {Array} a items An array containing the items.
+   */
+  shuffle (array) {
+    let counter = array.length
+
+    // While there are elements in the array
+    while (counter > 0) {
+      // Pick a random index
+      let index = Math.floor(Math.random() * counter)
+
+      // Decrease counter by 1
+      counter--
+
+      // And swap the last element with it
+      let temp = array[counter]
+      array[counter] = array[index]
+      array[index] = temp
+    }
+
+    return array
+  }
+
+  /**
    * Formats the given number with commas where they should be to display a
    * number whose value is greater than or equal to 1,000.
    *
