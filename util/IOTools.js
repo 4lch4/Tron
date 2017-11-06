@@ -27,7 +27,7 @@ class IOTools {
     connection.query(sql, (err, results, fields) => {
       if (err) throw err
 
-      if (callback !== undefined) {
+      if (typeof callback === 'function') {
         callback(results, fields)
       }
     })
@@ -206,7 +206,7 @@ class IOTools {
     fs.writeFile(filename, content, (err) => {
       if (err) return console.log(err)
 
-      if (callback !== undefined) {
+      if (typeof callback === 'function') {
         callback()
       }
     })
