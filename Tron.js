@@ -534,7 +534,7 @@ bot.registerCommand('zorika', (msg, args) => {
 * Description : Returns an image of Stitch.
 */
 bot.registerCommand('jay', (msg, args) => {
-  ioTools.getImage('/var/tron/images/Jay.png', (img) => {
+  ioTools.getImage('/home/alcha/tron/images/Jay.png', (img) => {
     sendMessage(msg.channel.id, undefined, {
       file: img,
       name: 'Jay.png'
@@ -677,7 +677,7 @@ bot.registerCommand('derp', (msg, args) => {
 }, commandOptions)
 
 bot.registerCommand('potato', (msg, args) => {
-  ioTools.getImage('/var/tron/images/potato.png', (img) => {
+  ioTools.getImage('/home/alcha/tron/images/potato.png', (img) => {
     sendMessage(msg.channel.id, undefined, {
       file: img,
       name: 'Potato.png'
@@ -740,7 +740,7 @@ bot.registerCommand('bot', (msg, args) => {
 })
 
 const quoteCmd = bot.registerCommand('quote', (msg, args) => {
-  ioTools.readFile('/var/tron/Quotes.txt', (content) => {
+  ioTools.readFile('/home/alcha/tron/Quotes.txt', (content) => {
     if (content !== undefined) {
       let temp = content.split('\n')
       let random = tools.getRandom(0, temp.length)
@@ -1016,7 +1016,7 @@ bot.registerCommand('Avatar', (msg, args) => {
 
     ioTools.downloadFiles([{
       url: url,
-      dest: '/var/tron/images/avatar/' + origFilename
+      dest: '/home/alcha/tron/images/avatar/' + origFilename
     }], (filenames) => {
       filenames.forEach((filename, key, array) => {
         ioTools.getImage(filename, (image) => {
@@ -1495,7 +1495,7 @@ bot.registerCommand('cry', (msg, args) => {
 * Requested By: Alcha
 */
 bot.registerCommand('meh', (msg, args) => {
-  ioTools.getImage('/var/tron/images/meh.gif', (img) => {
+  ioTools.getImage('/home/alcha/tron/images/meh.gif', (img) => {
     sendMessage(msg.channel.id, undefined, {
       file: img,
       name: 'meh.gif'

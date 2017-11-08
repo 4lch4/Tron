@@ -84,7 +84,7 @@ class IOTools {
 
       options.push({
         url: url,
-        dest: '/var/tron/images/' + filename
+        dest: '/home/alcha/tron/images/' + filename
       })
     }
 
@@ -123,8 +123,8 @@ class IOTools {
   }
 
   getImage (path, onComplete) {
-    if (!path.startsWith('/var/tron/')) {
-      path = '/var/tron/images/' + path
+    if (!path.startsWith('/home/alcha/tron/')) {
+      path = '/home/alcha/tron/images/' + path
     }
 
     if (this.getFileSize(path) < 8000000) {
@@ -139,7 +139,7 @@ class IOTools {
   }
 
   getImages (dirnameIn, onComplete) {
-    let dirname = '/var/tron/images/' + dirnameIn + '/'
+    let dirname = '/home/alcha/tron/images/' + dirnameIn + '/'
     let images = []
     let filenames = []
 
@@ -156,7 +156,7 @@ class IOTools {
 
   storeComic (comic, callback) {
     let date = tools.formatTimeString(comic.date)
-    let filename = '/var/tron/feeds/' +
+    let filename = '/home/alcha/tron/feeds/' +
       comic.feedName + '/' +
       date + '.json'
 
