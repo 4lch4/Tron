@@ -2957,6 +2957,23 @@ bot.registerCommand('coffee', (msg, args) => {
   }
 }, commandOptions)
 
+/**
+* Command Name: Scare
+* Description : Displays a Scare gif/image.
+* Requested By: Alcha
+*/
+bot.registerCommand('scare', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickScareImage(args[0]).then((data) => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickScareImage().then((data) => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+}, commandOptions)
+
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on('messageCreate', (msg) => {
   if (msg.channel.guild !== undefined &&

@@ -7,6 +7,9 @@ const ioTools = new IOTools()
 /** Stores images for the Snow command */
 let kaylaImages = []
 
+let scareImages = []
+let scareFilenames = []
+
 let deadImages = []
 let deadFilenames = []
 
@@ -496,6 +499,7 @@ class Reactions {
       }
     })
   }
+
   pickCoffeeImage (imgIndex) {
     return new Promise((resolve, reject) => {
       if (coffeeImages.length === 0) {
@@ -880,6 +884,45 @@ class Reactions {
           resolve({
             file: jerryImages[random],
             name: jerryFilenames[random]
+          })
+        }
+      }
+    })
+  }
+
+  pickScareImage (imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (scareImages.length === 0) {
+        ioTools.getImages('scare', (images, filenames) => {
+          scareImages = scareImages.concat(images)
+          scareFilenames = scareFilenames.concat(filenames)
+
+          if (imgIndex < scareImages.length) {
+            resolve({
+              file: scareImages[imgIndex],
+              name: scareFilenames[imgIndex]
+            })
+          } else {
+            let random = tools.getRandom(0, scareImages.length)
+
+            resolve({
+              file: scareImages[random],
+              name: scareFilenames[random]
+            })
+          }
+        })
+      } else {
+        if (imgIndex < scareImages.length) {
+          resolve({
+            file: scareImages[imgIndex],
+            name: scareFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, scareImages.length)
+
+          resolve({
+            file: scareImages[random],
+            name: scareFilenames[random]
           })
         }
       }
