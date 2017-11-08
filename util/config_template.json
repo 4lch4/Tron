@@ -28,6 +28,14 @@
     "consumer_key": "",
     "consumer_secret": ""
   },
+  "DEFAULT_COOLDOWN": 10000,
+  "DEFAULT_COOLDOWN_MESSAGE": "Please wait 10 seconds between uses of this command.",
+  "cooldownExclusions": {
+    "userIDs": [""],
+    "guildIDs": [""],
+    "channelIDs": [""]
+  },
+  "mongoURI": "",
   "cleverbot": "",
   "malUsername": "",
   "malPassword": "",

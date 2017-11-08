@@ -51,6 +51,7 @@ const commandOptions = aliasesIn => {
     aliases: aliasesIn,
     cooldown: config.DEFAULT_COOLDOWN,
     cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+    cooldownExclusions: config.cooldownExclusions,
     caseInsensitive: true
   }
 }
