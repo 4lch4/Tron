@@ -2977,7 +2977,9 @@ bot.registerCommand('scare', (msg, args) => {
 bot.registerCommand('swag', (msg, args) => {
   if (msg.mentions[0] !== undefined) {
     const id = parseInt(msg.mentions[0].id)
-    if (id === 227830945040957440 || id === 219270060936527873) {
+    if (id === 227830945040957440 ||
+        id === 219270060936527873 ||
+        id === 317138587491631104) {
       sendMessage(msg.channel.id, '**' + msg.mentions[0].username + `**, you've got a swag level of 11/10. :sunglasses:`)
     } else {
       const random = tools.getRandom(0, 11)
