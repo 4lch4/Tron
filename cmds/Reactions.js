@@ -81,6 +81,7 @@ let punchImages = []
 
 /** Stores images for the Confused command */
 let confusedImages = []
+let confusedFilenames = []
 
 /** Stores images for the Pout command */
 let poutImages = []
@@ -473,20 +474,43 @@ class Reactions {
     })
   }
 
-  pickConfusedImage (callback) {
-    if (confusedImages.length === 0) {
-      ioTools.getImages('confused', (images) => {
-        let random = tools.getRandom(0, images.length)
+  pickConfusedImage (imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (confusedImages.length === 0) {
+        ioTools.getImages('confused', (images, filenames) => {
+          confusedImages = confusedImages.concat(images)
+          confusedFilenames = confusedFilenames.concat(filenames)
 
-        confusedImages = confusedImages.concat(images)
+          if (imgIndex < confusedImages.length) {
+            resolve({
+              file: confusedImages[imgIndex],
+              name: confusedFilenames[imgIndex]
+            })
+          } else {
+            let random = tools.getRandom(0, confusedImages.length)
 
-        callback(confusedImages[random])
-      })
-    } else {
-      let random = tools.getRandom(0, confusedImages.length)
+            resolve({
+              file: confusedImages[random],
+              name: confusedFilenames[random]
+            })
+          }
+        })
+      } else {
+        if (imgIndex < confusedImages.length) {
+          resolve({
+            file: confusedImages[imgIndex],
+            name: confusedFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, confusedImages.length)
 
-      callback(confusedImages[random])
-    }
+          resolve({
+            file: confusedImages[random],
+            name: confusedFilenames[random]
+          })
+        }
+      }
+    })
   }
 
   pickFoupaImage (imgIndex) {

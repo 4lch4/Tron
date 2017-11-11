@@ -1506,6 +1506,22 @@ bot.registerCommand('dance', (msg, args) => {
 }, commandOptions(['dances']))
 
 /**
+* Command Name: Confused
+* Description : Returns a random confused gif.
+*/
+bot.registerCommand('confused', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickConfusedImage(args[0]).then((data) => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickConfusedImage().then((data) => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+}, commandOptions)
+
+/**
 * Command Name: Cry
 * Description : Returns a random gif of someone crying.
 */
