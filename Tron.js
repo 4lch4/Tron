@@ -2296,11 +2296,12 @@ bot.registerCommand('bite', (msg, args) => {
 * Requested By: Onyx
 */
 bot.registerCommand('nobulli', (msg, args) => {
-  tools.doesMsgContainShu(msg).then((shuFlag) => {
+  tools.doesMsgContainShu(msg).then(shuFlag => {
+    console.log(`shuFlag received - ${shuFlag}`)
     if (shuFlag) {
       sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
-      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
+      if (args.length === 2) {
         reactions.pickNobulliImage((img) => {
           tools.getUsernames(args, bot, (usernames) => {
             let message = ''
@@ -2314,9 +2315,9 @@ bot.registerCommand('nobulli', (msg, args) => {
               name: 'Nobulli.gif'
             })
           })
-        }, args[0])
+        })
       } else {
-        return 'Please mention 2 users to include in the message.'
+        sendMessage(msg.channel.id, 'Please mention 2 users to include in the message.')
       }
     }
   })
