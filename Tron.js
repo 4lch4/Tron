@@ -1489,6 +1489,23 @@ malCmd.registerSubcommand('user', (msg, args) => {
 
 // #region Reaction Commands
 /**
+* Command Name: Dance
+* Description : Returns a random dance gif that was given to me.
+* Requested By: Kayla
+*/
+bot.registerCommand('dance', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickDanceImage(args[0]).then((data) => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickDanceImage().then((data) => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+}, commandOptions(['dances']))
+
+/**
 * Command Name: Cry
 * Description : Returns a random gif of someone crying.
 */

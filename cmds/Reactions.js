@@ -72,8 +72,9 @@ let dreamyImages = []
 /** Stores images for the Slap command */
 let slapImages = []
 
-/** Stores images for the Dance command */
+/** Stores images and filenames for the Dance command */
 let danceImages = []
+let danceFilenames = []
 
 /** Stores images for the Punch command */
 let punchImages = []
@@ -418,20 +419,43 @@ class Reactions {
     }
   }
 
-  pickDanceImage (callback) {
-    if (danceImages.length === 0) {
-      ioTools.getImages('dance', (images) => {
-        let random = tools.getRandom(0, images.length)
+  pickDanceImage (imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (danceImages.length === 0) {
+        ioTools.getImages('dance', (images, filenames) => {
+          danceImages = danceImages.concat(images)
+          danceFilenames = danceFilenames.concat(filenames)
 
-        danceImages = danceImages.concat(images)
+          if (imgIndex < danceImages.length) {
+            resolve({
+              file: danceImages[imgIndex],
+              name: danceFilenames[imgIndex]
+            })
+          } else {
+            let random = tools.getRandom(0, danceImages.length)
 
-        callback(danceImages[random])
-      })
-    } else {
-      let random = tools.getRandom(0, danceImages.length)
+            resolve({
+              file: danceImages[random],
+              name: danceFilenames[random]
+            })
+          }
+        })
+      } else {
+        if (imgIndex < danceImages.length) {
+          resolve({
+            file: danceImages[imgIndex],
+            name: danceFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, danceImages.length)
 
-      callback(danceImages[random])
-    }
+          resolve({
+            file: danceImages[random],
+            name: danceFilenames[random]
+          })
+        }
+      }
+    })
   }
 
   pickKaylaImage () {
