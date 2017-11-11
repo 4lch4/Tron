@@ -113,10 +113,11 @@ class Ship {
   getShipName (msg, callback) {
     const combined = msg.mentions[0].username + msg.mentions[1].username
     const shuffled = shuffle(combined.split(''))
-    const randomLength = tools.getRandom(0, shuffled.length)
+    const randomLength = tools.getRandom(1, shuffled.length)
     const shipName = shuffled.toString().substring(0, randomLength)
     console.log('shipName = ' + shipName)
-    callback(tools.upperFirstC(shipName.replace('/,/g', '')))
+    callback(tools.upperFirstC(shipName.replace(/,/g, '')))
+    shipName.replace()
   }
 }
 
