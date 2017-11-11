@@ -630,6 +630,7 @@ bot.registerCommand('foupa', (msg, args) => {
   caseInsensitive: true,
   permissionMessage: 'This command is unavailable to you.',
   cooldown: config.DEFAULT_COOLDOWN,
+  cooldownExclusions: config.cooldownExclusions,
   cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE
 })
 
@@ -1033,6 +1034,7 @@ bot.registerCommand('Avatar', (msg, args) => {
   }
 }, {
   cooldown: config.DEFAULT_COOLDOWN,
+  cooldownExclusions: config.cooldownExclusions,
   cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   aliases: ['profile'],
   caseInsensitive: true
@@ -1078,6 +1080,7 @@ bot.registerCommand('Ship', (msg, args) => {
 }, {
   caseInsensitive: true,
   cooldown: config.DEFAULT_COOLDOWN,
+  cooldownExclusions: config.cooldownExclusions,
   cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   description: 'Ship two users.',
   fullDescription: 'Takes the two mentioned users and mashes their names into a lovely mess.'
@@ -1486,6 +1489,7 @@ bot.registerCommand('cry', (msg, args) => {
   caseInsensitive: true,
   cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   cooldown: config.DEFAULT_COOLDOWN,
+  cooldownExclusions: config.cooldownExclusions,
   description: 'Displays random cry gif.',
   fullDescription: 'Displays a random cry gif.'
 })
@@ -2181,6 +2185,7 @@ bot.registerCommand('spank', (msg, args) => {
 }, {
   cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   cooldown: config.DEFAULT_COOLDOWN,
+  cooldownExclusions: config.cooldownExclusions,
   aliases: ['spanks'],
   caseInsensitive: true
 })
