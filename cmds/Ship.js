@@ -21,7 +21,7 @@ class Ship {
     this.getPngUrls(urls, (pngUrls) => {
       this.processUrls(pngUrls, (options) => {
         this.downloadImages(options, (filenames) => {
-          filenames.splice(1, 0, '/var/tron/images/ship/heart.png')
+          filenames.splice(1, 0, '/home/alcha/tron/images/ship/heart.png')
           let imagesProcessed = 0
           let images = []
 
@@ -86,7 +86,7 @@ class Ship {
 
       options.push({
         url: url,
-        dest: '/var/tron/images/ship/' + filename
+        dest: '/home/alcha/tron/images/ship/' + filename
       })
     }
 
@@ -113,10 +113,11 @@ class Ship {
   getShipName (msg, callback) {
     const combined = msg.mentions[0].username + msg.mentions[1].username
     const shuffled = shuffle(combined.split(''))
-    const randomLength = tools.getRandom(0, shuffled.length)
+    const randomLength = tools.getRandom(1, shuffled.length)
     const shipName = shuffled.toString().substring(0, randomLength)
     console.log('shipName = ' + shipName)
-    callback(tools.upperFirstC(shipName.replace('/,/g', '')))
+    callback(tools.upperFirstC(shipName.replace(/,/g, '')))
+    shipName.replace()
   }
 }
 

@@ -51,6 +51,7 @@ const commandOptions = aliasesIn => {
     aliases: aliasesIn,
     cooldown: config.DEFAULT_COOLDOWN,
     cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+    cooldownExclusions: config.cooldownExclusions,
     caseInsensitive: true
   }
 }
@@ -222,7 +223,7 @@ bot.registerCommand('initialize', (msg, args) => {
  * Evaluates and returns the given args value as Javascript.
  * @param {*} args
  */
-const evaluate = args => {
+const evaluate = (msg, args) => {
   try {
     return eval(args.join(' '))
   } catch (err) {
@@ -237,8 +238,10 @@ const evaluate = args => {
 */
 bot.registerCommand('evaluate', (msg, args) => {
   if (msg.author.id === config.owner) {
-    sendMessage(msg.channel.id, '`' + evaluate(args) + '`', undefined)
+    sendMessage(msg.channel.id, '`' + evaluate(msg, args) + '`', undefined)
   }
+}, {
+  aliases: ['eval']
 })
 
 /**
@@ -425,15 +428,18 @@ let triviaCmd = bot.registerCommand('trivia', (msg, args) => {
 triviaCmd.registerSubcommand('start', (msg, args) => {
   if (args.length === 1) {
     trivia.getQuestions(parseInt(args[0])).then(questions => {
-      console.log('question = ' + questions[0].question)
-      console.log('answers = ')
-      console.log(questions[0].correct_answer)
-      console.log(questions[0].incorrect_answers)
-      let content = entities.decode(questions[0].question) + '\n\n' +
-      '```\n' + '1. ' + entities.decode(questions[0].correct_answer) + '\n' +
-      '2. ' + entities.decode(questions[0].incorrect_answers[0]) + '\n' +
-      '3. ' + entities.decode(questions[0].incorrect_answers[1]) + '\n' +
-      '4. ' + entities.decode(questions[0].incorrect_answers[2]) + '```'
+      const answers = tools.shuffle([
+        questions[0].correct_answer,
+        questions[0].incorrect_answers[0],
+        questions[0].incorrect_answers[1],
+        questions[0].incorrect_answers[2]
+      ])
+
+      const content = entities.decode(questions[0].question) + '\n\n' +
+      '```\n' + '1. ' + entities.decode(answers[0]) + '\n' +
+      '2. ' + entities.decode(answers[1]) + '\n' +
+      '3. ' + entities.decode(answers[2]) + '\n' +
+      '4. ' + entities.decode(answers[3]) + '```'
 
       bot.createMessage(msg.channel.id, content).then(msg => {
         console.log('Message sent.')
@@ -482,6 +488,40 @@ memeCmd.registerSubcommand('doge', (msg, args) => {
 
 // #region User Commands
 /**
+* Command Name: Squirtle
+* Description : Returns a random Squirtle image or gif.
+* Requested By: Squirts/Alex
+*/
+bot.registerCommand('squirtle', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickSquirtleImage(args[0]).then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickSquirtleImage().then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+})
+
+/**
+* Command Name: Miku
+* Description : Returns a random image from a collection given to me by Miku.
+* Requested By: Miku/Aaron
+*/
+bot.registerCommand('miku', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickMikuImage(args[0]).then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickMikuImage().then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+})
+
+/**
 * Command Name: Dreamy
 * Description : Returns a random image from a collection given to me by Dreamy.
 * Requested By: Dreamy
@@ -529,7 +569,7 @@ bot.registerCommand('zorika', (msg, args) => {
 * Description : Returns an image of Stitch.
 */
 bot.registerCommand('jay', (msg, args) => {
-  ioTools.getImage('/var/tron/images/Jay.png', (img) => {
+  ioTools.getImage('/home/alcha/tron/images/Jay.png', (img) => {
     sendMessage(msg.channel.id, undefined, {
       file: img,
       name: 'Jay.png'
@@ -544,11 +584,11 @@ bot.registerCommand('jay', (msg, args) => {
 */
 bot.registerCommand('key', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickKeyImage(args[0]).then((data) => {
+    reactions.pickKeyImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickKeyImage().then((data) => {
+    reactions.pickKeyImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -593,11 +633,11 @@ bot.registerCommand('rose', (msg, args) => {
 // ========================== Alcha Command (Requested by Utah) ================================= //
 bot.registerCommand('alcha', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickJerryImage(args[0]).then((data) => {
+    reactions.pickJerryImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickJerryImage().then((data) => {
+    reactions.pickJerryImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -608,11 +648,11 @@ bot.registerCommand('alcha', (msg, args) => {
 // ========================== Foupa Command ===================================================== //
 bot.registerCommand('foupa', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickFoupaImage(args[0]).then((data) => {
+    reactions.pickFoupaImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickFoupaImage().then((data) => {
+    reactions.pickFoupaImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -624,6 +664,7 @@ bot.registerCommand('foupa', (msg, args) => {
   caseInsensitive: true,
   permissionMessage: 'This command is unavailable to you.',
   cooldown: config.DEFAULT_COOLDOWN,
+  cooldownExclusions: config.cooldownExclusions,
   cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE
 })
 
@@ -657,11 +698,11 @@ bot.registerCommand('alex', (msg, args) => {
 
 bot.registerCommand('batts', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickBattsieImage(args[0]).then((data) => {
+    reactions.pickBattsieImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickBattsieImage().then((data) => {
+    reactions.pickBattsieImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -672,7 +713,7 @@ bot.registerCommand('derp', (msg, args) => {
 }, commandOptions)
 
 bot.registerCommand('potato', (msg, args) => {
-  ioTools.getImage('/var/tron/images/potato.png', (img) => {
+  ioTools.getImage('/home/alcha/tron/images/potato.png', (img) => {
     sendMessage(msg.channel.id, undefined, {
       file: img,
       name: 'Potato.png'
@@ -735,7 +776,7 @@ bot.registerCommand('bot', (msg, args) => {
 })
 
 const quoteCmd = bot.registerCommand('quote', (msg, args) => {
-  ioTools.readFile('/var/tron/Quotes.txt', (content) => {
+  ioTools.readFile('/home/alcha/tron/Quotes.txt', (content) => {
     if (content !== undefined) {
       let temp = content.split('\n')
       let random = tools.getRandom(0, temp.length)
@@ -1011,7 +1052,7 @@ bot.registerCommand('Avatar', (msg, args) => {
 
     ioTools.downloadFiles([{
       url: url,
-      dest: '/var/tron/images/avatar/' + origFilename
+      dest: '/home/alcha/tron/images/avatar/' + origFilename
     }], (filenames) => {
       filenames.forEach((filename, key, array) => {
         ioTools.getImage(filename, (image) => {
@@ -1027,6 +1068,7 @@ bot.registerCommand('Avatar', (msg, args) => {
   }
 }, {
   cooldown: config.DEFAULT_COOLDOWN,
+  cooldownExclusions: config.cooldownExclusions,
   cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   aliases: ['profile'],
   caseInsensitive: true
@@ -1072,6 +1114,7 @@ bot.registerCommand('Ship', (msg, args) => {
 }, {
   caseInsensitive: true,
   cooldown: config.DEFAULT_COOLDOWN,
+  cooldownExclusions: config.cooldownExclusions,
   cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   description: 'Ship two users.',
   fullDescription: 'Takes the two mentioned users and mashes their names into a lovely mess.'
@@ -1084,7 +1127,7 @@ bot.registerCommand('Ship', (msg, args) => {
 bot.registerCommand('reddit', (msg, args) => {
   let subreddit = args.join('')
 
-  reddit.r(subreddit, (err, data, res) => {
+  reddit.r(subreddit).sort('top').from('day').limit(50, (err, data, res) => {
     if (err) {
       console.log(err)
       return
@@ -1463,6 +1506,39 @@ malCmd.registerSubcommand('user', (msg, args) => {
 
 // #region Reaction Commands
 /**
+* Command Name: Dance
+* Description : Returns a random dance gif that was given to me.
+* Requested By: Kayla
+*/
+bot.registerCommand('dance', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickDanceImage(args[0]).then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickDanceImage().then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+}, commandOptions(['dances']))
+
+/**
+* Command Name: Confused
+* Description : Returns a random confused gif.
+*/
+bot.registerCommand('confused', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickConfusedImage(args[0]).then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickConfusedImage().then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+}, commandOptions)
+
+/**
 * Command Name: Cry
 * Description : Returns a random gif of someone crying.
 */
@@ -1480,6 +1556,7 @@ bot.registerCommand('cry', (msg, args) => {
   caseInsensitive: true,
   cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   cooldown: config.DEFAULT_COOLDOWN,
+  cooldownExclusions: config.cooldownExclusions,
   description: 'Displays random cry gif.',
   fullDescription: 'Displays a random cry gif.'
 })
@@ -1490,7 +1567,7 @@ bot.registerCommand('cry', (msg, args) => {
 * Requested By: Alcha
 */
 bot.registerCommand('meh', (msg, args) => {
-  ioTools.getImage('/var/tron/images/meh.gif', (img) => {
+  ioTools.getImage('/home/alcha/tron/images/meh.gif', (img) => {
     sendMessage(msg.channel.id, undefined, {
       file: img,
       name: 'meh.gif'
@@ -1541,6 +1618,22 @@ bot.registerCommand('cat', (msg, args) => {
   ioTools.incrementCommandUse('cat')
 }, commandOptions(['neko']))
 
+/**
+* Command Name: Pout
+* Description : Returns a random pout gif.
+*/
+bot.registerCommand('pout', (msg, args) => {
+  console.log('in pout command..')
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickPoutImage(args[0]).then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickPoutImage().then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+}, commandOptions)
 // #endregion Reaction Commands
 
 // #region Action Commands
@@ -2175,6 +2268,7 @@ bot.registerCommand('spank', (msg, args) => {
 }, {
   cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
   cooldown: config.DEFAULT_COOLDOWN,
+  cooldownExclusions: config.cooldownExclusions,
   aliases: ['spanks'],
   caseInsensitive: true
 })
@@ -2251,11 +2345,12 @@ bot.registerCommand('bite', (msg, args) => {
 * Requested By: Onyx
 */
 bot.registerCommand('nobulli', (msg, args) => {
-  tools.doesMsgContainShu(msg).then((shuFlag) => {
+  tools.doesMsgContainShu(msg).then(shuFlag => {
+    console.log(`shuFlag received - ${shuFlag}`)
     if (shuFlag) {
       sendMessage(msg.channel.id, 'You have mentioned a user who does not wish to be mentioned. Please refrain from doing this in the future.')
     } else {
-      if (args.length === 2 && !isNaN(parseInt(args[0]))) {
+      if (args.length === 2) {
         reactions.pickNobulliImage((img) => {
           tools.getUsernames(args, bot, (usernames) => {
             let message = ''
@@ -2269,9 +2364,9 @@ bot.registerCommand('nobulli', (msg, args) => {
               name: 'Nobulli.gif'
             })
           })
-        }, args[0])
+        })
       } else {
-        return 'Please mention 2 users to include in the message.'
+        sendMessage(msg.channel.id, 'Please mention 2 users to include in the message.')
       }
     }
   })
@@ -2365,7 +2460,7 @@ bot.registerCommand('tattoo', (msg, args) => {
 
     let random = tools.getRandom(0, tatSubs.length)
 
-    reddit.r(tatSubs[random], (err, data, res) => {
+    reddit.r(tatSubs[random]).sort('top').from('day').limit(50, (err, data, res) => {
       if (err) {
         console.log(err)
         return err
@@ -2383,6 +2478,11 @@ bot.registerCommand('tattoo', (msg, args) => {
       }
     })
   }
+}, {
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldownExclusions: config.cooldownExclusions,
+  caseInsensitive: true
 })
 
 bot.registerCommand('newd', (msg, args) => {
@@ -2434,12 +2534,12 @@ bot.registerCommand('newd', (msg, args) => {
 
   ioTools.incrementCommandUse('newd')
 }, {
-  aliases: ['sendnude', 'sendnudes', 'nudes', 'snude', 'sn', 'slideintodms', 'sendnoods', 'sendnoots'],
+  aliases: ['sendnude', 'sendnudes', 'nudes', 'snude', 'sn', 'slideintodms', 'sendnoods', 'sendnoots', 'newds'],
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldownExclusions: config.cooldownExclusions,
   caseInsensitive: true,
-  deleteCommand: true,
-  description: "For those spicy nudes you've been wanting ( . Y . )",
-  fullDescription: ':lenny:',
-  usage: '[@users] e.g. `+sendnudes @Alcha#2621 @MissBella#6480`'
+  deleteCommand: true
 })
 
 bot.registerCommand('boobs', (msg, args) => {
@@ -2459,7 +2559,7 @@ bot.registerCommand('boobs', (msg, args) => {
 
     let randomSub = tools.getRandom(0, boobSubs.length)
 
-    reddit.r(boobSubs[randomSub], (err, data, res) => {
+    reddit.r(boobSubs[randomSub]).sort('top').from('day').limit(50, (err, data, res) => {
       if (err) {
         Raven.captureException(err)
         sendMessage(msg.channel.id, err)
@@ -2472,9 +2572,7 @@ bot.registerCommand('boobs', (msg, args) => {
       }
     })
   }
-}, {
-  aliases: ['boob', 'breasts', 'tits']
-})
+}, commandOptions(['boob', 'breasts', 'tits', 'bewbs', 'bewb']))
 
 bot.registerCommand('hentai', (msg, args) => {
   if (!msg.channel.nsfw) {
@@ -2488,7 +2586,7 @@ bot.registerCommand('hentai', (msg, args) => {
 
     let randomSub = tools.getRandom(0, hentaiSubs.length)
 
-    reddit.r(hentaiSubs[randomSub], (err, data, res) => {
+    reddit.r(hentaiSubs[randomSub]).sort('top').from('day').limit(50, (err, data, res) => {
       if (err) {
         Raven.captureException(err)
         sendMessage(msg.channel.id, err)
@@ -2501,9 +2599,7 @@ bot.registerCommand('hentai', (msg, args) => {
       }
     })
   }
-}, {
-  aliases: ['boob', 'breasts', 'tits']
-})
+}, commandOptions(['boob', 'breasts', 'tits']))
 
 bot.registerCommand('butt', (msg, args) => {
   if (!msg.channel.nsfw) {
@@ -2525,7 +2621,7 @@ bot.registerCommand('butt', (msg, args) => {
 
     let randomSub = tools.getRandom(0, buttSubs.length)
 
-    reddit.r(buttSubs[randomSub], (err, data, res) => {
+    reddit.r(buttSubs[randomSub]).sort('top').from('day').limit(50, (err, data, res) => {
       if (err) {
         Raven.captureException(err)
         sendMessage(msg.channel.id, err)
@@ -2538,9 +2634,7 @@ bot.registerCommand('butt', (msg, args) => {
       }
     })
   }
-}, {
-  aliases: ['butts', 'booty', 'ass']
-})
+}, commandOptions(['butts', 'booty', 'ass']))
 
 bot.registerCommand('feet', (msg, args) => {
   if (!msg.channel.nsfw) {
@@ -2572,7 +2666,7 @@ bot.registerCommand('feet', (msg, args) => {
 
     let randomSub = tools.getRandom(0, feetSubs.length)
 
-    reddit.r(feetSubs[randomSub], (err, data, res) => {
+    reddit.r(feetSubs[randomSub]).sort('top').from('day').limit(50, (err, data, res) => {
       if (err) {
         Raven.captureException(err)
         sendMessage(msg.channel.id, err)
@@ -2585,9 +2679,7 @@ bot.registerCommand('feet', (msg, args) => {
       }
     })
   }
-}, {
-  aliases: ['feets', 'foot']
-})
+}, commandOptions(['feets', 'foot']))
 
 bot.registerCommand('gay', (msg, args) => {
   if (!msg.channel.nsfw) {
@@ -2608,7 +2700,7 @@ bot.registerCommand('gay', (msg, args) => {
 
     let randomSub = tools.getRandom(0, gaySubs.length)
 
-    reddit.r(gaySubs[randomSub], (err, data, res) => {
+    reddit.r(gaySubs[randomSub]).sort('top').from('day').limit(50, (err, data, res) => {
       if (err) {
         Raven.captureException(err)
         sendMessage(msg.channel.id, err)
@@ -2621,9 +2713,7 @@ bot.registerCommand('gay', (msg, args) => {
       }
     })
   }
-}, {
-  aliases: ['dick', 'dicks', 'cock', 'penis']
-})
+}, commandOptions(['dick', 'dicks', 'cock', 'penis']))
 
 bot.registerCommand('yaoi', (msg, args) => {
   if (!msg.channel.nsfw) {
@@ -2635,7 +2725,7 @@ bot.registerCommand('yaoi', (msg, args) => {
       ioTools.incrementCommandUse('yaoi')
     })
   }
-})
+}, commandOptions)
 // #endregion NSFW Commands
 
 // #region Uncategorized
@@ -2772,11 +2862,11 @@ bot.registerCommand('blush', (msg, args) => {
 */
 bot.registerCommand('rawr', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickRawrImage(args[0]).then((data) => {
+    reactions.pickRawrImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickRawrImage().then((data) => {
+    reactions.pickRawrImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -2888,11 +2978,11 @@ bot.registerCommand('dead', (msg, args) => {
 */
 bot.registerCommand('shocked', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickShockedImage(args[0]).then((data) => {
+    reactions.pickShockedImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickShockedImage().then((data) => {
+    reactions.pickShockedImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -2905,11 +2995,11 @@ bot.registerCommand('shocked', (msg, args) => {
 */
 bot.registerCommand('disgusted', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickDisgustedImage(args[0]).then((data) => {
+    reactions.pickDisgustedImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickDisgustedImage().then((data) => {
+    reactions.pickDisgustedImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -2925,11 +3015,11 @@ bot.registerCommand('disgusted', (msg, args) => {
 */
 bot.registerCommand('smug', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickSmugImage(args[0]).then((data) => {
+    reactions.pickSmugImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickSmugImage().then((data) => {
+    reactions.pickSmugImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -2942,15 +3032,46 @@ bot.registerCommand('smug', (msg, args) => {
 */
 bot.registerCommand('coffee', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickCoffeeImage(args[0]).then((data) => {
+    reactions.pickCoffeeImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickCoffeeImage().then((data) => {
+    reactions.pickCoffeeImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
 }, commandOptions)
+
+/**
+* Command Name: Scare
+* Description : Displays a Scare gif/image.
+* Requested By: Alcha
+*/
+bot.registerCommand('scare', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickScareImage(args[0]).then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickScareImage().then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+}, commandOptions)
+
+bot.registerCommand('swag', (msg, args) => {
+  if (msg.mentions[0] !== undefined) {
+    const id = parseInt(msg.mentions[0].id)
+    if (id === 227830945040957440 ||
+        id === 219270060936527873 ||
+        id === 317138587491631104) {
+      sendMessage(msg.channel.id, '**' + msg.mentions[0].username + `**, you've got a swag level of 11/10. :sunglasses:`)
+    } else {
+      const random = tools.getRandom(0, 11)
+      sendMessage(msg.channel.id, '**' + msg.mentions[0].username + `**, you've got a swag level of ${random}/10.`)
+    }
+  }
+})
 
 // ========================== onMessageCreate Event Handler ===================================== //
 bot.on('messageCreate', (msg) => {
@@ -2990,15 +3111,6 @@ let helpCmd = bot.registerCommand('help', (msg, args) => {
   return helpText.base.join('')
 }, {
   aliases: ['halp', 'helps', 'halps'],
-  argsRequired: false,
-  caseInsensitive: true,
-  guildOnly: false
-})
-
-// ========================== Features Help Commands ============================================ //
-helpCmd.registerSubcommand('change', (msg, args) => {
-  return helpText.features.change.base.join('')
-}, {
   argsRequired: false,
   caseInsensitive: true,
   guildOnly: false
@@ -3263,14 +3375,6 @@ helpCmd.registerSubcommand('alex', (msg, args) => {
 
 helpCmd.registerSubcommand('utah', (msg, args) => {
   return helpText.users.utah.join('')
-}, {
-  argsRequired: false,
-  caseInsensitive: true,
-  guildOnly: false
-})
-
-helpCmd.registerSubcommand('jova', (msg, args) => {
-  return helpText.users.jova.join('')
 }, {
   argsRequired: false,
   caseInsensitive: true,

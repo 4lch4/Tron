@@ -4,8 +4,14 @@ const Tools = require('../util/Tools.js')
 const tools = new Tools()
 const ioTools = new IOTools()
 
+let mikuImages = []
+let mikuFilenames = []
+
 /** Stores images for the Snow command */
 let kaylaImages = []
+
+let scareImages = []
+let scareFilenames = []
 
 let deadImages = []
 let deadFilenames = []
@@ -66,17 +72,20 @@ let dreamyImages = []
 /** Stores images for the Slap command */
 let slapImages = []
 
-/** Stores images for the Dance command */
+/** Stores images and filenames for the Dance command */
 let danceImages = []
+let danceFilenames = []
 
 /** Stores images for the Punch command */
 let punchImages = []
 
 /** Stores images for the Confused command */
 let confusedImages = []
+let confusedFilenames = []
 
 /** Stores images for the Pout command */
 let poutImages = []
+let poutFilenames = []
 
 /** Stores images for the Vape Nation command */
 let vnImages = []
@@ -206,34 +215,34 @@ class Reactions {
       if (squirtleImages.length === 0) {
         ioTools.getImages('squirtle', (images, filenames) => {
           squirtleImages = squirtleImages.concat(images)
-          squirtleFilenames = filenames
+          squirtleFilenames = squirtleFilenames.concat(filenames)
 
           if (imgIndex < squirtleImages.length) {
             resolve({
-              image: squirtleImages[imgIndex],
-              filename: squirtleFilenames[imgIndex]
+              file: squirtleImages[imgIndex],
+              name: squirtleFilenames[imgIndex]
             })
           } else {
-            let random = tools.getRandom(0, images.length)
+            let random = tools.getRandom(0, squirtleImages.length)
 
             resolve({
-              image: squirtleImages[random],
-              filename: squirtleFilenames[random]
+              file: squirtleImages[random],
+              name: squirtleFilenames[random]
             })
           }
         })
       } else {
         if (imgIndex < squirtleImages.length) {
           resolve({
-            image: squirtleImages[imgIndex],
-            filename: squirtleFilenames[imgIndex]
+            file: squirtleImages[imgIndex],
+            name: squirtleFilenames[imgIndex]
           })
         } else {
           let random = tools.getRandom(0, squirtleImages.length)
 
           resolve({
-            image: squirtleImages[random],
-            filename: squirtleFilenames[random]
+            file: squirtleImages[random],
+            name: squirtleFilenames[random]
           })
         }
       }
@@ -313,6 +322,7 @@ class Reactions {
       }
     }
   }
+
   pickDreamyImage (callback, imgIndex) {
     if (dreamyImages.length === 0) {
       ioTools.getImages('dreamy', (images) => {
@@ -411,20 +421,43 @@ class Reactions {
     }
   }
 
-  pickDanceImage (callback) {
-    if (danceImages.length === 0) {
-      ioTools.getImages('dance', (images) => {
-        let random = tools.getRandom(0, images.length)
+  pickDanceImage (imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (danceImages.length === 0) {
+        ioTools.getImages('dance', (images, filenames) => {
+          danceImages = danceImages.concat(images)
+          danceFilenames = danceFilenames.concat(filenames)
 
-        danceImages = danceImages.concat(images)
+          if (imgIndex < danceImages.length) {
+            resolve({
+              file: danceImages[imgIndex],
+              name: danceFilenames[imgIndex]
+            })
+          } else {
+            let random = tools.getRandom(0, danceImages.length)
 
-        callback(danceImages[random])
-      })
-    } else {
-      let random = tools.getRandom(0, danceImages.length)
+            resolve({
+              file: danceImages[random],
+              name: danceFilenames[random]
+            })
+          }
+        })
+      } else {
+        if (imgIndex < danceImages.length) {
+          resolve({
+            file: danceImages[imgIndex],
+            name: danceFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, danceImages.length)
 
-      callback(danceImages[random])
-    }
+          resolve({
+            file: danceImages[random],
+            name: danceFilenames[random]
+          })
+        }
+      }
+    })
   }
 
   pickKaylaImage () {
@@ -442,20 +475,43 @@ class Reactions {
     })
   }
 
-  pickConfusedImage (callback) {
-    if (confusedImages.length === 0) {
-      ioTools.getImages('confused', (images) => {
-        let random = tools.getRandom(0, images.length)
+  pickConfusedImage (imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (confusedImages.length === 0) {
+        ioTools.getImages('confused', (images, filenames) => {
+          confusedImages = confusedImages.concat(images)
+          confusedFilenames = confusedFilenames.concat(filenames)
 
-        confusedImages = confusedImages.concat(images)
+          if (imgIndex < confusedImages.length) {
+            resolve({
+              file: confusedImages[imgIndex],
+              name: confusedFilenames[imgIndex]
+            })
+          } else {
+            let random = tools.getRandom(0, confusedImages.length)
 
-        callback(confusedImages[random])
-      })
-    } else {
-      let random = tools.getRandom(0, confusedImages.length)
+            resolve({
+              file: confusedImages[random],
+              name: confusedFilenames[random]
+            })
+          }
+        })
+      } else {
+        if (imgIndex < confusedImages.length) {
+          resolve({
+            file: confusedImages[imgIndex],
+            name: confusedFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, confusedImages.length)
 
-      callback(confusedImages[random])
-    }
+          resolve({
+            file: confusedImages[random],
+            name: confusedFilenames[random]
+          })
+        }
+      }
+    })
   }
 
   pickFoupaImage (imgIndex) {
@@ -496,6 +552,7 @@ class Reactions {
       }
     })
   }
+
   pickCoffeeImage (imgIndex) {
     return new Promise((resolve, reject) => {
       if (coffeeImages.length === 0) {
@@ -847,6 +904,45 @@ class Reactions {
     })
   }
 
+  pickMikuImage (imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (mikuImages.length === 0) {
+        ioTools.getImages('miku', (images, filenames) => {
+          mikuImages = mikuImages.concat(images)
+          mikuFilenames = mikuFilenames.concat(filenames)
+
+          if (imgIndex < mikuImages.length) {
+            resolve({
+              file: mikuImages[imgIndex],
+              name: mikuFilenames[imgIndex]
+            })
+          } else {
+            let random = tools.getRandom(0, mikuImages.length)
+
+            resolve({
+              file: mikuImages[random],
+              name: mikuFilenames[random]
+            })
+          }
+        })
+      } else {
+        if (imgIndex < mikuImages.length) {
+          resolve({
+            file: mikuImages[imgIndex],
+            name: mikuFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, mikuImages.length)
+
+          resolve({
+            file: mikuImages[random],
+            name: mikuFilenames[random]
+          })
+        }
+      }
+    })
+  }
+
   pickJerryImage (imgIndex) {
     return new Promise((resolve, reject) => {
       if (jerryImages.length === 0) {
@@ -886,26 +982,80 @@ class Reactions {
     })
   }
 
+  pickScareImage (imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (scareImages.length === 0) {
+        ioTools.getImages('scare', (images, filenames) => {
+          scareImages = scareImages.concat(images)
+          scareFilenames = scareFilenames.concat(filenames)
+
+          if (imgIndex < scareImages.length) {
+            resolve({
+              file: scareImages[imgIndex],
+              name: scareFilenames[imgIndex]
+            })
+          } else {
+            let random = tools.getRandom(0, scareImages.length)
+
+            resolve({
+              file: scareImages[random],
+              name: scareFilenames[random]
+            })
+          }
+        })
+      } else {
+        if (imgIndex < scareImages.length) {
+          resolve({
+            file: scareImages[imgIndex],
+            name: scareFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, scareImages.length)
+
+          resolve({
+            file: scareImages[random],
+            name: scareFilenames[random]
+          })
+        }
+      }
+    })
+  }
+
   pickPoutImage (imgIndex) {
     return new Promise((resolve, reject) => {
       if (poutImages.length === 0) {
-        ioTools.getImages('pout', (images) => {
+        ioTools.getImages('pout', (images, filenames) => {
           poutImages = poutImages.concat(images)
+          poutFilenames = poutFilenames.concat(filenames)
 
           if (imgIndex < poutImages.length) {
-            resolve(poutImages[imgIndex])
+            resolve({
+              file: poutImages[imgIndex],
+              name: poutFilenames[imgIndex]
+            })
           } else {
             let random = tools.getRandom(0, poutImages.length)
 
-            resolve(poutImages[random])
+            resolve({
+              file: poutImages[random],
+              name: poutFilenames[random]
+            })
           }
         })
-      } else if (imgIndex < poutImages.length) {
-        resolve(poutImages[imgIndex])
       } else {
-        let random = tools.getRandom(0, poutImages.length)
+        if (imgIndex < poutImages.length) {
+          resolve({
+            file: poutImages[imgIndex],
+            name: poutFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, poutImages.length)
 
-        resolve(poutImages[random])
+          resolve({
+            file: poutImages[random],
+            name: poutFilenames[random]
+          })
+        }
       }
     })
   }
