@@ -567,11 +567,11 @@ bot.registerCommand('jay', (msg, args) => {
 */
 bot.registerCommand('key', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickKeyImage(args[0]).then((data) => {
+    reactions.pickKeyImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickKeyImage().then((data) => {
+    reactions.pickKeyImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -616,11 +616,11 @@ bot.registerCommand('rose', (msg, args) => {
 // ========================== Alcha Command (Requested by Utah) ================================= //
 bot.registerCommand('alcha', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickJerryImage(args[0]).then((data) => {
+    reactions.pickJerryImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickJerryImage().then((data) => {
+    reactions.pickJerryImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -631,11 +631,11 @@ bot.registerCommand('alcha', (msg, args) => {
 // ========================== Foupa Command ===================================================== //
 bot.registerCommand('foupa', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickFoupaImage(args[0]).then((data) => {
+    reactions.pickFoupaImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickFoupaImage().then((data) => {
+    reactions.pickFoupaImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -681,11 +681,11 @@ bot.registerCommand('alex', (msg, args) => {
 
 bot.registerCommand('batts', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickBattsieImage(args[0]).then((data) => {
+    reactions.pickBattsieImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickBattsieImage().then((data) => {
+    reactions.pickBattsieImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -1495,11 +1495,11 @@ malCmd.registerSubcommand('user', (msg, args) => {
 */
 bot.registerCommand('dance', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickDanceImage(args[0]).then((data) => {
+    reactions.pickDanceImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickDanceImage().then((data) => {
+    reactions.pickDanceImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -1511,11 +1511,11 @@ bot.registerCommand('dance', (msg, args) => {
 */
 bot.registerCommand('confused', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickConfusedImage(args[0]).then((data) => {
+    reactions.pickConfusedImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickConfusedImage().then((data) => {
+    reactions.pickConfusedImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -1608,11 +1608,11 @@ bot.registerCommand('cat', (msg, args) => {
 bot.registerCommand('pout', (msg, args) => {
   console.log('in pout command..')
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickPoutImage(args[0]).then((data) => {
+    reactions.pickPoutImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickPoutImage().then((data) => {
+    reactions.pickPoutImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -2845,11 +2845,11 @@ bot.registerCommand('blush', (msg, args) => {
 */
 bot.registerCommand('rawr', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickRawrImage(args[0]).then((data) => {
+    reactions.pickRawrImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickRawrImage().then((data) => {
+    reactions.pickRawrImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -2961,11 +2961,11 @@ bot.registerCommand('dead', (msg, args) => {
 */
 bot.registerCommand('shocked', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickShockedImage(args[0]).then((data) => {
+    reactions.pickShockedImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickShockedImage().then((data) => {
+    reactions.pickShockedImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -2978,11 +2978,11 @@ bot.registerCommand('shocked', (msg, args) => {
 */
 bot.registerCommand('disgusted', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickDisgustedImage(args[0]).then((data) => {
+    reactions.pickDisgustedImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickDisgustedImage().then((data) => {
+    reactions.pickDisgustedImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -2998,11 +2998,11 @@ bot.registerCommand('disgusted', (msg, args) => {
 */
 bot.registerCommand('smug', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickSmugImage(args[0]).then((data) => {
+    reactions.pickSmugImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickSmugImage().then((data) => {
+    reactions.pickSmugImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -3015,11 +3015,11 @@ bot.registerCommand('smug', (msg, args) => {
 */
 bot.registerCommand('coffee', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickCoffeeImage(args[0]).then((data) => {
+    reactions.pickCoffeeImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickCoffeeImage().then((data) => {
+    reactions.pickCoffeeImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
@@ -3032,11 +3032,11 @@ bot.registerCommand('coffee', (msg, args) => {
 */
 bot.registerCommand('scare', (msg, args) => {
   if (!isNaN(parseInt(args[0]))) {
-    reactions.pickScareImage(args[0]).then((data) => {
+    reactions.pickScareImage(args[0]).then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   } else {
-    reactions.pickScareImage().then((data) => {
+    reactions.pickScareImage().then(data => {
       sendMessage(msg.channel.id, undefined, data)
     })
   }
