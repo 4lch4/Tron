@@ -2428,6 +2428,11 @@ bot.registerCommand('tattoo', (msg, args) => {
       }
     })
   }
+}, {
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldownExclusions: config.cooldownExclusions,
+  caseInsensitive: true
 })
 
 bot.registerCommand('newd', (msg, args) => {
@@ -2480,11 +2485,11 @@ bot.registerCommand('newd', (msg, args) => {
   ioTools.incrementCommandUse('newd')
 }, {
   aliases: ['sendnude', 'sendnudes', 'nudes', 'snude', 'sn', 'slideintodms', 'sendnoods', 'sendnoots', 'newds'],
+  cooldown: config.DEFAULT_COOLDOWN,
+  cooldownMessage: config.DEFAULT_COOLDOWN_MESSAGE,
+  cooldownExclusions: config.cooldownExclusions,
   caseInsensitive: true,
-  deleteCommand: true,
-  description: "For those spicy nudes you've been wanting ( . Y . )",
-  fullDescription: ':lenny:',
-  usage: '[@users] e.g. `+sendnudes @Alcha#2621 @MissBella#6480`'
+  deleteCommand: true
 })
 
 bot.registerCommand('boobs', (msg, args) => {
@@ -2517,9 +2522,7 @@ bot.registerCommand('boobs', (msg, args) => {
       }
     })
   }
-}, {
-  aliases: ['boob', 'breasts', 'tits', 'bewbs', 'bewb']
-})
+}, commandOptions(['boob', 'breasts', 'tits', 'bewbs', 'bewb']))
 
 bot.registerCommand('hentai', (msg, args) => {
   if (!msg.channel.nsfw) {
@@ -2546,9 +2549,7 @@ bot.registerCommand('hentai', (msg, args) => {
       }
     })
   }
-}, {
-  aliases: ['boob', 'breasts', 'tits']
-})
+}, commandOptions(['boob', 'breasts', 'tits']))
 
 bot.registerCommand('butt', (msg, args) => {
   if (!msg.channel.nsfw) {
@@ -2583,9 +2584,7 @@ bot.registerCommand('butt', (msg, args) => {
       }
     })
   }
-}, {
-  aliases: ['butts', 'booty', 'ass']
-})
+}, commandOptions(['butts', 'booty', 'ass']))
 
 bot.registerCommand('feet', (msg, args) => {
   if (!msg.channel.nsfw) {
@@ -2630,9 +2629,7 @@ bot.registerCommand('feet', (msg, args) => {
       }
     })
   }
-}, {
-  aliases: ['feets', 'foot']
-})
+}, commandOptions(['feets', 'foot']))
 
 bot.registerCommand('gay', (msg, args) => {
   if (!msg.channel.nsfw) {
@@ -2666,9 +2663,7 @@ bot.registerCommand('gay', (msg, args) => {
       }
     })
   }
-}, {
-  aliases: ['dick', 'dicks', 'cock', 'penis']
-})
+}, commandOptions(['dick', 'dicks', 'cock', 'penis']))
 
 bot.registerCommand('yaoi', (msg, args) => {
   if (!msg.channel.nsfw) {
@@ -2680,7 +2675,7 @@ bot.registerCommand('yaoi', (msg, args) => {
       ioTools.incrementCommandUse('yaoi')
     })
   }
-})
+}, commandOptions)
 // #endregion NSFW Commands
 
 // #region Uncategorized
