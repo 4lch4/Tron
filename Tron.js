@@ -1601,6 +1601,22 @@ bot.registerCommand('cat', (msg, args) => {
   ioTools.incrementCommandUse('cat')
 }, commandOptions(['neko']))
 
+/**
+* Command Name: Pout
+* Description : Returns a random pout gif.
+*/
+bot.registerCommand('pout', (msg, args) => {
+  console.log('in pout command..')
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickPoutImage(args[0]).then((data) => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickPoutImage().then((data) => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+}, commandOptions)
 // #endregion Reaction Commands
 
 // #region Action Commands
@@ -3078,15 +3094,6 @@ let helpCmd = bot.registerCommand('help', (msg, args) => {
   return helpText.base.join('')
 }, {
   aliases: ['halp', 'helps', 'halps'],
-  argsRequired: false,
-  caseInsensitive: true,
-  guildOnly: false
-})
-
-// ========================== Features Help Commands ============================================ //
-helpCmd.registerSubcommand('change', (msg, args) => {
-  return helpText.features.change.base.join('')
-}, {
   argsRequired: false,
   caseInsensitive: true,
   guildOnly: false

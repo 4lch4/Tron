@@ -85,6 +85,7 @@ let confusedFilenames = []
 
 /** Stores images for the Pout command */
 let poutImages = []
+let poutFilenames = []
 
 /** Stores images for the Vape Nation command */
 let vnImages = []
@@ -1023,23 +1024,38 @@ class Reactions {
   pickPoutImage (imgIndex) {
     return new Promise((resolve, reject) => {
       if (poutImages.length === 0) {
-        ioTools.getImages('pout', (images) => {
+        ioTools.getImages('pout', (images, filenames) => {
           poutImages = poutImages.concat(images)
+          poutFilenames = poutFilenames.concat(filenames)
 
           if (imgIndex < poutImages.length) {
-            resolve(poutImages[imgIndex])
+            resolve({
+              file: poutImages[imgIndex],
+              name: poutFilenames[imgIndex]
+            })
           } else {
             let random = tools.getRandom(0, poutImages.length)
 
-            resolve(poutImages[random])
+            resolve({
+              file: poutImages[random],
+              name: poutFilenames[random]
+            })
           }
         })
-      } else if (imgIndex < poutImages.length) {
-        resolve(poutImages[imgIndex])
       } else {
-        let random = tools.getRandom(0, poutImages.length)
+        if (imgIndex < poutImages.length) {
+          resolve({
+            file: poutImages[imgIndex],
+            name: poutFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, poutImages.length)
 
-        resolve(poutImages[random])
+          resolve({
+            file: poutImages[random],
+            name: poutFilenames[random]
+          })
+        }
       }
     })
   }
