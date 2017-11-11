@@ -4,6 +4,9 @@ const Tools = require('../util/Tools.js')
 const tools = new Tools()
 const ioTools = new IOTools()
 
+let mikuImages = []
+let mikuFilenames = []
+
 /** Stores images for the Snow command */
 let kaylaImages = []
 
@@ -316,6 +319,7 @@ class Reactions {
       }
     }
   }
+
   pickDreamyImage (callback, imgIndex) {
     if (dreamyImages.length === 0) {
       ioTools.getImages('dreamy', (images) => {
@@ -845,6 +849,45 @@ class Reactions {
           resolve({
             file: smugImages[random],
             name: smugFilenames[random]
+          })
+        }
+      }
+    })
+  }
+
+  pickMikuImage (imgIndex) {
+    return new Promise((resolve, reject) => {
+      if (mikuImages.length === 0) {
+        ioTools.getImages('miku', (images, filenames) => {
+          mikuImages = mikuImages.concat(images)
+          mikuFilenames = mikuFilenames.concat(filenames)
+
+          if (imgIndex < mikuImages.length) {
+            resolve({
+              file: mikuImages[imgIndex],
+              name: mikuFilenames[imgIndex]
+            })
+          } else {
+            let random = tools.getRandom(0, mikuImages.length)
+
+            resolve({
+              file: mikuImages[random],
+              name: mikuFilenames[random]
+            })
+          }
+        })
+      } else {
+        if (imgIndex < mikuImages.length) {
+          resolve({
+            file: mikuImages[imgIndex],
+            name: mikuFilenames[imgIndex]
+          })
+        } else {
+          let random = tools.getRandom(0, mikuImages.length)
+
+          resolve({
+            file: mikuImages[random],
+            name: mikuFilenames[random]
           })
         }
       }

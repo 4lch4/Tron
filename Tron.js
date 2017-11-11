@@ -488,6 +488,23 @@ memeCmd.registerSubcommand('doge', (msg, args) => {
 
 // #region User Commands
 /**
+* Command Name: Miku
+* Description : Returns a random image from a collection given to me by Miku.
+* Requested By: Miku/Aaron
+*/
+bot.registerCommand('miku', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickMikuImage(args[0]).then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickMikuImage().then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+})
+
+/**
 * Command Name: Dreamy
 * Description : Returns a random image from a collection given to me by Dreamy.
 * Requested By: Dreamy
