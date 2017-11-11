@@ -3364,14 +3364,6 @@ helpCmd.registerSubcommand('utah', (msg, args) => {
   guildOnly: false
 })
 
-helpCmd.registerSubcommand('jova', (msg, args) => {
-  return helpText.users.jova.join('')
-}, {
-  argsRequired: false,
-  caseInsensitive: true,
-  guildOnly: false
-})
-
 // ========================== Reactions Help Command ============================================ //
 helpCmd.registerSubcommand('cry', (msg, args) => {
   return helpText.reactions.cry.join('')
