@@ -215,34 +215,34 @@ class Reactions {
       if (squirtleImages.length === 0) {
         ioTools.getImages('squirtle', (images, filenames) => {
           squirtleImages = squirtleImages.concat(images)
-          squirtleFilenames = filenames
+          squirtleFilenames = squirtleFilenames.concat(filenames)
 
           if (imgIndex < squirtleImages.length) {
             resolve({
-              image: squirtleImages[imgIndex],
-              filename: squirtleFilenames[imgIndex]
+              file: squirtleImages[imgIndex],
+              name: squirtleFilenames[imgIndex]
             })
           } else {
-            let random = tools.getRandom(0, images.length)
+            let random = tools.getRandom(0, squirtleImages.length)
 
             resolve({
-              image: squirtleImages[random],
-              filename: squirtleFilenames[random]
+              file: squirtleImages[random],
+              name: squirtleFilenames[random]
             })
           }
         })
       } else {
         if (imgIndex < squirtleImages.length) {
           resolve({
-            image: squirtleImages[imgIndex],
-            filename: squirtleFilenames[imgIndex]
+            file: squirtleImages[imgIndex],
+            name: squirtleFilenames[imgIndex]
           })
         } else {
           let random = tools.getRandom(0, squirtleImages.length)
 
           resolve({
-            image: squirtleImages[random],
-            filename: squirtleFilenames[random]
+            file: squirtleImages[random],
+            name: squirtleFilenames[random]
           })
         }
       }

@@ -488,6 +488,23 @@ memeCmd.registerSubcommand('doge', (msg, args) => {
 
 // #region User Commands
 /**
+* Command Name: Squirtle
+* Description : Returns a random Squirtle image or gif.
+* Requested By: Squirts/Alex
+*/
+bot.registerCommand('squirtle', (msg, args) => {
+  if (!isNaN(parseInt(args[0]))) {
+    reactions.pickSquirtleImage(args[0]).then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  } else {
+    reactions.pickSquirtleImage().then(data => {
+      sendMessage(msg.channel.id, undefined, data)
+    })
+  }
+})
+
+/**
 * Command Name: Miku
 * Description : Returns a random image from a collection given to me by Miku.
 * Requested By: Miku/Aaron
