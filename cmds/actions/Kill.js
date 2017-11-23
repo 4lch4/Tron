@@ -3,16 +3,16 @@ const { Command } = require('discord.js-commando')
 const IOTools = require('../../util/IOTools')
 const ioTools = new IOTools()
 
-module.exports = class Love extends Command {
+module.exports = class Kill extends Command {
   constructor (client) {
     super(client, {
-      name: 'love',
+      name: 'kill',
       group: 'actions',
-      memberName: 'love',
+      memberName: 'kill',
       guildOnly: true,
       throttling: { usages: 1, duration: 5 },
-      description: 'Returns a random love gif and if a user is mentioned, includes their name.',
-      examples: ['+love @Alcha#2621']
+      description: 'Returns a random kill gif and includes the mentioned users username.',
+      examples: ['+kill @Alcha#2621']
     })
   }
 
@@ -21,10 +21,10 @@ module.exports = class Love extends Command {
 
     if (msg.mentions.users.size > 0) {
       const username = msg.mentions.users.first().username
-      content = `**${username}**, you've been loved by **${msg.author.username}**. :heart:`
+      content = `**${username}**, you've been killed by **${msg.author.username}**. :knife:`
     }
 
-    ioTools.getRandomImage('love').then(image => {
+    ioTools.getRandomImage('kill').then(image => {
       msg.channel.send(content, {
         files: [
           image
