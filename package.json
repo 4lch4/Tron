@@ -1,50 +1,33 @@
 {
   "name": "tron",
   "displayName": "Tron",
-  "version": "0.2.6",
+  "version": "1.0.0",
   "description": "Our bot that makes socializing on our servers more entertaining.",
   "main": "Tron.js",
-  "homepage": "https://paranoiddevs.com/Tron",
-  "author": "Alcha",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Paranoid-Devs/Tron"
-  },
-  "dependencies": {
-    "canvas": "1.6.7",
-    "chance": "1.0.11",
-    "cron": "1.3.0",
-    "decode-html": "2.0.0",
-    "discord.js": "11.2.1",
-    "entities": "1.1.1",
-    "eris": "0.8.1",
-    "feedparser": "2.2.2",
-    "html-entities": "1.2.1",
-    "hubot-memegeneration": "2.2.0",
-    "image-downloader": "3.3.0",
-    "imgflipper": "1.0.1",
-    "insult-compliment": "^1.1.4",
-    "leaguejs": "1.5.7",
-    "lodash": "4.17.4",
-    "moment": "2.19.1",
-    "moment-timezone": "0.5.13",
-    "mongodb": "2.2.33",
-    "mysql": "2.15.0",
-    "node-rest-client": "3.1.0",
-    "popura": "1.2.5",
-    "raven": "2.2.1",
-    "readline": "1.3.0",
-    "redwrap": "0.0.4",
-    "shuffle-array": "1.0.1",
-    "standard": "10.0.3",
-    "tumblr.js": "1.1.1",
-    "urlencode": "1.1.0"
-  },
   "scripts": {
     "update": "npm update",
     "start": "node Tron.js",
-    "test": "standard | snazzy",
     "fix": "standard --fix"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Paranoid-Devs/Tron.git"
+  },
+  "author": "Alcha <alcha@paranoiddevs.com> (https://paranoiddevs.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Paranoid-Devs/Tron/issues"
+  },
+  "homepage": "https://paranoiddevs.com/Tron",
+  "dependencies": {
+    "bufferutil": "^3.0.0",
+    "chance": "^1.0.12",
+    "discord.js": "github:hydrabolt/discord.js",
+    "discord.js-commando": "github:gawdl3y/discord.js-commando",
+    "erlpack": "github:discordapp/erlpack",
+    "fs-extra": "^4.0.2",
+    "moment-timezone": "^0.5.14",
+    "node-opus": "^0.2.0",
+    "opusscript": "0.0.4"
   }
 }
