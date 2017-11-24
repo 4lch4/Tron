@@ -1,7 +1,7 @@
-const { CommandoClient } = require('discord.js-commando')
+const { CommandoClient, SQLiteProvider } = require('discord.js-commando')
+const sqlite = require('sqlite')
 const path = require('path')
-const Tools = require('./util/Tools')
-const tools = new Tools()
+const tools = new (require('./util/Tools'))()
 
 const config = require('./util/config')
 
@@ -9,6 +9,10 @@ const client = new CommandoClient({
   commandPrefix: config.prefix,
   owner: config.owner,
   disableEveryone: true
+})
+
+sqlite.open(path.join(__dirname, 'settings.sqlite3')).then((db) => {
+  client.setProvider(new SQLiteProvider(db))
 })
 
 client.registry
