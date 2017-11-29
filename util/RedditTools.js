@@ -11,7 +11,7 @@ class RedditTools {
    *
    * @param {string|string[]} subreddit  The subreddit(s) to pull the posts from
    * @param {string} [from] The time interval to pull from (all, year, month, day)
-   * @param {number} [limit] The amount of posts to request from the API
+   * @param {number} [limit] The amount of posts to request
    */
   getRandomTopPost (subreddit, from, limit) {
     if (from === undefined) from = 'day'

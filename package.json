@@ -32,6 +32,7 @@
     "opusscript": "0.0.4",
     "redwrap": "0.0.4",
     "sqlite": "^2.8.0",
+    "tumblr.js": "^1.1.1",
     "uws": "^8.14.0",
     "zlib-sync": "^0.1.3"
   }
