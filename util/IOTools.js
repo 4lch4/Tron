@@ -43,6 +43,10 @@ module.exports = class IOTools {
     })
   }
 
+  async readDataFile (filename) {
+    return fs.readFile(path.join(__dirname, '../data', filename), 'utf-8')
+  }
+
   async readFile (filePath) {
     return fs.readFile(filePath, 'utf-8')
   }

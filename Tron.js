@@ -21,7 +21,7 @@ client.registry
     ['actions', 'Action Command Group'],
     ['reactions', 'Reaction Command Group'],
     ['admin', 'Admin Command Group'],
-    ['feature', 'Feature Commands'],
+    ['features', 'Feature Commands'],
     ['nsfw', 'NSFW Command Group'],
     ['user', 'User Command Group']
   ])

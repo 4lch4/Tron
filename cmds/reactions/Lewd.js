@@ -16,9 +16,7 @@ class Lewd extends Command {
 
   async run (msg, args) {
     ioTools.getRandomImage('lewd').then(image => {
-      msg.channel.send('', {
-        files: [image]
-      })
+      msg.channel.send('', { files: [image] })
     })
   }
 }
