@@ -1,8 +1,7 @@
 const { Command } = require('discord.js-commando')
+const path = require('path')
 
 const ioTools = new (require('../../util/IOTools'))()
-
-const path = require('path')
 
 class Trump extends Command {
   constructor (client) {
@@ -23,7 +22,7 @@ class Trump extends Command {
   }
 
   async run (msg, { type }) {
-    ioTools.getImage(path.join('trump', `${type}.gif`)).then(image => {
+    ioTools.getImagePath(path.join('trump', `${type}.gif`)).then(image => {
       msg.channel.send('', { files: [image] })
     })
   }

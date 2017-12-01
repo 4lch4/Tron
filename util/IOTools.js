@@ -7,7 +7,7 @@ const path = require('path')
 const fs = require('fs-extra')
 
 module.exports = class IOTools {
-  getImage (filePath) {
+  getImagePath (filePath) {
     const finalPath = path.join('./images', filePath)
 
     return new Promise((resolve, reject) => {
