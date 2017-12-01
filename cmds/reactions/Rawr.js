@@ -2,23 +2,23 @@ const { Command } = require('discord.js-commando')
 
 const ioTools = new (require('../../util/IOTools'))()
 
-class Cry extends Command {
+class Rawr extends Command {
   constructor (client) {
     super(client, {
-      name: 'cry',
+      name: 'rawr',
       group: 'reactions',
-      memberName: 'cry',
+      memberName: 'rawr',
       throttling: { usages: 1, duration: 5 },
-      description: '',
-      examples: ['+cry']
+      description: 'Returns a random rawr gif.',
+      examples: ['+rawr']
     })
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('cry').then(image => {
+    ioTools.getRandomImage('rawr').then(image => {
       msg.channel.send('', { files: [image] })
     })
   }
 }
 
-module.exports = Cry
+module.exports = Rawr
