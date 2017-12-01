@@ -11,7 +11,7 @@ const client = new CommandoClient({
   disableEveryone: true
 })
 
-sqlite.open(path.join(__dirname, 'settings.sqlite3')).then((db) => {
+sqlite.open(path.join(__dirname, 'data', 'settings.sqlite3')).then((db) => {
   client.setProvider(new SQLiteProvider(db))
 })
 
