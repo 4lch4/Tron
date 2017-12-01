@@ -1,7 +1,8 @@
 const config = require('./config.json')
 
-const Tools = require('./Tools')
-const tools = new Tools()
+const download = require('image-downloader')
+
+const tools = new (require('./Tools'))()
 
 const path = require('path')
 const fs = require('fs-extra')
@@ -19,6 +20,15 @@ module.exports = class IOTools {
     })
   }
 
+  async downloadImage (options) {
+    try {
+      const { filename, image } = await download.image(options)
+
+      return Promise.resolve({ filename, image })
+    } catch (err) {
+      return Promise.reject(err)
+    }
+  }
   getRandomImage (dirPath) {
     return new Promise((resolve, reject) => {
       this.getImageFilenames(dirPath).then(filenames => {
@@ -55,8 +65,8 @@ module.exports = class IOTools {
     return fs.readFile(path.join(__dirname, filePath), 'utf-8')
   }
 
-  async readFileSync (filePath) {
-    return fs.readFileSync(filePath, 'utf-8')
+  readFileSync (filePath) {
+    return fs.readFileSync(filePath)
   }
 
   async getFileSize (filePath) {

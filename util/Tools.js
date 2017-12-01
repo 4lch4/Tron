@@ -12,6 +12,11 @@ module.exports = class Tools {
     return moment.tz(config.defaultTimezone).format('MM.DD.Y_HH:mm:ss')
   }
 
+  upperFirstC (string) {
+    let temp = string.toLowerCase()
+    return temp.charAt(0).toUpperCase() + temp.slice(1)
+  }
+
   /**
    * Returns a random integer between the min (inclusive) and max (exclusive).
    *
