@@ -7,16 +7,15 @@ const path = require('path')
 const fs = require('fs-extra')
 
 module.exports = class IOTools {
-  async getImage (filePath) {
-    this.getFileSize(filePath).then(size => {
-      console.log(`size = ${size}`)
-      if (size < 8000000) {
-        fs.readFile(filePath).then((err, content) => {
-          if (err) return Promise.reject(err)
+  getImage (filePath) {
+    const finalPath = path.join('./images', filePath)
 
-          return Promise.resolve(content)
-        })
-      }
+    return new Promise((resolve, reject) => {
+      this.getFileSize(finalPath).then(size => {
+        if (size < 8000000) {
+          resolve(finalPath)
+        }
+      })
     })
   }
 
