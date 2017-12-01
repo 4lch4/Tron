@@ -30,6 +30,25 @@ class RedditTools {
       })
     })
   }
+
+  getRandomPost (subreddit, sort, from, limit) {
+    if (sort === undefined) sort = 'hot'
+    if (from === undefined) from = 'day'
+    if (limit === undefined) limit = 25
+    if (subreddit instanceof Array) {
+      const random = tools.getRandom(0, subreddit.length)
+      subreddit = subreddit[random]
+    }
+
+    return new Promise((resolve, reject) => {
+      reddit.r(subreddit).sort(sort).from(from).limit(limit, (err, data, res) => {
+        if (err) reject(err)
+
+        const randomPost = tools.getRandom(0, data.data.children.length)
+        resolve(data.data.children[randomPost].data.url)
+      })
+    })
+  }
 }
 
 module.exports = RedditTools
