@@ -5,7 +5,6 @@
   "description": "Our bot that makes socializing on our servers more entertaining.",
   "main": "Tron.js",
   "scripts": {
-    "update": "npm update",
     "start": "node Tron.js",
     "fix": "standard --fix"
   },
@@ -30,6 +29,8 @@
     "image-downloader": "^3.3.0",
     "libsodium-wrappers": "^0.7.2",
     "moment-timezone": "^0.5.14",
+    "mongodb": "^3.0.0-rc0",
+    "mongoose": "^5.0.0-rc0",
     "node-opus": "^0.2.7",
     "opusscript": "0.0.4",
     "redwrap": "0.0.4",
