@@ -31,7 +31,7 @@ client.registry
 
 client.on('ready', () => {
   console.log(`Tron has come online.`)
-  client.channels.get(config.notificationChannel).send(`Tron has come online > **${tools.formattedTime}**`)
+  client.channels.get(config.notificationChannel).send(`Tron has come online > **${tools.formattedUTCTime}**`)
   client.user.setActivity(config.defaultGame)
 })
 
