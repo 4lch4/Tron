@@ -35,7 +35,7 @@ class Newds extends Command {
 
           msg.mentions.users.forEach((user, index, array) => {
             user.createDM().then(channel => {
-              channel.send(fileLines[random]).catch(err => console.log(err))
+              channel.send(fileLines[random]).catch(err => console.error(err))
             })
           })
         })
