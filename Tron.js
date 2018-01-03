@@ -27,12 +27,18 @@ client.registry
   ])
   .registerDefaultGroups()
   .registerDefaultCommands()
-  .registerCommandsIn(path.join(__dirname, 'cmds'))
+  .registerCommandsIn({
+    dirname: path.join(__dirname, 'cmds'),
+    excludeDirs: /(util)/
+  })
 
 client.on('ready', () => {
-  console.log(`Tron has come online.`)
-  client.channels.get(config.notificationChannel).send(`Tron has come online > **${tools.formattedUTCTime}**`)
+  let readyTime = tools.formattedUTCTime
+
+  client.channels.get(config.notificationChannel).send(`Tron has come online > **${readyTime}**`)
   client.user.setActivity(config.defaultGame)
+
+  console.log(`Tron has come online > ${readyTime}`)
 })
 
 client.login(config.token)

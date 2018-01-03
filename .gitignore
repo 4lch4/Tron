@@ -6,3 +6,5 @@ util/config\.json
 images/
 
 *.sqlite3
+
+mongo/
