@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando')
-const mongo = new (require('../../util/MongoTools'))()
+const mongo = new (require('../../util/db/MongoTools'))()
 
 class AddRole extends Command {
   constructor (client) {

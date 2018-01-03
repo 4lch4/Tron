@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando')
-const mongo = new (require('../../util/MongoTools'))()
+const mongo = new (require('../../util/db/MongoTools'))()
 
 class GetRoles extends Command {
   constructor (client) {
@@ -22,7 +22,7 @@ class GetRoles extends Command {
       })
 
       msg.channel.send(content + '```')
-    }).catch(err => console.log(err))
+    }).catch(err => console.error(err))
   }
 }
 
