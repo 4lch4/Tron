@@ -38,7 +38,13 @@ class Marry extends Command {
             if (accepted) {
               marriage.save().then(res => {
                 msg.channel.send(`Congratulations, <@${msg.author.id}>, you're now married to <@${user.id}>!`)
-              }).catch(err => console.error(err))
+              }).catch(err => {
+                msg.channel.send('There seems to have been an error.. If this continues, please contact support.')
+                msg.channel.send(err)
+
+                console.error(`${tools.formattedTime} - There was an error attempting to save a users marriages:`)
+                console.error(err)
+              })
             } else msg.channel.send(`Awww... :cry:`)
           }).catch(err => {
             if (err === 'time') msg.channel.send(`Sorry <@${msg.author.id}>, looks like you won't be getting a response this time around. :cry:`)
@@ -57,8 +63,6 @@ class Marry extends Command {
     } else if (cmdType === 'list') {
       // If a list is requested, get the list of spouses for the mentioned user
       const idList = await Marriage.getMarriedIdList(user.id)
-
-      console.log(idList)
 
       // If the list actually contains marriages, generate an embed for display
       if (idList.length > 0) {
