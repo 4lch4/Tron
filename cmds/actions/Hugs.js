@@ -10,6 +10,7 @@ module.exports = class Hug extends Command {
       group: 'actions',
       memberName: 'hug',
       guildOnly: true,
+      aliases: ['hugs'],
       throttling: { usages: 1, duration: 5 },
       description: 'Returns a random love gif and if a user is mentioned, includes their name.',
       examples: ['+love @Alcha#2621']
@@ -21,7 +22,7 @@ module.exports = class Hug extends Command {
 
     if (msg.mentions.users.size > 0) {
       const username = msg.mentions.users.first().username
-      content = `**${username}**, you've been loved by **${msg.author.username}**. :heart:`
+      content = `**${username}**, you've been hugged by **${msg.author.username}**. :heart:`
     }
 
     ioTools.getRandomImage('love').then(image => {
