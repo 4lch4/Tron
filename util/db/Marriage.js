@@ -2,7 +2,7 @@ const tools = new (require('../../util/Tools'))()
 const mongoose = require('mongoose')
 const baseUri = 'mongodb://localhost'
 
-const marriageSchema = mongoose.Schema({
+const userSchema = mongoose.Schema({
   _id: String,
   married: Boolean,
   divorced: Boolean,
