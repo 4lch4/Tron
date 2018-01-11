@@ -29,6 +29,7 @@ module.exports = class IOTools {
       return Promise.reject(err)
     }
   }
+
   getRandomImage (dirPath) {
     return new Promise((resolve, reject) => {
       this.getImageFilenames(dirPath).then(filenames => {

@@ -1,7 +1,9 @@
 const mongoose = require('mongoose')
 const baseUri = 'mongodb://localhost'
-
-const RoleModel = require('./models/Role')
+const roleSchema = mongoose.Schema({
+  _id: Number,
+  name: String
+})
 
 class MongoTools {
   /**
@@ -15,7 +17,7 @@ class MongoTools {
   addAvailableRole (serverId, role) {
     return new Promise((resolve, reject) => {
       mongoose.connect(`${baseUri}/${serverId}`)
-      const Role = new RoleModel('availableRoles', 'availableRoles')
+      const Role = mongoose.connection.model('availableRole', roleSchema)
       const db = mongoose.connection
 
       db.once('open', () => {
@@ -50,8 +52,8 @@ class MongoTools {
   removeAvailableRole (serverId, role) {
     return new Promise((resolve, reject) => {
       mongoose.connect(`${baseUri}/${serverId}`)
+      const Role = mongoose.connection.model('availableRole', roleSchema)
       const db = mongoose.connection
-      const Role = new RoleModel('availableRoles', 'availableRoles')
 
       db.once('open', () => {
         const newRole = new Role({
@@ -83,7 +85,7 @@ class MongoTools {
   isRoleAvailable (serverId, roleName) {
     return new Promise((resolve, reject) => {
       mongoose.connect(`${baseUri}/${serverId}`)
-      const Role = new RoleModel('availableRoles', 'availableRoles')
+      const Role = mongoose.connection.model('availableRole', roleSchema)
       const db = mongoose.connection
 
       db.once('open', () => {
@@ -104,7 +106,7 @@ class MongoTools {
   getAvailableRoles (serverId) {
     return new Promise((resolve, reject) => {
       mongoose.connect(`${baseUri}/${serverId}`)
-      const Role = new RoleModel('availableRoles', 'availableRoles')
+      const Role = mongoose.connection.model('availableRole', roleSchema)
       const db = mongoose.connection
 
       db.once('open', () => {
