@@ -15,13 +15,18 @@ class GetRoles extends Command {
 
   async run (msg, args) {
     mongo.getAvailableRoles(msg.guild.id).then(roles => {
-      let content = 'Available Roles:\n' + '```markdown\n'
+      let content = ''
+      if (roles.length !== 0) {
+        content = 'Available Roles:\n' + '```markdown\n'
 
-      roles.forEach(val => {
-        content += `- ${val.name}\n`
-      })
+        roles.forEach(val => {
+          content += `- ${val.name}\n`
+        })
 
-      msg.channel.send(content + '```')
+        content += '```'
+      } else content = 'There are no roles currently available for this server.'
+
+      msg.channel.send(content)
     }).catch(err => console.error(err))
   }
 }
