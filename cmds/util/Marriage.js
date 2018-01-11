@@ -142,7 +142,7 @@ class Marriage {
    * @param {*} client - The Discord.js client which is used to convert user ids to usernames
    */
   convertIdsToFields (idList, client) {
-    const imgList = ['💕', '❤', '💙', '💛', '💚', '🧡']
+    const imgList = ['💕', '❤', '💛', '💚', '💙', '💜', '🧡', '🧡', '🧡']
     let fieldsOut = []
 
     return new Promise((resolve, reject) => {
@@ -164,17 +164,21 @@ class Marriage {
 
   generateListEmbed (username, fields, client) {
     return new Promise((resolve, reject) => {
-      resolve({
-        embed: {
-          color: colors.red.P500,
-          author: {
-            name: client.user.username,
-            icon_url: client.user.avatarURL()
-          },
-          description: `A list of marriages and their anniversary for ${username}.`,
-          fields: fields
-        }
-      })
+      if (fields.length !== 0) {
+        resolve({
+          embed: {
+            color: colors.red.P500,
+            author: {
+              name: client.user.username,
+              icon_url: client.user.avatarURL()
+            },
+            description: `A list of marriages and their anniversary for ${username}.`,
+            fields: fields
+          }
+        })
+      } else {
+        resolve({ content: 'This user currently has no marriages. :cry:' })
+      }
     })
   }
 }

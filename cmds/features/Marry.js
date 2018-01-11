@@ -61,12 +61,14 @@ class Marry extends Command {
           }
           return
         } else if (args[0].toLowerCase() === 'list') {
-            // List command executed on author
+          // List command executed on author
           const marriage = new Marriage(msg.author.id)
           const marriedList = await marriage.getMarriedList()
           const embedFields = await marriage.convertIdsToFields(marriedList, this.client)
           const embed = await marriage.generateListEmbed(msg.author.username, embedFields, this.client)
+
           marriage.complete()
+          this._throttles.delete(msg.author.id) // Resets throttling timer
 
           return msg.channel.send(embed)
         } else return msg.reply(`you have provided an invalid argument. Please check the help for this command.`)
