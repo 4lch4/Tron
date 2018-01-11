@@ -75,17 +75,8 @@ class Marry extends Command {
 
       case 2:
         if (args[0].toLowerCase() === 'list') {
-          if (args[1].match(/<@\d+>/)) {
-            const mentionedUserId = args[1].substring(2, args[1].indexOf('>'))
-            const marriage = new Marriage(mentionedUserId)
-            const marriedList = await marriage.getMarriedList()
-            const embedFields = await marriage.convertIdsToFields(marriedList, this.client)
-            const embed = await marriage.generateListEmbed(msg.author.username, embedFields, this.client)
-            marriage.complete()
-
-            return msg.channel.send(embed)
-          } else if (args[1].match(/<@!\d+>/)) {
-            const mentionedUserId = args[1].substring(3, args[1].indexOf('>'))
+          if (args[1].match(/<@!?\d+>/)) {
+            const mentionedUserId = args[1].substring(args[1].indexOf(args[1].match(/\d/)), args[1].indexOf('>'))
             const marriage = new Marriage(mentionedUserId)
             const marriedList = await marriage.getMarriedList()
             const embedFields = await marriage.convertIdsToFields(marriedList, this.client)
