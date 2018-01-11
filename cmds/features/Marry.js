@@ -26,7 +26,7 @@ class Marry extends Command {
         if (args[0].match(/<@\d+>/)) {
             // User mentioned
           const mentionedUserId = args[0].substring(2, args[0].indexOf('>'))
-          const marriage = new Marriage(msg.author.id, mentionedUserId)
+          const marriage = new Marriage(mentionedUserId, msg.author.id)
 
           if (await marriage.exists()) return msg.reply('you two are already married! Whatchu tryin\' to pull? :wink:')
           else {

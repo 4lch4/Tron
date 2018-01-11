@@ -73,21 +73,21 @@ class Marriage {
    * @returns {Promise<boolean>} True or false, was the proposal accepted
    */
   getProposalResponse (channel, userId, timeout = 60) {
-    const collector = channel.createMessageCollector(m =>
-      m.member.id === userId && m.channel.id === channel.id,
-      { time: timeout * 1000 })
-
     return new Promise((resolve, reject) => {
+      const collector = channel.createMessageCollector(m =>
+        m.member.id === userId && m.channel.id === channel.id,
+        { time: timeout * 1000 })
+
       // When a message is collected, determine if it is a yes or no
       collector.on('collect', (m, c) => {
         // If the user replies with a yes, stop the collector, and return true
         if (m.content.trim().toLowerCase() === 'yes') {
-          collector.stop()
           resolve(true)
+          collector.stop()
         } else if (m.content.trim().toLowerCase() === 'no') {
           // If the user replies with a no, stop the collector, and return false
-          collector.stop()
           resolve(false)
+          collector.stop()
         }
       })
 
