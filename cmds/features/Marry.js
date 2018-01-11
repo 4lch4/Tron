@@ -23,9 +23,9 @@ class Marry extends Command {
                   `Please try mentioning a user or use \`+marry list\` to list your current marriages.`)
 
       case 1:
-        if (args[0].match(/<@\d+>/)) {
+        if (args[0].match(/<@!?\d+>/)) {
             // User mentioned
-          const mentionedUserId = args[0].substring(2, args[0].indexOf('>'))
+          const mentionedUserId = args[0].substring(args[0].indexOf(args[0].match(/\d/)), args[0].indexOf('>'))
           const marriage = new Marriage(mentionedUserId, msg.author.id)
 
           if (await marriage.married()) return msg.reply('you two are already married! Whatchu tryin\' to pull? :wink:')
