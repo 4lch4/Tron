@@ -3,15 +3,15 @@ const tools = new (require('../../util/Tools'))()
 
 const { Command } = require('discord.js-commando')
 
-class Marry extends Command {
+class Divorce extends Command {
   constructor (client) {
     super(client, {
-      name: 'marry',
+      name: 'divorce',
       group: 'features',
-      memberName: 'marry',
+      memberName: 'divorce',
       throttling: { usages: 1, duration: 60 },
-      description: 'Used to marry a user or display the marriages of yourself or a mentioned user.',
-      examples: ['+marry @Alcha#2621', '+marry list', '+marry list @Alcha#2621'],
+      description: 'Used to divorce a user or display the divorces of yourself or a mentioned user.',
+      examples: ['+divorce @Alcha#2621', '+divorce list', '+divorce list @Alcha#2621'],
       argsType: 'multiple'
     })
   }
@@ -20,7 +20,7 @@ class Marry extends Command {
     switch (args.length) {
       case 0:
         return msg.reply(`this command requires at least one argument.\n\n` +
-                  `Please try mentioning a user or use \`+marry list\` to list your current marriages.`)
+                  `Please try mentioning a user or use \`+divorce list\` to list your current divorces.`)
 
       case 1:
         if (args[0].match(/<@\d+>/)) {
@@ -28,17 +28,17 @@ class Marry extends Command {
           const mentionedUserId = args[0].substring(2, args[0].indexOf('>'))
           const marriage = new Marriage(mentionedUserId, msg.author.id)
 
-          if (await marriage.married()) return msg.reply('you two are already married! Whatchu tryin\' to pull? :wink:')
+          if (await marriage.divorced(false, true)) return msg.reply('you two are already divorced! Whatchu tryin\' to pull?')
           else {
-            msg.channel.send(`<@${mentionedUserId}>, do you take <@${msg.author.id}>'s hand in marriage? :ring:`).then(m => {
+            msg.channel.send(`<@${mentionedUserId}>, do you accept <@${msg.author.id}>'s divorce proposal?`).then(m => {
               marriage.getProposalResponse(msg.channel, mentionedUserId).then(accepted => {
                 if (accepted) {
-                  marriage.saveMarriage().then(res => {
-                    msg.channel.send(`Congratulations, <@${msg.author.id}>, you're now married to <@${mentionedUserId}>!`)
+                  marriage.saveDivorce().then(res => {
+                    msg.channel.send(`<@${msg.author.id}>, and <@${mentionedUserId}>, you are no longer married.`)
                   }).catch(err => {
                     msg.channel.send('There seems to have been an error.. If this continues, please contact support.')
                     msg.channel.send(err)
-                    console.error(`${tools.formattedTime} - There was an error attempting to save a users marriages:`)
+                    console.error(`${tools.formattedTime} - There was an error attempting to save a users divorces:`)
                     console.error(err)
                   })
                 } else {
@@ -47,13 +47,13 @@ class Marry extends Command {
                   })
                 }
               }).catch(err => {
-                if (err === 'time') msg.channel.send(`Sorry <@${msg.author.id}>, looks like you won't be getting a response this time around. :cry:`)
+                if (err === 'time') msg.channel.send(`Sorry <@${msg.author.id}>, looks like you won't be getting a response this time around.`)
                 else {
                   msg.channel.send(
-                    'There was an error when trying to execute the marriage proposal.\n\n' +
+                    'There was an error when trying to execute the divorce proposal.\n\n' +
                     'Please try again and if it continues to fail, contact support.'
                   )
-                  console.error(`${tools.formattedTime} - There was an error attempting to list a users marriages:`)
+                  console.error(`${tools.formattedTime} - There was an error attempting to list a users divorces:`)
                   console.error(err)
                 }
               })
@@ -63,9 +63,9 @@ class Marry extends Command {
         } else if (args[0].toLowerCase() === 'list') {
           // List command executed on author
           const marriage = new Marriage(msg.author.id)
-          const marriedList = await marriage.getMarriedList()
-          const embedFields = await marriage.convertIdsToFields(marriedList, this.client)
-          const embed = await marriage.generateMarriedListEmbed(msg.author.username, embedFields, this.client)
+          const divorcedList = await marriage.getDivorcedList()
+          const embedFields = await marriage.convertIdsToFields(divorcedList, this.client)
+          const embed = await marriage.generateDivorcedListEmbed(msg.author.username, embedFields, this.client)
 
           marriage.complete()
           this._throttles.delete(msg.author.id) // Resets throttling timer
@@ -78,9 +78,9 @@ class Marry extends Command {
           if (args[1].match(/<@!?\d+>/)) {
             const mentionedUserId = args[1].substring(args[1].indexOf(args[1].match(/\d/)), args[1].indexOf('>'))
             const marriage = new Marriage(mentionedUserId)
-            const marriedList = await marriage.getMarriedList()
-            const embedFields = await marriage.convertIdsToFields(marriedList, this.client)
-            const embed = await marriage.generateMarriedListEmbed(msg.author.username, embedFields, this.client)
+            const divorcedList = await marriage.getDivorcedList()
+            const embedFields = await marriage.convertIdsToFields(divorcedList, this.client)
+            const embed = await marriage.generateDivorcedListEmbed(msg.author.username, embedFields, this.client)
             marriage.complete()
 
             return msg.channel.send(embed)
@@ -97,4 +97,4 @@ class Marry extends Command {
   }
 }
 
-module.exports = Marry
+module.exports = Divorce

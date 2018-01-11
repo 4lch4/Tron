@@ -21,11 +21,11 @@ class Marriage {
     this.connection = mongoose.createConnection(`${baseUri}/${proposee}`)
   }
 
-  exists () {
+  married () {
     return new Promise((resolve, reject) => {
       const marriage = this.connection.model('Marriage', userSchema, 'marriages')
 
-      marriage.count({_id: this.proposer}, function (err, count) {
+      marriage.count({_id: this.proposer, married: true, divorced: false}, function (err, count) {
         if (err) reject(err)
         else if (count > 0) resolve(true)
         else resolve(false)
@@ -33,7 +33,19 @@ class Marriage {
     })
   }
 
-  save () {
+  divorced () {
+    return new Promise((resolve, reject) => {
+      const marriage = this.connection.model('Marriage', userSchema, 'marriages')
+
+      marriage.count({_id: this.proposer, married: false, divorced: true}, function (err, count) {
+        if (err) reject(err)
+        else if (count > 0) resolve(true)
+        else resolve(false)
+      })
+    })
+  }
+
+  saveDivorce () {
     const ProposeeDb = mongoose.createConnection(`${baseUri}/${this.proposee}`)
     const ProposerDb = mongoose.createConnection(`${baseUri}/${this.proposer}`)
 
@@ -41,18 +53,38 @@ class Marriage {
     const ProposerDbModel = ProposerDb.model('Marriage', userSchema, 'marriages')
 
     return new Promise((resolve, reject) => {
-      ProposerDbModel.create({
-        _id: this.proposee,
+      ProposerDbModel.update({_id: this.proposee}, {
+        married: false,
+        divorced: true,
+        anniversary: tools.getFormattedTime('MM/DD/YYYY @ HH:mm:ss')
+      }).then(res => {
+        ProposeeDbModel.update({_id: this.proposer}, {
+          married: false,
+          divorced: true,
+          anniversary: tools.getFormattedTime('MM/DD/YYYY @ HH:mm:ss')
+        }).then(res => resolve()).catch(err => reject(err))
+      }).catch(err => reject(err))
+    })
+  }
+
+  saveMarriage () {
+    const ProposeeDb = mongoose.createConnection(`${baseUri}/${this.proposee}`)
+    const ProposerDb = mongoose.createConnection(`${baseUri}/${this.proposer}`)
+
+    const ProposeeDbModel = ProposeeDb.model('Marriage', userSchema, 'marriages')
+    const ProposerDbModel = ProposerDb.model('Marriage', userSchema, 'marriages')
+
+    return new Promise((resolve, reject) => {
+      ProposerDbModel.update({_id: this.proposee}, {
         married: true,
         divorced: false,
         anniversary: tools.getFormattedTime('MM/DD/YYYY @ HH:mm:ss')
-      }).then(res => {
-        ProposeeDbModel.create({
-          _id: this.proposer,
+      }, { upsert: true }).then(res => {
+        ProposeeDbModel.update({_id: this.proposer}, {
           married: true,
           divorced: false,
           anniversary: tools.getFormattedTime('MM/DD/YYYY @ HH:mm:ss')
-        }).then(res => resolve()).catch(err => reject(err))
+        }, { upsert: true }).then(res => resolve()).catch(err => reject(err))
       }).catch(err => reject(err))
     })
   }
@@ -134,6 +166,28 @@ class Marriage {
     })
   }
 
+  getDivorcedList () {
+    const marriages = this.connection.model('Marriage', userSchema, 'marriages')
+
+    return new Promise((resolve, reject) => {
+      marriages.find({ divorced: true }, (err, res) => {
+        if (err) reject(err)
+        else {
+          let list = []
+
+          res.forEach(val => {
+            list.push({
+              id: val._id,
+              anniversary: val.anniversary
+            })
+          })
+
+          resolve(list)
+        }
+      })
+    })
+  }
+
   /**
    * Converts the given list of user ids to their current username/nickname and adds it to an inline
    * field object with the initial date/anniversary of the marriage as the value.
@@ -162,7 +216,27 @@ class Marriage {
     })
   }
 
-  generateListEmbed (username, fields, client) {
+  generateDivorcedListEmbed (username, fields, client) {
+    return new Promise((resolve, reject) => {
+      if (fields.length !== 0) {
+        resolve({
+          embed: {
+            color: colors.red.P500,
+            author: {
+              name: client.user.username,
+              icon_url: client.user.avatarURL()
+            },
+            description: `A list of divorces and their anniversary for ${username}.`,
+            fields: fields
+          }
+        })
+      } else {
+        resolve({ content: 'This user currently has no divorces.' })
+      }
+    })
+  }
+
+  generateMarriedListEmbed (username, fields, client) {
     return new Promise((resolve, reject) => {
       if (fields.length !== 0) {
         resolve({
