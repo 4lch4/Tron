@@ -19,11 +19,15 @@ class Stats extends Command {
 
     switch (args.length) {
       case 0:
+        command.getMostUsed().then(usage => {
+          msg.channel.send(usage)
+        })
         break
 
       case 1:
-        command.getCount(args[0]).then(count => msg.channel.send(count))
-          .catch(err => console.error(err))
+        command.getUsage(args[0]).then(count => {
+          msg.channel.send(`The **${args[0]}** command has been used a total of **${count}** times.`)
+        }).catch(err => console.error(err))
         break
 
       default:

@@ -4,6 +4,30 @@ const CmdSchema = mongoose.Schema({
   uses: Number
 })
 
+const colors = require('../../util/colors')
+
+const formatMostUsed = (results) => {
+  return new Promise((resolve, reject) => {
+    let embedObj = {
+      embed: {
+        color: colors.green.P500,
+        description: `A list of commands and their use count.`,
+        fields: []
+      }
+    }
+
+    results.forEach((val, index, array) => {
+      embedObj.embed.fields.push({
+        name: val._id,
+        value: val.uses,
+        inline: true
+      })
+    })
+
+    resolve(embedObj)
+  })
+}
+
 module.exports = class Commands {
   constructor (serverId) {
     this.serverId = serverId
@@ -28,6 +52,29 @@ module.exports = class Commands {
         if (err) reject(err)
         else {
           resolve(count)
+        }
+      })
+    })
+  }
+
+  getMostUsed () {
+    return new Promise((resolve, reject) => {
+      this.model.find({}, [], {sort: {uses: -1}}, (err, results) => {
+        if (err) reject(err)
+        else {
+          resolve(formatMostUsed(results))
+        }
+      })
+    })
+  }
+
+  getUsage (cmdName) {
+    return new Promise((resolve, reject) => {
+      this.model.findById(cmdName, (err, res) => {
+        if (err) reject(err)
+        else {
+          if (res === null) resolve(0)
+          else resolve(res.uses)
         }
       })
     })
