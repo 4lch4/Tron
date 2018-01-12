@@ -11,18 +11,23 @@ const formatMostUsed = (results) => {
     let embedObj = {
       embed: {
         color: colors.green.P500,
-        description: `A list of commands and their use count.`,
+        description: `A list of commands and their use count for this server.`,
         fields: []
       }
     }
 
-    results.forEach((val, index, array) => {
-      embedObj.embed.fields.push({
-        name: val._id,
-        value: val.uses,
-        inline: true
+    if (results.length === 0) {
+      embedObj.embed.color = colors.red.P500
+      embedObj.embed.description = 'It appears no commands have been executed on this server, yet.'
+    } else {
+      results.forEach((val, index, array) => {
+        embedObj.embed.fields.push({
+          name: val._id,
+          value: val.uses,
+          inline: true
+        })
       })
-    })
+    }
 
     resolve(embedObj)
   })
