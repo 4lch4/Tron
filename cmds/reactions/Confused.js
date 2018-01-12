@@ -8,7 +8,7 @@ class Confused extends Command {
       name: 'confused',
       group: 'reactions',
       memberName: 'confused',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random confused gif.',
       examples: ['+confused']
     })

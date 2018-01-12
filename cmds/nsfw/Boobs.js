@@ -19,7 +19,7 @@ class Boobs extends Command {
       group: 'nsfw',
       memberName: 'boobs',
       aliases: ['boobs', 'boobies'],
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random boob image or gif from a variety of subreddits.',
       examples: ['+boobs'],
       nsfw: true

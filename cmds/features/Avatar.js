@@ -6,7 +6,7 @@ class Avatar extends Command {
       name: 'avatar',
       group: 'features',
       memberName: 'avatar',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a link to the tagged users avatar.',
       details: 'Returns a high quality (if available) version of the tagged users avatar.',
       examples: ['+avatar @Alcha#2621'],

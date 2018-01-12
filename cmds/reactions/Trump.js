@@ -9,7 +9,7 @@ class Trump extends Command {
       name: 'trump',
       group: 'reactions',
       memberName: 'trump',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a trump gif based on the provided arguments.',
       examples: ['+trump fake', '+trump wrong'],
       args: [{

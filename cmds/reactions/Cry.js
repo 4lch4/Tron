@@ -8,7 +8,7 @@ class Cry extends Command {
       name: 'cry',
       group: 'reactions',
       memberName: 'cry',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: '',
       examples: ['+cry']
     })

@@ -8,7 +8,7 @@ class Dance extends Command {
       name: 'dance',
       group: 'reactions',
       memberName: 'dance',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random dancing gif.',
       examples: ['+dance']
     })

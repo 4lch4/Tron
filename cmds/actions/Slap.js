@@ -10,7 +10,7 @@ module.exports = class Slap extends Command {
       group: 'actions',
       memberName: 'slap',
       guildOnly: true,
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random slap gif and includes the mentioned users username.',
       examples: ['+slap @Alcha#2621']
     })

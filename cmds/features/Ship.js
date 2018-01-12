@@ -89,7 +89,7 @@ class Ship extends Command {
       name: 'ship',
       group: 'features',
       memberName: 'ship',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: '',
       examples: ['+ship @Alcha#2621 @Aadio#1576'],
       args: [{

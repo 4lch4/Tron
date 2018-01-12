@@ -31,7 +31,7 @@ class Feet extends Command {
       name: 'feet',
       group: 'nsfw',
       memberName: 'feet',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random feet fetish image, not always NSFW, but generally, from a variety of subreddits.',
       examples: ['+feet'],
       nsfw: true

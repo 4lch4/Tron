@@ -10,7 +10,7 @@ module.exports = class Poke extends Command {
       group: 'actions',
       memberName: 'poke',
       guildOnly: true,
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random poke gif and includes the mentioned users username.',
       examples: ['+poke @Alcha#2621']
     })

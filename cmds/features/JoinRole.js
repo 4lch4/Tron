@@ -7,7 +7,7 @@ class JoinRole extends Command {
       name: 'join-role',
       group: 'features',
       memberName: 'join-role',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       guildOnly: true,
       description: 'Join a role from the list of available roles (+list-roles) for this server.',
       examples: ['+join-role NSFW Pass'],

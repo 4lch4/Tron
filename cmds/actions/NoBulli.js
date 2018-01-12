@@ -10,7 +10,7 @@ module.exports = class NoBulli extends Command {
       group: 'actions',
       memberName: 'nobulli',
       guildOnly: true,
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Warns @User1 not to bully @User2.',
       examples: ['+nobulli @User1 @User2']
     })

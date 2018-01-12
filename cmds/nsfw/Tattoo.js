@@ -14,7 +14,7 @@ class Tattoo extends Command {
       name: 'tattoo',
       group: 'nsfw',
       memberName: 'tattoo',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random nsfw tattoo\'d female from a variety of subreddits.',
       examples: ['+tattoo'],
       nsfw: true

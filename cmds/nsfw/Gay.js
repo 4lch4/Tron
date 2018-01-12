@@ -20,7 +20,7 @@ class Gay extends Command {
       name: 'gay',
       group: 'nsfw',
       memberName: 'gay',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random gay image or gif from a variety of subreddits and tumblr pages.',
       examples: ['+gay'],
       nsfw: true

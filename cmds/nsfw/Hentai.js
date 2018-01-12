@@ -13,7 +13,7 @@ class Hentai extends Command {
       name: 'hentai',
       group: 'nsfw',
       memberName: 'hentai',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: '',
       examples: ['+hentai'],
       nsfw: true

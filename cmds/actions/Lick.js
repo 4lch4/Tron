@@ -10,7 +10,7 @@ module.exports = class Lick extends Command {
       group: 'actions',
       memberName: 'lick',
       guildOnly: true,
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random lick gif and includes the mentioned users username.',
       examples: ['+lick @Alcha#2621']
     })

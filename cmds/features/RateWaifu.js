@@ -9,7 +9,7 @@ class RateWaifu extends Command {
       group: 'features',
       memberName: 'ratewaifu',
       guildOnly: true,
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Rate your waifu! 0 - 10',
       examples: ['+rate @Alcha#2621'],
       aliases: ['rate'],

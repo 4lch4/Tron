@@ -6,7 +6,7 @@ class Git extends Command {
       name: 'git',
       group: 'features',
       memberName: 'git',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a link to the Github repository for Tron.',
       examples: ['+git'],
       aliases: ['github', 'repo']

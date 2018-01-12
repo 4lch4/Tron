@@ -10,7 +10,7 @@ module.exports = class Kiss extends Command {
       group: 'actions',
       memberName: 'kiss',
       guildOnly: true,
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random kiss gif and includes the mentioned users username.',
       examples: ['+kiss @Alcha#2621']
     })

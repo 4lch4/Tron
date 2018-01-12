@@ -10,7 +10,7 @@ module.exports = class Love extends Command {
       group: 'actions',
       memberName: 'love',
       guildOnly: true,
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random love gif and if a user is mentioned, includes their name.',
       examples: ['+love @Alcha#2621']
     })

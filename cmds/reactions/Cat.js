@@ -8,7 +8,7 @@ class Cat extends Command {
       name: 'cat',
       group: 'reactions',
       memberName: 'cat',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random cat image or gif.',
       examples: ['+cat']
     })

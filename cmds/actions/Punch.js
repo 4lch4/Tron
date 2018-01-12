@@ -10,7 +10,7 @@ module.exports = class Punch extends Command {
       group: 'actions',
       memberName: 'punch',
       guildOnly: true,
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random punch gif and includes the mentioned users username.',
       examples: ['+punch @Alcha#2621']
     })

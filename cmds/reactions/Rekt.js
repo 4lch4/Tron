@@ -8,7 +8,7 @@ class Rekt extends Command {
       name: 'rekt',
       group: 'reactions',
       memberName: 'rekt',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random rekt gif.',
       examples: ['+rekt']
     })

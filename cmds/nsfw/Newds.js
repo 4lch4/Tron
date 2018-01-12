@@ -11,7 +11,7 @@ class Newds extends Command {
       name: 'newds',
       group: 'nsfw',
       memberName: 'newds',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Sends a random nude to the mentioned user.',
       examples: ['+newds @Alcha#2621', '+newds dude @Alcha#2621'],
       args: [{

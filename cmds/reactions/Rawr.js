@@ -8,7 +8,7 @@ class Rawr extends Command {
       name: 'rawr',
       group: 'reactions',
       memberName: 'rawr',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random rawr gif.',
       examples: ['+rawr']
     })

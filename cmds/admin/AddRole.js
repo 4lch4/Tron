@@ -7,7 +7,7 @@ class AddRole extends Command {
       name: 'add-role',
       group: 'admin',
       memberName: 'add-role',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Adds a role to the list of available roles for users to join.',
       examples: ['+add-role NSFW Pass'],
       userPermissions: ['ADMINISTRATOR'],

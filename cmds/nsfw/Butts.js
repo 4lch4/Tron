@@ -22,7 +22,7 @@ class Butts extends Command {
       group: 'nsfw',
       aliases: ['butt', 'booty', 'ass'],
       memberName: 'butts',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random butt image or gif from a variety of subreddits.',
       examples: ['+butts'],
       nsfw: true

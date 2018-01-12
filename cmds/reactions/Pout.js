@@ -8,7 +8,7 @@ class Pout extends Command {
       name: 'pout',
       group: 'reactions',
       memberName: 'pout',
-      throttling: { usages: 1, duration: 5 },
+      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random pout gif.',
       examples: ['+pout']
     })
