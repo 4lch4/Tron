@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const baseUri = 'mongodb://localhost'
 
-const colors = require('../../util/colors')
+const colors = require('../../util/colors').Decimal
 const tools = new (require('../../util/Tools'))()
 
 const userSchema = mongoose.Schema({

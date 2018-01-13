@@ -4,7 +4,7 @@ const CmdSchema = mongoose.Schema({
   uses: Number
 })
 
-const colors = require('../../util/colors')
+const colors = require('../../util/colors').Decimal
 
 const formatMostUsed = (results) => {
   return new Promise((resolve, reject) => {
