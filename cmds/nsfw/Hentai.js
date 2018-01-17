@@ -14,7 +14,7 @@ class Hentai extends Command {
       group: 'nsfw',
       memberName: 'hentai',
       throttling: { usages: 1, duration: 10 },
-      description: '',
+      description: 'Returns a random hentai image/gif.',
       examples: ['+hentai'],
       nsfw: true
     })

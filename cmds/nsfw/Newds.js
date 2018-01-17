@@ -20,7 +20,8 @@ class Newds extends Command {
         prompt: 'Did you want to send a guy or gal?',
         default: 'girl',
         type: 'string'
-      }]
+      }],
+      nsfw: true
     })
   }
 

@@ -9,7 +9,7 @@ class Cry extends Command {
       group: 'reactions',
       memberName: 'cry',
       throttling: { usages: 1, duration: 10 },
-      description: '',
+      description: 'Returns a random cry gif.',
       examples: ['+cry']
     })
   }
