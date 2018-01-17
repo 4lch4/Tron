@@ -1,3 +1,5 @@
+const { Client } = require('discord.js')  // Used for JSDoc/intellisense purposes
+
 const config = require('./config.json')
 const moment = require('moment-timezone')
 const Chance = require('chance')
@@ -46,5 +48,14 @@ module.exports = class Tools {
     } else {
       return 0
     }
+  }
+
+  /**
+   *
+   * @param {string} message
+   * @param {Client} client
+   */
+  sendOwnerMessage (message, client) {
+    client.users.get('219270060936527873').send(message)
   }
 }

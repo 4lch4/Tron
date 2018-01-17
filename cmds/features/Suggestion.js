@@ -25,8 +25,10 @@ class Suggestion extends Command {
     )
 
     suggestion.save().then(success => {
-      if (success) msg.reply('thank you for your suggestion!')
-      else msg.reply('there seems to have been an error... Please contact support.')
+      if (success) {
+        msg.reply('thank you for your suggestion!')
+        tools.sendOwnerMessage(`A new suggestion has been added by ${msg.author.username}.`, this.client)
+      } else msg.reply('there seems to have been an error... Please contact support.')
     }).catch(err => console.error(err))
   }
 }
