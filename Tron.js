@@ -2,7 +2,7 @@ const { CommandoClient, SQLiteProvider } = require('discord.js-commando')
 const sqlite = require('sqlite')
 const path = require('path')
 const tools = new (require('./util/Tools'))()
-const Commands = require('./util/db/Commands')
+const CommandHelper = require('./util/db/CommandHelper')
 
 const config = require('./util/config')
 
@@ -43,7 +43,7 @@ client.on('ready', () => {
 })
 
 client.on('commandRun', (cmd, promise, msg) => {
-  const command = new Commands(msg.guild.id)
+  const command = new CommandHelper(msg.guild.id)
   command.incrementUsage(cmd.name).catch(err => console.error(err))
 })
 

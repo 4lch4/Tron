@@ -33,7 +33,7 @@ const formatMostUsed = (results) => {
   })
 }
 
-module.exports = class Commands {
+module.exports = class CommandHelper {
   constructor (serverId) {
     this.serverId = serverId
     this.connection = mongoose.createConnection('mongodb://localhost/data')

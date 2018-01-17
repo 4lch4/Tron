@@ -1,5 +1,5 @@
 const { Command } = require('discord.js-commando')
-const Commands = require('../../util/db/Commands')
+const Commands = require('../../util/db/CommandHelper')
 
 class Stats extends Command {
   constructor (client) {
