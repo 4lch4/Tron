@@ -9,4 +9,8 @@
 
 Tron is a bot that is primarily used with Discord. It has a number of commands that make chatting a
 bit more enjoyable. Such as `+hug`, `+kiss`, `+kick`, `+lick`, and much more that are listed in
-[commands](./Commands.md).
+the help command.
+
+Tron is built using the Discord.js Commando library which greatly improves upon the previously
+used Eris library. Mostly because it comes with a lot of built in tools to help make Tron more
+versatile, whereas Eris is lightweight and requires you to expand on it.
