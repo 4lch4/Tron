@@ -39,6 +39,18 @@ module.exports = class IOTools {
     })
   }
 
+  getImage (filename) {
+    return new Promise((resolve, reject) => {
+      const finalPath = path.join(__dirname, '../images', filename)
+
+      if (fs.existsSync(finalPath)) {
+        if (this.getFileSize(finalPath) < 8000000) {
+          resolve(finalPath)
+        } else reject(new Error('The requested file is too large to display. (> 8mb)'))
+      } else reject(new Error('The requested file does not exist.'))
+    })
+  }
+
   getFileSize (filename) {
     const stats = fs.statSync(filename)
     const fileSizeInBytes = stats.size
