@@ -56,12 +56,12 @@ class Marriage {
       ProposerDbModel.update({_id: this.proposee}, {
         married: false,
         divorced: true,
-        anniversary: tools.getFormattedTime('MM/DD/YYYY @ HH:mm:ss')
+        anniversary: tools.formatTime('MM/DD/YYYY @ HH:mm:ss')
       }).then(res => {
         ProposeeDbModel.update({_id: this.proposer}, {
           married: false,
           divorced: true,
-          anniversary: tools.getFormattedTime('MM/DD/YYYY @ HH:mm:ss')
+          anniversary: tools.formatTime('MM/DD/YYYY @ HH:mm:ss')
         }).then(res => resolve()).catch(err => reject(err))
       }).catch(err => reject(err))
     })
@@ -78,12 +78,12 @@ class Marriage {
       ProposerDbModel.update({_id: this.proposee}, {
         married: true,
         divorced: false,
-        anniversary: tools.getFormattedTime('MM/DD/YYYY @ HH:mm:ss')
+        anniversary: tools.formatTime('MM/DD/YYYY @ HH:mm:ss')
       }, { upsert: true }).then(res => {
         ProposeeDbModel.update({_id: this.proposer}, {
           married: true,
           divorced: false,
-          anniversary: tools.getFormattedTime('MM/DD/YYYY @ HH:mm:ss')
+          anniversary: tools.formatTime('MM/DD/YYYY @ HH:mm:ss')
         }, { upsert: true }).then(res => resolve()).catch(err => reject(err))
       }).catch(err => reject(err))
     })
