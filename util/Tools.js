@@ -14,6 +14,10 @@ module.exports = class Tools {
     return moment.tz(config.defaultTimezone).format(defaultFormat)
   }
 
+  get utcTime () {
+    return moment.tz('UTC').format()
+  }
+
   get formattedUTCTime () {
     return moment.tz('UTC').format(defaultFormat)
   }
