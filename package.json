@@ -22,6 +22,7 @@
     "bufferutil": "^3.0.3",
     "canvas": "^1.6.7",
     "chance": "^1.0.12",
+    "coinbase": "^2.0.7",
     "discord.js": "github:hydrabolt/discord.js",
     "discord.js-commando": "github:gawdl3y/discord.js-commando",
     "erlpack": "github:discordapp/erlpack",
