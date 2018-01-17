@@ -43,8 +43,10 @@ client.on('ready', () => {
 })
 
 client.on('commandRun', (cmd, promise, msg) => {
-  const command = new CommandHelper(msg.guild.id)
-  command.incrementUsage(cmd.name).catch(err => console.error(err))
+  if (msg.guild !== null) {
+    const command = new CommandHelper(msg.guild.id)
+    command.incrementUsage(cmd.name).catch(err => console.error(err))
+  }
 })
 
 client.login(config.token)
