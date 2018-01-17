@@ -1,175 +1,54 @@
-// #region Const Declarations
-const download = require('image-downloader')
 const config = require('./config.json')
-const Tools = require('./Tools.js')
-const tools = new Tools()
-const fs = require('fs')
-// #endregion Cont Declaration
 
-// #region MySQL Consts
-const mysql = require('mysql')
-const connection = mysql.createConnection({
-  host: config.mysql.host,
-  user: config.mysql.user,
-  password: config.mysql.password,
-  database: config.mysql.database
-})
+const download = require('image-downloader')
 
-connection.connect()
-// #endregion MySQL Consts
+const tools = new (require('./Tools'))()
 
-class IOTools {
-  constructor (options) {
-    this.options = options || {}
-  }
+const path = require('path')
+const fs = require('fs-extra')
 
-  executeSql (sql, callback) {
-    connection.query(sql, (err, results, fields) => {
-      if (err) throw err
+module.exports = class IOTools {
+  getImagePath (filePath) {
+    const finalPath = path.join('./images', filePath)
 
-      if (typeof callback === 'function') {
-        callback(results, fields)
-      }
-    })
-  }
-
-  readFile (path, callback) {
-    fs.readFile(path, 'utf-8', (filename, content) => {
-      callback(content)
-    })
-  }
-
-  downloadFiles (options, callback) {
-    let processCount = 0
-    let filenames = []
-
-    options.forEach((option, key, array) => {
-      if (!fs.existsSync(option.dest)) {
-        download.image(option).then(({
-          filename,
-          image
-        }) => {
-          processCount++
-          filenames.push(filename)
-
-          if (processCount === array.length) {
-            callback(filenames)
-          }
-        })
-      } else {
-        processCount++
-        filenames.push(option.dest)
-
-        if (processCount === array.length) {
-          callback(filenames)
-        }
-      }
-    })
-  }
-
-  processUrls (urls, callback) {
-    let options = []
-
-    for (let i = 0; i < urls.length; i++) {
-      let url = urls[i]
-      let start = url.lastIndexOf('/') + 1
-      let end = url.lastIndexOf('?')
-      let filename = ''
-
-      if (end === -1) {
-        filename = url.substring(start)
-      } else {
-        filename = url.substring(start, end)
-      }
-
-      options.push({
-        url: url,
-        dest: '/home/alcha/tron/images/' + filename
-      })
-    }
-
-    callback(options)
-  }
-
-  fileExists (filename) {
-    return fs.existsSync(filename)
-  }
-
-  incrementCommandUse (commandName) {
-    let queryString = "UPDATE COMMANDS SET `COMMAND_USE_COUNT` = `COMMAND_USE_COUNT` + 1 WHERE `COMMAND_NAME` = '" + commandName + "'"
-    connection.query(queryString, (err, results, fields) => {
-      if (err) throw err
-    })
-  }
-
-  getAllCommandUsage (callback) {
-    let queryString = 'SELECT * FROM COMMANDS ORDER BY COMMAND_USE_COUNT DESC;'
-
-    connection.query(queryString, (err, results, fields) => {
-      if (err) throw err
-
-      callback(results)
-    })
-  }
-
-  getCommandUsage (command, callback) {
-    let queryString = "SELECT * FROM COMMANDS WHERE `COMMAND_NAME` = '" + command + "';"
-
-    connection.query(queryString, (err, results, fields) => {
-      if (err) throw err
-
-      callback(results)
-    })
-  }
-
-  getImage (path, onComplete) {
-    if (!path.startsWith('/home/alcha/tron/')) {
-      path = '/home/alcha/tron/images/' + path
-    }
-
-    if (this.getFileSize(path) < 8000000) {
-      fs.readFile(path, (err, content) => {
-        if (err) {
-          throw err
-        }
-
-        onComplete(content)
-      })
-    }
-  }
-
-  getImages (dirnameIn, onComplete) {
-    let dirname = '/home/alcha/tron/images/' + dirnameIn + '/'
-    let images = []
-    let filenames = []
-
-    this.getImageFiles(dirname, (filename, content) => {
-      images.push(content)
-      filenames.push(filename)
-    }, (err) => {
-      console.log('An error has occured while getting images...')
-      console.log(err)
-    }, () => {
-      onComplete(images, filenames)
-    })
-  }
-
-  storeComic (comic, callback) {
-    let date = tools.formatTimeString(comic.date)
-    let filename = '/home/alcha/tron/feeds/' +
-      comic.feedName + '/' +
-      date + '.json'
-
-    if (fs.existsSync(filename)) {
-      callback(null, false)
-    } else {
-      fs.writeFile(filename, JSON.stringify(comic), (err) => {
-        if (err) return err
-        else {
-          callback(null, true)
+    return new Promise((resolve, reject) => {
+      this.getFileSize(finalPath).then(size => {
+        if (size < 8000000) {
+          resolve(finalPath)
         }
       })
+    })
+  }
+
+  async downloadImage (options) {
+    try {
+      const { filename, image } = await download.image(options)
+
+      return Promise.resolve({ filename, image })
+    } catch (err) {
+      return Promise.reject(err)
     }
+  }
+
+  getRandomImage (dirPath) {
+    return new Promise((resolve, reject) => {
+      this.getImageFilenames(dirPath).then(filenames => {
+        const random = tools.getRandom(0, filenames.length)
+        resolve(filenames[random])
+      })
+    })
+  }
+
+  getImage (filename) {
+    return new Promise((resolve, reject) => {
+      const finalPath = path.join(__dirname, '../images', filename)
+
+      if (fs.existsSync(finalPath)) {
+        if (this.getFileSize(finalPath) < 8000000) {
+          resolve(finalPath)
+        } else reject(new Error('The requested file is too large to display. (> 8mb)'))
+      } else reject(new Error('The requested file does not exist.'))
+    })
   }
 
   getFileSize (filename) {
@@ -178,39 +57,48 @@ class IOTools {
     return fileSizeInBytes
   }
 
-  getImageFiles (dirname, onFileContent, onError, onComplete) {
-    fs.readdir(dirname, (err, filenames) => {
-      if (err) {
-        onError(err)
-        return
-      }
+  async getImageFilenames (dirPath) {
+    const finalDir = path.join('./images', dirPath)
+    let filePaths = []
 
-      for (let x = 0; x < filenames.length; x++) {
-        let filename = dirname + filenames[x]
-        if (this.getFileSize(filename) < 8000000) {
-          onFileContent(filename, fs.readFileSync(filename))
+    return new Promise((resolve, reject) => {
+      fs.readdir(finalDir).then(filenames => {
+        for (let x = 0; x < filenames.length; x++) {
+          let finalPath = path.join(finalDir, filenames[x])
+
+          if (this.getFileSize(finalPath) < 8000000) {
+            filePaths.push(finalPath)
+          }
         }
-      }
 
-      onComplete()
+        resolve(filePaths)
+      })
     })
   }
 
-  removeFile (filename, callback) {
-    if (fs.existsSync(filename)) {
-      fs.unlink(filename, callback)
-    }
+  async readDataFile (filename) {
+    return fs.readFile(path.join(__dirname, '../data', filename), 'utf-8')
   }
 
-  saveFile (filename, content, callback) {
-    fs.writeFile(filename, content, (err) => {
-      if (err) return console.log(err)
+  async readFile (filePath) {
+    return fs.readFile(filePath, 'utf-8')
+  }
 
-      if (typeof callback === 'function') {
-        callback()
-      }
+  async readRelativeFile (filePath) {
+    return fs.readFile(path.join(__dirname, filePath), 'utf-8')
+  }
+
+  readFileSync (filePath) {
+    return fs.readFileSync(filePath)
+  }
+
+  async fileExists (filePath) {
+    return fs.exists(filePath)
+  }
+
+  async removeFile (filePath) {
+    fs.exists(filePath).then(exists => {
+      return fs.remove(filePath)
     })
   }
 }
-
-module.exports = IOTools

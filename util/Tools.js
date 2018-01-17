@@ -1,149 +1,36 @@
-const moment = require('moment-timezone')
+const { Client } = require('discord.js')  // Used for JSDoc/intellisense purposes
+
 const config = require('./config.json')
-const roleNames = config.roleNames
+const moment = require('moment-timezone')
 const Chance = require('chance')
 const chance = new Chance()
-const fs = require('fs')
 
-// ============================================================================================== //
-class Tools {
-  constructor (options) {
-    this.options = options || {}
+const defaultFormat = 'MM.DD.Y @ HH:mm:ss'
+
+module.exports = class Tools {
+  getFormattedTime (format) {
+    return moment.tz(config.defaultTimezone).format(format)
   }
 
-  /**
-   * Using the provided message object, this method creates a message to display the proper usage
-   * for a command to the user. The message, usage, and eg parameters are all required and the help
-   * parameter is optional.
-   *
-   * @method
-   * @example
-   * tools.incorrectUsage(msg, '+trivia start <category id>', '+trivia start 1','Get a list of
-   * categories with &#96;+trivia categories&#96;')
-   * @param {*} msg Message object of the incorrectly used command
-   * @param {string} usage Defines the correct usage of the command
-   * @param {string} eg An example of how to use the command correctly
-   * @param {string} help (optional) Additional help information to display
-   */
-  incorrectUsage (msg, usage, eg, help) {
-    let message = ':x: | **' + msg.author.username + '**, the correct usage is: `' + usage + '`\n' +
-    ':white_small_square: | e.g. `' + eg + '`'
-
-    if (help !== undefined) {
-      message += '\n:white_small_square: | ' + help
-    }
-
-    return message
+  get formattedTime () {
+    return moment.tz(config.defaultTimezone).format(defaultFormat)
   }
 
-  formatTimeString (string) {
-    return moment(string).tz(config.defaultTimezone).format('MM-DD-YYYY_HH:mm:ss')
+  get utcTime () {
+    return moment.tz('UTC').format()
   }
 
-  /**
-   * Shuffles array in place. ES6 version
-   * @param {Array} a items An array containing the items.
-   */
-  shuffle (array) {
-    let counter = array.length
-
-    // While there are elements in the array
-    while (counter > 0) {
-      // Pick a random index
-      let index = Math.floor(Math.random() * counter)
-
-      // Decrease counter by 1
-      counter--
-
-      // And swap the last element with it
-      let temp = array[counter]
-      array[counter] = array[index]
-      array[index] = temp
-    }
-
-    return array
+  get formattedUTCTime () {
+    return moment.tz('UTC').format(defaultFormat)
   }
 
-  /**
-   * Formats the given number with commas where they should be to display a
-   * number whose value is greater than or equal to 1,000.
-   *
-   * @param {number} num
-   */
-  numberWithCommas (num) {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-  }
-
-  /**
-   * Using the provided bot object, search the map of visible users and return the username of the
-   * user with the provided user id. If a callback is provided, the value is sent to it, otherwise
-   * the username is simply returned.
-   *
-   * @param {String} userId   User id of the user you want to look-up.
-   * @param {*} bot           The Command Client of the bot itself.
-   * @param {*} callback      A callback to receive the username upon finding it (optional).
-   */
-  getUsernameFromId (userId, bot, callback) {
-    if (bot.users.get(userId) === undefined) {
-      if (callback === undefined) return 'Unknown'
-      else callback()
-    } else {
-      let user = bot.users.get(userId)
-      if (callback === undefined) return user.username
-      else callback(user.username)
-    }
-  }
-
-  getUserFromId (userId, bot, callback) {
-    bot.users.forEach((user, index, array) => { if (user.id === userId) { callback(user) } })
-  }
-
-  /**
-   * Using the provided args variable, if two user ID's are present they are pulled out and the
-   * username is retrieved based on their user ID. The username is added to an array and sent
-   * through the provided callback.
-   *
-   * @param {*} args
-   * @param {*} bot
-   * @param {*} callback
-   */
-  getUsernames (args, bot, callback) {
-    if (args.length === 2) {
-      let usernames = []
-
-      /*
-       The args[0] value is something like <@219270060936527873> so we have to pull out the first two
-       characters as well as the last one and simply store the numbers between.
-       */
-      let userId1 = args[0].substring(2, args[0].length - 1)
-      let userId2 = args[1].substring(2, args[1].length - 1)
-
-      this.getUsernameFromId(userId1, bot, (username) => {
-        usernames.push(username)
-
-        this.getUsernameFromId(userId2, bot, (username) => {
-          usernames.push(username)
-          callback(usernames)
-        })
-      })
-    }
-  }
-
-  getFormattedTimestamp () {
-    return moment().tz(config.defaultTimezone).format('MM-DD-YYYY_HH:mm:ss')
-  }
-
-  getCurrDateTimestamp () {
-    return moment().toDate()
+  get safeFormattedTime () {
+    return moment.tz(config.defaultTimezone).format('MM.DD.Y_HH:mm:ss')
   }
 
   upperFirstC (string) {
     let temp = string.toLowerCase()
     return temp.charAt(0).toUpperCase() + temp.slice(1)
-  }
-
-  lowerFirstC (string) {
-    return string.charAt(0).toLowerCase() + string.substring(1)
   }
 
   /**
@@ -163,193 +50,12 @@ class Tools {
     }
   }
 
-  messageIs (msg, str) {
-    let input = ''
-
-    if (msg.content !== undefined) {
-      input = msg.content.toUpperCase()
-    } else {
-      input = msg.toUpperCase()
-    }
-
-    if (input !== null) {
-      let comparison = str.toUpperCase()
-      return input === comparison
-    } else {
-      return null
-    }
-  }
-
-  messageStartsWith (msg, str) {
-    let comparison = str.toUpperCase()
-    let input = ''
-
-    if (msg.content !== undefined) {
-      input = msg.content.toUpperCase()
-    } else {
-      input = msg.toUpperCase()
-    }
-
-    return input.startsWith(comparison)
-  }
-
-  allowedRole (comparison) {
-    let allowed = false
-    roleNames.forEach((curr, index, arr) => {
-      if (curr !== null && curr.toLowerCase() === comparison) {
-        allowed = true
-      }
-    })
-
-    return allowed
-  }
-
-  getRoleId (msg, comparison) {
-    let id = ''
-
-    msg.channel.guild.roles.forEach((curr, index, values) => {
-      if (curr.name.toLowerCase() === comparison) {
-        id = curr.id
-      }
-    })
-
-    return id
-  }
-
-  removeAllRoles (userId, msg, bot) {
-    for (var x = 0; x < roleNames.length; x++) {
-      let roleId = this.getRoleId(msg, roleNames[x].toLowerCase())
-      msg.channel.guild.removeMemberRole(userId, roleId)
-    }
-
-    bot.createMessage(msg.channel.id, "You've been removed from all the roles available to you.")
-    msg.delete()
-  }
-
-  addAllRoles (userId, msg, bot) {
-    for (var x = 0; x < roleNames.length; x++) {
-      let roleId = this.getRoleId(msg, roleNames[x].toLowerCase())
-      msg.channel.guild.addMemberRole(userId, roleId)
-    }
-
-    bot.createMessage(msg.channel.id, "You've been added to all the roles available to you.")
-    msg.delete()
-  }
-
   /**
-   * Makes each item in the given args variable lower case and appends it to a
-   * string object. When all items have been added to the string, it is
-   * returned.
-   * @param {*} args
-   */
-  concatArgs (args) {
-    let str = ''
-
-    if (args.length > 1) {
-      args.forEach((curr, index, arr) => {
-        if (str.length > 1) {
-          str += ' ' + curr.toLowerCase()
-        } else {
-          str += curr.toLowerCase()
-        }
-      })
-    } else {
-      if (args[0] !== undefined) str = args[0].toLowerCase()
-    }
-
-    return str
-  }
-
-  /**
-   * Analyzes the given Message object and determines if Shu-Hu (**132710431201427456**), is
-   * mentioned. If so, true is returned, otherwise false.
    *
-   * @param {*} msg Message object you wish to analyze.
+   * @param {string} message
+   * @param {Client} client
    */
-  doesMsgContainShu (msg) {
-    return new Promise((resolve, reject) => {
-      if (msg.mentions.size > 0) {
-        resolve(false)
-      } else {
-        let processed = 0
-
-        msg.mentions.forEach((user, index, map) => {
-          if (parseInt(user.id) === 132710431201427456) {
-            console.log('A user has mentioned Shu - ' + msg.author.username)
-            resolve(true)
-          } else {
-            processed++
-
-            if (processed === parseInt(msg.mentions.length)) {
-              resolve(false)
-            }
-          }
-        })
-      }
-    })
-  }
-
-  getMember (msg, user) {
-    return new Promise((resolve, reject) => {
-      msg.channel.guild.members.forEach((member, index, array) => {
-        if (member.user.id === user.id) {
-          resolve(member)
-        }
-      })
-    })
-  }
-
-  getTronMuteRole (msg) {
-    return new Promise((resolve, reject) => {
-      msg.channel.guild.roles.forEach((role, index, array) => {
-        if (role.name === 'tron-mute') {
-          resolve(role)
-        }
-      })
-    })
-  }
-
-  memberIsMod (msg) {
-    let roles = msg.channel.guild.members.get(msg.author.id).roles
-    let found = false
-
-    roles.forEach((curr, index, arr) => {
-      if (curr === '254970225642962949') {
-        found = true
-      } else if (curr === '254970606565588992') {
-        found = true
-      }
-    })
-
-    return found
-  }
-
-  readFiles (dirname, onFileContent, onError, onComplete) {
-    let processNum = 0
-
-    fs.readdir(dirname, (err, filenames) => {
-      if (err) {
-        onError(err)
-        return
-      }
-
-      filenames.forEach((filename, index, array) => {
-        fs.readFile(dirname + filename, (err, content) => {
-          if (err) {
-            onError(err)
-            return
-          }
-
-          onFileContent(filename, content)
-
-          processNum++
-          if (processNum === array.length) {
-            onComplete()
-          }
-        })
-      })
-    })
+  sendOwnerMessage (message, client) {
+    client.users.get('219270060936527873').send(message)
   }
 }
-
-module.exports = Tools
