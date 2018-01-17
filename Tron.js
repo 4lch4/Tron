@@ -9,7 +9,8 @@ const config = require('./util/config')
 const client = new CommandoClient({
   commandPrefix: config.prefix,
   owner: config.owner,
-  disableEveryone: true
+  disableEveryone: true,
+  unknownCommandResponse: false
 })
 
 sqlite.open(path.join(__dirname, 'data', 'settings.sqlite3')).then((db) => {
