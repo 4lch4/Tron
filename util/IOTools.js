@@ -39,14 +39,24 @@ module.exports = class IOTools {
     })
   }
 
+  getFileSize (filename) {
+    const stats = fs.statSync(filename)
+    const fileSizeInBytes = stats.size
+    return fileSizeInBytes
+  }
+
   async getImageFilenames (dirPath) {
-    const finalPath = path.join('./images', dirPath)
+    const finalDir = path.join('./images', dirPath)
     let filePaths = []
 
     return new Promise((resolve, reject) => {
-      fs.readdir(finalPath).then(filenames => {
+      fs.readdir(finalDir).then(filenames => {
         for (let x = 0; x < filenames.length; x++) {
-          filePaths.push(path.join(finalPath, filenames[x]))
+          let finalPath = path.join(finalDir, filenames[x])
+
+          if (this.getFileSize(finalPath) < 8000000) {
+            filePaths.push(finalPath)
+          }
         }
 
         resolve(filePaths)
@@ -68,10 +78,6 @@ module.exports = class IOTools {
 
   readFileSync (filePath) {
     return fs.readFileSync(filePath)
-  }
-
-  async getFileSize (filePath) {
-    return Promise.resolve(fs.stat(filePath).then(stats => { return stats.size }))
   }
 
   async fileExists (filePath) {
