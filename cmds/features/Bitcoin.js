@@ -12,11 +12,11 @@ class Bitcoin extends Command {
       memberName: 'bitcoin',
       throttling: { usages: 1, duration: 10 },
       description: 'Displays current bitcoin prices and allows you to convert the values.',
-      examples: ['+bitcoin', '+btc CAD'],
+      examples: ['+bitcoin', '+btc CAD', '+btc eur 2017-02-14'],
       args: [{
         key: 'currency',
         label: 'currency',
-        prompt: 'Which currency would you like to display?',
+        prompt: '',
         type: 'string',
         default: 'USD',
         validate: (val, msg, arg) => {
