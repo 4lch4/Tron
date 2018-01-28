@@ -9,7 +9,7 @@ class Avatar extends Command {
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a link to the tagged users avatar.',
       details: 'Returns a high quality (if available) version of the tagged users avatar.',
-      examples: ['+avatar @Alcha#2621'],
+      examples: ['+avatar @Alcha#2625'],
       args: [{
         key: 'user',
         label: 'User',

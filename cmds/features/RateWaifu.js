@@ -11,7 +11,7 @@ class RateWaifu extends Command {
       guildOnly: true,
       throttling: { usages: 1, duration: 10 },
       description: 'Rate your waifu! 0 - 10',
-      examples: ['+rate @Alcha#2621'],
+      examples: ['+rate @Alcha#2625'],
       aliases: ['rate'],
       args: [{
         key: 'user',

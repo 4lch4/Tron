@@ -12,7 +12,7 @@ module.exports = class Kick extends Command {
       guildOnly: true,
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random kick gif and includes the mentioned users username.',
-      examples: ['+kick @Alcha#2621']
+      examples: ['+kick @Alcha#2625']
     })
   }
 

@@ -13,7 +13,7 @@ module.exports = class Bite extends Command {
       throttling: { usages: 1, duration: 10 },
       aliases: ['bites'],
       description: 'Returns a random bite gif and includes the mentioned users username.',
-      examples: ['+bite @Alcha#2621']
+      examples: ['+bite @Alcha#2625']
     })
   }
 

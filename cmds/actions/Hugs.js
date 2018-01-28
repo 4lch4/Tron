@@ -13,7 +13,7 @@ module.exports = class Hug extends Command {
       aliases: ['hugs'],
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random love gif and if a user is mentioned, includes their name.',
-      examples: ['+love @Alcha#2621']
+      examples: ['+love @Alcha#2625']
     })
   }
 

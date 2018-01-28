@@ -7,7 +7,7 @@ class Ban extends Command {
       group: 'admin',
       memberName: 'admin-ban',
       description: 'Bans the mentioned user from the server.',
-      examples: ['+admin-ban @Alcha#2621', '+admin-ban @Alcha#2621 \'He\'s a total tuul.\''],
+      examples: ['+admin-ban @Alcha#2625', '+admin-ban @Alcha#2625 \'He\'s a total tuul.\''],
       userPermissions: ['ADMINISTRATOR'],
       args: [{
         key: 'user',

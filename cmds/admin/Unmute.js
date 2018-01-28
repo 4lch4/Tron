@@ -9,7 +9,7 @@ class Unmute extends Command {
       memberName: 'unmute',
       throttling: { usages: 1, duration: 10 },
       description: 'Unmutes the mentioned user(s) from text and voice-chat on the server.',
-      examples: ['+unmute @Alcha#2621', '+unmute @Alcha#2621 @Altcha#4829'],
+      examples: ['+unmute @Alcha#2625', '+unmute @Alcha#2625 @Altcha#4829'],
       argsType: 'multiple'
     })
   }
