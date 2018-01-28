@@ -13,9 +13,7 @@ class RedditTools {
    * @param {string} [from] The time interval to pull from (all, year, month, day)
    * @param {number} [limit] The amount of posts to request
    */
-  getRandomTopPost (subreddit, from, limit) {
-    if (from === undefined) from = 'day'
-    if (limit === undefined) limit = 25
+  getRandomTopPost (subreddit, from = 'day', limit = 25) {
     if (subreddit instanceof Array) {
       const random = tools.getRandom(0, subreddit.length)
       subreddit = subreddit[random]
@@ -31,10 +29,7 @@ class RedditTools {
     })
   }
 
-  getRandomPost (subreddit, sort, from, limit) {
-    if (sort === undefined) sort = 'hot'
-    if (from === undefined) from = 'day'
-    if (limit === undefined) limit = 25
+  getRandomPost (subreddit, sort = 'hot', from = 'day', limit = 25) {
     if (subreddit instanceof Array) {
       const random = tools.getRandom(0, subreddit.length)
       subreddit = subreddit[random]
