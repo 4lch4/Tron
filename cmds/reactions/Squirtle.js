@@ -15,7 +15,7 @@ class Squirtle extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('squirtle').then(image => {
+    ioTools.getRandomImage('squirtle', args).then(image => {
       msg.channel.send('', { files: [image] })
     })
   }

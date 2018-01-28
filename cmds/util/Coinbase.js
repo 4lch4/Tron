@@ -19,6 +19,15 @@ class CoinbaseAid {
     })
   }
 
+  getHistoricPrice (date, currency = 'USD') {
+    return new Promise((resolve, reject) => {
+      coinbase.getSpotPrice({'date': date, 'currency': currency}, (err, res) => {
+        if (err) reject(err)
+        else resolve(res.data.amount)
+      })
+    })
+  }
+
   /**
    * @returns {Array<String>}
    */

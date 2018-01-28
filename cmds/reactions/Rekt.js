@@ -15,7 +15,7 @@ class Rekt extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('rekt').then(image => {
+    ioTools.getRandomImage('rekt', args).then(image => {
       msg.channel.send('', { files: [image] })
     })
   }

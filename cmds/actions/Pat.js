@@ -12,7 +12,7 @@ module.exports = class Pat extends Command {
       guildOnly: true,
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random pat gif and includes the mentioned users username.',
-      examples: ['+pat @Alcha#2621']
+      examples: ['+pat @Alcha#2625']
     })
   }
 
@@ -24,7 +24,7 @@ module.exports = class Pat extends Command {
       content = `**${username}**, you got a pat from **${msg.author.username}**.`
     }
 
-    ioTools.getRandomImage('pat').then(image => {
+    ioTools.getRandomImage('pat', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

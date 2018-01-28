@@ -12,7 +12,7 @@ module.exports = class Poke extends Command {
       guildOnly: true,
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random poke gif and includes the mentioned users username.',
-      examples: ['+poke @Alcha#2621']
+      examples: ['+poke @Alcha#2625']
     })
   }
 
@@ -24,7 +24,7 @@ module.exports = class Poke extends Command {
       content = `**${username}**, you've been poked by **${msg.author.username}**.`
     }
 
-    ioTools.getRandomImage('poke').then(image => {
+    ioTools.getRandomImage('poke', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

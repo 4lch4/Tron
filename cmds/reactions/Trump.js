@@ -14,9 +14,13 @@ class Trump extends Command {
       examples: ['+trump fake', '+trump wrong'],
       args: [{
         key: 'type',
-        label: 'Type of image.',
-        prompt: 'What kind of Trump image?',
-        type: 'string'
+        label: 'Type of image',
+        prompt: 'Which type of Trump image?',
+        type: 'string',
+        validate: (value, msg, arg) => {
+          if (value === 'fake' || value === 'wrong' || value === 'test') return true
+          else return 'you have provided an invalid input. Please try a valid input (e.g. fake/wrong).'
+        }
       }]
     })
   }
@@ -24,7 +28,7 @@ class Trump extends Command {
   async run (msg, { type }) {
     ioTools.getImagePath(path.join('trump', `${type}.gif`)).then(image => {
       msg.channel.send('', { files: [image] })
-    })
+    }).catch(err => console.error(err))
   }
 }
 

@@ -58,13 +58,13 @@ class Divorce {
         _id: this.proposee,
         married: false,
         divorced: true,
-        anniversary: tools.getFormattedTime('MM/DD/YYYY @ HH:mm:ss')
+        anniversary: tools.formatTime('MM/DD/YYYY @ HH:mm:ss')
       }).then(res => {
         ProposeeDbModel.create({
           _id: this.proposer,
           married: false,
           divorced: true,
-          anniversary: tools.getFormattedTime('MM/DD/YYYY @ HH:mm:ss')
+          anniversary: tools.formatTime('MM/DD/YYYY @ HH:mm:ss')
         }).then(res => resolve()).catch(err => reject(err))
       }).catch(err => reject(err))
     })

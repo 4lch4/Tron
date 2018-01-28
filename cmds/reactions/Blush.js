@@ -15,7 +15,7 @@ class Blush extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('blush').then(image => {
+    ioTools.getRandomImage('blush', args).then(image => {
       msg.channel.send('', { files: [image] })
     })
   }

@@ -12,7 +12,7 @@ module.exports = class Punch extends Command {
       guildOnly: true,
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random punch gif and includes the mentioned users username.',
-      examples: ['+punch @Alcha#2621']
+      examples: ['+punch @Alcha#2625']
     })
   }
 
@@ -24,7 +24,7 @@ module.exports = class Punch extends Command {
       content = `**${username}**, you've been punched by **${msg.author.username}**. :punch:`
     }
 
-    ioTools.getRandomImage('punch').then(image => {
+    ioTools.getRandomImage('punch', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

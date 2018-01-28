@@ -90,8 +90,8 @@ class Ship extends Command {
       group: 'features',
       memberName: 'ship',
       throttling: { usages: 1, duration: 10 },
-      description: '',
-      examples: ['+ship @Alcha#2621 @Aadio#1576'],
+      description: 'Ships two users as a couple.',
+      examples: ['+ship @Alcha#2625 @Aadio#1576'],
       args: [{
         key: 'user1',
         label: 'User 1',

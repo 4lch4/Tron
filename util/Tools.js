@@ -8,8 +8,12 @@ const chance = new Chance()
 const defaultFormat = 'MM.DD.Y @ HH:mm:ss'
 
 module.exports = class Tools {
-  getFormattedTime (format) {
+  formatTime (format) {
     return moment.tz(config.defaultTimezone).format(format)
+  }
+
+  formatUTCTime (format) {
+    return moment.tz('UTC').format(format)
   }
 
   get formattedTime () {

@@ -15,7 +15,7 @@ class Dreamy extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('dreamy').then(image => {
+    ioTools.getRandomImage('dreamy', args).then(image => {
       msg.channel.send('', { files: [image] })
     })
   }

@@ -12,7 +12,7 @@ module.exports = class Kill extends Command {
       guildOnly: true,
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random kill gif and includes the mentioned users username.',
-      examples: ['+kill @Alcha#2621']
+      examples: ['+kill @Alcha#2625']
     })
   }
 
@@ -24,7 +24,7 @@ module.exports = class Kill extends Command {
       content = `**${username}**, you've been killed by **${msg.author.username}**. :knife:`
     }
 
-    ioTools.getRandomImage('kill').then(image => {
+    ioTools.getRandomImage('kill', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

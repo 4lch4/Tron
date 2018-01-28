@@ -16,7 +16,7 @@ class Battsie extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('battsie').then(image => {
+    ioTools.getRandomImage('battsie', args).then(image => {
       msg.channel.send('', { files: [image] })
     })
   }

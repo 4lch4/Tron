@@ -9,13 +9,13 @@ class Cry extends Command {
       group: 'reactions',
       memberName: 'cry',
       throttling: { usages: 1, duration: 10 },
-      description: '',
+      description: 'Returns a random cry gif.',
       examples: ['+cry']
     })
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('cry').then(image => {
+    ioTools.getRandomImage('cry', args).then(image => {
       msg.channel.send('', { files: [image] })
     })
   }

@@ -15,7 +15,7 @@ class Confused extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('confused').then(image => {
+    ioTools.getRandomImage('confused', args).then(image => {
       msg.channel.send('', { files: [image] })
     })
   }

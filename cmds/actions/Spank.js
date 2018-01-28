@@ -12,7 +12,7 @@ module.exports = class Spank extends Command {
       guildOnly: true,
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random spank gif and includes the mentioned users username.',
-      examples: ['+spank @Alcha#2621']
+      examples: ['+spank @Alcha#2625']
     })
   }
 
@@ -24,7 +24,7 @@ module.exports = class Spank extends Command {
       content = `**${username}**, you've been spanked by **${msg.author.username}**. :wave:`
     }
 
-    ioTools.getRandomImage('spank').then(image => {
+    ioTools.getRandomImage('spank', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

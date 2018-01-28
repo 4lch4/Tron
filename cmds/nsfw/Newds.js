@@ -13,14 +13,15 @@ class Newds extends Command {
       memberName: 'newds',
       throttling: { usages: 1, duration: 10 },
       description: 'Sends a random nude to the mentioned user.',
-      examples: ['+newds @Alcha#2621', '+newds dude @Alcha#2621'],
+      examples: ['+newds @Alcha#2625', '+newds dude @Alcha#2625'],
       args: [{
         key: 'sex',
         label: 'Sex',
         prompt: 'Did you want to send a guy or gal?',
         default: 'girl',
         type: 'string'
-      }]
+      }],
+      nsfw: true
     })
   }
 

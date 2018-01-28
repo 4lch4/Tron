@@ -9,7 +9,7 @@ class Mute extends Command {
       memberName: 'mute',
       throttling: { usages: 1, duration: 10 },
       description: 'Mutes the mentioned user(s) from text and voice-chat on the server.',
-      examples: ['+mute @Alcha#2621', '+mute @Alcha#2621 @Altcha#4829'],
+      examples: ['+mute @Alcha#2625', '+mute @Alcha#2625 @Altcha#4829'],
       argsType: 'multiple'
     })
   }
