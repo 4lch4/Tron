@@ -24,7 +24,7 @@ module.exports = class Slap extends Command {
       content = `**${username}**, you've been slapped by **${msg.author.username}**. `
     }
 
-    ioTools.getRandomImage('slap').then(image => {
+    ioTools.getRandomImage('slap', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

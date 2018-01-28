@@ -24,7 +24,7 @@ module.exports = class Kiss extends Command {
       content = `**${username}**, you've been kissed by **${msg.author.username}**. :kiss:`
     }
 
-    ioTools.getRandomImage('kiss').then(image => {
+    ioTools.getRandomImage('kiss', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

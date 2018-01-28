@@ -24,7 +24,7 @@ module.exports = class Spank extends Command {
       content = `**${username}**, you've been spanked by **${msg.author.username}**. :wave:`
     }
 
-    ioTools.getRandomImage('spank').then(image => {
+    ioTools.getRandomImage('spank', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

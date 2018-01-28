@@ -24,7 +24,7 @@ module.exports = class Kill extends Command {
       content = `**${username}**, you've been killed by **${msg.author.username}**. :knife:`
     }
 
-    ioTools.getRandomImage('kill').then(image => {
+    ioTools.getRandomImage('kill', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

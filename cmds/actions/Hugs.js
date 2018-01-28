@@ -25,7 +25,7 @@ module.exports = class Hug extends Command {
       content = `**${username}**, you've been hugged by **${msg.author.username}**. :heart:`
     }
 
-    ioTools.getRandomImage('hug').then(image => {
+    ioTools.getRandomImage('hug', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

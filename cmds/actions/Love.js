@@ -24,7 +24,7 @@ module.exports = class Love extends Command {
       content = `**${username}**, you've been loved by **${msg.author.username}**. :heart:`
     }
 
-    ioTools.getRandomImage('love').then(image => {
+    ioTools.getRandomImage('love', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

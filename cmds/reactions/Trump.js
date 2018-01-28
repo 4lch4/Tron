@@ -3,13 +3,6 @@ const path = require('path')
 
 const ioTools = new (require('../../util/IOTools'))()
 
-ioTools.getImageFilenames('trump').then(filenames => {
-  console.log(`filenames...`)
-  console.log(filenames)
-}).catch(err => {
-  if (err) console.error(err)
-})
-
 class Trump extends Command {
   constructor (client) {
     super(client, {

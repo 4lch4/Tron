@@ -15,7 +15,7 @@ class Dodge extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('dodge').then(image => {
+    ioTools.getRandomImage('dodge', args).then(image => {
       msg.channel.send('', { files: [image] })
     })
   }

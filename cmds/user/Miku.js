@@ -15,7 +15,7 @@ class Miku extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('miku').then(image => {
+    ioTools.getRandomImage('miku', args).then(image => {
       msg.channel.send('', { files: [image] })
     })
   }

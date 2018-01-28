@@ -16,7 +16,7 @@ class Rose extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('rose').then(image => {
+    ioTools.getRandomImage('rose', args).then(image => {
       msg.channel.send('', { files: [image] })
     })
   }

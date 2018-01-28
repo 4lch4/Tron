@@ -24,7 +24,7 @@ module.exports = class Lick extends Command {
       content = `**${username}**, you've been licked by **${msg.author.username}**. :tongue:`
     }
 
-    ioTools.getRandomImage('lick').then(image => {
+    ioTools.getRandomImage('lick', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

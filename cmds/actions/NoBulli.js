@@ -24,7 +24,7 @@ module.exports = class NoBulli extends Command {
       content = `**${username}**, don't you dare bulli **${msg.author.username}**!`
     }
 
-    ioTools.getRandomImage('nobulli').then(image => {
+    ioTools.getRandomImage('nobulli', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

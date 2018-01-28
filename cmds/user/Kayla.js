@@ -18,7 +18,7 @@ class Kayla extends Command {
     if (parseInt(msg.author.id) === 142092834260910080 ||
       parseInt(msg.author.id) === 217870035090276374 ||
       parseInt(msg.author.id) === 219270060936527873) {
-      ioTools.getRandomImage('kayla').then(img => {
+      ioTools.getRandomImage('kayla', args).then(img => {
         msg.channel.send('', { files: [img] })
       })
     } else {

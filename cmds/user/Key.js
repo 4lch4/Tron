@@ -8,16 +8,17 @@ class Key extends Command {
       name: 'key',
       group: 'user',
       memberName: 'key',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random image/gif given to me by Key.',
       examples: ['+key']
     })
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('key').then(image => {
-      msg.channel.send('', { files: [image] })
-    })
+    if (parseInt(msg.author.id) === 140183864076140544 || parseInt(msg.author.id) === 219270060936527873) {
+      ioTools.getRandomImage('key', args).then(image => {
+        msg.channel.send('', { files: [image] })
+      })
+    }
   }
 }
 

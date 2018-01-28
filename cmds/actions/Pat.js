@@ -24,7 +24,7 @@ module.exports = class Pat extends Command {
       content = `**${username}**, you got a pat from **${msg.author.username}**.`
     }
 
-    ioTools.getRandomImage('pat').then(image => {
+    ioTools.getRandomImage('pat', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

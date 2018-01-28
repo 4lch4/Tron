@@ -24,7 +24,7 @@ module.exports = class Punch extends Command {
       content = `**${username}**, you've been punched by **${msg.author.username}**. :punch:`
     }
 
-    ioTools.getRandomImage('punch').then(image => {
+    ioTools.getRandomImage('punch', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

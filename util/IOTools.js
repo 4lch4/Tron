@@ -28,11 +28,11 @@ module.exports = class IOTools {
     }
   }
 
-  getRandomImage (dirPath) {
+  getRandomImage (dirPath, args) {
     return new Promise((resolve, reject) => {
       this.getImageFilenames(dirPath).then(filenames => {
-        const random = tools.getRandom(0, filenames.length)
-        resolve(filenames[random])
+        if (isNaN(args[0])) resolve(filenames[tools.getRandom(0, filenames.length)])
+        else resolve(filenames[args[0]])
       })
     })
   }
@@ -55,7 +55,7 @@ module.exports = class IOTools {
     return fileSizeInBytes
   }
 
-  async getImageFilenames (dirPath) {
+  getImageFilenames (dirPath) {
     const finalDir = path.join('./images', dirPath)
     let filePaths = []
 
@@ -64,9 +64,7 @@ module.exports = class IOTools {
         for (let x = 0; x < filenames.length; x++) {
           let finalPath = path.join(finalDir, filenames[x])
 
-          if (this.getFileSize(finalPath) < 8000000) {
-            filePaths.push(finalPath)
-          } else reject(new Error('Provided file is too large to send over Discord.'))
+          if (this.getFileSize(finalPath) < 8000000) filePaths.push(finalPath)
         }
 
         resolve(filePaths)

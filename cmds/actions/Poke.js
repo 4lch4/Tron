@@ -24,7 +24,7 @@ module.exports = class Poke extends Command {
       content = `**${username}**, you've been poked by **${msg.author.username}**.`
     }
 
-    ioTools.getRandomImage('poke').then(image => {
+    ioTools.getRandomImage('poke', args).then(image => {
       msg.channel.send(content, {
         files: [
           image

@@ -24,7 +24,7 @@ module.exports = class Kick extends Command {
       content = `**${username}**, you've been kicked by **${msg.author.username}**.`
     }
 
-    ioTools.getRandomImage('kick').then(image => {
+    ioTools.getRandomImage('kick', args).then(image => {
       msg.channel.send(content, {
         files: [
           image
