@@ -12,11 +12,9 @@ module.exports = class IOTools {
     const finalPath = path.join('./images', filePath)
 
     return new Promise((resolve, reject) => {
-      this.getFileSize(finalPath).then(size => {
-        if (size < 8000000) {
-          resolve(finalPath)
-        }
-      })
+      if (this.getFileSize(finalPath) < 8000000) {
+        resolve(finalPath)
+      } else reject(new Error('Provided file is too large to send over Discord.'))
     })
   }
 
@@ -68,7 +66,7 @@ module.exports = class IOTools {
 
           if (this.getFileSize(finalPath) < 8000000) {
             filePaths.push(finalPath)
-          }
+          } else reject(new Error('Provided file is too large to send over Discord.'))
         }
 
         resolve(filePaths)
