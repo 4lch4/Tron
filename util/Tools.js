@@ -1,10 +1,14 @@
-const { Client } = require('discord.js')  // Used for JSDoc/intellisense purposes
+const { Client, MessageEmbed } = require('discord.js')  // Used for JSDoc/intellisense purposes
 
 const config = require('./config.json')
 const moment = require('moment-timezone')
+const GphApiClient = require('giphy-js-sdk-core')
+const giphy = GphApiClient(config.giphyKey)
 const Chance = require('chance')
 const chance = new Chance()
 const UTC = 'UTC'
+
+const colors = require('./colors')
 
 const defaultFormat = 'MM.DD.Y @ HH:mm:ss'
 
@@ -15,6 +19,19 @@ module.exports = class Tools {
 
   formatUTCTime (format) {
     return moment.tz(UTC).format(format)
+  }
+
+  async queryGiphy (query, username, avatarUrl) {
+    let results = await giphy.search('gifs', {'q': query})
+    let random = this.getRandom(0, results.data.length)
+    let embedUrl = results.data[random].images.original.gif_url
+
+    return Promise.resolve(new MessageEmbed()
+      .setAuthor(username, avatarUrl, 'http://tronbot.info')
+      .setColor(colors.Decimal.deepPurple.P500)
+      .setFooter('Powered by Giphy.', 'https://s3.amazonaws.com/ionic-marketplace/ionic-giphy/icon.png')
+      .setImage(embedUrl)
+    )
   }
 
   get shortLogDate () {
