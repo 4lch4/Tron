@@ -4,6 +4,7 @@ const config = require('./config.json')
 const moment = require('moment-timezone')
 const Chance = require('chance')
 const chance = new Chance()
+const UTC = 'UTC'
 
 const defaultFormat = 'MM.DD.Y @ HH:mm:ss'
 
@@ -13,7 +14,15 @@ module.exports = class Tools {
   }
 
   formatUTCTime (format) {
-    return moment.tz('UTC').format(format)
+    return moment.tz(UTC).format(format)
+  }
+
+  get shortLogDate () {
+    return moment.tz(UTC).format('Y-MM-DD')
+  }
+
+  get shortUTCTime () {
+    return moment.tz(UTC).format('HH:mm:ss.SS')
   }
 
   get formattedTime () {
@@ -21,11 +30,11 @@ module.exports = class Tools {
   }
 
   get utcTime () {
-    return moment.tz('UTC').format()
+    return moment.tz(UTC).format()
   }
 
   get formattedUTCTime () {
-    return moment.tz('UTC').format(defaultFormat)
+    return moment.tz(UTC).format(defaultFormat)
   }
 
   get safeFormattedTime () {

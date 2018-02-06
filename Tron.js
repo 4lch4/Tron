@@ -6,6 +6,9 @@ const CommandHelper = require('./util/db/CommandHelper')
 
 const config = require('./util/config')
 
+const GphApiClient = require('giphy-js-sdk-core')
+const giphy = GphApiClient(config.giphyKey)
+
 const client = new CommandoClient({
   commandPrefix: config.prefix,
   owner: config.owner,
@@ -48,6 +51,13 @@ client.on('commandRun', (cmd, promise, msg) => {
     const command = new CommandHelper(msg.guild.id)
     command.incrementUsage(cmd.name).catch(err => console.error(err))
   }
+})
+
+client.on('unknownCommand', msg => {
+  giphy.search('gifs', {'q': msg.content.substring(1)}).then(res => {
+    let random = tools.getRandom(0, res.data.length)
+    msg.channel.send(res.data[random].embed_url)
+  }).catch(err => console.error(err))
 })
 
 client.login(config.token)
