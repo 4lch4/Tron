@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 
 class Git extends Command {
   constructor (client) {

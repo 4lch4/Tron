@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 
 const IOTools = require('../../util/IOTools')
 const ioTools = new IOTools()
@@ -17,11 +17,8 @@ module.exports = class Love extends Command {
   }
 
   async run (msg, args) {
-    let content = ''
-
     if (msg.mentions.users.size > 0) {
-      const username = msg.mentions.users.first().username
-      content = `**${username}**, you've been loved by **${msg.author.username}**. :heart:`
+      var content = `**${this.generateUsernames(msg)}**, you've been loved by **${msg.author.username}**. :heart:`
     }
 
     ioTools.getRandomImage('love', args).then(image => {

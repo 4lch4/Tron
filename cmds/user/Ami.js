@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 
 class Ami extends Command {
   constructor (client) {
