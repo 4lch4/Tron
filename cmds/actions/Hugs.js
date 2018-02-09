@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 
 const IOTools = require('../../util/IOTools')
 const ioTools = new IOTools()
@@ -18,12 +18,7 @@ module.exports = class Hug extends Command {
   }
 
   async run (msg, args) {
-    let content = ''
-
-    if (msg.mentions.users.size > 0) {
-      const username = msg.mentions.users.first().username
-      content = `**${username}**, you've been hugged by **${msg.author.username}**. :heart:`
-    }
+    if (msg.mentions.users.size > 0) var content = `${this.generateUsernames(msg)}, you've been hugged by **${msg.author.username}**. :heart:`
 
     ioTools.getRandomImage('hug', args).then(image => {
       msg.channel.send(content, {

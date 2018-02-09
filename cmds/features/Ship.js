@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 const path = require('path')
 const Canvas = require('canvas')
 const ioTools = new (require('../../util/IOTools'))()

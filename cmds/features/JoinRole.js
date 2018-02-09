@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 const mongo = new (require('../../util/db/MongoTools'))()
 
 class JoinRole extends Command {

@@ -1,7 +1,7 @@
 const Marriage = require('../util/Marriage')
 const tools = new (require('../../util/Tools'))()
 
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 
 class Divorce extends Command {
   constructor (client) {
