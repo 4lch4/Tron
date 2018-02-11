@@ -22,16 +22,18 @@ module.exports = class Tools {
   }
 
   async queryGiphy (query, username, avatarUrl) {
-    let results = await giphy.search('gifs', {'q': query})
-    let random = this.getRandom(0, results.data.length)
-    let embedUrl = results.data[random].images.original.gif_url
+    try {
+      var results = await giphy.search('gifs', {'q': query})
+      var random = this.getRandom(0, results.data.length)
+      var embedUrl = results.data[random].images.original.gif_url
 
-    return Promise.resolve(new MessageEmbed()
-      .setAuthor(username, avatarUrl, 'http://tronbot.info')
-      .setColor(colors.Decimal.deepPurple.P500)
-      .setFooter('Powered by Giphy.', 'https://s3.amazonaws.com/ionic-marketplace/ionic-giphy/icon.png')
-      .setImage(embedUrl)
-    )
+      return Promise.resolve(new MessageEmbed()
+        .setAuthor(username, avatarUrl, 'http://tronbot.info')
+        .setColor(colors.Decimal.deepPurple.P500)
+        .setFooter('Powered by Giphy.', 'https://s3.amazonaws.com/ionic-marketplace/ionic-giphy/icon.png')
+        .setImage(embedUrl)
+      )
+    } catch (err) { return Promise.reject(err) }
   }
 
   get shortLogDate () {
