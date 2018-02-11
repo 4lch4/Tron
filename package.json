@@ -1,7 +1,7 @@
 {
   "name": "tron",
   "displayName": "Tron",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Our bot that makes socializing on our servers more entertaining.",
   "main": "Tron.js",
   "scripts": {
@@ -21,6 +21,7 @@
   "dependencies": {
     "bufferutil": "^3.0.3",
     "canvas": "^1.6.9",
+    "chalk": "^2.3.0",
     "chance": "^1.0.13",
     "coinbase": "^2.0.7",
     "discord.js": "github:hydrabolt/discord.js",
