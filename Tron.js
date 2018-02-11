@@ -5,6 +5,7 @@ const tools = new (require('./util/Tools'))()
 const CommandHelper = require('./util/db/CommandHelper')
 
 const config = require('./util/config')
+const logger = new (require('./util/logger'))()
 
 const client = new CommandoClient({
   commandPrefix: config.prefix,
@@ -40,13 +41,19 @@ client.on('ready', () => {
   client.channels.get(config.notificationChannel).send(`Tron has come online > **${readyTime}**`)
   client.user.setActivity(config.defaultGame)
 
-  console.log(`Tron has come online > ${readyTime}`)
+  logger.info(`Tron has come online > ${readyTime}`)
+})
+
+client.on('message', msg => {
+  if (msg.mentions.users.get(client.user.id) !== undefined && !msg.content.startsWith(client.commandPrefix)) {
+    console.log(`Tron mentioned.`)
+  }
 })
 
 client.on('commandRun', (cmd, promise, msg) => {
   if (msg.guild !== null) {
     const command = new CommandHelper(msg.guild.id)
-    command.incrementUsage(cmd.name).catch(err => console.error(err))
+    command.incrementUsage(cmd.name).catch(err => logger.error(err))
   }
 })
 
@@ -56,8 +63,11 @@ client.on('unknownCommand', msg => {
     tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
       .then(res => {
         msg.channel.send(res)
-      }).catch(err => console.error(err))
+      }).catch(err => logger.error(err))
   }
 })
 
-client.login(config.token)
+client.on('commandError', (cmd, err) => logger.error(err))
+
+client.on('error', err => logger.error(err))
+
