@@ -51,11 +51,13 @@ client.on('commandRun', (cmd, promise, msg) => {
 })
 
 client.on('unknownCommand', msg => {
-  let query = msg.content.substring(client.commandPrefix.length)
-  tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
-    .then(res => {
-      msg.channel.send(res)
-    }).catch(err => console.error(err))
+  if (parseInt(msg.channel.id) !== 356240357534597122) {  // Default testing channel, don't respond.
+    let query = msg.content.substring(client.commandPrefix.length)
+    tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
+      .then(res => {
+        msg.channel.send(res)
+      }).catch(err => console.error(err))
+  }
 })
 
 client.login(config.token)
