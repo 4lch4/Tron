@@ -18,7 +18,7 @@ module.exports = class Lick extends Command {
 
   async run (msg, args) {
     if (msg.mentions.users.size > 0) {
-      var content = `**${this.generateUsernames(msg)}**, you've been licked by **${msg.author.username}**. :tongue:`
+      var content = `${this.getMentionedUsernames(msg)}, you've been licked by **${msg.author.username}**. :tongue:`
     }
 
     ioTools.getRandomImage('lick', args).then(image => {

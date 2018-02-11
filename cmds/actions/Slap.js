@@ -18,7 +18,7 @@ module.exports = class Slap extends Command {
 
   async run (msg, args) {
     if (msg.mentions.users.size > 0) {
-      var content = `**${this.generateUsernames(msg)}**, you've been slapped by **${msg.author.username}**. `
+      var content = `${this.getMentionedUsernames(msg)}, you've been slapped by **${msg.author.username}**. `
     }
 
     ioTools.getRandomImage('slap', args).then(image => {

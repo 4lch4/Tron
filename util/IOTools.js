@@ -31,9 +31,9 @@ module.exports = class IOTools {
   getRandomImage (dirPath, args) {
     return new Promise((resolve, reject) => {
       this.getImageFilenames(dirPath).then(filenames => {
-        if (isNaN(args[0])) resolve(filenames[tools.getRandom(0, filenames.length)])
+        if (args === undefined || isNaN(args[0])) resolve(filenames[tools.getRandom(0, filenames.length)])
         else resolve(filenames[args[0]])
-      })
+      }).catch(err => reject(err))
     })
   }
 
@@ -68,7 +68,7 @@ module.exports = class IOTools {
         }
 
         resolve(filePaths)
-      })
+      }).catch(err => reject(err))
     })
   }
 
