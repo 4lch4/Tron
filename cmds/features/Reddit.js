@@ -67,7 +67,7 @@ class Reddit extends Command {
       subreddit = subreddit.slice(subreddit.indexOf('/') + 1)
     }
 
-    reddit.getRandomPost(subreddit, sort, from, limit).then(post => {
+    return reddit.getRandomPost(subreddit, sort, from, limit).then(post => {
       msg.channel.send(post)
     })
   }

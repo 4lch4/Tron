@@ -39,8 +39,12 @@ class RedditTools {
       reddit.r(subreddit).sort(sort).from(from).limit(limit, (err, data, res) => {
         if (err) reject(err)
 
-        const randomPost = tools.getRandom(0, data.data.children.length)
-        resolve(data.data.children[randomPost].data.url)
+        try {
+          const randomPost = tools.getRandom(0, data.data.children.length)
+          resolve(data.data.children[randomPost].data.url)
+        } catch (err) {
+          reject(err)
+        }
       })
     })
   }
