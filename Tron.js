@@ -55,7 +55,7 @@ client.on('unknownCommand', msg => {
   tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
     .then(res => {
       msg.channel.send(res)
-    }).catch(err => { console.error(err) })
+    }).catch(err => console.error(err))
 })
 
 client.login(config.token)

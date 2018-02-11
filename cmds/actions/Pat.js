@@ -18,7 +18,7 @@ module.exports = class Pat extends Command {
 
   async run (msg, args) {
     if (msg.mentions.users.size > 0) {
-      var content = `**${this.generateUsernames(msg)}**, you got a pat from **${msg.author.username}**.`
+      var content = `${this.getMentionedUsernames(msg)}, you got a pat from **${msg.author.username}**.`
     }
 
     ioTools.getRandomImage('pat', args).then(image => {

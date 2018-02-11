@@ -17,11 +17,8 @@ module.exports = class Kill extends Command {
   }
 
   async run (msg, args) {
-    let content = ''
-
     if (msg.mentions.users.size > 0) {
-      const username = msg.mentions.users.first().username
-      content = `**${username}**, you've been killed by **${msg.author.username}**. :knife:`
+      var content = `${this.getMentionedUsernames(msg)}, you've been killed by **${msg.author.username}**. :knife:`
     }
 
     ioTools.getRandomImage('kill', args).then(image => {

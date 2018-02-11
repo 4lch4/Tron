@@ -18,7 +18,7 @@ module.exports = class Kiss extends Command {
 
   async run (msg, args) {
     if (msg.mentions.users.size > 0) {
-      var content = `${this.generateUsernames(msg)}, you've been kissed by **${msg.author.username}**. :kiss:`
+      var content = `${this.getMentionedUsernames(msg)}, you've been kissed by **${msg.author.username}**. :kiss:`
     }
 
     ioTools.getRandomImage('kiss', args).then(image => {

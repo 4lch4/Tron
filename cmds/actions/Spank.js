@@ -18,7 +18,7 @@ module.exports = class Spank extends Command {
 
   async run (msg, args) {
     if (msg.mentions.users.size > 0) {
-      var content = `**${this.generateUsernames(msg)}**, you've been spanked by **${msg.author.username}**. :wave:`
+      var content = `${this.getMentionedUsernames(msg)}, you've been spanked by **${msg.author.username}**. :wave:`
     }
 
     ioTools.getRandomImage('spank', args).then(image => {

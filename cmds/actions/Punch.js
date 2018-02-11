@@ -18,7 +18,7 @@ module.exports = class Punch extends Command {
 
   async run (msg, args) {
     if (msg.mentions.users.size > 0) {
-      var content = `**${this.generateUsernames(msg)}**, you've been punched by **${msg.author.username}**. :punch:`
+      var content = `${this.getMentionedUsernames(msg)}, you've been punched by **${msg.author.username}**. :punch:`
     }
 
     ioTools.getRandomImage('punch', args).then(image => {

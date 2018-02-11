@@ -18,7 +18,7 @@ module.exports = class Love extends Command {
 
   async run (msg, args) {
     if (msg.mentions.users.size > 0) {
-      var content = `**${this.generateUsernames(msg)}**, you've been loved by **${msg.author.username}**. :heart:`
+      var content = `${this.getMentionedUsernames(msg)}, you've been loved by **${msg.author.username}**. :heart:`
     }
 
     ioTools.getRandomImage('love', args).then(image => {

@@ -18,7 +18,9 @@ module.exports = class Hug extends Command {
   }
 
   async run (msg, args) {
-    if (msg.mentions.users.size > 0) var content = `${this.generateUsernames(msg)}, you've been hugged by **${msg.author.username}**. :heart:`
+    if (msg.mentions.users.size > 0) {
+      var content = `${this.getMentionedUsernames(msg)}, you've been hugged by **${msg.author.username}**. :heart:`
+    }
 
     ioTools.getRandomImage('hug', args).then(image => {
       msg.channel.send(content, {

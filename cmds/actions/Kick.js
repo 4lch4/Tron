@@ -18,7 +18,7 @@ module.exports = class Kick extends Command {
 
   async run (msg, args) {
     if (msg.mentions.users.size > 0) {
-      var content = `**${this.generateUsernames(msg)}**, you've been kicked by **${msg.author.username}**.`
+      var content = `${this.getMentionedUsernames(msg)}, you've been kicked by **${msg.author.username}**.`
     }
 
     ioTools.getRandomImage('kick', args).then(image => {
