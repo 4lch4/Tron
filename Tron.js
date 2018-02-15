@@ -45,8 +45,9 @@ client.on('ready', () => {
 })
 
 client.on('message', msg => {
-  if (msg.mentions.users.get(client.user.id) !== undefined && !msg.content.startsWith(client.commandPrefix)) {
-    console.log(`Tron mentioned.`)
+  if (msg.mentions.users.get(client.user.id) !== undefined &&
+      !msg.content.startsWith(client.commandPrefix)) {
+    logger.info(`Tron mentioned.`)
   }
 })
 

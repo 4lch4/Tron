@@ -88,6 +88,6 @@ module.exports = class Tools {
    * @param {Client} client
    */
   sendOwnerMessage (message, client) {
-    client.users.get('219270060936527873').send(message)
+    return client.users.get('219270060936527873').send(message)
   }
 }

@@ -3,15 +3,13 @@ const fs = require('fs-extra')
 const path = require('path')
 const tools = new (require('./Tools'))()
 
-const INFO_LOG_PATH = path.join(__dirname, '../logs', `${tools.shortLogDate}-info.txt`)
-const WARN_LOG_PATH = path.join(__dirname, '../logs', `${tools.shortLogDate}-warn.txt`)
-const ERROR_LOG_PATH = path.join(__dirname, '../logs', `${tools.shortLogDate}-error.txt`)
+const INFO_LOG_PATH = path.join(__dirname, '..', 'logs', `${tools.shortLogDate}-info.txt`)
+const WARN_LOG_PATH = path.join(__dirname, '..', 'logs', `${tools.shortLogDate}-warn.txt`)
+const ERROR_LOG_PATH = path.join(__dirname, '..', 'logs', `${tools.shortLogDate}-error.txt`)
 
 const appendLogString = (log, info) => {
   if (fs.existsSync(log)) return fs.appendFile(log, `${tools.shortUTCTime} - ${info}\n`)
-  else {
-    fs.createFile(log).then(() => fs.appendFile(log, `${tools.shortUTCTime} - ${info}\n`))
-  }
+  else return fs.createFile(log).then(() => fs.appendFile(log, `${tools.shortUTCTime} - ${info}\n`))
 }
 
 class Logger {
@@ -21,7 +19,7 @@ class Logger {
    * @param {string} info
    */
   info (info) {
-    console.info(`${chalk.blueBright(`INFO`)} - ${info}`)
+    console.log(`${chalk.blueBright(`INFO`)} - ${info}`)
     appendLogString(INFO_LOG_PATH, info)
     return this
   }
