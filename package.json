@@ -34,6 +34,7 @@
     "moment-timezone": "^0.5.14",
     "mongodb": "^3.0.2",
     "mongoose": "^5.0.3",
+    "node-ipc": "^9.1.1",
     "node-opus": "^0.2.7",
     "opusscript": "0.0.4",
     "redwrap": "0.0.4",

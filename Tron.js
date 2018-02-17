@@ -6,6 +6,7 @@ const CommandHelper = require('./util/db/CommandHelper')
 
 const config = require('./util/config')
 const logger = new (require('./util/logger'))()
+const IPC = require('./util/IPC')
 
 const client = new CommandoClient({
   commandPrefix: config.prefix,
@@ -72,3 +73,7 @@ client.on('commandError', (cmd, err) => logger.error(err))
 
 client.on('error', err => logger.error(err))
 
+client.login(config.token)
+
+const ipc = new IPC(client).ipc
+ipc.server.start()
