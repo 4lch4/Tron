@@ -1,7 +1,7 @@
 {
   "name": "tron",
   "displayName": "Tron",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Our bot that makes socializing on our servers more entertaining.",
   "main": "Tron.js",
   "scripts": {
