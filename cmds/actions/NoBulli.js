@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 
 const IOTools = require('../../util/IOTools')
 const ioTools = new IOTools()
@@ -12,24 +12,30 @@ module.exports = class NoBulli extends Command {
       guildOnly: true,
       throttling: { usages: 1, duration: 10 },
       description: 'Warns @User1 not to bully @User2.',
-      examples: ['+nobulli @User1 @User2']
+      examples: ['+nobulli @User1 @User2'],
+      args: [{
+        key: 'user1',
+        type: 'user',
+        prompt: 'Which user needs a warning?'
+      }, {
+        key: 'user2',
+        type: 'user',
+        prompt: 'Which user needs protecting?'
+      }]
     })
   }
 
-  async run (msg, args) {
-    let content = ''
-
-    if (msg.mentions.users.size > 0) {
-      const username = msg.mentions.users.first().username
-      content = `**${username}**, don't you dare bulli **${msg.author.username}**!`
+  async run (msg, { user1, user2 }) {
+    if (msg.mentions.users.size > 1) {
+      var content = `**${user1.username}**, don't you dare bulli **${user2.username}**!`
     }
 
-    ioTools.getRandomImage('nobulli', args).then(image => {
+    ioTools.getRandomImage('nobulli').then(image => {
       msg.channel.send(content, {
         files: [
           image
         ]
       })
-    })
+    }).catch(err => console.error(err))
   }
 }

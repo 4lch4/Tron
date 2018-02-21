@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 const tumblr = new (require('../../util/TumblrTools'))()
 
 const blogUrl = 'lady-zenora.tumblr.com'

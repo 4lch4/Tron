@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 
 const reddit = new (require('../../util/RedditTools'))()
 
@@ -63,12 +63,17 @@ class Reddit extends Command {
   }
 
   async run (msg, { subreddit, sort, from, limit }) {
-    if (subreddit.indexOf('/') !== -1) {
-      subreddit = subreddit.slice(subreddit.indexOf('/') + 1)
+    let start = subreddit.indexOf('/')
+    if (start !== -1) {
+      subreddit = subreddit.slice(start + 1)
     }
 
-    reddit.getRandomPost(subreddit, sort, from, limit).then(post => {
+    return reddit.getRandomPost(subreddit, sort, from, limit).then(post => {
       msg.channel.send(post)
+    }).catch(err => {
+      if (err.message === 'Cannot read property \'children\' of undefined') {
+        msg.channel.send('This subreddit does not exist or is private.')
+      }
     })
   }
 }

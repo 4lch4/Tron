@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 
 const IOTools = require('../../util/IOTools')
 const ioTools = new IOTools()
@@ -18,11 +18,8 @@ module.exports = class Bite extends Command {
   }
 
   async run (msg, args) {
-    let content = ''
-
     if (msg.mentions.users.size > 0) {
-      const username = msg.mentions.users.first().username
-      content = `**${username}**, you've been bitten by **${msg.author.username}**.`
+      var content = `${this.getMentionedUsernames(msg)}, you've been bitten by **${msg.author.username}**.`
     }
 
     ioTools.getRandomImage('bite', args).then(image => {

@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 
 const ioTools = new (require('../../util/IOTools'))()
 const tools = new (require('../../util/Tools'))()
@@ -27,7 +27,7 @@ class Newds extends Command {
 
   async run (msg, { sex }) {
     if (maleVarieties.indexOf(sex) !== -1) {
-      console.log(`Found a male choice.`)
+      this.log(`Found a male choice.`)
     } else {
       if (msg.mentions.users.size > 0) {
         ioTools.readDataFile('ButtImages.txt').then(fileData => {
@@ -38,6 +38,12 @@ class Newds extends Command {
             user.createDM().then(channel => {
               channel.send(fileLines[random]).catch(err => console.error(err))
             })
+          })
+
+          msg.channel.send('Your message has been sent. ;)')
+
+          msg.delete().catch(err => {
+            if (err.message !== 'Missing Permissions') this.log(err)
           })
         })
       } else {

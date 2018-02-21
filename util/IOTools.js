@@ -10,12 +10,8 @@ const fs = require('fs-extra')
 module.exports = class IOTools {
   getImagePath (filePath) {
     const finalPath = path.join('./images', filePath)
-
-    return new Promise((resolve, reject) => {
-      if (this.getFileSize(finalPath) < 8000000) {
-        resolve(finalPath)
-      } else reject(new Error('Provided file is too large to send over Discord.'))
-    })
+    if (this.getFileSize(finalPath) < 8000000) return finalPath
+    else throw new Error('Provided file is too large to send over Discord.')
   }
 
   async downloadImage (options) {
@@ -31,9 +27,9 @@ module.exports = class IOTools {
   getRandomImage (dirPath, args) {
     return new Promise((resolve, reject) => {
       this.getImageFilenames(dirPath).then(filenames => {
-        if (isNaN(args[0])) resolve(filenames[tools.getRandom(0, filenames.length)])
+        if (args === undefined || isNaN(args[0])) resolve(filenames[tools.getRandom(0, filenames.length)])
         else resolve(filenames[args[0]])
-      })
+      }).catch(err => reject(err))
     })
   }
 
@@ -68,7 +64,7 @@ module.exports = class IOTools {
         }
 
         resolve(filePaths)
-      })
+      }).catch(err => reject(err))
     })
   }
 

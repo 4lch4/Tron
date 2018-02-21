@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 
 const ioTools = new (require('../../util/IOTools'))()
 
@@ -8,6 +8,7 @@ class KillMe extends Command {
       name: 'killme',
       group: 'reactions',
       memberName: 'killme',
+      aliases: ['kms'],
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random "KillMe" gif.',
       examples: ['+killme']

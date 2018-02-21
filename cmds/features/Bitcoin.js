@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 const coinbase = new (require('../util/Coinbase'))()
 
 const tools = new (require('../../util/Tools'))()

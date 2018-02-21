@@ -1,7 +1,7 @@
 {
   "name": "tron",
   "displayName": "Tron",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Our bot that makes socializing on our servers more entertaining.",
   "main": "Tron.js",
   "scripts": {
@@ -20,25 +20,29 @@
   "homepage": "https://paranoiddevs.com/Tron",
   "dependencies": {
     "bufferutil": "^3.0.3",
-    "canvas": "^1.6.7",
-    "chance": "^1.0.12",
+    "canvas": "^1.6.9",
+    "chalk": "^2.3.0",
+    "chance": "^1.0.13",
     "coinbase": "^2.0.7",
     "discord.js": "github:hydrabolt/discord.js",
     "discord.js-commando": "github:gawdl3y/discord.js-commando",
     "erlpack": "github:discordapp/erlpack",
-    "fs-extra": "^4.0.2",
+    "fs-extra": "^4.0.3",
+    "giphy-js-sdk-core": "^1.0.3",
     "image-downloader": "^3.3.0",
-    "libsodium-wrappers": "^0.7.2",
+    "libsodium-wrappers": "^0.7.3",
     "moment-timezone": "^0.5.14",
-    "mongodb": "^3.0.0-rc0",
-    "mongoose": "^5.0.0-rc0",
+    "mongodb": "^3.0.2",
+    "mongoose": "^5.0.3",
+    "node-ipc": "^9.1.1",
     "node-opus": "^0.2.7",
     "opusscript": "0.0.4",
     "redwrap": "0.0.4",
     "shuffle-array": "^1.0.1",
-    "sqlite": "^2.8.0",
+    "sqlite": "^2.9.1",
+    "survaid": "github:Alcha/Survaid",
     "tumblr.js": "^1.1.1",
-    "uws": "^8.14.0",
-    "zlib-sync": "^0.1.3"
+    "uws": "^8.14.1",
+    "zlib-sync": "^0.1.4"
   }
 }

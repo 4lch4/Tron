@@ -1,4 +1,4 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 
 const SuggestionDb = require('../../util/db/Suggestion')
 const tools = new (require('../../util/Tools'))()

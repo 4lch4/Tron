@@ -1,6 +1,5 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 const reddit = new (require('../../util/RedditTools'))()
-const tools = new (require('../../util/Tools'))()
 const buttSubs = [
   'asstastic',
   'pawg',

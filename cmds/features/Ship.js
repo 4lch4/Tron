@@ -1,10 +1,51 @@
-const { Command } = require('discord.js-commando')
+const Command = require('../BaseCmd')
 const path = require('path')
 const Canvas = require('canvas')
 const ioTools = new (require('../../util/IOTools'))()
 const tools = new (require('../../util/Tools'))()
 const shuffle = require('shuffle-array')
 const Image = Canvas.Image
+
+class Ship extends Command {
+  constructor (client) {
+    super(client, {
+      name: 'ship',
+      group: 'features',
+      memberName: 'ship',
+      throttling: { usages: 1, duration: 10 },
+      description: 'Ships two users as a couple.',
+      examples: ['+ship @Alcha#2625 @Aadio#1576'],
+      args: [{
+        key: 'user1',
+        label: 'User 1',
+        prompt: 'Who\'s the first person you wish to ship?',
+        type: 'user'
+      }, {
+        key: 'user2',
+        label: 'User 2',
+        prompt: 'Who do you wish to ship the first person with?',
+        type: 'user'
+      }]
+    })
+  }
+
+  async run (msg, { user1, user2 }) {
+    const imgFormat = { format: 'png', size: 128 }
+    const urls = [user1.displayAvatarURL(imgFormat), user2.displayAvatarURL(imgFormat)]
+
+    getShipImages(urls).then(images => {
+      getShipCanvas(images).then(canvas => {
+        getShipName(msg).then(shipName => {
+          const content = 'Lovely shipping!\nShip name: ' + shipName
+
+          msg.channel.send(content, { files: [canvas.toBuffer()] })
+        })
+      })
+    }).catch(err => console.error(err))
+  }
+}
+
+module.exports = Ship
 
 async function getShipCanvas (images) {
   const finalCanvas = new Canvas((images.length * 128), 128)
@@ -82,44 +123,3 @@ function getShipName (msg) {
   const shipName = shuffled.toString().substring(0, randomLength)
   return Promise.resolve(`**${tools.upperFirstC(shipName.replace(/,/g, ''))}**`)
 }
-
-class Ship extends Command {
-  constructor (client) {
-    super(client, {
-      name: 'ship',
-      group: 'features',
-      memberName: 'ship',
-      throttling: { usages: 1, duration: 10 },
-      description: 'Ships two users as a couple.',
-      examples: ['+ship @Alcha#2625 @Aadio#1576'],
-      args: [{
-        key: 'user1',
-        label: 'User 1',
-        prompt: 'Who\'s the first person you wish to ship?',
-        type: 'user'
-      }, {
-        key: 'user2',
-        label: 'User 2',
-        prompt: 'Who do you wish to ship the first person with?',
-        type: 'user'
-      }]
-    })
-  }
-
-  async run (msg, { user1, user2 }) {
-    const imgFormat = { format: 'png', size: 128 }
-    const urls = [user1.displayAvatarURL(imgFormat), user2.displayAvatarURL(imgFormat)]
-
-    getShipImages(urls).then(images => {
-      getShipCanvas(images).then(canvas => {
-        getShipName(msg).then(shipName => {
-          const content = 'Lovely shipping!\nShip name: ' + shipName
-
-          msg.channel.send(content, { files: [canvas.toBuffer()] })
-        })
-      })
-    }).catch(err => console.error(err))
-  }
-}
-
-module.exports = Ship
