@@ -8,3 +8,7 @@ images/
 *.sqlite3
 
 mongo/
+
+logs/
+
+\.vscode/
