@@ -18,7 +18,7 @@ class Logger {
    *
    * @param {string} info
    */
-  info (info) {
+  log (info) {
     console.log(`${chalk.blueBright(`INFO`)} - ${info}`)
     appendLogString(INFO_LOG_PATH, info)
     return this
