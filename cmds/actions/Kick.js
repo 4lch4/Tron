@@ -22,11 +22,7 @@ module.exports = class Kick extends Command {
     }
 
     ioTools.getRandomImage('kick', args).then(image => {
-      msg.channel.send(content, {
-        files: [
-          image
-        ]
-      })
+      msg.channel.send(content, { files: [image] })
     })
   }
 }

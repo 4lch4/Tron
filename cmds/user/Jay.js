@@ -14,8 +14,8 @@ class Jay extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getImage('Jay.png').then(img => {
-      msg.channel.send('', { files: [img] })
+    ioTools.getImage('Jay.png').then(image => {
+      msg.channel.send('', { files: [image] })
     })
   }
 }

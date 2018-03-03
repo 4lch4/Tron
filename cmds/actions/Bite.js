@@ -23,11 +23,7 @@ module.exports = class Bite extends Command {
     }
 
     ioTools.getRandomImage('bite', args).then(image => {
-      msg.channel.send(content, {
-        files: [
-          image
-        ]
-      })
+      msg.channel.send(content, { files: [image] })
     })
   }
 }

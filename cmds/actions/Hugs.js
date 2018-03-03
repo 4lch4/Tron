@@ -23,11 +23,7 @@ module.exports = class Hug extends Command {
     }
 
     ioTools.getRandomImage('hug', args).then(image => {
-      msg.channel.send(content, {
-        files: [
-          image
-        ]
-      })
+      msg.channel.send(content, { files: [image] })
     })
   }
 }

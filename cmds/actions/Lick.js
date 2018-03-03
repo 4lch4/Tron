@@ -22,11 +22,7 @@ module.exports = class Lick extends Command {
     }
 
     ioTools.getRandomImage('lick', args).then(image => {
-      msg.channel.send(content, {
-        files: [
-          image
-        ]
-      })
+      msg.channel.send(content, { files: [image] })
     })
   }
 }

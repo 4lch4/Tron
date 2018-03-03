@@ -22,11 +22,7 @@ module.exports = class Love extends Command {
     }
 
     ioTools.getRandomImage('love', args).then(image => {
-      msg.channel.send(content, {
-        files: [
-          image
-        ]
-      })
+      msg.channel.send(content, { files: [image] })
     })
   }
 }

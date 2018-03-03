@@ -22,11 +22,7 @@ module.exports = class Poke extends Command {
     }
 
     ioTools.getRandomImage('poke', args).then(image => {
-      msg.channel.send(content, {
-        files: [
-          image
-        ]
-      })
+      msg.channel.send(content, { files: [image] })
     })
   }
 }
