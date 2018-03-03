@@ -4,7 +4,7 @@ const path = require('path')
 const tools = new (require('./util/Tools'))()
 const CommandHelper = require('./util/db/CommandHelper')
 
-const config = require('./util/config')
+const config = require('./util/config.json')
 const logger = new (require('./util/logger'))()
 
 const client = new CommandoClient({
@@ -39,17 +39,27 @@ client.on('ready', () => {
   let readyTime = tools.formattedUTCTime
 
   client.channels.get(config.notificationChannel).send(`Tron has come online > **${readyTime}**`)
-  client.user.setActivity(config.defaultGame)
+
+  /**
+   * Rotates the activity setting on Tron every 2 minutes (120,000ms) to a
+   * random value  in config.activities. Ideally, I'd like to add information
+   * such as  current number of guilds/users we support and add it to the list
+   * of "activities" as well.
+   *
+   * When an update occurs, it is logged in the info log.
+   */
+  setInterval(function () {
+    let activities = config.activities
+    let random = tools.getRandom(0, activities.length)
+    let activity = activities[random]
+
+    logger.log(`Updating activity to ${activity}`)
+
+    client.user.setActivity(activity)
+  }, 120000)
 
   logger.log(`Tron has come online > ${readyTime}`)
 })
-
-/* client.on('message', msg => {
-  if (msg.mentions.users.get(client.user.id) !== undefined &&
-      !msg.content.startsWith(client.commandPrefix)) {
-    // logger.log(`Tron mentioned.`)  For future integration into cleverbot or something similar
-  }
-}) */
 
 client.on('commandRun', (cmd, promise, msg) => {
   if (msg.guild !== null) {
