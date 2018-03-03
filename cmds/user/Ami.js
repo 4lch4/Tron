@@ -1,4 +1,5 @@
 const Command = require('../BaseCmd')
+const ioTools = new (require('../../util/IOTools'))()
 
 class Ami extends Command {
   constructor (client) {
@@ -13,7 +14,9 @@ class Ami extends Command {
   }
 
   async run (msg, args) {
-    return msg.channel.send('𝓽𝓱𝓮 𝓲𝓶𝓹𝓾𝓻𝓮 𝓱𝓮𝓷𝓽𝓪𝓲 𝓺𝓾𝓮𝓮𝓷')
+    ioTools.getRandomImage('ami', args).then(image => {
+      msg.channel.send('', { files: [image] })
+    })
   }
 }
 

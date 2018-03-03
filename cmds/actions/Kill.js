@@ -22,11 +22,7 @@ module.exports = class Kill extends Command {
     }
 
     ioTools.getRandomImage('kill', args).then(image => {
-      msg.channel.send(content, {
-        files: [
-          image
-        ]
-      })
+      msg.channel.send(content, { files: [image] })
     })
   }
 }

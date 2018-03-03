@@ -31,11 +31,7 @@ module.exports = class NoBulli extends Command {
     }
 
     ioTools.getRandomImage('nobulli').then(image => {
-      msg.channel.send(content, {
-        files: [
-          image
-        ]
-      })
+      msg.channel.send(content, { files: [image] })
     }).catch(err => console.error(err))
   }
 }

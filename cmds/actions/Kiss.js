@@ -22,11 +22,7 @@ module.exports = class Kiss extends Command {
     }
 
     ioTools.getRandomImage('kiss', args).then(image => {
-      msg.channel.send(content, {
-        files: [
-          image
-        ]
-      })
+      msg.channel.send(content, { files: [image] })
     })
   }
 }

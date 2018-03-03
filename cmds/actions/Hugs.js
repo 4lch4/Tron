@@ -10,10 +10,10 @@ module.exports = class Hug extends Command {
       group: 'actions',
       memberName: 'hug',
       guildOnly: true,
-      aliases: ['hugs'],
+      aliases: ['hugs', 'cuddle', 'cuddles'],
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random love gif and if a user is mentioned, includes their name.',
-      examples: ['+love @Alcha#2625']
+      examples: ['+hugs @Alcha#2625']
     })
   }
 
@@ -23,11 +23,7 @@ module.exports = class Hug extends Command {
     }
 
     ioTools.getRandomImage('hug', args).then(image => {
-      msg.channel.send(content, {
-        files: [
-          image
-        ]
-      })
+      msg.channel.send(content, { files: [image] })
     })
   }
 }

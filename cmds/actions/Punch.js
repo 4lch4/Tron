@@ -22,11 +22,7 @@ module.exports = class Punch extends Command {
     }
 
     ioTools.getRandomImage('punch', args).then(image => {
-      msg.channel.send(content, {
-        files: [
-          image
-        ]
-      })
+      msg.channel.send(content, { files: [image] })
     })
   }
 }

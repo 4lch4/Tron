@@ -22,11 +22,7 @@ module.exports = class Pat extends Command {
     }
 
     ioTools.getRandomImage('pat', args).then(image => {
-      msg.channel.send(content, {
-        files: [
-          image
-        ]
-      })
+      msg.channel.send(content, { files: [image] })
     })
   }
 }
