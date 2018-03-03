@@ -18,24 +18,25 @@ class Boobs extends Command {
       name: 'boobs',
       group: 'nsfw',
       memberName: 'boobs',
-      aliases: ['boobs', 'boobies'],
+      aliases: ['boob', 'boobies'],
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random boob image or gif from a variety of subreddits.',
-      examples: ['+boobs'],
+      examples: ['+boobs', '+boobies 10'],
       args: [{
         key: 'count',
         type: 'integer',
         prompt: '',
-        default: 1
+        default: 1,
+        min: 1,
+        max: 10
       }],
       nsfw: true
     })
   }
 
-  run (msg, { count }) {
-    reddit.getRandomTopPost(boobSubs, 'day', 50).then(post => {
-      msg.channel.send(post)
-    })
+  async run (msg, { count }) {
+    let post = await reddit.getRandomNSFWPost(boobSubs, count)
+    msg.channel.send(post).catch(err => this.error(err))
   }
 }
 

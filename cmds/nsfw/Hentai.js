@@ -15,15 +15,22 @@ class Hentai extends Command {
       memberName: 'hentai',
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random hentai image/gif.',
-      examples: ['+hentai'],
+      examples: ['+hentai', '+hentai 5'],
+      args: [{
+        key: 'count',
+        type: 'integer',
+        prompt: '',
+        default: 1,
+        min: 1,
+        max: 10
+      }],
       nsfw: true
     })
   }
 
-  async run (msg, args) {
-    reddit.getRandomTopPost(hentaiSubs, 'day', 50).then(post => {
-      msg.channel.send(post)
-    })
+  async run (msg, { count }) {
+    let post = await reddit.getRandomNSFWPost(hentaiSubs, count)
+    msg.channel.send(post).catch(err => this.error(err))
   }
 }
 
