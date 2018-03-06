@@ -30,7 +30,7 @@ class Divorce extends Command {
 
           if (await marriage.divorced(false, true)) return msg.reply('you two are already divorced! Whatchu tryin\' to pull?')
           else {
-            msg.channel.send(`<@${mentionedUserId}>, do you accept <@${msg.author.id}>'s divorce proposal?`).then(m => {
+            msg.channel.send(`<@${mentionedUserId}>, do you accept <@${msg.author.id}>'s divorce proposal? (yes or no)`).then(m => {
               marriage.getProposalResponse(msg.channel, mentionedUserId).then(accepted => {
                 if (accepted) {
                   marriage.saveDivorce().then(res => {
