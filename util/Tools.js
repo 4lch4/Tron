@@ -66,6 +66,10 @@ module.exports = class Tools {
     return temp.charAt(0).toUpperCase() + temp.slice(1)
   }
 
+  numberWithCommas (num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  }
+
   /**
    * Returns a random integer between the min (inclusive) and max (exclusive).
    *
