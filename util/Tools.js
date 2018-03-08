@@ -10,7 +10,7 @@ const UTC = 'UTC'
 
 const colors = require('./colors')
 
-const defaultFormat = 'MM.DD.Y @ HH:mm:ss'
+const DEFAULT_DATE_FORMAT = 'MM.DD.Y @ HH:mm:ss'
 
 module.exports = class Tools {
   formatTime (format) {
@@ -46,7 +46,7 @@ module.exports = class Tools {
   }
 
   get formattedTime () {
-    return moment.tz(config.defaultTimezone).format(defaultFormat)
+    return moment.tz(config.defaultTimezone).format(DEFAULT_DATE_FORMAT)
   }
 
   get utcTime () {
@@ -54,7 +54,7 @@ module.exports = class Tools {
   }
 
   get formattedUTCTime () {
-    return moment.tz(UTC).format(defaultFormat)
+    return moment.tz(UTC).format(DEFAULT_DATE_FORMAT)
   }
 
   get safeFormattedTime () {
