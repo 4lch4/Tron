@@ -53,7 +53,7 @@ client.on('ready', () => {
     let random = tools.getRandom(0, activities.length)
     let activity = activities[random]
 
-    logger.log(`Updating activity to ${activity}`)
+    logger.log(`Updating activity to ${activity}`, false)
 
     client.user.setActivity(activity)
   }, 120000)

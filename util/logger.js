@@ -18,8 +18,8 @@ class Logger {
    *
    * @param {string} info
    */
-  log (info) {
-    console.log(`${chalk.blueBright(`INFO`)} - ${info}`)
+  log (info, out = true) {
+    if (out) console.log(`${chalk.blueBright(`INFO`)} - ${info}`)
     appendLogString(INFO_LOG_PATH, info)
     return this
   }
