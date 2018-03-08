@@ -69,7 +69,7 @@ client.on('commandRun', (cmd, promise, msg) => {
 })
 
 client.on('unknownCommand', msg => {
-  if (msg.channel.id !== '356240357534597122') {  // Default testing channel, don't respond.
+  if (msg.channel.id !== config.testChannel) {  // Default testing channel, don't respond.
     let query = msg.content.substring(client.commandPrefix.length)
     tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
       .then(res => { if (res !== null) msg.channel.send(res) })
