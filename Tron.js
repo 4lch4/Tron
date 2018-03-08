@@ -62,6 +62,8 @@ client.on('ready', () => {
 })
 
 client.on('commandRun', (cmd, promise, msg) => {
+  logger.log(`Running ${cmd.name}...`)
+
   if (msg.guild !== null) {
     const command = new CommandHelper(msg.guild.id)
     command.incrementUsage(cmd.name).catch(err => logger.error(err))
