@@ -11,14 +11,24 @@ const UTC = 'UTC'
 const colors = require('./colors')
 
 const DEFAULT_DATE_FORMAT = 'MM.DD.Y @ HH:mm:ss'
+const PRETTY_DATE_FORMAT = 'MM/DD/Y HH:mm:ss'
 
 module.exports = class Tools {
   formatTime (format) {
     return moment.tz(config.defaultTimezone).format(format)
   }
 
+  formatUnixInput (input) {
+    return moment(input).tz(UTC).format(PRETTY_DATE_FORMAT)
+  }
+
   formatUTCTime (format) {
     return moment.tz(UTC).format(format)
+  }
+
+  pickImage (images) {
+    let random = this.getRandom(0, images.length)
+    if (images[random] === undefined) return this.pickImage(images)
   }
 
   async queryGiphy (query, username, avatarUrl) {

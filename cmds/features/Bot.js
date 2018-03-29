@@ -66,7 +66,7 @@ const generateFields = (client) => {
   client.owners.forEach(owner => {
     fields.push({
       'name': 'Owner',
-      'value': `${owner.username}#${owner.discriminator}`,
+      'value': owner.tag,
       'inline': true
     })
   })
