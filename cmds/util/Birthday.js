@@ -5,7 +5,8 @@ const connection = mongoose.createConnection(config.mongoUrl)
 const BirthdaySchema = new mongoose.Schema({
   _id: String,
   date: String,
-  privateDate: Boolean
+  privateDate: Boolean,
+  creatorId: String
 })
 
 /**
@@ -13,6 +14,7 @@ const BirthdaySchema = new mongoose.Schema({
  * @prop {string} _id
  * @prop {string} date
  * @prop {boolean} privateDate
+ * @prop {string} creatorId
  */
 
 const BirthdayModel = connection.model('Birthday', BirthdaySchema, 'birthdays')
@@ -46,6 +48,18 @@ class Birthday {
     this.privateDate = privateDate
   }
 
+  canModify (userId) {
+    return new Promise((resolve, reject) => {
+      if (userId === this.user) resolve(true)
+
+      BirthdayModel.findById(this.user, (err, res) => {
+        if (err) reject(err)
+        else if (res.creatorId === userId) resolve(true)
+        else resolve(false)
+      })
+    })
+  }
+
   /**
    * Returns true or false depending on if the current birthday model has been
    * stored in the database yet. The database is queried for the user that was
@@ -67,7 +81,7 @@ class Birthday {
     return new Promise((resolve, reject) => {
       BirthdayModel.findByIdAndUpdate(this.user, { date: info.date, privateDate: info.privateDate }, (err, res) => {
         if (err) reject(err)
-        else resolve(res)
+        else resolve(true)
       })
     })
   }

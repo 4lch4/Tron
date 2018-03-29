@@ -16,6 +16,8 @@ class Birthdays extends BaseCmd {
   }
 
   async run (msg, args) {
+    if (args.length === 0) return listBirthdays(msg, this.client)
+
     args = this.cleanArgs(args)
     const user = getUserIdFromStr(args[1])
     const op = args[0]
@@ -36,14 +38,16 @@ class Birthdays extends BaseCmd {
           if (user === undefined) birthday = new Birthday(msg.author.id)
           else birthday = new Birthday(user)
 
-          const info = await birthday.getInfo(msg)
-          const update = await birthday.updateBirthday(info)
+          if (await birthday.canModify(msg.author.id)) {
+            const info = await birthday.getInfo(msg)
+            const update = await birthday.updateBirthday(info)
 
-          if (update) return msg.reply('this birthday has been updated.')
-          else return msg.reply('there seems to have been an error. Please contact `+support`.')
+            if (update) return msg.reply('this birthday has been updated.')
+            else return msg.reply('there seems to have been an error. Please contact `+support`.')
+          } else return msg.reply('you don\'t have permission to modify this birthday.')
 
         default:
-          return msg.reply('now, how in the sam hill did you get this to happen?\nPlease contact Alcha using the `+support` command.')
+          return msg.reply('now, how in the sam hill did you get this to happen?\n\nPlease contact `+support`.')
       }
     } else return msg.reply('Please provide a valid value (add, list, update, delete).')
   }
