@@ -17,28 +17,30 @@ class Birthdays extends BaseCmd {
 
   async run (msg, args) {
     args = this.cleanArgs(args)
-    const op = args[0]
     const user = getUserIdFromStr(args[1])
+    const op = args[0]
+    let birthday
 
     if (isValidOperation(op)) {
       switch (op) {
         case 'add':
-          let birthday
           if (user === undefined) birthday = new Birthday(msg.author.id)
           else birthday = new Birthday(user)
 
           return addBirthday(birthday, msg)
 
         case 'list':
-          return listBirthdays(birthday, msg, this.client)
+          return listBirthdays(msg, this.client)
 
         case 'update':
+          if (user === undefined) birthday = new Birthday(msg.author.id)
+          else birthday = new Birthday(user)
+
           const info = await birthday.getInfo(msg)
-          birthday.updateBirthday(info).then(res => {
-            console.log(res)
-            msg.reply('your birthday has been updated!')
-          })
-          break
+          const update = await birthday.updateBirthday(info)
+
+          if (update) return msg.reply('this birthday has been updated.')
+          else return msg.reply('there seems to have been an error. Please contact `+support`.')
 
         default:
           return msg.reply('now, how in the sam hill did you get this to happen?\nPlease contact Alcha using the `+support` command.')
@@ -90,7 +92,7 @@ const getUserIdFromStr = str => {
 const addBirthday = async (birthday, msg) => {
   if (await birthday.stored()) {
     // Users birthday has already been stored
-    return msg.reply('this birthday has already been stored. If you wish to add a birthday for someone else, mention them like so: `+bdays add @User#1234`')
+    return msg.reply('this birthday has already been stored. If you wish to udpate it, simply use the `+bday update` command.')
   } else {
     const info = await birthday.getInfo(msg)
     const stored = await birthday.store(info)
@@ -108,7 +110,9 @@ const addBirthday = async (birthday, msg) => {
  *
  * @returns {Promise<Message>}
  */
-const listBirthdays = (birthday, msg, client) => {
+const listBirthdays = (msg, client) => {
+  const birthday = new Birthday(msg.author.id)
+
   birthday.getServerBdays(msg, client).then(bdays => {
     let content = ['Here is a list of server members who have their birthday added and set to public:\n```']
 
