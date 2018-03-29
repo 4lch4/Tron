@@ -49,6 +49,12 @@ class Birthdays extends BaseCmd {
 
 module.exports = Birthdays
 
+/**
+ * Determines if the provided string is a valid operation such as add, list,
+ * update, or delete and returns true or false.
+ *
+ * @param {string} val The string containing the argument
+ */
 const isValidOperation = val => {
   switch (val) {
     case 'add': return true
