@@ -125,7 +125,8 @@ class Birthday {
     return Promise.resolve({
       _id: await this.getUserId(msg),
       date: await this.getOtherDate(msg),
-      privateDate: await this.getOtherPrivacy(msg)
+      privateDate: await this.getOtherPrivacy(msg),
+      creatorId: msg.author.id
     })
   }
 

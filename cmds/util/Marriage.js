@@ -202,13 +202,14 @@ class Marriage {
     return new Promise((resolve, reject) => {
       for (let x = 0; x < 9; x++) {
         if (idList[x] !== undefined) {
-          let username = client.users.get(idList[x].id).username
-
-          fieldsOut.push({
-            'name': `${imgList[x]} ${username}`,
-            'value': `*- ${idList[x].anniversary.substring(0, 10)}*`,
-            'inline': true
-          })
+          let user = client.users.get(idList[x].id)
+          if (user !== undefined) {
+            fieldsOut.push({
+              'name': `${imgList[x]} ${user.username}`,
+              'value': `*- ${idList[x].anniversary.substring(0, 10)}*`,
+              'inline': true
+            })
+          }
         }
       }
 
