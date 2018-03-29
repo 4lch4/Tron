@@ -114,8 +114,13 @@ async function processUrls (urls) {
 }
 
 function getShipName (msg) {
-  const user0 = msg.mentions.users.array()[0].username
-  const user1 = msg.mentions.users.array()[1].username
+  let users = msg.mentions.users.array()
+  let user0 = 'N/A'
+  let user1 = 'N/A'
+
+  if (users[0] !== undefined) user0 = users[0].username
+  if (users[1] !== undefined) user1 = users[1].username
+
   const combined = user0 + user1
 
   const shuffled = shuffle(combined.split(''))
