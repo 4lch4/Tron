@@ -46,6 +46,15 @@ class Birthdays extends BaseCmd {
             else return msg.reply('there seems to have been an error. Please contact `+support`.')
           } else return msg.reply('you don\'t have permission to modify this birthday.')
 
+        case 'delete':
+          if (user === undefined) birthday = new Birthday(msg.author.id)
+          else birthday = new Birthday(user)
+          if (await birthday.canModify(msg.author.id)) {
+            const deleted = birthday.delete()
+            if (deleted) return msg.reply('this birthday has been deleted.')
+            else return msg.reply('there seems to have been a problem... Please contact +support.')
+          } else return msg.reply('you don\'t have permission to modify this birthday.')
+
         default:
           return msg.reply('now, how in the sam hill did you get this to happen?\n\nPlease contact `+support`.')
       }

@@ -60,6 +60,15 @@ class Birthday {
     })
   }
 
+  delete () {
+    return new Promise((resolve, reject) => {
+      BirthdayModel.deleteOne({ _id: this.user }, err => {
+        if (err) reject(err)
+        else resolve(true)
+      })
+    })
+  }
+
   /**
    * Returns true or false depending on if the current birthday model has been
    * stored in the database yet. The database is queried for the user that was
