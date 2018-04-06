@@ -68,6 +68,14 @@ client.on('commandRun', (cmd, promise, msg) => {
     const command = new CommandHelper(msg.guild.id)
     command.incrementUsage(cmd.name).catch(err => logger.error(err))
   }
+client.on('warn', info => {
+  logger.log('warn info = ...')
+  logger.log(info)
+})
+
+client.on('commandBlocked', (msg, str) => {
+  logger.log('Command Blocked...')
+  logger.log(msg)
 })
 
 client.on('unknownCommand', msg => {
