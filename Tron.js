@@ -91,6 +91,25 @@ client.on('commandError', (cmd, err) => logger.error(err))
 
 client.on('error', err => logger.error(err))
 
+let zenCount = 0
+
+client.on('message', msg => {
+  if (msg.mentions.users.get(client.user.id) !== undefined) {
+    logger.log('Tron mentioned.')
+    logger.log(msg.content)
+  } else if (msg.content.startsWith(client.commandPrefix)) {
+    logger.log(`Command used.`)
+    logger.log(msg.content)
+  }
+
+  if (msg.author.id === '150319175326236672') {
+    if (zenCount === 10) {
+      zenCount = 0
+      return msg.reply('meh.')
+    } else zenCount++
+  }
+})
+
 client.login(config.token)
 
 const IPC = require('./util/IPC')
