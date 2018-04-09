@@ -7,6 +7,9 @@ const CommandHelper = require('./util/db/CommandHelper')
 const config = require('./util/config.json')
 const logger = new (require('./util/logger'))()
 
+const Raven = require('raven')
+Raven.config(config.ravenUrl).install()
+
 const client = new CommandoClient({
   commandPrefix: config.prefix,
   owner: config.owner,
