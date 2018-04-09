@@ -27,6 +27,7 @@ class Birthdays extends BaseCmd {
       switch (op) {
         case 'add':
           if (user === undefined) birthday = new Birthday(msg.author.id)
+          else if (args.length > 2) return msg.reply('please try again with only one mention or no mention.')
           else birthday = new Birthday(user)
 
           return addBirthday(birthday, msg)
@@ -36,6 +37,7 @@ class Birthdays extends BaseCmd {
 
         case 'update':
           if (user === undefined) birthday = new Birthday(msg.author.id)
+          else if (args.length > 2) return msg.reply('please try again with only one mention or no mention.')
           else birthday = new Birthday(user)
 
           if (await birthday.canModify(msg.author.id)) {
@@ -48,7 +50,9 @@ class Birthdays extends BaseCmd {
 
         case 'delete':
           if (user === undefined) birthday = new Birthday(msg.author.id)
+          else if (args.length > 2) return msg.reply('please try again with only one mention or no mention.')
           else birthday = new Birthday(user)
+
           if (await birthday.canModify(msg.author.id)) {
             const deleted = birthday.delete()
             if (deleted) return msg.reply('this birthday has been deleted.')
