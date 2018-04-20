@@ -9,7 +9,8 @@ class Tickle extends BaseCmd {
       group: 'actions',
       description: 'Returns a random tickle image/gif.',
       aliases: ['tickles'],
-      examples: ['+tickle @Alcha#2625']
+      examples: ['+tickle @Alcha#2625'],
+      argsType: 'multiple'
     })
   }
 
@@ -20,7 +21,7 @@ class Tickle extends BaseCmd {
 
     ioTools.getRandomImage('tickle', args).then(image => {
       msg.channel.send(content, { files: [image] })
-    })
+    }).catch(err => console.error(err))
   }
 }
 

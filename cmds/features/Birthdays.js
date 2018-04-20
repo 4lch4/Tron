@@ -9,7 +9,7 @@ class Birthdays extends BaseCmd {
       memberName: 'birthdays',
       group: 'features',
       aliases: ['birthday', 'bday', 'bdays'],
-      description: 'Allows you to add your birthday and enable birthday notifications.',
+      description: 'Allows you to modify birthdays and enable notifications for server member birthdays.',
       examples: ['+birthdays add', '+bday list', '+bdays notify'],
       argsType: 'multiple'
     })

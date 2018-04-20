@@ -22,7 +22,7 @@ const BirthdayModel = connection.model('Birthday', BirthdaySchema, 'birthdays')
 const baseCollector = msg => {
   return msg.channel.createMessageCollector(m => {
     return m.channel.id === msg.channel.id && m.author.id === msg.author.id
-  }, { time: 25000 })
+  }, { time: 25000, max: 3, maxMatches: 1 })
 }
 
 /**

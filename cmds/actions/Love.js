@@ -12,7 +12,8 @@ module.exports = class Love extends Command {
       guildOnly: true,
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random love gif and if a user is mentioned, includes their name.',
-      examples: ['+love @Alcha#2625']
+      examples: ['+love @Alcha#2625'],
+      argsType: 'multiple'
     })
   }
 
@@ -23,6 +24,6 @@ module.exports = class Love extends Command {
 
     ioTools.getRandomImage('love', args).then(image => {
       msg.channel.send(content, { files: [image] })
-    })
+    }).catch(err => console.error(err))
   }
 }

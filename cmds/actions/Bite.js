@@ -13,7 +13,8 @@ module.exports = class Bite extends Command {
       throttling: { usages: 1, duration: 10 },
       aliases: ['bites', 'nom', 'noms', 'nomnom', 'omnom'],
       description: 'Returns a random bite gif and includes the mentioned users username.',
-      examples: ['+bite @Alcha#2625', '+nom', '+noms @Alcha#2625']
+      examples: ['+bite @Alcha#2625', '+nom', '+noms @Alcha#2625'],
+      argsType: 'multiple'
     })
   }
 
@@ -24,6 +25,6 @@ module.exports = class Bite extends Command {
 
     ioTools.getRandomImage('bite', args).then(image => {
       msg.channel.send(content, { files: [image] })
-    })
+    }).catch(err => console.error(err))
   }
 }

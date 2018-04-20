@@ -12,7 +12,8 @@ module.exports = class Kick extends Command {
       guildOnly: true,
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random kick gif and includes the mentioned users username.',
-      examples: ['+kick @Alcha#2625']
+      examples: ['+kick @Alcha#2625'],
+      argsType: 'multiple'
     })
   }
 
@@ -23,6 +24,6 @@ module.exports = class Kick extends Command {
 
     ioTools.getRandomImage('kick', args).then(image => {
       msg.channel.send(content, { files: [image] })
-    })
+    }).catch(err => console.error(err))
   }
 }
