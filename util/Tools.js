@@ -10,15 +10,25 @@ const UTC = 'UTC'
 
 const colors = require('./colors')
 
-const defaultFormat = 'MM.DD.Y @ HH:mm:ss'
+const DEFAULT_DATE_FORMAT = 'MM.DD.Y @ HH:mm:ss'
+const PRETTY_DATE_FORMAT = 'MM/DD/Y HH:mm:ss'
 
 module.exports = class Tools {
   formatTime (format) {
     return moment.tz(config.defaultTimezone).format(format)
   }
 
+  formatUnixInput (input) {
+    return moment(input).tz(UTC).format(PRETTY_DATE_FORMAT)
+  }
+
   formatUTCTime (format) {
     return moment.tz(UTC).format(format)
+  }
+
+  pickImage (images) {
+    let random = this.getRandom(0, images.length)
+    if (images[random] === undefined) return this.pickImage(images)
   }
 
   async queryGiphy (query, username, avatarUrl) {
@@ -46,7 +56,7 @@ module.exports = class Tools {
   }
 
   get formattedTime () {
-    return moment.tz(config.defaultTimezone).format(defaultFormat)
+    return moment.tz(config.defaultTimezone).format(DEFAULT_DATE_FORMAT)
   }
 
   get utcTime () {
@@ -54,7 +64,7 @@ module.exports = class Tools {
   }
 
   get formattedUTCTime () {
-    return moment.tz(UTC).format(defaultFormat)
+    return moment.tz(UTC).format(DEFAULT_DATE_FORMAT)
   }
 
   get safeFormattedTime () {
@@ -64,6 +74,10 @@ module.exports = class Tools {
   upperFirstC (string) {
     let temp = string.toLowerCase()
     return temp.charAt(0).toUpperCase() + temp.slice(1)
+  }
+
+  numberWithCommas (num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
 
   /**

@@ -1,5 +1,3 @@
-const config = require('./config.json')
-
 const download = require('image-downloader')
 
 const tools = new (require('./Tools'))()
@@ -27,8 +25,8 @@ module.exports = class IOTools {
   getRandomImage (dirPath, args) {
     return new Promise((resolve, reject) => {
       this.getImageFilenames(dirPath).then(filenames => {
-        if (args === undefined || isNaN(args[0])) resolve(filenames[tools.getRandom(0, filenames.length)])
-        else resolve(filenames[args[0]])
+        if (filenames[args[args.length - 1]] !== undefined) resolve(filenames[args.length - 1])
+        else resolve(filenames[tools.getRandom(0, filenames.length)])
       }).catch(err => reject(err))
     })
   }
@@ -89,8 +87,11 @@ module.exports = class IOTools {
   }
 
   async removeFile (filePath) {
-    fs.exists(filePath).then(exists => {
-      return fs.remove(filePath)
+    return new Promise((resolve, reject) => {
+      fs.exists(filePath).then(exists => {
+        if (exists) resolve(fs.remove(filePath))
+        else resolve(fs.remove(filePath))
+      }).catch(err => reject(err))
     })
   }
 }

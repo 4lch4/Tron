@@ -26,7 +26,7 @@ class Trump extends Command {
   }
 
   async run (msg, { type }) {
-    ioTools.getImagePath(path.join('trump', `${type}.gif`)).then(image => {
+    ioTools.getImage(path.join('trump', `${type}.gif`)).then(image => {
       msg.channel.send('', { files: [image] })
     }).catch(err => console.error(err))
   }

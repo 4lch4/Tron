@@ -24,13 +24,13 @@ class Marry extends Command {
 
       case 1:
         if (args[0].match(/<@!?\d+>/)) {
-            // User mentioned
+          // User mentioned
           const mentionedUserId = args[0].substring(args[0].indexOf(args[0].match(/\d/)), args[0].indexOf('>'))
           const marriage = new Marriage(mentionedUserId, msg.author.id)
 
           if (await marriage.married()) return msg.reply('you two are already married! Whatchu tryin\' to pull? :wink:')
           else {
-            msg.channel.send(`<@${mentionedUserId}>, do you take <@${msg.author.id}>'s hand in marriage? :ring:`).then(m => {
+            msg.channel.send(`<@${mentionedUserId}>, do you take <@${msg.author.id}>'s hand in marriage? (yes or no) :ring:`).then(m => {
               marriage.getProposalResponse(msg.channel, mentionedUserId).then(accepted => {
                 if (accepted) {
                   marriage.saveMarriage().then(res => {

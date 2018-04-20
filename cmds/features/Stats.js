@@ -15,7 +15,7 @@ class Stats extends Command {
   }
 
   async run (msg, args) {
-    const command = new Commands(msg.guild.id)
+    const command = new Commands(msg, msg.command)
 
     switch (args.length) {
       case 0:

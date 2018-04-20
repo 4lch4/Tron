@@ -12,7 +12,8 @@ module.exports = class Kill extends Command {
       guildOnly: true,
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random kill gif and includes the mentioned users username.',
-      examples: ['+kill @Alcha#2625']
+      examples: ['+kill @Alcha#2625'],
+      argsType: 'multiple'
     })
   }
 
@@ -23,6 +24,6 @@ module.exports = class Kill extends Command {
 
     ioTools.getRandomImage('kill', args).then(image => {
       msg.channel.send(content, { files: [image] })
-    })
+    }).catch(err => console.error(err))
   }
 }

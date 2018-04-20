@@ -7,6 +7,9 @@ const CommandHelper = require('./util/db/CommandHelper')
 const config = require('./util/config.json')
 const logger = new (require('./util/logger'))()
 
+const Raven = require('raven')
+Raven.config(config.ravenUrl).install()
+
 const client = new CommandoClient({
   commandPrefix: config.prefix,
   owner: config.owner,
@@ -53,7 +56,7 @@ client.on('ready', () => {
     let random = tools.getRandom(0, activities.length)
     let activity = activities[random]
 
-    logger.log(`Updating activity to ${activity}`)
+    logger.log(`Updating activity to ${activity}`, false)
 
     client.user.setActivity(activity)
   }, 120000)
@@ -69,14 +72,24 @@ client.on('ready', () => {
 }) */
 
 client.on('commandRun', (cmd, promise, msg) => {
-  if (msg.guild !== null) {
-    const command = new CommandHelper(msg.guild.id)
-    command.incrementUsage(cmd.name).catch(err => logger.error(err))
-  }
+  logger.log(`Running ${cmd.name}...`)
+  const command = new CommandHelper(msg, cmd)
+
+  command.updateUsage(cmd.name).catch(err => logger.error(err))
+})
+
+client.on('warn', info => {
+  logger.log('warn info = ...')
+  logger.log(info)
+})
+
+client.on('commandBlocked', (msg, str) => {
+  logger.log('Command Blocked...')
+  logger.log(msg)
 })
 
 client.on('unknownCommand', msg => {
-  if (msg.channel.id !== '356240357534597122') {  // Default testing channel, don't respond.
+  if (msg.channel.id !== config.testChannel) {  // Default testing channel, don't respond.
     let query = msg.content.substring(client.commandPrefix.length)
     tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
       .then(res => { if (res !== null) msg.channel.send(res) })
@@ -87,6 +100,25 @@ client.on('unknownCommand', msg => {
 client.on('commandError', (cmd, err) => logger.error(err))
 
 client.on('error', err => logger.error(err))
+
+let zenCount = 0
+
+client.on('message', msg => {
+  if (msg.mentions.users.get(client.user.id) !== undefined) {
+    logger.log('Tron mentioned.')
+    logger.log(msg.content)
+  } else if (msg.content.startsWith(client.commandPrefix)) {
+    logger.log(`Command used.`)
+    logger.log(msg.content)
+  }
+
+  if (msg.author.id === '150319175326236672') {
+    if (zenCount === 10) {
+      zenCount = 0
+      return msg.reply('meh.')
+    } else zenCount++
+  }
+})
 
 client.login(config.token)
 

@@ -23,15 +23,22 @@ class Gay extends Command {
       aliases: ['dick', 'dicks', 'cock', 'cocks', 'penis', 'penises'],
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random gay image or gif from a variety of subreddits and tumblr pages.',
-      examples: ['+gay'],
+      examples: ['+gay', '+gay 5'],
+      args: [{
+        key: 'count',
+        type: 'integer',
+        prompt: '',
+        default: 1,
+        min: 1,
+        max: 10
+      }],
       nsfw: true
     })
   }
 
-  async run (msg, args) {
-    reddit.getRandomTopPost(gaySubs, 'day', 50).then(post => {
-      msg.channel.send(post)
-    })
+  async run (msg, { count }) {
+    let post = await reddit.getRandomNSFWPost(gaySubs, count)
+    msg.channel.send(post).catch(err => this.error(err))
   }
 }
 

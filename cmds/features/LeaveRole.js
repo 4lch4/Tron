@@ -1,5 +1,5 @@
 const Command = require('../BaseCmd')
-const mongo = new (require('../../util/db/MongoTools'))()
+// const mongo = new (require('../../util/db/MongoTools'))()
 
 class LeaveRole extends Command {
   constructor (client) {

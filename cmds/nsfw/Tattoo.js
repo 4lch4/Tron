@@ -16,15 +16,22 @@ class Tattoo extends Command {
       memberName: 'tattoo',
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random nsfw tattoo\'d female from a variety of subreddits.',
-      examples: ['+tattoo'],
+      examples: ['+tattoo', '+tattoo 5'],
+      args: [{
+        key: 'count',
+        type: 'integer',
+        prompt: '',
+        default: 1,
+        min: 1,
+        max: 10
+      }],
       nsfw: true
     })
   }
 
-  async run (msg, args) {
-    reddit.getRandomTopPost(tatSubs, 'day', 50).then(post => {
-      msg.channel.send(post)
-    })
+  async run (msg, { count }) {
+    let post = await reddit.getRandomNSFWPost(tatSubs, count)
+    msg.channel.send(post).catch(err => this.error(err))
   }
 }
 

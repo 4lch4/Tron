@@ -12,7 +12,8 @@ module.exports = class Slap extends Command {
       guildOnly: true,
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random slap gif and includes the mentioned users username.',
-      examples: ['+slap @Alcha#2625']
+      examples: ['+slap @Alcha#2625'],
+      argsType: 'multiple'
     })
   }
 
@@ -23,6 +24,6 @@ module.exports = class Slap extends Command {
 
     ioTools.getRandomImage('slap', args).then(image => {
       msg.channel.send(content, { files: [image] })
-    })
+    }).catch(err => console.error(err))
   }
 }

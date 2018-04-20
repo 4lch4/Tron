@@ -12,7 +12,8 @@ module.exports = class Lick extends Command {
       guildOnly: true,
       throttling: { usages: 1, duration: 10 },
       description: 'Returns a random lick gif and includes the mentioned users username.',
-      examples: ['+lick @Alcha#2625']
+      examples: ['+lick @Alcha#2625'],
+      argsType: 'multiple'
     })
   }
 
@@ -23,6 +24,6 @@ module.exports = class Lick extends Command {
 
     ioTools.getRandomImage('lick', args).then(image => {
       msg.channel.send(content, { files: [image] })
-    })
+    }).catch(err => console.error(err))
   }
 }
