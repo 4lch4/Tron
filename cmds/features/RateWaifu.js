@@ -1,6 +1,7 @@
 const Command = require('../BaseCmd')
 
 const tools = new (require('../../util/Tools'))()
+const ratings = require('../../data/ratings')
 
 class RateWaifu extends Command {
   constructor (client) {
@@ -23,44 +24,16 @@ class RateWaifu extends Command {
   }
 
   async run (msg, { user }) {
-    switch (parseInt(user.id)) {
-      case 219270060936527873:    // Alcha
-        msg.channel.send('**' + user.username + '**-senpai, I\'d rate you 11/10. \n\n_notice me_')
-        break
-      case 317138587491631104:    // Travis
-        msg.channel.send('**' + user.username + '**-dono, I\'d rate you 11/10. :fire:')
-        break
-      case 158740486352273409:    // Micaww
-        msg.channel.send('**' + user.username + "**, I'd rate you 0/10 waifu.")
-        break
-      case 142092834260910080:    // Snow/Daddy Yoana
-        msg.channel.send('**' + user.username + "**, I'd rate you -69/10 waifu.")
-        break
-      case 146023112008400896:    // Aaron/Mamba
-        msg.channel.send('**' + user.username + '**, I\'d rate you 0/10 waifu.')
-        break
-      case 120797492865400832:    // Bella
-        msg.channel.send('**' + user.username + "**, I'd rate you 12/10 waifu. :fire: :fire:")
-        break
-      case 139474184089632769:    // Utah
-        msg.channel.send('**' + user.username + "**, I'd rate you -∞/10 waifu.")
-        break
-      case 167546638758445056:    // DerpDeSerp
-        msg.channel.send('**' + user.username + "**, I'd rate you ∞/10 waifu. The best of the best.")
-        break
-      case 351967369247326209:    // Heather/Kristina
-        msg.channel.send('**' + user.username + "**, I'd rate you " + tools.getRandom(6, 11) + '/10 waifu.')
-        break
-      case 271499964109029377:    // Daddy Zee
-        msg.channel.send('**' + user.username + '**, I\'d rate you ' + tools.getRandom(8, 13) + '/10 waifu.')
-        break
+    let info = ratings[user.id]
+    if (info !== undefined) {
+      if (info.msg === false) {
+        return msg.channel.send('**' + user.username + '**, I\'d rate you ' + tools.getRandom(info.min, info.max) + '/10 waifu.')
+      } else return msg.channel.send(`**${user.username}**${info.msg}`)
+    } else {
+      const random = tools.getRandom(0, 11)
+      const message = '**' + user.username + "**, I'd rate you " + random + '/10 waifu.'
 
-      default:
-        const random = tools.getRandom(0, 11)
-        const message = '**' + user.username + "**, I'd rate you " + random + '/10 waifu.'
-
-        msg.channel.send(message)
-        break
+      return msg.channel.send(message)
     }
   }
 }
