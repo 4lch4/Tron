@@ -11,7 +11,7 @@ const Raven = require('raven')
 Raven.config(config.ravenUrl).install()
 
 const client = new CommandoClient({
-  commandPrefix: config.prefix,
+  commandPrefix: process.env.CMD_PREFIX,
   owner: config.owner,
   disableEveryone: true,
   unknownCommandResponse: false
@@ -82,7 +82,7 @@ client.on('commandBlocked', (msg, str) => {
 })
 
 client.on('unknownCommand', msg => {
-  if (msg.channel.id !== config.testChannel) {  // Default testing channel, don't respond.
+  if (msg.channel.id !== config.testChannel) { // Default testing channel, don't respond.
     let query = msg.content.substring(client.commandPrefix.length)
     tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
       .then(res => { if (res !== null) msg.channel.send(res) })
@@ -113,7 +113,7 @@ client.on('message', msg => {
   }
 })
 
-client.login(config.token)
+client.login(process.env.DISCORD_KEY)
 
 const IPC = require('./util/IPC')
 const ipc = new IPC(client).ipc

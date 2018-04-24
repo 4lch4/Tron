@@ -5,8 +5,9 @@
   "description": "Our bot that makes socializing on our servers more entertaining.",
   "main": "Tron.js",
   "scripts": {
-    "start": "node Tron.js",
-    "fix": "standard --fix"
+    "fix": "standard --fix",
+    "start": "pm2 start pm2.config.js",
+    "start-prod": "pm2 start pm2.config.js --env production"
   },
   "repository": {
     "type": "git",
