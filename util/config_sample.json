@@ -1,0 +1,38 @@
+{
+  "activities": [
+    "+help | tronbot.info",
+    "http://tronbot.info",
+    "https://discord.gg/dSGH7qB",
+    "END OF LINE",
+    "Greetings, programs!"
+  ],
+  "babyTronProcess": "babyTron-Primary",
+  "betaPrefix": "+!",
+  "betaToken": "sekretstring",
+  "coinbase": {
+    "apiKey": "sekretstring",
+    "apiSecret": "sekretstring"
+  },
+  "defaultTimezone": "UTC",
+  "developers": [
+    "Micawww#0001",
+    "Zenora#0666"
+  ],
+  "giphyKey": "sekretstring",
+  "mongoUrl": "sekretstring",
+  "notificationChannel": "sekretnumbers",
+  "owner": "sekretnumbers",
+  "ownerServer": "sekretnumbers",
+  "prodPrefix": "+",
+  "prodToken": "sekretstring",
+  "ravenUrl": "sekretstring",
+  "testChannel": "356240357534597122",
+  "timerMsg": "babyTron-birthday",
+  "tronProcess": "tron-primary",
+  "tumblr": {
+    "consumer_key": "sekretstring",
+    "consumer_secret": "sekretstring",
+    "token": "sekretstring",
+    "token_secret": "sekretstring"
+  }
+}

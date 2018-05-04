@@ -64,6 +64,13 @@ client.on('ready', () => {
   logger.log(`Tron has come online > ${readyTime}`)
 })
 
+/* client.on('message', msg => {
+  if (msg.mentions.users.get(client.user.id) !== undefined &&
+      !msg.content.startsWith(client.commandPrefix)) {
+    // logger.log(`Tron mentioned.`)  For future integration into cleverbot or something similar
+  }
+}) */
+
 client.on('commandRun', (cmd, promise, msg) => {
   logger.log(`Running ${cmd.name}...`)
   const command = new CommandHelper(msg, cmd)
