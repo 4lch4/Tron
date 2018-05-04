@@ -1,8 +1,8 @@
-[![ForTheBadge](http://forthebadge.com/images/badges/does-not-contain-msg.svg)](https://forthebadge.com/)
-
 [![Build Status](https://travis-ci.org/HF-Solutions/Tron.svg?branch=master)](https://travis-ci.org/HF-Solutions/Tron)
 [![Standard-Js](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com/)
 [![David-dm](https://david-dm.org/Paranoid-Devs/Tron.svg)](https://david-dm.org/Paranoid-Devs/Tron)
+
+[![ForTheBadge](http://forthebadge.com/images/badges/does-not-contain-msg.svg)](https://forthebadge.com/)
 
 [![HF-Solutions](https://discordapp.com/api/guilds/325504841541746688/embed.png)](https://discord.gg/W72x4Ks)
 
