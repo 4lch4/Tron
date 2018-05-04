@@ -1,10 +1,10 @@
 [![ForTheBadge](http://forthebadge.com/images/badges/does-not-contain-msg.svg)](https://forthebadge.com/)
 
-[![Travis-CI](https://travis-ci.org/Paranoid-Devs/Tron.svg?branch=master)](https://travis-ci.org/Paranoid-Devs/Tron)
+[![Build Status](https://travis-ci.org/HF-Solutions/Tron.svg?branch=master)](https://travis-ci.org/HF-Solutions/Tron)
 [![Standard-Js](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com/)
 [![David-dm](https://david-dm.org/Paranoid-Devs/Tron.svg)](https://david-dm.org/Paranoid-Devs/Tron)
 
-[![Paranoid-Devs](https://discordapp.com/api/guilds/325504841541746688/embed.png)](https://discord.gg/JfskD5Q)
+[![HF-Solutions](https://discordapp.com/api/guilds/325504841541746688/embed.png)](https://discord.gg/W72x4Ks)
 
 # Purpose
 
