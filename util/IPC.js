@@ -1,7 +1,7 @@
 const config = require('./config.json')
 const logger = new (require('./logger'))()
 const ipc = require('node-ipc')
-const { Client } = require('discord.js')  // Used for JSDocs
+const { Client } = require('discord.js') // Used for JSDocs
 
 const os = require('os').type()
 let ipcPath = ''
@@ -31,7 +31,7 @@ class IPC {
     ipc.config.retry = 2500
     ipc.config.silent = false
 
-    ipc.serve(ipcPath, () => {
+    ipc.serve(() => {
       ipc.server.on(config.timerMsg, msg => this.onBdayMsgReceived(msg))
     })
   }

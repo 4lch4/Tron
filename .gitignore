@@ -12,3 +12,7 @@ mongo/
 logs/
 
 \.vscode/
+
+data/coverage/
+
+util/Jest_Cheatsheet\.md

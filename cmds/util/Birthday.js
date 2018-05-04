@@ -124,17 +124,9 @@ class Birthday {
    */
   async getInfo (msg) {
     return Promise.resolve({
-      _id: msg.author.id,
+      _id: this.user,
       date: await this.getDate(msg),
-      privateDate: await this.getPrivacy(msg)
-    })
-  }
-
-  async getOtherInfo (msg) {
-    return Promise.resolve({
-      _id: await this.getUserId(msg),
-      date: await this.getOtherDate(msg),
-      privateDate: await this.getOtherPrivacy(msg),
+      privateDate: await this.getPrivacy(msg),
       creatorId: msg.author.id
     })
   }
@@ -202,57 +194,6 @@ class Birthday {
               break
           }
         } else m.reply('please reply with the letter **Y** or **N**.')
-      })
-    })
-  }
-
-  /**
-   * Gets the date of a users birthday using a message collector on the provided
-   * message. If one is provided, it is returned via a Promise as a String.
-   *
-   * @param {Message} msg
-   *
-   * @returns {Promise<string>}
-   */
-  getOtherDate (msg) {
-    return new Promise((resolve, reject) => {
-      const collector = baseCollector(msg)
-
-      msg.reply('which date is their birthday? (MMDD e.g. August 25 = **0825**)')
-
-      collector.on('collect', m => {
-        if (m.content.length === 4 && m.content.match(/[0-9]{4}/)) {
-          collector.stop()
-          resolve(m.content)
-        } else m.reply('date must be in MMDD format (e.g. August 25 = **0825**).')
-      })
-    })
-  }
-
-  /**
-   * Gets the privacy preference from the user using a message collector on the
-   * provided message object. If it is provided, true or false is returned based
-   * on their reply `(yes = true, no = false)`.
-   *
-   * @param {Message} msg
-   *
-   * @returns {Promise<boolean>}
-   */
-  getOtherPrivacy (msg) {
-    return new Promise((resolve, reject) => {
-      const collector = baseCollector(msg)
-
-      msg.reply('would you like their birthday to remain private?')
-
-      collector.on('collect', m => {
-        let content = m.content.toLowerCase()
-        if (content === 'yes') {
-          collector.stop()
-          resolve(true)
-        } else if (content === 'no') {
-          collector.stop()
-          resolve(false)
-        } else m.reply('must provide yes or no.')
       })
     })
   }
