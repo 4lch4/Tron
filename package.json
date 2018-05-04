@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/HF-Solutions/Tron/issues"
   },
-  "homepage": "https://hasslefree.solutions/Tron",
+  "homepage": "https://hasslefree.solutions/tron",
   "dependencies": {
     "bufferutil": "3.0.4",
     "canvas": "1.6.10",
