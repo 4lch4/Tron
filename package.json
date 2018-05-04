@@ -11,45 +11,52 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Paranoid-Devs/Tron.git"
+    "url": "git+https://github.com/HF-Solutions/Tron.git"
   },
-  "author": "Alcha <alcha@paranoiddevs.com> (https://paranoiddevs.com/)",
+  "author": "Alcha <alcha@hasslefree.solutions> (https://hasslefree.solutions/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Paranoid-Devs/Tron/issues"
+    "url": "https://github.com/HF-Solutions/Tron/issues"
   },
-  "homepage": "https://paranoiddevs.com/Tron",
+  "homepage": "https://hasslefree.solutions/Tron",
   "dependencies": {
     "bufferutil": "3.0.4",
     "canvas": "1.6.10",
-    "chalk": "2.4.0",
-    "chance": "1.0.13",
+    "chalk": "2.4.1",
+    "chance": "1.0.16",
     "coinbase": "2.0.8",
     "discord.js": "github:discordjs/discord.js",
     "discord.js-commando": "github:discordjs/Commando",
     "erlpack": "github:discordapp/erlpack",
-    "fs-extra": "5.0.0",
+    "fs-extra": "6.0.0",
     "giphy-js-sdk-core": "1.0.3",
     "image-downloader": "3.3.0",
     "libsodium-wrappers": "0.7.3",
     "moment": "2.22.1",
     "moment-timezone": "0.5.16",
     "mongodb": "3.0.7",
-    "mongoose": "5.0.15",
+    "mongoose": "5.0.17",
     "node-ipc": "9.1.1",
     "node-opus": "0.2.7",
     "opusscript": "0.0.6",
-    "raven": "2.5.0",
+    "raven": "2.6.0",
     "redwrap": "0.0.4",
     "shuffle-array": "1.0.1",
     "sqlite": "2.9.1",
     "sqlite3": "4.0.0",
     "survaid": "github:Alcha/Survaid",
     "tumblr.js": "1.1.1",
-    "uws": "9.147.0",
+    "uws": "9.148.0",
     "zlib-sync": "0.1.4"
   },
   "devDependencies": {
+    "faker": "4.1.0",
+    "jest": "22.4.3",
     "standard": "11.0.1"
+  },
+  "standard": {
+    "ignore": [
+      "*.test.js"
+    ]
   }
 }

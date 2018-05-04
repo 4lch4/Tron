@@ -12,3 +12,5 @@ mongo/
 logs/
 
 \.vscode/
+
+data/coverage/
