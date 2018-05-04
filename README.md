@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/HF-Solutions/Tron.svg?branch=master)](https://travis-ci.org/HF-Solutions/Tron)
-[![David-dm](https://david-dm.org/Paranoid-Devs/Tron.svg)](https://david-dm.org/Paranoid-Devs/Tron)
+[![Dependencies Status](https://david-dm.org/HF-Solutions/Tron/status.svg)](https://david-dm.org/HF-Solutions/Tron)
 [![Standard-Js](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com/)
 
 [![ForTheBadge](http://forthebadge.com/images/badges/does-not-contain-msg.svg)](https://forthebadge.com/)
