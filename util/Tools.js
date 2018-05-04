@@ -1,4 +1,4 @@
-const { Client, MessageEmbed } = require('discord.js')  // Used for JSDoc/intellisense purposes
+const { Client, MessageEmbed } = require('discord.js') // Used for JSDoc/intellisense purposes
 
 const config = require('./config.json')
 const moment = require('moment-timezone')
@@ -27,8 +27,10 @@ module.exports = class Tools {
   }
 
   pickImage (images) {
-    let random = this.getRandom(0, images.length)
-    if (images[random] === undefined) return this.pickImage(images)
+    if (images.length !== 0) {
+      let random = this.getRandom(0, images.length)
+      if (images[random] === undefined) return this.pickImage(images)
+    }
   }
 
   async queryGiphy (query, username, avatarUrl) {
