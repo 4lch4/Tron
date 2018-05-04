@@ -1,5 +1,7 @@
 const Command = require('../BaseCmd')
 
+const ioTools = new (require('../../util/IOTools'))()
+
 class Zorika extends Command {
   constructor (client) {
     super(client, {
@@ -14,7 +16,9 @@ class Zorika extends Command {
   }
 
   async run (msg, args) {
-    return msg.channel.send('God dammit Jay!')
+    ioTools.getRandomImage('zorika', args).then(image => {
+      msg.channel.send('', { files: [image] })
+    })
   }
 }
 
