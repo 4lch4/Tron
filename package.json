@@ -15,7 +15,11 @@
     "type": "git",
     "url": "git+https://github.com/HF-Solutions/Tron.git"
   },
-  "author": "Alcha <alcha@hasslefree.solutions> (https://hasslefree.solutions/)",
+  "author": {
+    "name": "Alcha",
+    "email": "admin@alcha.org",
+    "url": "https://hasslefree.solutions"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/HF-Solutions/Tron/issues"
