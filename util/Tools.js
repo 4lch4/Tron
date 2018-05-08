@@ -27,10 +27,16 @@ module.exports = class Tools {
   }
 
   pickImage (images) {
-    if (images.length !== 0) {
+    if (this.containsData(images)) {
       let random = this.getRandom(0, images.length)
       if (images[random] === undefined) return this.pickImage(images)
     }
+  }
+
+  containsData (object) {
+    return object !== null &&
+          object !== undefined &&
+          object.length !== 0
   }
 
   async queryGiphy (query, username, avatarUrl) {
