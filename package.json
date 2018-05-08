@@ -9,7 +9,9 @@
     "start": "pm2 start pm2.config.js",
     "start-prod": "pm2 start pm2.config.js --env production",
     "test": "jest",
-    "test-full": "jest --config ./util/jest.config.js"
+    "test-full": "jest --config ./util/jest.config.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -49,7 +51,8 @@
     "survaid": "github:Alcha/Survaid",
     "tumblr.js": "1.1.1",
     "uws": "9.148.0",
-    "zlib-sync": "0.1.4"
+    "zlib-sync": "0.1.4",
+    "snyk": "^1.78.1"
   },
   "devDependencies": {
     "faker": "4.1.0",
@@ -60,5 +63,6 @@
     "ignore": [
       "*.test.js"
     ]
-  }
+  },
+  "snyk": true
 }
