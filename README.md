@@ -1,10 +1,10 @@
-[![Build Status](https://travis-ci.org/HF-Solutions/Tron.svg?branch=master)](https://travis-ci.org/HF-Solutions/Tron)
-[![Dependencies Status](https://david-dm.org/HF-Solutions/Tron/status.svg)](https://david-dm.org/HF-Solutions/Tron)
-[![Standard-Js](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com/)
+[![Build Status](https://img.shields.io/travis/HF-Solutions/Tron.svg?style=flat-square)](https://travis-ci.org/HF-Solutions/Tron)
+[![Standard-Js](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com/)
+[![dependencies Status](https://img.shields.io/david/HF-Solutions/Tron.svg?style=flat-square)](https://david-dm.org/Paranoid-Devs/Tron)
+[![devDependencies Status](https://img.shields.io/david/dev/HF-Solutions/Tron.svg?style=flat-square)](https://david-dm.org/HF-Solutions/Tron?type=dev)
+[![GitHub license](https://img.shields.io/github/license/HF-Solutions/Tron.svg?style=flat-square)](https://github.com/HF-Solutions/Tron/blob/master/LICENSE)
 
-[![ForTheBadge](http://forthebadge.com/images/badges/does-not-contain-msg.svg)](https://forthebadge.com/)
-
-[![HF-Solutions](https://discordapp.com/api/guilds/325504841541746688/embed.png)](https://discord.gg/W72x4Ks)
+[![ForTheBadge](https://forthebadge.com/images/badges/fuck-it-ship-it.svg)](https://forthebadge.com)
 
 # Tron
 
