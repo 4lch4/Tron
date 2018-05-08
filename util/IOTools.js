@@ -7,9 +7,13 @@ const fs = require('fs-extra')
 
 module.exports = class IOTools {
   getImagePath (filePath) {
-    const finalPath = path.join('./images', filePath)
-    if (this.getFileSize(finalPath) < 8000000) return finalPath
-    else throw new Error('Provided file is too large to send over Discord.')
+    try {
+      const finalPath = path.join('./images', filePath)
+      if (this.getFileSize(finalPath) < 8000000) return finalPath
+      else return 'Provided file is too large to send over Discord.'
+    } catch (err) {
+      return 'Invalid file path provided.'
+    }
   }
 
   async downloadImage (options) {
