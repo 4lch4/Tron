@@ -1,15 +1,17 @@
 {
   "name": "tron",
   "displayName": "Tron",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Our bot that makes socializing on our servers more entertaining.",
   "main": "Tron.js",
   "scripts": {
     "fix": "standard --fix",
     "start": "pm2 start pm2.config.js",
     "start-prod": "pm2 start pm2.config.js --env production",
-    "test": "jest",
-    "test-full": "jest --config ./util/jest.config.js"
+    "test": "snyk test && jest",
+    "test-full": "jest --config ./util/jest.config.js",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -45,9 +47,10 @@
     "node-ipc": "9.1.1",
     "node-opus": "0.2.7",
     "opusscript": "0.0.6",
-    "raven": "2.6.0",
-    "redwrap": "0.0.4",
+    "raven": "^2.6.0",
+    "redwrap": "github:Alcha/redwrap",
     "shuffle-array": "1.0.1",
+    "snyk": "^1.78.1",
     "sqlite": "2.9.1",
     "sqlite3": "4.0.0",
     "survaid": "github:Alcha/Survaid",
@@ -64,5 +67,6 @@
     "ignore": [
       "*.test.js"
     ]
-  }
+  },
+  "snyk": true
 }
