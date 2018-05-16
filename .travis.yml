@@ -1,6 +1,10 @@
 language: node_js
 node_js:
   - "9.6.1"
+install:
+  - npm install -g codecov
+script:
+  - jest --config ./util/jest.config.js && codecov
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq libgif-dev
