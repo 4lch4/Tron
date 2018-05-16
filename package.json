@@ -8,7 +8,7 @@
     "fix": "standard --fix",
     "start": "pm2 start pm2.config.js",
     "start-prod": "pm2 start pm2.config.js --env production",
-    "test": "snyk test && jest",
+    "test": "jest",
     "test-full": "jest --config ./util/jest.config.js",
     "snyk-protect": "snyk protect",
     "prepare": "npm run snyk-protect"
