@@ -3,6 +3,7 @@ node_js:
   - "9.6.1"
 install:
   - npm install -g codecov
+  - npm install -g jest
 script:
   - jest --config ./util/jest.config.js && codecov
 before_install:
