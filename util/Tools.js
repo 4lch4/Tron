@@ -4,6 +4,7 @@ const config = require('./config.json')
 const moment = require('moment-timezone')
 const GphApiClient = require('giphy-js-sdk-core')
 const giphy = GphApiClient(config.giphyKey)
+const DISCORD_EPOCH = 1420070400000
 const Chance = require('chance')
 const chance = new Chance()
 const UTC = 'UTC'
@@ -16,6 +17,18 @@ const PRETTY_DATE_FORMAT = 'MM/DD/Y HH:mm:ss'
 module.exports = class Tools {
   formatTime (format) {
     return moment.tz(config.defaultTimezone).format(format)
+  }
+
+  timestampFromSnowflake (snowflake) {
+    return (snowflake / 4194304) + DISCORD_EPOCH
+  }
+
+  prettierUnixInput (input) {
+    return moment(input).tz(UTC).format('MMMM Do, Y @ HH:mm:ss')
+  }
+
+  customFormatUnixInput (input, format) {
+    return moment(input).tz(UTC).format(format)
   }
 
   formatUnixInput (input) {

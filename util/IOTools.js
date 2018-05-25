@@ -16,6 +16,11 @@ module.exports = class IOTools {
     }
   }
 
+  saveToFile (data, filename) {
+    const finalPath = path.join('./data/filesSaved', filename)
+    return fs.writeFile(finalPath, data)
+  }
+
   async downloadImage (options) {
     try {
       const { filename, image } = await download.image(options)
