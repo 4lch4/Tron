@@ -17,8 +17,12 @@ module.exports = class IOTools {
   }
 
   saveToFile (data, filename) {
+    if (!data) return 'Data parameter doesn\'t contain any data.'
+
     const finalPath = path.join('./data/filesSaved', filename)
     return fs.writeFile(finalPath, data)
+      .then(res => { return finalPath })
+      .catch(err => { throw err })
   }
 
   async downloadImage (options) {

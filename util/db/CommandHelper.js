@@ -53,7 +53,7 @@ module.exports = class CommandHelper {
    * @param {Message} msg
    */
   constructor (msg, cmd) {
-    if (msg.guild !== undefined) this.serverId = msg.guild.id
+    if (msg.guild) this.serverId = msg.guild.id
     this.userId = msg.author.id
     this.cmd = msg.command
     this.msg = msg
