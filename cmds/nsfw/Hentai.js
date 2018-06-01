@@ -1,11 +1,7 @@
 const Command = require('../BaseCmd')
 const reddit = new (require('../../util/RedditTools'))()
 
-const hentaiSubs = [
-  'hentai',
-  'rule34',
-  'rule34feet'
-]
+const hentaiSubs = require('./Sources').Hentai
 
 class Hentai extends Command {
   constructor (client) {

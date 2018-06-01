@@ -1,18 +1,6 @@
 const Command = require('../BaseCmd')
 const reddit = new (require('../../util/RedditTools'))()
-const buttSubs = [
-  'asstastic',
-  'pawg',
-  'facedownassup',
-  'ass',
-  'brunetteass',
-  'CheekyBottoms',
-  'datgap',
-  'underbun',
-  'pawgtastic',
-  'BestBooties',
-  'CuteLittleButts'
-]
+const buttSubs = require('./Sources').Butts
 
 class Butts extends Command {
   constructor (client) {

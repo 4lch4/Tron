@@ -1,16 +1,7 @@
 const Command = require('../BaseCmd')
 const reddit = new (require('../../util/RedditTools'))()
 
-const boobSubs = [
-  'boobs',
-  'Boobies',
-  'Stacked',
-  'BustyPetite',
-  'Cleavage',
-  'bustyasians',
-  'boltedontits',
-  'burstingout'
-]
+const boobSubs = require('./Sources').Boobs
 
 class Boobs extends Command {
   constructor (client) {

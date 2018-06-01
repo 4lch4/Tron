@@ -1,12 +1,7 @@
 const Command = require('../BaseCmd')
 const reddit = new (require('../../util/RedditTools'))()
 
-const tatSubs = [
-  'HotChicksWithTattoos',
-  'SuicideGirls',
-  'SceneGirls',
-  'PrettyAltGirls'
-]
+const tatSubs = require('./Sources').Tatts
 
 class Tattoo extends Command {
   constructor (client) {

@@ -1,18 +1,7 @@
 const Command = require('../BaseCmd')
 const reddit = new (require('../../util/RedditTools'))()
 
-const gaySubs = [
-  'cockrating',
-  'BonersInPublic',
-  'curved_cock',
-  'MassiveCock',
-  'ratemycock',
-  'RedditorCum',
-  'NSFW_DICK_and_Cock',
-  'TotallyStraight',
-  'CockOutline',
-  'lovegaymale'
-]
+const gaySubs = require('./Sources').Gay
 
 class Gay extends Command {
   constructor (client) {
