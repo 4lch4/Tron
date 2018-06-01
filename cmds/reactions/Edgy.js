@@ -9,7 +9,6 @@ class Edgy extends Command {
       group: 'reactions',
       memberName: 'edgy',
       aliases: ['edge', '3edgy5me', '2edgy4me', 'edgelord'],
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random edgy image/gif.',
       examples: ['+edgy', '+3edgy5me']
     })

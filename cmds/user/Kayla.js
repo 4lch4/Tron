@@ -8,7 +8,6 @@ class Kayla extends Command {
       name: 'kayla',
       group: 'user',
       memberName: 'kayla',
-      throttling: { usages: 1, duration: 10 },
       description: 'A command for Kayla/Snow that is only usable by them.',
       examples: ['+kayla']
     })

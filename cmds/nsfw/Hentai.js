@@ -13,7 +13,6 @@ class Hentai extends Command {
       name: 'hentai',
       group: 'nsfw',
       memberName: 'hentai',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random hentai image/gif.',
       examples: ['+hentai', '+hentai 5'],
       args: [{

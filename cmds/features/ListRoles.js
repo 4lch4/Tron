@@ -7,7 +7,6 @@ class GetRoles extends Command {
       name: 'list-roles',
       group: 'features',
       memberName: 'list-roles',
-      throttling: { usages: 1, duration: 10 },
       description: 'List the available roles to join for this server.',
       examples: ['+list-roles']
     })

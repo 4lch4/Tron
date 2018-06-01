@@ -10,7 +10,6 @@ class Suggestion extends Command {
       group: 'features',
       memberName: 'suggestion',
       aliases: ['suggest'],
-      throttling: { usages: 1, duration: 10 },
       description: 'Stores your suggestion in our database for the team to look at.',
       examples: ['+suggestion I think you should add a cry command.', '+suggest Y\'all suck.'],
       argsType: 'single'

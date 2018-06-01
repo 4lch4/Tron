@@ -21,7 +21,6 @@ class Gay extends Command {
       group: 'nsfw',
       memberName: 'gay',
       aliases: ['dick', 'dicks', 'cock', 'cocks', 'penis', 'penises'],
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random gay image or gif from a variety of subreddits and tumblr pages.',
       examples: ['+gay', '+gay 5'],
       args: [{

@@ -7,7 +7,6 @@ class JoinRole extends Command {
       name: 'join-role',
       group: 'features',
       memberName: 'join-role',
-      throttling: { usages: 1, duration: 10 },
       guildOnly: true,
       description: 'Join a role from the list of available roles (+list-roles) for this server.',
       examples: ['+join-role NSFW Pass'],
@@ -23,6 +22,7 @@ class JoinRole extends Command {
   async run (msg, { role }) {
     mongo.isRoleAvailable(msg.guild.id, role.name).then(available => {
       if (available) {
+        console.log(msg.member)
         msg.member.addRole(role.id).then(member => {
           msg.channel.send(`You've successfully been added to the ${role.name} role!`)
         }).catch(err => {

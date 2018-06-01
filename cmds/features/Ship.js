@@ -12,7 +12,6 @@ class Ship extends Command {
       name: 'ship',
       group: 'features',
       memberName: 'ship',
-      throttling: { usages: 1, duration: 10 },
       description: 'Ships two users as a couple.',
       examples: ['+ship @Alcha#2625 @Aadio#1576'],
       args: [{

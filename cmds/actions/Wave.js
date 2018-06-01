@@ -10,7 +10,6 @@ module.exports = class Wave extends Command {
       group: 'actions',
       memberName: 'wave',
       guildOnly: true,
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random wave gif and if a user is mentioned, includes their username.',
       examples: ['+wave @Alcha#2625'],
       argsType: 'multiple'

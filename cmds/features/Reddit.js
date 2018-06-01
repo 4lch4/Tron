@@ -8,7 +8,6 @@ class Reddit extends Command {
       name: 'reddit',
       group: 'features',
       memberName: 'reddit',
-      throttling: { usages: 1, duration: 10 },
       aliases: ['r'],
       description: 'Returns a random post from the front page of the given subreddit.',
       examples: ['+reddit r/Aww', '+r facepalm', '+r facepalm top all 50'],

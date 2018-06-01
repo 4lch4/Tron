@@ -7,7 +7,6 @@ class Stats extends Command {
       name: 'stats',
       group: 'features',
       memberName: 'stats',
-      throttling: { usages: 1, duration: 10 },
       description: 'Used to display various stats about Tron and the commands executed.',
       examples: ['+stats', '+stats poke'],
       argsType: 'multiple'

@@ -8,7 +8,6 @@ class Dreamy extends Command {
       name: 'dreamy',
       group: 'user',
       memberName: 'dreamy',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random cute image/gif given to me by Dreamy.',
       examples: ['+dreamy', '+dreams']
     })

@@ -9,7 +9,6 @@ class Rose extends Command {
       group: 'user',
       memberName: 'rose',
       aliases: ['prim'],
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random image/gif given to me by Rose.',
       examples: ['+rose', '+prim']
     })

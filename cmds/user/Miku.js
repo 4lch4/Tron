@@ -8,7 +8,6 @@ class Miku extends Command {
       name: 'miku',
       group: 'user',
       memberName: 'miku',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random image/gif given to me by Miku.',
       examples: ['+miku']
     })

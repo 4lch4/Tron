@@ -8,7 +8,6 @@ class Lewd extends Command {
       name: 'lewd',
       group: 'reactions',
       memberName: 'lewd',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random lewd face image or gif.',
       examples: ['+lewd']
     })

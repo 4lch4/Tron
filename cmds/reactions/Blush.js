@@ -8,7 +8,6 @@ class Blush extends Command {
       name: 'blush',
       group: 'reactions',
       memberName: 'blush',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random blushing gif.',
       examples: ['+blush']
     })
