@@ -7,7 +7,7 @@ const CommandHelper = require('./util/db/CommandHelper')
 const config = require('./util/config.json')
 
 const timber = require('timber')
-const transport = new timber.transports.HTTPS(config.timber)
+const transport = new timber.transports.HTTPS(process.env.TIMBER_KEY)
 timber.install(transport)
 
 const client = new CommandoClient({
@@ -61,7 +61,7 @@ client.on('ready', () => {
     client.user.setActivity(activity)
   }, 120000)
 
-  console.log(`Tron has come online > ${readyTime}`)
+  console.log(`Tron ${process.env.NODE_ENV.toUpperCase()} has come online > ${readyTime}`)
 })
 
 client.on('commandRun', (cmd, promise, msg) => {
