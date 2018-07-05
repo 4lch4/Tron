@@ -96,3 +96,6 @@ patch:
   'npm:request:20160119':
     - redwrap > request:
         patched: '2018-05-08T09:56:44.120Z'
+  'npm:lodash:20180130':
+    - json2csv > cli-table2 > lodash:
+        patched: '2018-07-02T22:10:57.075Z'
