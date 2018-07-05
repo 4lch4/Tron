@@ -28,7 +28,7 @@ describe('The saveToFile(data, filename) method works as expected.', () => {
     try {
       const r = await ioTools.saveToFile('FileData', null)
     } catch (err) {
-      expect(err.message).toBe("Path must be a string. Received null")
+      expect(err.message).toBe("The \"path\" argument must be of type string")
     }
   })
 
