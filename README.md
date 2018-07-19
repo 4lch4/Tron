@@ -4,7 +4,8 @@
 [![devDependencies Status](https://img.shields.io/david/dev/HF-Solutions/Tron.svg?style=flat-square)](https://david-dm.org/HF-Solutions/Tron?type=dev)
 [![GitHub license](https://img.shields.io/github/license/HF-Solutions/Tron.svg?style=flat-square)](https://github.com/HF-Solutions/Tron/blob/master/LICENSE)
 
-[![ForTheBadge](https://forthebadge.com/images/badges/fuck-it-ship-it.svg)](https://forthebadge.com) [![Greenkeeper badge](https://badges.greenkeeper.io/HF-Solutions/Tron.svg)](https://greenkeeper.io/)
+[![ForTheBadge](https://forthebadge.com/images/badges/fuck-it-ship-it.svg)](https://forthebadge.com)
+[![Greenkeeper badge](https://badges.greenkeeper.io/HF-Solutions/Tron.svg)](https://greenkeeper.io/)
 
 # Tron
 
