@@ -41,7 +41,7 @@
     "discord.js": "github:discordjs/discord.js",
     "discord.js-commando": "github:discordjs/Commando",
     "erlpack": "github:discordapp/erlpack",
-    "fs-extra": "^6.0.1",
+    "fs-extra": "^7.0.0",
     "giphy-js-sdk-core": "^1.0.3",
     "image-downloader": "^3.3.0",
     "json2csv": "^4.1.3",
