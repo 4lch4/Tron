@@ -28,7 +28,7 @@
   },
   "homepage": "https://hasslefree.solutions/tron",
   "dependencies": {
-    "agenda": "^1.0.3",
+    "agenda": "^2.0.0",
     "bufferutil": "^3.0.5",
     "canvas": "^1.6.11",
     "chalk": "^2.4.1",
