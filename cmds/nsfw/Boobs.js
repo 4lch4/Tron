@@ -1,16 +1,7 @@
 const Command = require('../BaseCmd')
 const reddit = new (require('../../util/RedditTools'))()
 
-const boobSubs = [
-  'boobs',
-  'Boobies',
-  'Stacked',
-  'BustyPetite',
-  'Cleavage',
-  'bustyasians',
-  'boltedontits',
-  'burstingout'
-]
+const boobSubs = require('./Sources').Boobs
 
 class Boobs extends Command {
   constructor (client) {
@@ -19,7 +10,6 @@ class Boobs extends Command {
       group: 'nsfw',
       memberName: 'boobs',
       aliases: ['boob', 'boobies'],
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random boob image or gif from a variety of subreddits.',
       examples: ['+boobs', '+boobies 10'],
       args: [{

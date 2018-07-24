@@ -19,6 +19,8 @@ class Bot extends BaseCmd {
 
   async run (msg, args) {
     let botUser = this.client.user
+    if (msg.member === null) var user = msg.user
+    else user = msg.member
     let embed = new MessageEmbed({
       'title': botUser.username,
       'description': info.description,
@@ -32,8 +34,8 @@ class Bot extends BaseCmd {
         'url': botUser.avatarURL()
       },
       'author': {
-        'name': msg.member.username,
-        'icon_url': msg.member.avatarURL
+        'name': user.username,
+        'icon_url': user.avatarURL
       },
       'fields': generateFields(this.client)
     })

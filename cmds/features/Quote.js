@@ -9,7 +9,6 @@ class Quote extends Command {
       name: 'quote',
       group: 'features',
       memberName: 'quote',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random quote of interest.',
       examples: ['+quote']
     })

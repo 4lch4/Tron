@@ -10,7 +10,6 @@ module.exports = class Bite extends Command {
       group: 'actions',
       memberName: 'bite',
       guildOnly: true,
-      throttling: { usages: 1, duration: 10 },
       aliases: ['bites', 'nom', 'noms', 'nomnom', 'omnom'],
       description: 'Returns a random bite gif and includes the mentioned users username.',
       examples: ['+bite @Alcha#2625', '+nom', '+noms @Alcha#2625'],

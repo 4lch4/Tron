@@ -8,7 +8,6 @@ class Squirtle extends Command {
       name: 'squirtle',
       group: 'reactions',
       memberName: 'squirtle',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random Squirtle image or gif.',
       examples: ['+squirtle']
     })

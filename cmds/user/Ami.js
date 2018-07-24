@@ -7,7 +7,6 @@ class Ami extends Command {
       name: 'ami',
       group: 'user',
       memberName: 'ami',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns whatever Ami requests.',
       examples: ['+ami']
     })

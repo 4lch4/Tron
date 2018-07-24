@@ -9,7 +9,6 @@ class KillMe extends Command {
       group: 'reactions',
       memberName: 'killme',
       aliases: ['kms'],
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random "KillMe" gif.',
       examples: ['+killme']
     })

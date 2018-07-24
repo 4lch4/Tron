@@ -9,7 +9,6 @@ class Battsie extends Command {
       group: 'user',
       aliases: ['buttsie', 'batts'],
       memberName: 'battsie',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random image/gif given to me for Battsie.',
       examples: ['+battsie', '+batts', '+buttsie']
     })

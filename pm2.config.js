@@ -7,13 +7,17 @@ module.exports = {
     watch: false,
     env: {
       NODE_ENV: 'development',
-      DISCORD_KEY: config.betaToken,
-      CMD_PREFIX: config.betaPrefix
+      DISCORD_KEY: config.beta.token,
+      CMD_PREFIX: config.beta.prefix,
+      GIPHY_KEY: config.giphyKey,
+      TIMBER_KEY: config.timberDev
     },
     env_production: {
       NODE_ENV: 'production',
-      DISCORD_KEY: config.prodToken,
-      CMD_PREFIX: config.prodPrefix
+      DISCORD_KEY: config.prod.token,
+      CMD_PREFIX: config.prod.prefix,
+      GIPHY_KEY: config.giphyKey,
+      TIMBER_KEY: config.timber
     }
   }]
 }

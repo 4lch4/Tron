@@ -9,7 +9,6 @@ class Zorika extends Command {
       group: 'user',
       memberName: 'zorika',
       aliases: ['zori'],
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random phrase from Zori.',
       examples: ['+zorika', '+zori']
     })

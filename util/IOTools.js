@@ -16,6 +16,15 @@ module.exports = class IOTools {
     }
   }
 
+  saveToFile (data, filename) {
+    if (!data) return 'Data parameter doesn\'t contain any data.'
+
+    const finalPath = path.join('./data/filesSaved', filename)
+    return fs.writeFile(finalPath, data)
+      .then(res => { return finalPath })
+      .catch(err => { throw err })
+  }
+
   async downloadImage (options) {
     try {
       const { filename, image } = await download.image(options)
@@ -29,7 +38,7 @@ module.exports = class IOTools {
   getRandomImage (dirPath, args) {
     return new Promise((resolve, reject) => {
       this.getImageFilenames(dirPath).then(filenames => {
-        if (filenames[args[args.length - 1]] !== undefined) resolve(filenames[args.length - 1])
+        if (args === undefined || filenames[args[args.length - 1]] !== undefined) resolve(filenames[args.length - 1])
         else resolve(filenames[tools.getRandom(0, filenames.length)])
       }).catch(err => reject(err))
     })

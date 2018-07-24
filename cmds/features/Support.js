@@ -6,7 +6,6 @@ class Support extends Command {
       name: 'support',
       group: 'features',
       memberName: 'support',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns information on how to retrieve support for Tron.'
     })
   }

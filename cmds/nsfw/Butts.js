@@ -1,18 +1,6 @@
 const Command = require('../BaseCmd')
 const reddit = new (require('../../util/RedditTools'))()
-const buttSubs = [
-  'asstastic',
-  'pawg',
-  'facedownassup',
-  'ass',
-  'brunetteass',
-  'CheekyBottoms',
-  'datgap',
-  'underbun',
-  'pawgtastic',
-  'BestBooties',
-  'CuteLittleButts'
-]
+const buttSubs = require('./Sources').Butts
 
 class Butts extends Command {
   constructor (client) {
@@ -21,7 +9,6 @@ class Butts extends Command {
       group: 'nsfw',
       aliases: ['butt', 'booty', 'ass'],
       memberName: 'butts',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random butt image or gif from a variety of subreddits.',
       examples: ['+butts', '+booty 5'],
       args: [{

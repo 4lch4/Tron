@@ -8,7 +8,6 @@ class Dodge extends Command {
       name: 'dodge',
       group: 'reactions',
       memberName: 'dodge',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random dodge gif.',
       examples: ['+dodge']
     })

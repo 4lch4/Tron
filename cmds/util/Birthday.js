@@ -139,9 +139,11 @@ class Birthday {
    */
   async getServerBdays (msg) {
     return new Promise((resolve, reject) => {
-      BirthdayModel.find({privateDate: false}, (err, res) => {
-        if (err) reject(err)
-        else {
+      BirthdayModel.find({privateDate: false}).sort('date').exec((err, res) => {
+        if (err) {
+          console.log(`There was an error getting the list of server bdays:`)
+          console.error(err)
+        } else {
           let bdays = []
 
           res.forEach(val => {

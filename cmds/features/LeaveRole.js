@@ -7,7 +7,6 @@ class LeaveRole extends Command {
       name: 'leave-role',
       group: 'features',
       memberName: 'leave-role',
-      throttling: { usages: 1, duration: 10 },
       guildOnly: true,
       description: 'Leave a role from the list of available roles (+list-roles) for this server.',
       examples: ['+leave-role NSFW Pass'],

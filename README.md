@@ -6,6 +6,8 @@
 
 [![ForTheBadge](https://forthebadge.com/images/badges/fuck-it-ship-it.svg)](https://forthebadge.com)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/HF-Solutions/Tron.svg)](https://greenkeeper.io/)
+
 # Tron
 
 ## Purpose
@@ -32,3 +34,4 @@ before cloning the repo, running `npm i -y; npm start`, and hoping for the best:
 
 1. After completing the above, attempt to run `npm i` and if it installs everything successfully, try `npm start`, which will run Tron in the development/beta environment.
     - If you want to run the production version, simply use `npm run start-prod`.
+   

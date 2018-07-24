@@ -1,9 +1,9 @@
 const { Client, MessageEmbed } = require('discord.js') // Used for JSDoc/intellisense purposes
 
-const config = require('./config.json')
 const moment = require('moment-timezone')
 const GphApiClient = require('giphy-js-sdk-core')
-const giphy = GphApiClient(config.giphyKey)
+const giphy = GphApiClient(process.env.GIPHY_KEY)
+const DISCORD_EPOCH = 1420070400000
 const Chance = require('chance')
 const chance = new Chance()
 const UTC = 'UTC'
@@ -15,7 +15,19 @@ const PRETTY_DATE_FORMAT = 'MM/DD/Y HH:mm:ss'
 
 module.exports = class Tools {
   formatTime (format) {
-    return moment.tz(config.defaultTimezone).format(format)
+    return moment.tz(UTC).format(format)
+  }
+
+  timestampFromSnowflake (snowflake) {
+    return (snowflake / 4194304) + DISCORD_EPOCH
+  }
+
+  prettierUnixInput (input) {
+    return moment(input).tz(UTC).format('MMMM Do, Y @ HH:mm:ss')
+  }
+
+  customFormatUnixInput (input, format) {
+    return moment(input).tz(UTC).format(format)
   }
 
   formatUnixInput (input) {
@@ -65,7 +77,7 @@ module.exports = class Tools {
   }
 
   get formattedTime () {
-    return moment.tz(config.defaultTimezone).format(DEFAULT_DATE_FORMAT)
+    return moment.tz(UTC).format(DEFAULT_DATE_FORMAT)
   }
 
   get utcTime () {
@@ -77,7 +89,7 @@ module.exports = class Tools {
   }
 
   get safeFormattedTime () {
-    return moment.tz(config.defaultTimezone).format('MM.DD.Y_HH:mm:ss')
+    return moment.tz(UTC).format('MM.DD.Y_HH:mm:ss')
   }
 
   upperFirstC (string) {

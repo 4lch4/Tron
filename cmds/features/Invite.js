@@ -6,7 +6,6 @@ class Invite extends Command {
       name: 'invite',
       group: 'features',
       memberName: 'invite',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns an invite link to add Tron to your server.',
       examples: ['+invite']
     })

@@ -10,7 +10,6 @@ module.exports = class Pat extends Command {
       group: 'actions',
       memberName: 'pat',
       guildOnly: true,
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random pat gif and includes the mentioned users username.',
       examples: ['+pat @Alcha#2625'],
       argsType: 'multiple'

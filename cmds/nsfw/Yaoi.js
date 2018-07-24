@@ -9,7 +9,6 @@ class Yaoi extends Command {
       name: 'yaoi',
       group: 'nsfw',
       memberName: 'yaoi',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random yaoi image or gif.',
       examples: ['+yaoi'],
       nsfw: true

@@ -1,12 +1,7 @@
 const Command = require('../BaseCmd')
 const reddit = new (require('../../util/RedditTools'))()
 
-const tatSubs = [
-  'HotChicksWithTattoos',
-  'SuicideGirls',
-  'SceneGirls',
-  'PrettyAltGirls'
-]
+const tatSubs = require('./Sources').Tatts
 
 class Tattoo extends Command {
   constructor (client) {
@@ -14,7 +9,6 @@ class Tattoo extends Command {
       name: 'tattoo',
       group: 'nsfw',
       memberName: 'tattoo',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a random nsfw tattoo\'d female from a variety of subreddits.',
       examples: ['+tattoo', '+tattoo 5'],
       args: [{

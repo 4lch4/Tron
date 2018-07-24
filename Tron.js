@@ -5,10 +5,10 @@ const tools = new (require('./util/Tools'))()
 const CommandHelper = require('./util/db/CommandHelper')
 
 const config = require('./util/config.json')
-const logger = new (require('./util/logger'))()
 
-const Raven = require('raven')
-Raven.config(config.ravenUrl).install()
+const timber = require('timber')
+const transport = new timber.transports.HTTPS(process.env.TIMBER_KEY)
+timber.install(transport)
 
 const client = new CommandoClient({
   commandPrefix: process.env.CMD_PREFIX,
@@ -56,36 +56,29 @@ client.on('ready', () => {
     let random = tools.getRandom(0, activities.length)
     let activity = activities[random]
 
-    logger.log(`Updating activity to ${activity}`, false)
+    console.log(`Updating activity to ${activity}`, false)
 
     client.user.setActivity(activity)
   }, 120000)
 
-  logger.log(`Tron has come online > ${readyTime}`)
+  console.log(`Tron ${process.env.NODE_ENV.toUpperCase()} has come online > ${readyTime}`)
 })
 
-/* client.on('message', msg => {
-  if (msg.mentions.users.get(client.user.id) !== undefined &&
-      !msg.content.startsWith(client.commandPrefix)) {
-    // logger.log(`Tron mentioned.`)  For future integration into cleverbot or something similar
-  }
-}) */
-
 client.on('commandRun', (cmd, promise, msg) => {
-  logger.log(`Running ${cmd.name}...`)
+  console.log(`Running ${cmd.name}...`)
   const command = new CommandHelper(msg, cmd)
 
-  command.updateUsage(cmd.name).catch(err => logger.error(err))
+  command.updateUsage(cmd.name).catch(err => console.error(err))
 })
 
 client.on('warn', info => {
-  logger.log('warn info = ...')
-  logger.log(info)
+  console.log('warn info = ...')
+  console.log(info)
 })
 
 client.on('commandBlocked', (msg, str) => {
-  logger.log('Command Blocked...')
-  logger.log(msg)
+  console.log('Command Blocked...')
+  console.log(msg)
 })
 
 client.on('unknownCommand', msg => {
@@ -93,23 +86,23 @@ client.on('unknownCommand', msg => {
     let query = msg.content.substring(client.commandPrefix.length)
     tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
       .then(res => { if (res !== null) msg.channel.send(res) })
-      .catch(err => logger.error(err))
+      .catch(err => console.error(err))
   }
 })
 
-client.on('commandError', (cmd, err) => logger.error(err))
+client.on('commandError', (cmd, err) => console.error(err))
 
-client.on('error', err => logger.error(err))
+client.on('error', err => console.error(err))
 
 let zenCount = 0
 
 client.on('message', msg => {
   if (msg.mentions.users.get(client.user.id) !== undefined) {
-    logger.log('Tron mentioned.')
-    logger.log(msg.content)
+    console.log('Tron mentioned.')
+    console.log(msg.content)
   } else if (msg.content.startsWith(client.commandPrefix)) {
-    logger.log(`Command used.`)
-    logger.log(msg.content)
+    console.log(`Command used.`)
+    console.log(msg.content)
   }
 
   if (msg.author.id === '150319175326236672') {

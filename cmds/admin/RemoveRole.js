@@ -7,7 +7,6 @@ class RemoveRole extends Command {
       name: 'remove-role',
       group: 'admin',
       memberName: 'remove-role',
-      throttling: { usages: 1, duration: 10 },
       description: 'Removes a role from the list of available roles.',
       examples: ['+remove-role NSFW Pass'],
       guildOnly: true,

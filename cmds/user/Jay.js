@@ -7,7 +7,6 @@ class Jay extends Command {
       name: 'jay',
       group: 'user',
       memberName: 'jay',
-      throttling: { usages: 1, duration: 10 },
       description: 'Returns a jay-like image.',
       examples: ['+jay']
     })
