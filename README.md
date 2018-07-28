@@ -27,11 +27,15 @@ much trouble running your own instance if your heart desires. There are a few th
 before cloning the repo, running `npm i -y; npm start`, and hoping for the best:
 
 1. Set the environment variable for the Discord Token (**DISCORD\_KEY**).
-   - I use a config.json combined with pm2.config.js in order to use [pm2](http://pm2.keymetrics.io/) effectively for separate builds of Tron. 
-   - You can refer to the [sample config.json](./util/config_sample.json) for further help.
+   - I use a config.json combined with pm2.config.js in order to use [pm2][0] effectively for separate builds of Tron. 
+   - You can refer to the [sample config.json][1] for further help.
 
-1. If on Windows, refer to [this guide](https://github.com/Automattic/node-canvas/wiki/Installation---Windows) available on the [node-canvas](https://github.com/Automattic/node-canvas) repo, before installing all of the dependencies.
+2. If on Windows, refer to [this guide][2] available on the [node-canvas][3] repo, before installing all of the dependencies.
 
-1. After completing the above, attempt to run `npm i` and if it installs everything successfully, try `npm start`, which will run Tron in the development/beta environment.
+3. After completing the above, attempt to run `npm i` and if it installs everything successfully, try `npm start`, which will run Tron in the development/beta environment.
     - If you want to run the production version, simply use `npm run start-prod`.
    
+[0]: http://pm2.keymetrics.io/
+[1]: ./util/config_sample.json
+[2]: https://github.com/Automattic/node-canvas/wiki/Installation---Windows
+[3]: https://github.com/Automattic/node-canvas
