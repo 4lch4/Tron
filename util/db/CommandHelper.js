@@ -54,6 +54,7 @@ module.exports = class CommandHelper {
    */
   constructor (msg, cmd) {
     if (msg.guild) this.serverId = msg.guild.id
+    else this.serverId = msg.channel.id
     this.userId = msg.author.id
     this.cmd = msg.command
     this.msg = msg
@@ -75,7 +76,7 @@ module.exports = class CommandHelper {
 
   getCount (cmdName) {
     return new Promise((resolve, reject) => {
-      this.cmdModel.count({_id: cmdName}, (err, count) => {
+      this.cmdModel.count({ _id: cmdName }, (err, count) => {
         if (err) reject(err)
         else {
           resolve(count)
@@ -86,7 +87,7 @@ module.exports = class CommandHelper {
 
   getMostUsed () {
     return new Promise((resolve, reject) => {
-      this.cmdModel.find({}, [], {sort: {uses: -1}}, (err, results) => {
+      this.cmdModel.find({}, [], { sort: { uses: -1 } }, (err, results) => {
         if (err) reject(err)
         else {
           resolve(formatMostUsed(results))
