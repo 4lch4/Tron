@@ -8,6 +8,8 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/HF-Solutions/Tron.svg)](https://greenkeeper.io/)
 
+[![Invite_Tron](https://i.imgur.com/xc2WKjt.png)](https://discordapp.com/oauth2/authorize?client_id=258162570622533635&scope=bot)
+
 # Tron
 
 ## Purpose
