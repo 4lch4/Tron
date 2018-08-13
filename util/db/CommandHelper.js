@@ -65,7 +65,7 @@ module.exports = class CommandHelper {
 
   getCmdCount () {
     return new Promise((resolve, reject) => {
-      this.cmdModel.count({}, (err, count) => {
+      this.cmdModel.countDocuments({}, (err, count) => {
         if (err) reject(err)
         else {
           resolve(count)
@@ -76,7 +76,7 @@ module.exports = class CommandHelper {
 
   getCount (cmdName) {
     return new Promise((resolve, reject) => {
-      this.cmdModel.count({ _id: cmdName }, (err, count) => {
+      this.cmdModel.countDocuments({ _id: cmdName }, (err, count) => {
         if (err) reject(err)
         else {
           resolve(count)
