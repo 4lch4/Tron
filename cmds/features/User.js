@@ -52,8 +52,10 @@ class User extends BaseCmd {
 module.exports = User
 
 const generateFields = (user, member) => {
-  let presence = parseUserPresence(user.presence)
+  let presence = null
   let fields = []
+
+  if (user.presence) presence = parseUserPresence(user.presence)
 
   if (presence.details !== null) {
     fields.push({
