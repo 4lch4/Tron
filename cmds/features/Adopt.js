@@ -47,7 +47,7 @@ const adoptUser = async (msg, adoptee) => {
     if (await adoption.exists()) msg.reply('you\'ve already adopted this person.')
     else {
       msg.channel.send(`<@${adoptee}>, do you wish to be adopted by <@${adopter}>? (Yes/No)`).then(m => {
-        getAdoptResponse(msg.channel, adoptee).then(res => {
+        getAdoptResponse(msg, adoptee).then(res => {
           if (res) {
             // WOOT
             adoption.save().then(res => {
@@ -65,10 +65,10 @@ const adoptUser = async (msg, adoptee) => {
   }
 }
 
-const getAdoptResponse = (channel, adoptee) => {
+const getAdoptResponse = (msg, adoptee) => {
   return new Promise((resolve, reject) => {
-    let collector = channel.createMessageCollector(m =>
-      m.member.id === adoptee && m.channel.id === channel.id, { time: 60000 }
+    let collector = msg.channel.createMessageCollector(m =>
+      m.member.id === adoptee && m.channel.id === msg.channel.id, { time: 60000 }
     )
 
     collector.on('collect', (m, c) => {
@@ -86,6 +86,19 @@ const getAdoptResponse = (channel, adoptee) => {
           collector.stop()
           break
         }
+      }
+    })
+
+    collector.on('end', (c, r) => {
+      if (r === 'time') {
+        msg.channel.send(`Sorry, <@${msg.author.id}>, looks like you won't be getting a response this time around :cry:`)
+      } else {
+        msg.channel.send(
+          'There was an error when trying to execute the adopt command.\n\n' +
+          'Please try again, and if it continues to fail, contact `+support`.'
+        )
+
+        console.error(r)
       }
     })
   })
