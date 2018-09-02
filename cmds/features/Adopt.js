@@ -46,19 +46,21 @@ const adoptUser = async (msg, adoptee) => {
 
     if (await adoption.exists()) msg.reply('you\'ve already adopted this person.')
     else {
-      msg.channel.send(`<@${adoptee}>, do you wish to be adopted by <@${adopter}>? (Yes/No)`).then(m => {
-        getAdoptResponse(msg, adoptee).then(res => {
-          if (res) {
-            // WOOT
-            adoption.save().then(res => {
-              msg.reply('looks like you got a yes.')
-            }).catch(err => console.error(err))
-          } else {
-            // Aww
-            msg.reply('looks like you got a no.')
-          }
-        }).catch(err => console.error(err))
-      }).catch(err => console.error(err))
+      await msg.channel.send(`<@${adoptee}>, do you wish to be adopted by <@${adopter}>? (Yes/No)`)
+      try {
+        let res = await getAdoptResponse(msg, adoptee)
+        if (res) {
+        // WOOT
+          adoption.save().then(res => {
+            msg.reply('looks like you got a yes.')
+          }).catch(err => console.error(err))
+        } else {
+        // Aww
+          msg.reply('looks like you got a no.')
+        }
+      } catch (err) {
+        console.error(err)
+      }
     }
   } else {
     console.error('There was no message or adoptee provided to the adoptUser method.')
@@ -112,7 +114,6 @@ const getAdoptResponse = (msg, adoptee) => {
  * @param {String} input The string to analyze.
  */
 const determineInputType = input => {
-  console.log(`determineInputType() input = ${input}`)
   if (input.toLowerCase().includes('list')) {
     return 'list'
   } else return 'add'
