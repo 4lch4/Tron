@@ -25,7 +25,7 @@ class Marriage {
     return new Promise((resolve, reject) => {
       const marriage = this.connection.model('Marriage', userSchema, 'marriages')
 
-      marriage.count({_id: this.proposer, married: true, divorced: false}, function (err, count) {
+      marriage.count({ _id: this.proposer, married: true, divorced: false }, function (err, count) {
         if (err) reject(err)
         else if (count > 0) resolve(true)
         else resolve(false)
@@ -37,7 +37,7 @@ class Marriage {
     return new Promise((resolve, reject) => {
       const marriage = this.connection.model('Marriage', userSchema, 'marriages')
 
-      marriage.count({_id: this.proposer, married: false, divorced: true}, function (err, count) {
+      marriage.count({ _id: this.proposer, married: false, divorced: true }, function (err, count) {
         if (err) reject(err)
         else if (count > 0) resolve(true)
         else resolve(false)
@@ -53,12 +53,12 @@ class Marriage {
     const ProposerDbModel = ProposerDb.model('Marriage', userSchema, 'marriages')
 
     return new Promise((resolve, reject) => {
-      ProposerDbModel.update({_id: this.proposee}, {
+      ProposerDbModel.update({ _id: this.proposee }, {
         married: false,
         divorced: true,
         anniversary: tools.formatTime('MM/DD/YYYY @ HH:mm:ss')
       }).then(res => {
-        ProposeeDbModel.update({_id: this.proposer}, {
+        ProposeeDbModel.update({ _id: this.proposer }, {
           married: false,
           divorced: true,
           anniversary: tools.formatTime('MM/DD/YYYY @ HH:mm:ss')
@@ -75,12 +75,12 @@ class Marriage {
     const ProposerDbModel = ProposerDb.model('Marriage', userSchema, 'marriages')
 
     return new Promise((resolve, reject) => {
-      ProposerDbModel.update({_id: this.proposee}, {
+      ProposerDbModel.update({ _id: this.proposee }, {
         married: true,
         divorced: false,
         anniversary: tools.formatTime('MM/DD/YYYY @ HH:mm:ss')
       }, { upsert: true }).then(res => {
-        ProposeeDbModel.update({_id: this.proposer}, {
+        ProposeeDbModel.update({ _id: this.proposer }, {
           married: true,
           divorced: false,
           anniversary: tools.formatTime('MM/DD/YYYY @ HH:mm:ss')

@@ -53,7 +53,7 @@ module.exports = class Commands {
 
   getCount (cmdName) {
     return new Promise((resolve, reject) => {
-      this.model.count({_id: cmdName}, (err, count) => {
+      this.model.count({ _id: cmdName }, (err, count) => {
         if (err) reject(err)
         else {
           resolve(count)
@@ -64,7 +64,7 @@ module.exports = class Commands {
 
   getMostUsed () {
     return new Promise((resolve, reject) => {
-      this.model.find({}, [], {sort: {uses: -1}}, (err, results) => {
+      this.model.find({}, [], { sort: { uses: -1 } }, (err, results) => {
         if (err) reject(err)
         else {
           resolve(formatMostUsed(results))

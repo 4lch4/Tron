@@ -46,7 +46,7 @@ class MarriageDB {
     return new Promise((resolve, reject) => {
       const marriage = mongoose.model('Marriage', userSchema, 'marriages')
 
-      marriage.count({_id: this.proposer}, function (err, count) {
+      marriage.count({ _id: this.proposer }, function (err, count) {
         if (err) reject(err)
         else if (count > 0) resolve(true)
         else resolve(false)

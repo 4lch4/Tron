@@ -20,7 +20,7 @@ class AddRole extends Command {
   }
 
   async run (msg, { role }) {
-    mongo.addAvailableRole(msg.guild.id, {id: role.id, name: role.name})
+    mongo.addAvailableRole(msg.guild.id, { id: role.id, name: role.name })
       .then(res => {
         msg.channel.send(`You've successfully added the ${role.name} role to the list.`)
       })
