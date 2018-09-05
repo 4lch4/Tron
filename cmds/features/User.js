@@ -55,7 +55,7 @@ const generateFields = (user, member) => {
   let presence = null
   let fields = []
 
-  if (user.presence) presence = parseUserPresence(user.presence)
+  /* if (user.presence) presence = parseUserPresence(user.presence)
 
   if (presence.details !== null) {
     fields.push({
@@ -69,7 +69,7 @@ const generateFields = (user, member) => {
       'name': 'Activity Name',
       'value': presence.name
     })
-  }
+  } */
 
   fields.push({
     'name': 'User Id',
@@ -79,11 +79,11 @@ const generateFields = (user, member) => {
     'name': 'Created On',
     'value': tools.formatUnixInput(user.createdTimestamp),
     'inline': true
-  }, {
+  }, /*  {
     'name': 'Status',
     'value': user.presence.status.toUpperCase(),
     'inline': true
-  }, {
+  }, */ {
     'name': 'Joined Server On',
     'value': tools.formatUnixInput(member.joinedTimestamp),
     'inline': true
