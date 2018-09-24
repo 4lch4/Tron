@@ -65,7 +65,7 @@ client.on('ready', () => {
 })
 
 client.on('commandRun', (cmd, promise, msg) => {
-  console.log(`Running ${cmd.name}...`)
+  console.log(`Running ${cmd.name} on server ${msg.guild.name} by ${msg.author.username}...`)
   const command = new CommandHelper(msg, cmd)
 
   command.updateUsage(cmd.name).catch(err => console.error(err))
