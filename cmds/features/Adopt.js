@@ -48,14 +48,14 @@ const adoptUser = async (msg, adoptee) => {
     else {
       await msg.channel.send(`<@${adoptee}>, do you wish to be adopted by <@${adopter}>? (Yes/No)`)
       try {
-        let res = await Command.getResponse(msg, val => val.toLowerCase === 'yes' || val.toLowerCase() === 'no') // getAdoptResponse(msg, adoptee)
-        if (res === undefined) return msg.reply(`Sorry, looks like you won't be getting a response this time around :cry:`)
-        else if (res.toLowerCase() === 'yes') {
-          // WOOT
-          adoption.save().then(r => msg.reply('looks like you got a yes.'))
-            .catch(err => console.error(err))
+        let res = await getAdoptResponse(msg, adoptee)
+        if (res) {
+        // WOOT
+          adoption.save().then(res => {
+            msg.reply('looks like you got a yes.')
+          }).catch(err => console.error(err))
         } else {
-          // Aww
+        // Aww
           msg.reply('looks like you got a no.')
         }
       } catch (err) {

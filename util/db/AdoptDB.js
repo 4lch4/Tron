@@ -20,6 +20,28 @@ module.exports = class AdoptDB {
   }
 
   /**
+   * Inserts the currently stored adopter and adoptee id as a new adoption in
+   * the Mongo DB. Uses the Insert function so make sure to call this first and
+   * then you can use the delete function if need be.
+   */
+  save () {
+    return new Promise((resolve, reject) => {
+      if (this.model === undefined) {
+        reject(new Error('The model has not been initiated, please provide an adopter and adoptee before calling this.'))
+      } else {
+        this.model.save((err, res) => {
+          if (err) reject(err)
+          else {
+            console.log(`res...`)
+            console.log(res)
+            resolve(res)
+          }
+        })
+      }
+    })
+  }
+
+  /**
    * Gets a list of adoptions from the database for the given user and formats
    * the results into a nice Embed object for displaying in a channel.
    *
@@ -52,28 +74,6 @@ module.exports = class AdoptDB {
       console.error(err)
       return Promise.reject(err)
     }
-  }
-
-  /**
-   * Inserts the currently stored adopter and adoptee id as a new adoption in
-   * the Mongo DB. Uses the Insert function so make sure to call this first and
-   * then you can use the delete function if need be.
-   */
-  save () {
-    return new Promise((resolve, reject) => {
-      if (this.model === undefined) {
-        reject(new Error('The model has not been initiated, please provide an adopter and adoptee before calling this.'))
-      } else {
-        this.model.save((err, res) => {
-          if (err) reject(err)
-          else {
-            console.log(`res...`)
-            console.log(res)
-            resolve(res)
-          }
-        })
-      }
-    })
   }
 
   /**

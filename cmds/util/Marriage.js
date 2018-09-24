@@ -107,7 +107,7 @@ class Marriage {
   getProposalResponse (channel, userId, timeout = 60) {
     return new Promise((resolve, reject) => {
       const collector = channel.createMessageCollector(m =>
-        m.author.id === userId && m.channel.id === channel.id, { time: timeout * 1000 }
+        m.member.id === userId && m.channel.id === channel.id, { time: timeout * 1000 }
       )
 
       // When a message is collected, determine if it is a yes or no
