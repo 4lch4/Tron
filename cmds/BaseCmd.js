@@ -82,4 +82,42 @@ module.exports = class BaseCmd extends Command {
       })
     })
   }
+
+  /**
+   *
+   * @param {TextChannel|DMChannel} channel
+   * @param {string} content
+   * @param {User} author
+   * @param {MessageEmbed|MessageAttachment} [options]
+   *
+   * @returns {Promise<Message>|Promise<string>}
+   */
+  static async sendMessage (channel, content, author, options = undefined) {
+    if (options === undefined && author === undefined) return channel.send(content)
+    else {
+      if (author !== undefined) {
+        if (this.canSendMessage(channel, author)) return channel.send(content, options)
+        else return Promise.resolve('You are unable to send a message to this channel.')
+      } else return channel.send(content, options)
+    }
+  }
+
+  static canSendMessage (channel, user) {
+    if (typeof channel.permissionsFor !== 'undefined') {
+      return channel.permissionsFor(user).has('SEND_MESSAGES')
+    } else {
+      console.log(`permissionsFor === undefined and typeof channel = ${typeof channel}`)
+      return true
+    }
+  }
 }
+
+// Used for JSDocs
+const {
+  User,
+  DMChannel,
+  TextChannel,
+  Message,
+  MessageEmbed,
+  MessageAttachment
+} = require('discord.js')

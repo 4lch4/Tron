@@ -1,10 +1,10 @@
 const { CommandoClient, SQLiteProvider } = require('discord.js-commando')
+const CommandHelper = require('./util/db/CommandHelper')
+const tools = new (require('./util/Tools'))()
+const { sendMessage } = require('./cmds/BaseCmd')
+const config = require('./util/config.json')
 const sqlite = require('sqlite')
 const path = require('path')
-const tools = new (require('./util/Tools'))()
-const CommandHelper = require('./util/db/CommandHelper')
-
-const config = require('./util/config.json')
 
 const timber = require('timber')
 const transport = new timber.transports.HTTPS(process.env.TIMBER_KEY)
@@ -43,7 +43,8 @@ client.registry
 client.on('ready', () => {
   let readyTime = tools.formattedUTCTime
 
-  client.channels.get(config.notificationChannel).send(`<@219270060936527873>, Tron has come online > **${readyTime}**`)
+  sendMessage(client.channels.get(config.notificationChannel), `<@219270060936527873>, Tron has come online > **${readyTime}**`, client.user)
+  // client.channels.get(config.notificationChannel).send(`<@219270060936527873>, Tron has come online > **${readyTime}**`)
 
   /**
    * Rotates the activity setting on Tron every 2 minutes (120,000ms) to a
@@ -74,11 +75,11 @@ client.on('commandRun', (cmd, promise, msg) => {
 })
 
 client.on('unknownCommand', msg => {
-  if (msg.channel.id !== config.testChannel && msg.channel.permissionsFor(client.user).has('SEND_MESSAGES')) { // Default testing channel, don't respond.
+  if (msg.channel.id !== config.testChannel) { // Default testing channel, don't respond.
     try {
       let query = msg.content.substring(client.commandPrefix.length)
       tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
-        .then(res => { if (res !== null) { msg.channel.send(res) } })
+        .then(res => { if (res !== null) { sendMessage(msg.channel, '', client.user, res) } })
     } catch (err) { console.error(err) }
   }
 })
