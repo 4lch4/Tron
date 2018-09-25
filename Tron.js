@@ -41,7 +41,7 @@ client.registry
 client.on('ready', () => {
   let readyTime = tools.formattedUTCTime
 
-  client.channels.get(config.notificationChannel).send(`Tron has come online > **${readyTime}**`)
+  client.channels.get(config.notificationChannel).send(`<@219270060936527873>, Tron has come online > **${readyTime}**`)
 
   /**
    * Rotates the activity setting on Tron every 2 minutes (120,000ms) to a
