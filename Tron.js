@@ -73,22 +73,13 @@ client.on('commandRun', (cmd, promise, msg) => {
   command.updateUsage(cmd.name).catch(err => console.error(err))
 })
 
-client.on('warn', info => {
-  console.log('warn info = ...')
-  console.log(info)
-})
-
-client.on('commandBlocked', (msg, str) => {
-  console.log('Command Blocked...')
-  console.log(msg)
-})
-
 client.on('unknownCommand', msg => {
-  if (msg.channel.id !== config.testChannel) { // Default testing channel, don't respond.
-    let query = msg.content.substring(client.commandPrefix.length)
-    tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
-      .then(res => { if (res !== null) msg.channel.send(res) })
-      .catch(err => console.error(err))
+  if (msg.channel.id !== config.testChannel && msg.channel.permissionsFor(client.user).has('SEND_MESSAGES')) { // Default testing channel, don't respond.
+    try {
+      let query = msg.content.substring(client.commandPrefix.length)
+      tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
+        .then(res => { if (res !== null) { msg.channel.send(res) } })
+    } catch (err) { console.error(err) }
   }
 })
 
