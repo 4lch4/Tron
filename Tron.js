@@ -10,6 +10,8 @@ const timber = require('timber')
 const transport = new timber.transports.HTTPS(process.env.TIMBER_KEY)
 timber.install(transport)
 
+let zenCount = 0
+
 const client = new CommandoClient({
   commandPrefix: process.env.CMD_PREFIX,
   owner: config.owner,
@@ -91,20 +93,10 @@ client.on('unknownCommand', msg => {
 })
 
 client.on('commandError', (cmd, err) => console.error(err))
-
 client.on('error', err => console.error(err))
-
-let zenCount = 0
+client.on('warn', info => console.log(info))
 
 client.on('message', msg => {
-  if (msg.mentions.users.get(client.user.id) !== undefined) {
-    console.log('Tron mentioned.')
-    console.log(msg.content)
-  } else if (msg.content.startsWith(client.commandPrefix)) {
-    console.log(`Command used.`)
-    console.log(msg.content)
-  }
-
   if (msg.author.id === '150319175326236672') {
     if (zenCount === 10) {
       zenCount = 0
