@@ -26,7 +26,7 @@ class Gay extends Command {
 
   async run (msg, { count }) {
     let post = await reddit.getRandomNSFWPost(gaySubs, count)
-    msg.channel.send(post).catch(err => this.error(err))
+    Command.sendMessage(msg.channel, post, this.client.user).catch(err => this.error(err))
   }
 }
 

@@ -25,7 +25,7 @@ class Hentai extends Command {
 
   async run (msg, { count }) {
     let post = await reddit.getRandomNSFWPost(hentaiSubs, count)
-    msg.channel.send(post).catch(err => this.error(err))
+    Command.sendMessage(msg.channel, post, this.client.user).catch(err => this.error(err))
   }
 }
 
