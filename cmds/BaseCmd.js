@@ -96,19 +96,19 @@ module.exports = class BaseCmd extends Command {
     if (options === undefined && author === undefined) return channel.send(content)
     else {
       if (author !== undefined) {
-        if (this.canSendMessage(channel, author)) return channel.send(content, options)
+        if (canSendMessage(channel, author)) return channel.send(content, options)
         else return Promise.resolve('You are unable to send a message to this channel.')
       } else return channel.send(content, options)
     }
   }
+}
 
-  static canSendMessage (channel, user) {
-    if (typeof channel.permissionsFor !== 'undefined') {
-      return channel.permissionsFor(user).has('SEND_MESSAGES')
-    } else {
-      console.log(`permissionsFor === undefined and typeof channel = ${typeof channel}`)
-      return true
-    }
+const canSendMessage = (channel, user) => {
+  if (typeof channel.permissionsFor !== 'undefined') {
+    return channel.permissionsFor(user).has('SEND_MESSAGES')
+  } else {
+    console.log(`permissionsFor === undefined and typeof channel = ${typeof channel}`)
+    return true
   }
 }
 
