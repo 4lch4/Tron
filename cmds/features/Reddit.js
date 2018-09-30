@@ -67,8 +67,8 @@ class Reddit extends Command {
       subreddit = subreddit.slice(start + 1)
     }
 
-    return reddit.getRandomPost(subreddit, sort, from, limit).then(post => {
-      msg.channel.send(post)
+    return reddit.getRandomHotPost(subreddit, sort, from, limit).then(post => {
+      Command.sendMessage(msg.channel, post, this.client.user)
     }).catch(err => {
       if (err.message === 'Cannot read property \'children\' of undefined') {
         msg.channel.send('This subreddit does not exist or is private.')
