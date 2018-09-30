@@ -21,6 +21,9 @@ module.exports = class BaseCmd extends Command {
   }
 
   getMentionedUsernames (msg) {
+    // let usernames = msg.mentions.users.map(user => `**${user.username}**`)
+    // return `${usernames.join(', ')}`
+
     let usernames = []
 
     msg.mentions.users.forEach(user => usernames.push(user.username))

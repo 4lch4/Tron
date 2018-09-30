@@ -1,6 +1,6 @@
 const Command = require('../BaseCmd')
 
-class Peach extends BaseCmd {
+class Peach extends Command {
   constructor (client) {
     super(client, {
       name: 'peach',

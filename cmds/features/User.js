@@ -3,7 +3,7 @@ const { MessageEmbed } = require('discord.js')
 const info = require('../../package.json')
 const tools = new (require('../../util/Tools'))()
 
-class User extends BaseCmd {
+class User extends Command {
   constructor (client) {
     super(client, {
       name: 'user',

@@ -2,7 +2,7 @@ const Command = require('../BaseCmd')
 const { MessageEmbed } = require('discord.js')
 const Moment = require('moment')
 
-class Server extends BaseCmd {
+class Server extends Command {
   constructor (client) {
     super(client, {
       name: 'server',

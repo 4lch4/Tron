@@ -1,7 +1,7 @@
 const Command = require('../BaseCmd')
 const ioTools = new (require('../../util/IOTools'))()
 
-class Foupa extends BaseCmd {
+class Foupa extends Command {
   constructor (client) {
     super(client, {
       name: 'foupa',

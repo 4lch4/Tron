@@ -5,7 +5,7 @@ const info = require('../../package.json')
 const Moment = require('moment')
 const tools = new (require('../../util/Tools'))()
 
-class Bot extends BaseCmd {
+class Bot extends Command {
   constructor (client) {
     super(client, {
       name: 'bot',

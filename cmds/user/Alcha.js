@@ -1,7 +1,7 @@
 const Command = require('../BaseCmd')
 const ioTools = new (require('../../util/IOTools'))()
 
-class Alcha extends BaseCmd {
+class Alcha extends Command {
   constructor (client) {
     super(client, {
       name: 'alcha',
