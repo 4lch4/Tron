@@ -16,7 +16,7 @@ class Zorika extends Command {
 
   async run (msg, args) {
     ioTools.getRandomImage('zorika', args).then(image => {
-      msg.channel.send('', { files: [image] })
+      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
     })
   }
 }

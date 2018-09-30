@@ -1,4 +1,4 @@
-const BaseCmd = require('../BaseCmd')
+const Command = require('../BaseCmd')
 
 class Peach extends BaseCmd {
   constructor (client) {

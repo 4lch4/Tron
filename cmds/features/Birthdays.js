@@ -1,8 +1,8 @@
 const { Message, Client } = require('discord.js') // Used for JSDocs
-const BaseCmd = require('../BaseCmd')
+const Command = require('../BaseCmd')
 const Birthday = require('../util/Birthday')
 
-class Birthdays extends BaseCmd {
+class Birthdays extends Command {
   constructor (client) {
     super(client, {
       name: 'birthdays',
@@ -139,6 +139,6 @@ const listBirthdays = (msg, client) => {
 
     content.push('```')
 
-    msg.channel.send(content.join('\n'))
+    Command.sendMessage(msg.channel, content.join('\n'), this.client.user)
   })
 }

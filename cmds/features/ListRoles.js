@@ -25,7 +25,7 @@ class GetRoles extends Command {
         content += '```'
       } else content = 'There are no roles currently available for this server.'
 
-      msg.channel.send(content)
+      Command.sendMessage(msg.channel, content, this.client.user)
     }).catch(err => console.error(err))
   }
 }

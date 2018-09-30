@@ -18,7 +18,7 @@ class Kayla extends Command {
       parseInt(msg.author.id) === 217870035090276374 ||
       parseInt(msg.author.id) === 219270060936527873) {
       ioTools.getRandomImage('kayla', args).then(image => {
-        msg.channel.send('', { files: [image] })
+        Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
       })
     } else {
       msg.reply('This command is unavailable to you.')

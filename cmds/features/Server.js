@@ -1,4 +1,4 @@
-const BaseCmd = require('../BaseCmd')
+const Command = require('../BaseCmd')
 const { MessageEmbed } = require('discord.js')
 const Moment = require('moment')
 
@@ -58,7 +58,7 @@ class Server extends BaseCmd {
       }]
     })
 
-    msg.channel.send('', embed)
+    Command.sendMessage(msg.channel, '', this.client.user, embed)
   }
 }
 

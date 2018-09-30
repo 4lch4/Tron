@@ -1,4 +1,4 @@
-const BaseCmd = require('../BaseCmd')
+const Command = require('../BaseCmd')
 // const actions = require('../../data/audit_log/AuditLogActions')
 // const converter = require('json2csv')
 // const io = new (require('../../util/IOTools'))()
@@ -6,7 +6,7 @@ const BaseCmd = require('../BaseCmd')
 const Parser = require('../util/AuditLogParser')
 // const pdf = require('')
 
-class Logs extends BaseCmd {
+class Logs extends Command {
   constructor (client) {
     super(client, {
       name: 'logs',

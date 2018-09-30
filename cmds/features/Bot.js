@@ -1,4 +1,4 @@
-const BaseCmd = require('../BaseCmd')
+const Command = require('../BaseCmd')
 const config = require('../../util/config.json')
 const { MessageEmbed } = require('discord.js')
 const info = require('../../package.json')
@@ -40,7 +40,7 @@ class Bot extends BaseCmd {
       'fields': generateFields(this.client)
     })
 
-    return msg.channel.send('', embed)
+    return Command.sendMessage(msg.channel, '', this.client.user, embed)
   }
 }
 

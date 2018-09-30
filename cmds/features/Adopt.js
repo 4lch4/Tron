@@ -68,45 +68,6 @@ const adoptUser = async (msg, adoptee) => {
   }
 }
 
-const getAdoptResponse = (msg, adoptee) => {
-  return new Promise((resolve, reject) => {
-    let collector = msg.channel.createMessageCollector(m =>
-      m.member.id === adoptee && m.channel.id === msg.channel.id, { time: 60000 }
-    )
-
-    collector.on('collect', (m, c) => {
-      switch (m.content.trim().toLowerCase()) {
-        case 'yes': {
-          // WOOT
-          resolve(true)
-          collector.stop()
-          break
-        }
-
-        case 'no': {
-          // Aww
-          resolve(false)
-          collector.stop()
-          break
-        }
-      }
-    })
-
-    collector.on('end', (c, r) => {
-      if (r === 'time') {
-        msg.channel.send(`Sorry, <@${msg.author.id}>, looks like you won't be getting a response this time around :cry:`)
-      } else {
-        msg.channel.send(
-          'There was an error when trying to execute the adopt command.\n\n' +
-          'Please try again, and if it continues to fail, contact `+support`.'
-        )
-
-        console.error(r)
-      }
-    })
-  })
-}
-
 /**
  * Analyzes the given String and determines what should be done with the content
  * of it, is the user requesting to list another users adoptions, add an

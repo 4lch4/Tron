@@ -1,4 +1,4 @@
-const BaseCmd = require('../BaseCmd')
+const Command = require('../BaseCmd')
 const ioTools = new (require('../../util/IOTools'))()
 
 class Alcha extends BaseCmd {
@@ -15,7 +15,7 @@ class Alcha extends BaseCmd {
 
   async run (msg, args) {
     ioTools.getRandomImage('alcha', args).then(image => {
-      msg.channel.send('', { files: [image] })
+      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
     })
   }
 }
