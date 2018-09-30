@@ -22,7 +22,7 @@ module.exports = class Spank extends Command {
     }
 
     ioTools.getRandomImage('spank', args).then(image => {
-      msg.channel.send(content, { files: [image] })
+      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
     }).catch(err => console.error(err))
   }
 }

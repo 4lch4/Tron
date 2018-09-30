@@ -18,7 +18,7 @@ module.exports = class Wave extends Command {
 
   async run (msg, args) {
     ioTools.getRandomImage('wave', args).then(image => {
-      msg.channel.send('', { files: [image] })
+      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
     }).catch(err => console.error(err))
   }
 }

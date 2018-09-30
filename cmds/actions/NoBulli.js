@@ -30,7 +30,7 @@ module.exports = class NoBulli extends Command {
     }
 
     ioTools.getRandomImage('nobulli').then(image => {
-      msg.channel.send(content, { files: [image] })
+      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
     }).catch(err => console.error(err))
   }
 }

@@ -1,4 +1,4 @@
-const BaseCmd = require('../BaseCmd')
+const Command = require('../BaseCmd')
 const ioTools = new (require('../../util/IOTools'))()
 
 class Tickle extends BaseCmd {
@@ -20,7 +20,7 @@ class Tickle extends BaseCmd {
     }
 
     ioTools.getRandomImage('tickle', args).then(image => {
-      msg.channel.send(content, { files: [image] })
+      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
     }).catch(err => console.error(err))
   }
 }
