@@ -55,6 +55,7 @@ module.exports = class BaseCmd extends Command {
     *
     * @param {CommandMessage} msg The message object used to retrieve responses
     * @param {Function} verify The function used to verify the user input is valid
+    * @param {string} [userId] The id of the user you want a response from
     *
     * @returns {Promise<String>|Promise<undefined>} The response or undefined via a Promise
     *
@@ -66,11 +67,17 @@ module.exports = class BaseCmd extends Command {
     * getResponse(msg, val => { return val.toLocaleLowerCase() = 'help' })
     *   .then(res => console.log('User requires help.'))
     */
-  static getResponse (msg, verify) {
+  static getResponse (msg, verify, userId = undefined) {
     return new Promise((resolve, reject) => {
-      let coll = msg.channel.createMessageCollector(m =>
-        m.member.id === msg.author.id && m.channel.id === msg.channel.id, { time: 60000 }
-      )
+      if (userId === undefined) {
+        var coll = msg.channel.createMessageCollector(m =>
+          m.author.id === msg.author.id && m.channel.id === msg.channel.id, { time: 60000 }
+        )
+      } else {
+        coll = msg.channel.createMessageCollector(m =>
+          m.member.id === userId && m.channel.id === msg.channel.id, { time: 60000 }
+        )
+      }
 
       coll.on('collect', (m, c) => {
         if (verify(m.content)) {
