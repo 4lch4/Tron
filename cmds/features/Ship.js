@@ -123,7 +123,7 @@ function getShipName (msg) {
   const combined = user0 + user1
 
   const shuffled = shuffle(combined.split(''))
-  const randomLength = tools.getRandom(1, shuffled.length)
+  const randomLength = tools.getRandom(4, shuffled.length)
   const shipName = shuffled.toString().substring(0, randomLength)
   return Promise.resolve(`**${tools.upperFirstC(shipName.replace(/,/g, ''))}**`)
 }
