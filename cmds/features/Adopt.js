@@ -17,15 +17,23 @@ class Adopt extends Command {
     switch (determineInputType(msg.content)) {
       case 'add': {
         if (msg.mentions.users.size > 0) {
-          msg.mentions.users.forEach(user => adoptUser(msg, user.id))
+          msg.mentions.users.forEach(user => {
+            if (user.id === msg.author.id) msg.reply('you can\'t adopt yourself, weirdo.')
+            else adoptUser(msg, user.id)
+          })
         } else msg.reply('you must mention at least one person to adopt.')
         break
       }
 
       case 'list': {
         let adoption = new AdoptDB()
-        let list = await adoption.getAdoptionsList(msg.author, this.client)
-        msg.channel.send(list)
+        if (msg.mentions.users.size > 0) {
+          msg.mentions.users.forEach(user => {
+            adoption.getAdoptionsList(user, this.client).then(list => {
+              msg.channel.send(list)
+            }).catch(err => console.error(err))
+          })
+        }
         break
       }
 

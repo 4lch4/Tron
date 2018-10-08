@@ -69,7 +69,7 @@ module.exports = class AdoptDB {
             fields: fieldsOut
           }
         })
-      } else return Promise.resolve({ content: 'This user currently has no adoptions. :cry:' })
+      } else return Promise.resolve({ content: `${adopter.username} currently has no adoptions. :cry:` })
     } catch (err) {
       console.error(err)
       return Promise.reject(err)
