@@ -23,7 +23,10 @@ class Purge extends BaseCmd {
       // Continue with deletion
       msg.channel.bulkDelete(count)
         .then(msgs => msg.reply(`You've deleted ${msgs.size} messages.`))
-        .catch(console.error)
+        .catch(err => {
+          if (err.code === 50013) msg.reply('Unfortunately, I do not have permission to delete messages in this channel.')
+          else console.error(err)
+        })
     } else return msg.reply('You do not have the required permissions (**MANAGE_MESSAGES**) on this server to use this command.')
   }
 }
