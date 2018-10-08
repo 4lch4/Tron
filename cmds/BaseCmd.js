@@ -103,12 +103,13 @@ module.exports = class BaseCmd extends Command {
    * @returns {Promise<Message>|Promise<string>}
    */
   static async sendMessage (channel, content, author, options = undefined) {
-    if (options === undefined && author === undefined) return channel.send(content)
-    else {
+    try {
       if (author !== undefined) {
         if (canSendMessage(channel, author)) return channel.send(content, options)
         else return Promise.resolve('You are unable to send a message to this channel.')
       } else return channel.send(content, options)
+    } catch (err) {
+      console.error(`An error has occured while attempting to send a message: ${err.message}`)
     }
   }
 }
