@@ -120,7 +120,7 @@ class Marriage {
           // If the user replies with a no, stop the collector, and return false
           resolve(false)
           collector.stop()
-        }
+        } else { m.reply('please reply with a `yes` or `no`.') }
       })
 
       collector.on('end', (c, r) => {
