@@ -33,6 +33,9 @@ class Adopt extends Command {
               msg.channel.send(list)
             }).catch(err => console.error(err))
           })
+        } else {
+          adoption.getAdoptionsList(msg.author, this.client)
+            .then(list => msg.channel.send(list)).catch(console.error)
         }
         break
       }
