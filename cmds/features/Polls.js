@@ -1,7 +1,7 @@
 const Command = require('../BaseCmd')
 const Message = require('discord.js').Message // Used for JSDocs
 // const Survey = require('survaid')
-const Strings = require('../util/String').enUS.polls
+const Strings = require('../util/Strings').enUS.polls
 const { isBetaTester } = require('../util/Config')
 
 const actions = {
@@ -24,6 +24,41 @@ const determineAction = args => {
   }
 }
 
+/**
+ * Get the question/message for the poll and return it via a Promise.
+ *
+ * @param {Message} msg The original message that called the command
+ *
+ * @returns {Promise<String>} The response from the user wrapped in a Promise
+ */
+const getPollMsg = async msg => {
+  // Send the message requesting the question/message
+  await msg.reply(Strings.getPollMsg)
+
+  // Return the response from the user
+  return Command.getResponse(msg, val => val.length > 0, msg.author.id)
+}
+
+const timingTypes = {
+  startOnly: 0,
+  endOnly: 1,
+  both: 2,
+  neither: 3
+}
+
+/**
+ * Gets the type of timing for the poll. Does it have a start or end time? Just
+ * an end time? Just a start time?
+ *
+ * @param {Message} msg
+ *
+ * @returns {Promise<String>}
+ */
+const getTimingType = async msg => {
+  await msg.reply(Strings.getTimingType)
+  return Command.getResponse(msg, val => !isNaN(val) && val >= 0 && val <= 3, msg.author.id, Strings.invalidTimingType)
+}
+
 class Poll extends Command {
   constructor (client) {
     super(client, {
@@ -32,7 +67,7 @@ class Poll extends Command {
       memberName: 'poll',
       throttling: { usages: 1, duration: 10 },
       description: 'Allows you to create your own polls or vote in existing ones.',
-      guildOnly: true,
+      guildOnly: false,
       aliases: ['polls', 'survey', 'surveys'],
       argsType: 'multiple'
     })
@@ -66,10 +101,9 @@ class Poll extends Command {
           switch (determineAction(args)) {
             case actions.create: {
               // Get the necessary fields from the user and create a poll
-              await msg.reply('what is the question or message of this poll?')
-              Command.getResponse(msg, val => val.length > 0, msg.author.id).then(response => {
-                msg.reply(`your response was ${response}`)
-              })
+              // Start with the poll question/message
+              const question = await getPollMsg(msg)
+              const timimg = await getTimingType(msg)
               break
             }
 
