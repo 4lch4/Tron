@@ -44,7 +44,6 @@ client.on('ready', () => {
   let readyTime = tools.formattedUTCTime
 
   sendMessage(client.channels.get(config.notificationChannel), `<@219270060936527873>, Tron has come online > **${readyTime}**`, client.user)
-  // client.channels.get(config.notificationChannel).send(`<@219270060936527873>, Tron has come online > **${readyTime}**`)
 
   /**
    * Rotates the activity setting on Tron every 2 minutes (120,000ms) to a
@@ -71,7 +70,7 @@ client.on('commandRun', (cmd, promise, msg) => {
   if (msg.guild !== null) {
     console.log(`Running ${cmd.name} on server ${msg.guild.name} by ${msg.author.username}...`)
     const command = new CommandHelper(msg, cmd)
-  
+
     command.updateUsage(cmd.name).catch(err => console.error(err))
   }
 })
