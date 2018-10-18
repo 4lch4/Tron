@@ -1,4 +1,4 @@
-const config = require('./util/config.json')
+const config = require('./util/config.jsonc')
 
 module.exports = {
   apps: [{

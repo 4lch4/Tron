@@ -28,8 +28,8 @@ much trouble running your own instance if your heart desires. There are a few th
 before cloning the repo, running `npm i -y; npm start`, and hoping for the best:
 
 1. Set the environment variable for the Discord Token (**DISCORD\_KEY**).
-   - I use a config.json combined with pm2.config.js in order to use [pm2][0] effectively for separate builds of Tron. 
-   - You can refer to the [sample config.json][1] for further help.
+   - I use a config.jsonc combined with pm2.config.js in order to use [pm2][0] effectively for separate builds of Tron. 
+   - You can refer to the [sample config.jsonc][1] for further help.
 
 2. If on Windows, refer to [this guide][2] available on the [node-canvas][3] repo, before installing all of the dependencies.
 

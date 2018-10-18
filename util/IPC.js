@@ -1,4 +1,4 @@
-const config = require('./config.json')
+const config = require('./config.jsonc')
 const logger = new (require('./logger'))()
 const ipc = require('node-ipc')
 const { Client } = require('discord.js') // Used for JSDocs
