@@ -1,5 +1,5 @@
 const { Message } = require('discord.js') // Used for JSDocs
-const config = require('../../util/config.jsonc')
+const config = require('../../util/config.json')
 const mongoose = require('mongoose')
 const connection = mongoose.createConnection(config.mongoUrl)
 const BirthdaySchema = new mongoose.Schema({

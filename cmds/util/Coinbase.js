@@ -1,4 +1,4 @@
-const config = require('../../util/config.jsonc')
+const config = require('../../util/config.json')
 
 const Coinbase = require('coinbase').Client
 const coinbase = new Coinbase({

@@ -2,7 +2,7 @@ const { CommandoClient, SQLiteProvider } = require('discord.js-commando')
 const CommandHelper = require('./util/db/CommandHelper')
 const tools = new (require('./util/Tools'))()
 const { sendMessage } = require('./cmds/BaseCmd')
-const config = require('./util/config.jsonc')
+const config = require('./util/config.json')
 const sqlite = require('sqlite')
 const path = require('path')
 

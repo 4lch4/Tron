@@ -1,4 +1,4 @@
-const config = require('../../util/config.jsonc')
+const config = require('../../util/config.json')
 
 /**
  * Retrieves a setting from Tron's configuration files or environment variables

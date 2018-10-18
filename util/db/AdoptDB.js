@@ -2,7 +2,7 @@ const tools = new (require('../../util/Tools.js'))()
 const mongoose = require('mongoose')
 
 /** The base URI for connecting to the remote MongoDB instance */
-const mongoUri = require('../../util/config.jsonc').mongoUrl
+const mongoUri = require('../../util/config.json').mongoUrl
 
 /** Our collection of colors used to style the embed */
 const colors = require('../../util/colors').Decimal
