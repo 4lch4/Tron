@@ -104,6 +104,8 @@ module.exports = class BaseCmd extends Command {
    */
   static async sendMessage (channel, content, author, options = undefined) {
     try {
+      if (!content && !options) return
+
       if (author !== undefined) {
         if (canSendMessage(channel, author)) return channel.send(content, options)
         else return Promise.resolve('You are unable to send a message to this channel.')
