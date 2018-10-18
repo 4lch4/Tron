@@ -66,7 +66,7 @@ class Poll extends Command {
           switch (determineAction(args)) {
             case actions.create: {
               // Get the necessary fields from the user and create a poll
-              await msg.reply('What is the question or title of this poll?')
+              await msg.reply('what is the question or message of this poll?')
               Command.getResponse(msg, val => val.length > 0, msg.author.id).then(response => {
                 msg.reply(`your response was ${response}`)
               })

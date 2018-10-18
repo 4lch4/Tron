@@ -27,6 +27,7 @@ const getSetting = settingName => {
 const isBetaTester = userId => {
   if (config.betaTesters.includes(userId)) return true
   else if (config.developers.includes(userId)) return true
+  else if (config.owner === userId) return true
   else return false
 }
 
