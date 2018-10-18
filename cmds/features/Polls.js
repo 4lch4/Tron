@@ -2,7 +2,7 @@ const Command = require('../BaseCmd')
 const Message = require('discord.js').Message // Used for JSDocs
 // const Survey = require('survaid')
 const Strings = require('../util/String').enUS.polls
-const { getSetting } = require('../util/Config')
+const { isBetaTester } = require('../util/Config')
 
 const actions = {
   create: 'create',
@@ -57,7 +57,7 @@ class Poll extends Command {
    * @returns {Promise<Message>}
    */
   async run (msg, args) {
-    if (msg.author.id === getSetting('owner')) {
+    if (isBetaTester(msg.author.id)) {
     // See if the user wishes to vote, or create a poll
       switch (args.length) {
         case 0: return msg.reply(Strings.noArgs)

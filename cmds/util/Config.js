@@ -7,7 +7,7 @@ const config = require('../../util/config.jsonc')
  *
  * @param {String} settingName The name of the setting you want the value of.
  *
- * @returns {Promise<String>|Promise<undefined>} Setting value, or undefined if none found
+ * @returns {String|undefined} Setting value, or undefined if none found
  */
 const getSetting = settingName => {
   if (config[settingName] !== undefined) return config[settingName]
@@ -15,4 +15,20 @@ const getSetting = settingName => {
   else return undefined
 }
 
+/**
+ * Checks Tron's configuration to see if the given user id is either a noted
+ * beta test or is a developer. If they are, true is returned, otherwise false
+ * is returned.
+ *
+ * @param {String} userId The id of the user you're checking access for
+ *
+ * @returns {Boolean} True or false, is the user a tester?
+ */
+const isBetaTester = userId => {
+  if (config.betaTesters.includes(userId)) return true
+  else if (config.developers.includes(userId)) return true
+  else return false
+}
+
 module.exports.getSetting = getSetting
+module.exports.isBetaTester = isBetaTester
