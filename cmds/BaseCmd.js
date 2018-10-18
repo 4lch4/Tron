@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando')
 const logger = new (require('../util/logger'))()
+const standard = require('./util/Strings').enUS.standard
 
 module.exports = class BaseCmd extends Command {
   log (info) {
@@ -55,7 +56,8 @@ module.exports = class BaseCmd extends Command {
     *
     * @param {CommandMessage} msg The message object used to retrieve responses
     * @param {Function} verify The function used to verify the user input is valid
-    * @param {string} [userId] The id of the user you want a response from
+    * @param {String} userId The id of the user you want a response from
+    * @param {String} [invalidInput] The optional message to send in the event a user provides invalid input
     *
     * @returns {Promise<String>|Promise<undefined>} The response or undefined via a Promise
     *
@@ -67,7 +69,7 @@ module.exports = class BaseCmd extends Command {
     * getResponse(msg, val => { return val.toLocaleLowerCase() = 'help' })
     *   .then(res => console.log('User requires help.'))
     */
-  static getResponse (msg, verify, userId = undefined) {
+  static getResponse (msg, verify, userId, invalidInput = undefined) {
     return new Promise((resolve, reject) => {
       if (userId === undefined) {
         var coll = msg.channel.createMessageCollector(m =>
@@ -83,7 +85,7 @@ module.exports = class BaseCmd extends Command {
         if (verify(m.content)) {
           resolve(m.content)
           coll.stop()
-        }
+        } else if (invalidInput !== undefined) m.channel.send(invalidInput)
       })
 
       coll.on('end', (c, r) => {
