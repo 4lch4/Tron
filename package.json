@@ -61,7 +61,7 @@
     "shuffle-array": "1.0.1",
     "snyk": "1.103.4",
     "sqlite": "3.0.0",
-    "sqlite3": "4.0.2",
+    "sqlite3": "4.0.3",
     "stream-transform": "1.0.7",
     "strict-uri-encode": "2.0.0",
     "survaid": "github:Alcha/Survaid",
