@@ -48,7 +48,7 @@
     "libsodium-wrappers": "0.7.3",
     "lodash": "4.17.11",
     "moment": "2.22.2",
-    "moment-timezone": "0.5.21",
+    "moment-timezone": "0.5.22",
     "mongodb": "3.1.7",
     "mongoose": "5.3.3",
     "node-ipc": "9.1.1",
