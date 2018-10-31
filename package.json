@@ -52,7 +52,7 @@
     "mongodb": "3.1.7",
     "mongoose": "5.3.3",
     "node-ipc": "9.1.1",
-    "node-opus": "0.3.0",
+    "node-opus": "0.3.1",
     "opusscript": "0.0.6",
     "pdfkit": "0.8.3",
     "raven": "2.6.4",
