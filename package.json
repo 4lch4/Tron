@@ -9,9 +9,7 @@
     "start": "pm2 start pm2.config.js",
     "start-prod": "pm2 start pm2.config.js --env production",
     "test": "jest",
-    "test-full": "jest --config ./util/jest.config.js && codecov",
-    "snyk-protect": "snyk protect",
-    "prepare": "npm run snyk-protect"
+    "test-full": "jest --config ./util/jest.config.js && codecov"
   },
   "repository": {
     "type": "git",
@@ -59,7 +57,6 @@
     "redwrap": "0.0.4",
     "settings-store": "1.4.1",
     "shuffle-array": "1.0.1",
-    "snyk": "1.103.4",
     "sqlite": "3.0.0",
     "sqlite3": "4.0.2",
     "stream-transform": "1.0.7",
@@ -78,6 +75,5 @@
     "ignore": [
       "*.test.js"
     ]
-  },
-  "snyk": true
+  }
 }
