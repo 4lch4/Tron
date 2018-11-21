@@ -34,7 +34,7 @@
     "coinbase": "2.0.8",
     "csv": "4.0.0",
     "csv-generate": "2.2.2",
-    "csv-stringify": "4.3.1",
+    "csv-stringify": "5.0.0",
     "csv-parse": "3.1.3",
     "discord.js": "github:discordjs/discord.js",
     "discord.js-commando": "github:discordjs/Commando",
