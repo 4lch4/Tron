@@ -1,8 +1,6 @@
 const Command = require('../BaseCmd')
 // const actions = require('../../data/audit_log/AuditLogActions')
-// const converter = require('json2csv')
 // const io = new (require('../../util/IOTools'))()
-// const _ = require('lodash')
 const Parser = require('../util/AuditLogParser')
 // const pdf = require('')
 
