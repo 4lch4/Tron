@@ -1,10 +1,9 @@
 const Command = require('../BaseCmd')
 const path = require('path')
-const Canvas = require('canvas')
+const { Canvas, Image } = require('canvas')
 const ioTools = new (require('../../util/IOTools'))()
 const tools = new (require('../../util/Tools'))()
 const shuffle = require('shuffle-array')
-const Image = Canvas.Image
 
 class Ship extends Command {
   constructor (client) {
