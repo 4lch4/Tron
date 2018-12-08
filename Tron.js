@@ -10,8 +10,6 @@ const timber = require('timber')
 const transport = new timber.transports.HTTPS(process.env.TIMBER_KEY)
 timber.install(transport)
 
-let zenCount = 0
-
 const client = new CommandoClient({
   commandPrefix: process.env.CMD_PREFIX,
   owner: config.owner,
@@ -71,7 +69,7 @@ client.on('commandRun', (cmd, promise, msg) => {
   if (msg.guild !== null) {
     console.log(`Running ${cmd.name} on server ${msg.guild.name} by ${msg.author.username}...`)
     const command = new CommandHelper(msg, cmd)
-  
+
     command.updateUsage(cmd.name).catch(err => console.error(err))
   }
 })
@@ -90,12 +88,28 @@ client.on('commandError', (cmd, err) => console.error(err))
 client.on('error', err => console.error(err))
 client.on('warn', info => console.log(info))
 
+let zenCount = 0
+let volCount = 0
+
+const volInsults = [
+  'is lame.',
+  'smells like cheese.'
+]
+
 client.on('message', msg => {
-  if (msg.author.id === '150319175326236672') {
-    if (zenCount === 10) {
-      zenCount = 0
-      return msg.reply('meh.')
-    } else zenCount++
+  switch (msg.author.id) {
+    case '493093339663695912': // Volcano Queen
+      if (volCount === 5) {
+        volCount = 0
+        return msg.reply(volInsults[tools.getRandom(0, volInsults.length)])
+      } else volCount++
+      break
+    case '150319175326236672': // Zenny
+      if (zenCount === 10) {
+        zenCount = 0
+        return msg.reply('meh.')
+      } else zenCount++
+      break
   }
 })
 
