@@ -13,20 +13,16 @@ class Neko extends Command {
       guildOnly: false,
       description: 'Displays nekos of various shapes and sizes.',
       examples: ['+neko', '+neko nsfw'],
-      args: [
-        {
-          key: 'type',
-          default: 'sfw',
-          prompt: 'Would you like SFW or NSFW content?',
-          validate: val => {
-            if (val === 'sfw' || val === 'nsfw') return true
-            else return 'Please provide either `sfw` or `nsfw` for the content type.'
-          },
-          parse: val => {
-            return val.toLowerCase()
-          }
-        }
-      ]
+      args: [{
+        key: 'type',
+        default: 'sfw',
+        prompt: 'Would you like SFW or NSFW content?',
+        validate: val => {
+          if (val === 'sfw' || val === 'nsfw') return true
+          else return 'Please provide either `sfw` or `nsfw` for the content type.'
+        },
+        parse: val => val.toLowerCase()
+      }]
     })
   }
 
