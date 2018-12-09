@@ -14,9 +14,8 @@ class Cat extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('cats', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('cats', args)
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 
