@@ -119,10 +119,19 @@ function getShipName (msg) {
   if (users[0] !== undefined) user0 = users[0].username
   if (users[1] !== undefined) user1 = users[1].username
 
-  const combined = user0 + user1
+  let random0 = tools.getRandom(0, user0.length)
+  let random1 = tools.getRandom(0, user1.length)
+  let str0 = user0.substring(0, random0)
+  let str1 = user1.substring(0, random1)
 
-  const shuffled = shuffle(combined.split(''))
-  const randomLength = tools.getRandom(4, shuffled.length)
-  const shipName = shuffled.toString().substring(0, randomLength)
+  let shipName = `${str0}${str1}`
+
   return Promise.resolve(`**${tools.upperFirstC(shipName.replace(/,/g, ''))}**`)
+
+  // const combined = user0 + user1
+
+  // const shuffled = shuffle(combined.split(''))
+  // const randomLength = tools.getRandom(4, shuffled.length)
+  // const shipName = shuffled.toString().substring(0, randomLength)
+  // return Promise.resolve(`**${tools.upperFirstC(shipName.replace(/,/g, ''))}**`)
 }
