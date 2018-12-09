@@ -28,6 +28,7 @@ class Kick extends Command {
     msg.mentions.members.first()
       .kick(reason)
       .then(member => msg.reply(`${member.user.username} has been kicked for ${reason}.`))
+      .catch(console.error)
   }
 }
 

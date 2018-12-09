@@ -25,9 +25,7 @@ class RemoveRole extends Command {
       .then(val => {
         msg.channel.send(`You've successfully removed the ${role.name} role.`)
       })
-      .catch(err => {
-        msg.channel.send(err.message)
-      })
+      .catch(err => msg.channel.send(err.message))
   }
 }
 

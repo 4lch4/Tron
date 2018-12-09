@@ -28,6 +28,7 @@ class Ban extends Command {
     msg.mentions.members.first()
       .ban(reason)
       .then(member => msg.reply(`${member.user.username} has been banned for ${reason}.`))
+      .catch(console.error)
   }
 }
 

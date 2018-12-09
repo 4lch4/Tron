@@ -23,12 +23,7 @@ class AddRole extends Command {
     mongo.addAvailableRole(msg.guild.id, { id: role.id, name: role.name })
       .then(res => {
         msg.channel.send(`You've successfully added the ${role.name} role to the list.`)
-      })
-      .catch(err => {
-        if (err) {
-          msg.channel.send(err.message)
-        }
-      })
+      }).catch(err => msg.channel.send(err.message))
   }
 }
 
