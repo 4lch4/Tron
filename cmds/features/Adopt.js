@@ -9,7 +9,7 @@ class Adopt extends Command {
       memberName: 'adopt',
       throttling: { usages: 1, duration: 10 },
       description: 'Allows you to adopt a member of your server.',
-      examples: ['+adopt @Alcha#2625']
+      examples: ['+adopt @Alcha#0042']
     })
   }
 

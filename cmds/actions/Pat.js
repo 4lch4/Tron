@@ -11,7 +11,7 @@ module.exports = class Pat extends Command {
       memberName: 'pat',
       guildOnly: true,
       description: 'Returns a random pat gif and includes the mentioned users username.',
-      examples: ['+pat @Alcha#2625'],
+      examples: ['+pat @Alcha#0042'],
       argsType: 'multiple'
     })
   }

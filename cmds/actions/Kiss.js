@@ -11,7 +11,7 @@ module.exports = class Kiss extends Command {
       memberName: 'kiss',
       guildOnly: true,
       description: 'Returns a random kiss gif and includes the mentioned users username.',
-      examples: ['+kiss @Alcha#2625'],
+      examples: ['+kiss @Alcha#0042'],
       argsType: 'multiple'
     })
   }

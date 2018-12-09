@@ -7,7 +7,7 @@ class Kick extends Command {
       group: 'admin',
       memberName: 'admin-kick',
       description: 'Kicks the mentioned user from the server.',
-      examples: ['+admin-kick @Alcha#2625', '+admin-kick @Alcha#2625 \'He\'s a total tuul.\''],
+      examples: ['+admin-kick @Alcha#0042', '+admin-kick @Alcha#0042 \'He\'s a total tuul.\''],
       userPermissions: ['ADMINISTRATOR'],
       args: [{
         key: 'user',

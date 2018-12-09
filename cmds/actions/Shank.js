@@ -11,7 +11,7 @@ module.exports = class Shank extends Command {
       guildOnly: false,
       aliases: ['stab', 'shanks'],
       description: 'Returns a random shank gif and includes the mentions users username.',
-      examples: ['+shank @Alcha#2625'],
+      examples: ['+shank @Alcha#0042'],
       argsType: 'multiple'
     })
   }

@@ -11,7 +11,7 @@ module.exports = class Slap extends Command {
       memberName: 'slap',
       guildOnly: true,
       description: 'Returns a random slap gif and includes the mentioned users username.',
-      examples: ['+slap @Alcha#2625'],
+      examples: ['+slap @Alcha#0042'],
       argsType: 'multiple'
     })
   }

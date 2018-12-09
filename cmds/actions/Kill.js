@@ -11,7 +11,7 @@ module.exports = class Kill extends Command {
       memberName: 'kill',
       guildOnly: true,
       description: 'Returns a random kill gif and includes the mentioned users username.',
-      examples: ['+kill @Alcha#2625'],
+      examples: ['+kill @Alcha#0042'],
       argsType: 'multiple'
     })
   }

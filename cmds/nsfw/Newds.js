@@ -13,7 +13,7 @@ class Newds extends Command {
       memberName: 'newds',
       aliases: ['newd', 'nood', 'nude', 'nudes'],
       description: 'Sends a random nude to the mentioned user.',
-      examples: ['+newds @Alcha#2625', '+newds dude @Alcha#2625'],
+      examples: ['+newds @Alcha#0042', '+newds dude @Alcha#0042'],
       args: [{
         key: 'sex',
         label: 'Sex',

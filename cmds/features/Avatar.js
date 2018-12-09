@@ -8,7 +8,7 @@ class Avatar extends Command {
       memberName: 'avatar',
       description: 'Returns a link to the tagged users avatar.',
       details: 'Returns a high quality (if available) version of the tagged users avatar.',
-      examples: ['+avatar @Alcha#2625'],
+      examples: ['+avatar @Alcha#0042'],
       args: [{
         key: 'user',
         label: 'User',

@@ -11,7 +11,7 @@ class Marry extends Command {
       memberName: 'marry',
       throttling: { usages: 1, duration: 60 },
       description: 'Used to marry a user or display the marriages of yourself or a mentioned user.',
-      examples: ['+marry @Alcha#2625', '+marry list', '+marry list @Alcha#2625'],
+      examples: ['+marry @Alcha#0042', '+marry list', '+marry list @Alcha#0042'],
       argsType: 'multiple'
     })
   }

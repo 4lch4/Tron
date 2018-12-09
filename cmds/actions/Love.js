@@ -11,7 +11,7 @@ module.exports = class Love extends Command {
       memberName: 'love',
       guildOnly: true,
       description: 'Returns a random love gif and if a user is mentioned, includes their name.',
-      examples: ['+love @Alcha#2625'],
+      examples: ['+love @Alcha#0042'],
       argsType: 'multiple'
     })
   }

@@ -11,7 +11,7 @@ module.exports = class Poke extends Command {
       memberName: 'poke',
       guildOnly: true,
       description: 'Returns a random poke gif and includes the mentioned users username.',
-      examples: ['+poke @Alcha#2625'],
+      examples: ['+poke @Alcha#0042'],
       argsType: 'multiple'
     })
   }

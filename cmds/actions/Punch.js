@@ -11,7 +11,7 @@ module.exports = class Punch extends Command {
       memberName: 'punch',
       guildOnly: true,
       description: 'Returns a random punch gif and includes the mentioned users username.',
-      examples: ['+punch @Alcha#2625'],
+      examples: ['+punch @Alcha#0042'],
       argsType: 'multiple'
     })
   }

@@ -11,7 +11,7 @@ class Divorce extends Command {
       memberName: 'divorce',
       throttling: { usages: 1, duration: 60 },
       description: 'Used to divorce a user or display the divorces of yourself or a mentioned user.',
-      examples: ['+divorce @Alcha#2625', '+divorce list', '+divorce list @Alcha#2625'],
+      examples: ['+divorce @Alcha#0042', '+divorce list', '+divorce list @Alcha#0042'],
       argsType: 'multiple'
     })
   }

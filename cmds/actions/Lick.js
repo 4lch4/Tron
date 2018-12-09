@@ -11,7 +11,7 @@ module.exports = class Lick extends Command {
       memberName: 'lick',
       guildOnly: true,
       description: 'Returns a random lick gif and includes the mentioned users username.',
-      examples: ['+lick @Alcha#2625'],
+      examples: ['+lick @Alcha#0042'],
       argsType: 'multiple'
     })
   }

@@ -9,7 +9,7 @@ class NotWork extends Command {
       group: 'reactions',
       description: 'Returns a random not working image/gif.',
       aliases: ['nowork', 'not-work', 'no-work'],
-      examples: ['+nowork', '+notwork @Alcha#2625']
+      examples: ['+nowork', '+notwork @Alcha#0042']
     })
   }
 

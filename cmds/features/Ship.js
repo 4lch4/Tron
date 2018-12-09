@@ -12,7 +12,7 @@ class Ship extends Command {
       group: 'features',
       memberName: 'ship',
       description: 'Ships two users as a couple.',
-      examples: ['+ship @Alcha#2625 @Aadio#1576'],
+      examples: ['+ship @Alcha#0042 @Aadio#1576'],
       args: [{
         key: 'user1',
         label: 'User 1',

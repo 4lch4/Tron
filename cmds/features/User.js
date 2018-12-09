@@ -11,7 +11,7 @@ class User extends Command {
       group: 'features',
       description: 'Displays various information about the mentioned user.',
       aliases: ['userinfo', 'user-info'],
-      examples: ['+user @Alcha#2625']
+      examples: ['+user @Alcha#0042']
     })
   }
 

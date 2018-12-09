@@ -9,7 +9,7 @@ class Tickle extends Command {
       group: 'actions',
       description: 'Returns a random tickle image/gif.',
       aliases: ['tickles'],
-      examples: ['+tickle @Alcha#2625'],
+      examples: ['+tickle @Alcha#0042'],
       argsType: 'multiple'
     })
   }

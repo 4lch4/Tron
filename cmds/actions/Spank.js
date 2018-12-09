@@ -11,7 +11,7 @@ module.exports = class Spank extends Command {
       memberName: 'spank',
       guildOnly: true,
       description: 'Returns a random spank gif and includes the mentioned users username.',
-      examples: ['+spank @Alcha#2625'],
+      examples: ['+spank @Alcha#0042'],
       argsType: 'multiple'
     })
   }
