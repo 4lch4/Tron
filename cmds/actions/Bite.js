@@ -22,8 +22,7 @@ module.exports = class Bite extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been bitten by **${msg.author.username}**.`
     }
 
-    ioTools.getRandomImage('bite', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('bite', args)
+    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

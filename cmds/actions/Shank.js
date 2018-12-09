@@ -21,8 +21,7 @@ module.exports = class Shank extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been shanked by **${msg.author.username}**! :knife:`
     }
 
-    ioTools.getRandomImage('shank', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('shank', args)
+    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

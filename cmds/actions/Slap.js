@@ -21,8 +21,7 @@ module.exports = class Slap extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been slapped by **${msg.author.username}**. `
     }
 
-    ioTools.getRandomImage('slap', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('slap', args)
+    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

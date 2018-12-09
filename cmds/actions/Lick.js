@@ -21,8 +21,7 @@ module.exports = class Lick extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been licked by **${msg.author.username}**. :tongue:`
     }
 
-    ioTools.getRandomImage('lick', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('lick', args)
+    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

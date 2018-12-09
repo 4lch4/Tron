@@ -21,8 +21,7 @@ module.exports = class Spank extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been spanked by **${msg.author.username}**. :wave:`
     }
 
-    ioTools.getRandomImage('spank', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('spank', args)
+    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

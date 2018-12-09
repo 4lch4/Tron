@@ -29,8 +29,7 @@ module.exports = class NoBulli extends Command {
       var content = `**${user1.username}**, don't you dare bulli **${user2.username}**!`
     }
 
-    ioTools.getRandomImage('nobulli').then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('nobulli')
+    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

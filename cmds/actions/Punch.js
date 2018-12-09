@@ -21,8 +21,7 @@ module.exports = class Punch extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been punched by **${msg.author.username}**. :punch:`
     }
 
-    ioTools.getRandomImage('punch', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('punch', args)
+    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

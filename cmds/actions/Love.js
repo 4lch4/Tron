@@ -21,8 +21,7 @@ module.exports = class Love extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been loved by **${msg.author.username}**. :heart:`
     }
 
-    ioTools.getRandomImage('love', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('love', args)
+    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

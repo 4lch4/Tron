@@ -21,8 +21,7 @@ module.exports = class Kill extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been killed by **${msg.author.username}**. :knife:`
     }
 
-    ioTools.getRandomImage('kill', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('kill', args)
+    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

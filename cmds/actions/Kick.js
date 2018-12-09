@@ -21,8 +21,7 @@ module.exports = class Kick extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been kicked by **${msg.author.username}**.`
     }
 
-    ioTools.getRandomImage('kick', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('kick', args)
+    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

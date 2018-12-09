@@ -21,8 +21,7 @@ module.exports = class Kiss extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been kissed by **${msg.author.username}**. :kiss:`
     }
 
-    ioTools.getRandomImage('kiss', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('kiss', args)
+    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }
