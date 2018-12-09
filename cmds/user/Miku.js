@@ -14,9 +14,8 @@ class Miku extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('miku', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('miku', args)
+    Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

@@ -14,9 +14,8 @@ class Dingle extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('dingle', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('dingle', args)
+    Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

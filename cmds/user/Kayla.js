@@ -1,6 +1,11 @@
 const Command = require('../BaseCmd')
 
 const ioTools = new (require('../../util/IOTools'))()
+const allowedIds = [
+  '142092834260910080',
+  '217870035090276374',
+  '219270060936527873'
+]
 
 class Kayla extends Command {
   constructor (client) {
@@ -14,15 +19,10 @@ class Kayla extends Command {
   }
 
   async run (msg, args) {
-    if (parseInt(msg.author.id) === 142092834260910080 ||
-      parseInt(msg.author.id) === 217870035090276374 ||
-      parseInt(msg.author.id) === 219270060936527873) {
-      ioTools.getRandomImage('kayla', args).then(image => {
-        Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-      })
-    } else {
-      msg.reply('This command is unavailable to you.')
-    }
+    if (allowedIds.includes(msg.author.id)) {
+      let image = await ioTools.getRandomImage('kayla', args)
+      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
+    } else msg.reply('This command is unavailable to you.')
   }
 }
 

@@ -14,9 +14,8 @@ class Key extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('key', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('key', args)
+    Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

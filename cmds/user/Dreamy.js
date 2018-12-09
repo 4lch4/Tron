@@ -14,9 +14,8 @@ class Dreamy extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('dreamy', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('dreamy', args)
+    Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 
