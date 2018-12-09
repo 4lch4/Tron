@@ -79,6 +79,7 @@ client.on('unknownCommand', msg => {
       let query = msg.content.substring(client.commandPrefix.length)
       tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
         .then(res => { if (res !== null) { sendMessage(msg.channel, '', client.user, res) } })
+        .catch(console.error)
     } catch (err) { console.error(err) }
   }
 })
@@ -95,6 +96,8 @@ const volInsults = [
   'smells like cheese.'
 ]
 
+const ioTools = new (require('./util/IOTools'))()
+
 client.on('message', msg => {
   switch (msg.author.id) {
     case '493093339663695912': // Volcano Queen
@@ -109,6 +112,12 @@ client.on('message', msg => {
         return msg.reply('meh.')
       } else zenCount++
       break
+  }
+
+  if (/ alot[ |.]/.test(msg.content)) {
+    ioTools.getImage('alot.png').then(image => {
+      sendMessage(msg.channel, '', client.user, { files: [image] })
+    }).catch(console.error)
   }
 })
 
