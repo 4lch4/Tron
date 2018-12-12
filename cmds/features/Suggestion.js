@@ -23,12 +23,16 @@ class Suggestion extends Command {
       input
     )
 
-    suggestion.save().then(success => {
+    try {
+      let success = await suggestion.save()
       if (success) {
-        msg.reply('thank you for your suggestion!')
-        tools.sendOwnerMessage(`A new suggestion has been added by ${msg.author.username}.`, this.client)
-      } else msg.reply('there seems to have been an error... Please contact support.')
-    }).catch(err => console.error(err))
+        await msg.reply('thank you for your suggestion!')
+        return tools.sendOwnerMessage(`A new suggestion has been added by ${msg.author.username}.`, this.client)
+      } else return msg.reply('there seems to have been an error... Please contact support.')
+    } catch (err) {
+      console.error(err)
+      return msg.reply('there seems to have been an error, please contact `+support`.')
+    }
   }
 }
 

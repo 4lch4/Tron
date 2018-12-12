@@ -22,7 +22,7 @@ class Reddit extends Command {
         default: 'hot',
         type: 'string',
         prompt: 'Would you like to sort by `hot`, `top`, `controversial`, or `new`?',
-        validate: (val, msg, arg) => {
+        validate: val => {
           if (val === 'hot' ||
               val === 'top' ||
               val === 'controversial' ||
@@ -38,16 +38,14 @@ class Reddit extends Command {
         default: 'day',
         type: 'string',
         prompt: 'Would you like to pull from the `day`, `week`, `month`, `year`, or `all` time?',
-        validate: (val, msg, arg) => {
+        validate: val => {
           if (val === 'day' ||
               val === 'week' ||
               val === 'month' ||
               val === 'year' ||
               val === 'all') {
             return true
-          } else {
-            return 'Would you like to pull from the `day`, `week`, `month`, `year`, or `all` time?'
-          }
+          } else return 'Would you like to pull from the `day`, `week`, `month`, `year`, or `all` time?'
         }
       }, {
         key: 'limit',
@@ -63,17 +61,19 @@ class Reddit extends Command {
 
   async run (msg, { subreddit, sort, from, limit }) {
     let start = subreddit.indexOf('/')
-    if (start !== -1) {
-      subreddit = subreddit.slice(start + 1)
-    }
+    if (start !== -1) subreddit = subreddit.slice(start + 1)
 
-    return reddit.getRandomHotPost(subreddit, sort, from, limit).then(post => {
-      Command.sendMessage(msg.channel, post, this.client.user)
-    }).catch(err => {
+    try {
+      let post = await reddit.getRandomHotPost(subreddit, sort, from, limit)
+      return Command.sendMessage(msg.channel, post, this.client.user)
+    } catch (err) {
       if (err.message === 'Cannot read property \'children\' of undefined') {
-        msg.channel.send('This subreddit does not exist or is private.')
+        return msg.channel.send('This subreddit does not exist or is private.')
+      } else {
+        console.error(err)
+        return msg.channel.send('There seems to have been an error. Please contact `+support`.')
       }
-    })
+    }
   }
 }
 

@@ -39,7 +39,7 @@ class User extends Command {
       },
       'author': {
         'name': 'Tron',
-        'url': 'https://paranoiddevs.com/tron',
+        'url': 'https://github.com/HF-Solutions/Tron',
         'icon_url': this.client.user.avatarURL()
       },
       'fields': generateFields(user, member)

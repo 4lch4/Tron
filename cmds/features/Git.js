@@ -1,4 +1,5 @@
 const Command = require('../BaseCmd')
+const pkgInfo = require('../../package.json')
 
 class Git extends Command {
   constructor (client) {
@@ -13,7 +14,7 @@ class Git extends Command {
   }
 
   async run (msg, args) {
-    msg.reply('you can find the git repo for Tron here: https://github.com/Paranoid-Devs/Tron')
+    return Command.sendMessage(msg.channel, `you can find the git repo for Tron here: ${pkgInfo.repository.url}`, this.client.user)
   }
 }
 

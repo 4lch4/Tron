@@ -19,7 +19,7 @@ class Avatar extends Command {
   }
 
   async run (msg, { user }) {
-    msg.channel.send(user.displayAvatarURL({ size: 2048 }))
+    return msg.channel.send(user.displayAvatarURL({ size: 2048 }))
   }
 }
 

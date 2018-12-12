@@ -20,20 +20,19 @@ class JoinRole extends Command {
   }
 
   async run (msg, { role }) {
-    mongo.isRoleAvailable(msg.guild.id, role.name).then(available => {
-      if (available) {
-        console.log(msg.member)
-        msg.member.addRole(role.id).then(member => {
-          msg.channel.send(`You've successfully been added to the ${role.name} role!`)
-        }).catch(err => {
-          if (err.code === 50013) {
-            msg.channel.send('It appears that I don\'t have permission to give you that role. Please contact the server administrator to fix this.')
-          }
+    let available = await mongo.isRoleAvailable(msg.guild.id, role.name)
+    if (available) {
+      console.log(msg.member)
+      msg.member.addRole(role.id).then(() => {
+        msg.channel.send(`You've successfully been added to the ${role.name} role!`)
+      }).catch(err => {
+        if (err.code === 50013) {
+          msg.channel.send('It appears that I don\'t have permission to give you that role. Please contact the server administrator to fix this.')
+        }
 
-          console.error(err)
-        })
-      } else msg.channel.send('D\'awww, it isn\'t available.')
-    })
+        console.error(err)
+      })
+    } else msg.channel.send('D\'awww, it isn\'t available.')
   }
 }
 

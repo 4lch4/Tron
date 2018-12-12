@@ -1,8 +1,6 @@
 const Command = require('../BaseCmd')
 const coinbase = new (require('../util/Coinbase'))()
 
-const tools = new (require('../../util/Tools'))()
-
 class Bitcoin extends Command {
   constructor (client) {
     super(client, {
@@ -18,7 +16,7 @@ class Bitcoin extends Command {
         prompt: '',
         type: 'string',
         default: 'USD',
-        validate: (val, msg, arg) => {
+        validate: val => {
           if (coinbase.currencies.indexOf(val.toUpperCase()) !== -1) return true
           else return 'you have provided an invalid currency code. Please refer to https://www.currency-iso.org/dam/downloads/lists/list_one.xml for a full list of values.'
         }
@@ -28,7 +26,7 @@ class Bitcoin extends Command {
         prompt: '',
         type: 'string',
         default: 'now',
-        validate: (val, msg, arg) => {
+        validate: val => {
           if (val.match(/\d{4}-\d{2}-\d{2}/)) return true
           else return 'you have provided an invalid date. The correct format is `YYYY-MM-DD`.'
         }
@@ -43,18 +41,11 @@ class Bitcoin extends Command {
     })
 
     if (date === 'now') {
-      coinbase.getCurrentPrice(currency).then(price => {
-        msg.channel.send(`The current price for **1 BTC = ${formatter.format(price)}**.`)
-      }).catch(err => {
-        msg.reply('there was an unexpected error. Please contact support.')
-        console.error(tools.utcTime, err)
-      })
+      let price = await coinbase.getCurrentPrice(currency)
+      Command.sendMessage(msg.channel, `The current price for **1 BTC = ${formatter.format(price)}**.`, this.client.user)
     } else {
-      coinbase.getHistoricPrice(date, currency).then(price => {
-        msg.channel.send(`The price for **1 BTC** on **${date}** was **${formatter.format(price)}**.`)
-      }).catch(err => {
-        msg.reply(err.message)
-      })
+      let price = await coinbase.getHistoricPrice(date, currency)
+      Command.sendMessage(msg.channel, `The price for **1 BTC** on **${date}** was **${formatter.format(price)}**.`, this.client.user)
     }
   }
 }
