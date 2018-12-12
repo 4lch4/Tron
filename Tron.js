@@ -114,7 +114,7 @@ client.on('message', msg => {
       break
   }
 
-  if (/ alot[ |.]/.test(msg.content)) {
+  if (msg.content.split(' ').includes('alot')) {
     ioTools.getImage('alot.png').then(image => {
       sendMessage(msg.channel, '', client.user, { files: [image] })
     }).catch(console.error)
