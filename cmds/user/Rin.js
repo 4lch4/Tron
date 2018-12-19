@@ -14,7 +14,7 @@ class Rin extends Command {
 
   async run (msg, args) {
     let image = await ioTools.getRandomImage('rin', args)
-    Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 
