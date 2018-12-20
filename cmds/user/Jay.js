@@ -14,7 +14,7 @@ class Jay extends Command {
 
   async run (msg, args) {
     let image = await ioTools.getImage('Jay.png')
-    Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

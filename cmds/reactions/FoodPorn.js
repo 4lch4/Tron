@@ -14,9 +14,8 @@ class FoodPorn extends Command {
   }
 
   async run (msg, args) {
-    reddit.getRandomTopPost('FoodPorn').then(post => {
-      Command.sendMessage(msg.channel, post, this.client.user).catch(err => this.error(err))
-    }).catch(err => console.error(err))
+    const post = await reddit.getRandomTopPost('FoodPorn')
+    return Command.sendMessage(msg.channel, post, this.client.user).catch(err => this.error(err))
   }
 }
 

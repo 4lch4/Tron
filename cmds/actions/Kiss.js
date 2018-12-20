@@ -22,6 +22,6 @@ module.exports = class Kiss extends Command {
     }
 
     let image = await ioTools.getRandomImage('kiss', args)
-    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

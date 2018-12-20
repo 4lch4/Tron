@@ -30,6 +30,6 @@ module.exports = class NoBulli extends Command {
     }
 
     let image = await ioTools.getRandomImage('nobulli')
-    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

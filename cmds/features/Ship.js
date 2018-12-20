@@ -36,7 +36,7 @@ class Ship extends Command {
         getShipName(msg).then(shipName => {
           const content = 'Lovely shipping!\nShip name: ' + shipName
 
-          Command.sendMessage(msg.channel, content, this.client.user, { files: [canvas.toBuffer()] })
+          return Command.sendMessage(msg.channel, content, this.client.user, { files: [canvas.toBuffer()] })
         })
       })
     }).catch(err => console.error(err))

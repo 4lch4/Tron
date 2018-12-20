@@ -22,6 +22,6 @@ module.exports = class Love extends Command {
     }
 
     let image = await ioTools.getRandomImage('love', args)
-    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

@@ -14,9 +14,8 @@ class Dance extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('dance', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('dance', args)
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

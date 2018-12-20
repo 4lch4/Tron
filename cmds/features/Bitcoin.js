@@ -42,10 +42,10 @@ class Bitcoin extends Command {
 
     if (date === 'now') {
       let price = await coinbase.getCurrentPrice(currency)
-      Command.sendMessage(msg.channel, `The current price for **1 BTC = ${formatter.format(price)}**.`, this.client.user)
+      return Command.sendMessage(msg.channel, `The current price for **1 BTC = ${formatter.format(price)}**.`, this.client.user)
     } else {
       let price = await coinbase.getHistoricPrice(date, currency)
-      Command.sendMessage(msg.channel, `The price for **1 BTC** on **${date}** was **${formatter.format(price)}**.`, this.client.user)
+      return Command.sendMessage(msg.channel, `The price for **1 BTC** on **${date}** was **${formatter.format(price)}**.`, this.client.user)
     }
   }
 }

@@ -22,6 +22,6 @@ module.exports = class Spank extends Command {
     }
 
     let image = await ioTools.getRandomImage('spank', args)
-    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

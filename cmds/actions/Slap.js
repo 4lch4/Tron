@@ -22,6 +22,6 @@ module.exports = class Slap extends Command {
     }
 
     let image = await ioTools.getRandomImage('slap', args)
-    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

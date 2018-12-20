@@ -1,6 +1,6 @@
 const Command = require('../BaseCmd')
 
-const io = new (require('../../util/IOTools'))()
+const ioTools = new (require('../../util/IOTools'))()
 
 class Edgy extends Command {
   constructor (client) {
@@ -15,9 +15,8 @@ class Edgy extends Command {
   }
 
   async run (msg, args) {
-    io.getRandomImage('edge', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('edge', args)
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

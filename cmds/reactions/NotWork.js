@@ -14,9 +14,8 @@ class NotWork extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('not_working', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('not_working', args)
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

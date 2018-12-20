@@ -22,6 +22,6 @@ module.exports = class Shank extends Command {
     }
 
     let image = await ioTools.getRandomImage('shank', args)
-    Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

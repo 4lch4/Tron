@@ -15,9 +15,8 @@ class Cry extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('cry', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('cry', args)
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

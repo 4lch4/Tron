@@ -14,9 +14,8 @@ class Confused extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('confused', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('confused', args)
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

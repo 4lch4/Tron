@@ -21,7 +21,7 @@ class Kayla extends Command {
   async run (msg, args) {
     if (allowedIds.includes(msg.author.id)) {
       let image = await ioTools.getRandomImage('kayla', args)
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
+      return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
     } else msg.reply('This command is unavailable to you.')
   }
 }

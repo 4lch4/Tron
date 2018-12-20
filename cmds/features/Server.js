@@ -58,7 +58,7 @@ class Server extends Command {
       }]
     })
 
-    Command.sendMessage(msg.channel, '', this.client.user, embed)
+    return Command.sendMessage(msg.channel, '', this.client.user, embed)
   }
 }
 
