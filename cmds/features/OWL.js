@@ -1,22 +1,22 @@
 const Command = require('../BaseCmd')
-const owlData = require('../util/OWL')
+const { logos, schedule } = require('../util/OWL')
 
 // const tools = new (require('../../util/Tools'))()
 
 class OWL extends Command {
   constructor (client) {
     super(client, {
-      name: 'neko',
+      name: 'owl',
       group: 'features',
-      memberName: 'neko',
+      memberName: 'owl',
       guildOnly: false,
-      description: 'Displays nekos of various shapes and sizes.',
-      examples: ['+neko', '+neko nsfw']
+      description: 'Placeholder text.',
+      examples: ['+owl', '+owl nsfw']
     })
   }
 
   async run (msg, { type }) {
-    return msg.reply(owlData.logos.outlaws.path)
+    return Command.sendMessage(msg.channel, 'Test', this.client.user, { files: [logos.outlaws.path] })
   }
 }
 
