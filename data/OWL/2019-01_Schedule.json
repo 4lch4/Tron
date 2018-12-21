@@ -662,5 +662,749 @@
         "home": "Washington Justice"
       }
     }
+  },
+  "2019-05-04": {
+    "events": {
+      "1200": {
+        "away": "London Spitfire",
+        "home": "Houston Outlaws"
+      },
+      "1330": {
+        "away": "Atlanta Reign",
+        "home": "New York Excelsior"
+      },
+      "1500": {
+        "away": "Seoul Dynasty",
+        "home": "Vancouver Titans"
+      },
+      "1630": {
+        "away": "Chengou Hunters",
+        "home": "Los Angeles Valiant"
+      }
+    }
+  },
+  "2019-05-05": {
+    "events": {
+      "1200": {
+        "away": "Toronto Defiant",
+        "home": "Paris Eternal"
+      },
+      "1330": {
+        "away": "Washington Justice",
+        "home": "Boston Uprising"
+      },
+      "1500": {
+        "away": "Shanghai Dragons",
+        "home": "San Francisco Shock"
+      },
+      "1630": {
+        "away": "Seoul Dynasty",
+        "home": "Hangzhou Spark"
+      }
+    }
+  },
+  "2019-06-06": {
+    "events": {
+      "1600": {
+        "away": "San Francisco Shock",
+        "home": "Atlanta Reign"
+      },
+      "1730": {
+        "away": "Florida Mayhem",
+        "home": "Seoul Dynasty"
+      },
+      "1900": {
+        "away": "Guangzhou Charge",
+        "home": "Chengou Hunters"
+      },
+      "2030": {
+        "away": "Los Angeles Valiant",
+        "home": "Shanghai Dragons"
+      }
+    }
+  },
+  "2019-06-07": {
+    "events": {
+      "1600": {
+        "away": "Paris Eternal",
+        "home": "Toronto Defiant"
+      },
+      "1730": {
+        "away": "Boston Uprising",
+        "home": "London Spitfire"
+      },
+      "1900": {
+        "away": "Houston Outlaws",
+        "home": "New York Excelsior"
+      },
+      "2030": {
+        "away": "Los Angeles Gladiators",
+        "home": "Dallas Fuel"
+      }
+    }
+  },
+  "2019-06-08": {
+    "events": {
+      "1200": {
+        "away": "Hangzhou Spark",
+        "home": "Philadelphia Fusion"
+      },
+      "1330": {
+        "away": "Vancouver Titans",
+        "home": "Atlanta Reign"
+      },
+      "1500": {
+        "away": "Seoul Dynasty",
+        "home": "Guangzhou Charge"
+      },
+      "1630": {
+        "away": "Los Angeles Valiant",
+        "home": "Chengou Hunters"
+      }
+    }
+  },
+  "2019-06-09": {
+    "events": {
+      "1200": {
+        "away": "New York Excelsior",
+        "home": "London Spitfire"
+      },
+      "1330": {
+        "away": "Paris Eternal",
+        "home": "Boston Uprising"
+      },
+      "1500": {
+        "away": "Washington Justice",
+        "home": "Dallas Fuel"
+      },
+      "1630": {
+        "away": "Vancouver Titans",
+        "home": "Los Angeles Gladiators"
+      }
+    }
+  },
+  "2019-06-13": {
+    "events": {
+      "1600": {
+        "away": "Houston Outlaws",
+        "home": "San Francisco Shock"
+      },
+      "1730": {
+        "away": "Shanghai Dragons",
+        "home": "Atlanta Reign"
+      },
+      "1900": {
+        "away": "Dallas Fuel",
+        "home": "Chengou Hunters"
+      },
+      "2030": {
+        "away": "Hangzhou Spark",
+        "home": "Vancouver Titans"
+      }
+    }
+  },
+  "2019-06-14": {
+    "events": {
+      "1600": {
+        "away": "Paris Eternal",
+        "home": "New York Excelsior"
+      },
+      "1730": {
+        "away": "Toronto Defiant",
+        "home": "London Spitfire"
+      },
+      "1900": {
+        "away": "Boston Uprising",
+        "home": "Houston Outlaws"
+      },
+      "2030": {
+        "away": "Los Angeles Gladiators",
+        "home": "Philadelphia Fusion"
+      }
+    }
+  },
+  "2019-06-15": {
+    "events": {
+      "1200": {
+        "away": "Washington Justice",
+        "home": "Hangzhou Spark"
+      },
+      "1330": {
+        "away": "San Francisco Shock",
+        "home": "Seoul Dynasty"
+      },
+      "1500": {
+        "away": "Dallas Fuel",
+        "home": "Vancouver Titans"
+      },
+      "1630": {
+        "away": "Guangzhou Charge",
+        "home": "Los Angeles Valiant"
+      }
+    }
+  },
+  "2019-06-16": {
+    "events": {
+      "1200": {
+        "away": "Florida Mayhem",
+        "home": "Paris Eternal"
+      },
+      "1330": {
+        "away": "Seoul Dynasty",
+        "home": "Atlanta Reign"
+      },
+      "1500": {
+        "away": "Philadelphia Fusion",
+        "home": "Boston Uprising"
+      },
+      "1630": {
+        "away": "Washington Justice",
+        "home": "Los Angeles Gladiators"
+      }
+    }
+  },
+  "2019-06-20": {
+    "events": {
+      "1600": {
+        "away": "San Francisco Shock",
+        "home": "Boston Uprising"
+      },
+      "1730": {
+        "away": "Paris Eternal",
+        "home": "Houston Outlaws"
+      },
+      "1900": {
+        "away": "Chengou Hunters",
+        "home": "Vancouver Titans"
+      },
+      "2030": {
+        "away": "Shanghai Dragons",
+        "home": "Los Angeles Valiant"
+      }
+    }
+  },
+  "2019-06-21": {
+    "events": {
+      "1600": {
+        "away": "London Spitfire",
+        "home": "New York Excelsior"
+      },
+      "1730": {
+        "away": "San Francisco Shock",
+        "home": "Florida Mayhem"
+      },
+      "1900": {
+        "away": "Los Angeles Gladiators",
+        "home": "Shanghai Dragons"
+      },
+      "2030": {
+        "away": "Hangzhou Spark",
+        "home": "Seoul Dynasty"
+      }
+    }
+  },
+  "2019-06-22": {
+    "events": {
+      "1200": {
+        "away": "London Spitfire",
+        "home": "Washington Justice"
+      },
+      "1330": {
+        "away": "Atlanta Reign",
+        "home": "Philadelphia Fusion"
+      },
+      "1500": {
+        "away": "Toronto Defiant",
+        "home": "Guangzhou Charge"
+      },
+      "1630": {
+        "away": "Chengou Hunters",
+        "home": "Dallas Fuel"
+      }
+    }
+  },
+  "2019-06-23": {
+    "events": {
+      "1200": {
+        "away": "Boston Uprising",
+        "home": "Paris Eternal"
+      },
+      "1330": {
+        "away": "Houston Outlaws",
+        "home": "Florida Mayhem"
+      },
+      "1500": {
+        "away": "Hangzhou Spark",
+        "home": "Dallas Fuel"
+      },
+      "1630": {
+        "away": "Los Angeles Valiant",
+        "home": "Vancouver Titans"
+      }
+    }
+  },
+  "2019-06-27": {
+    "events": {
+      "1730": {
+        "away": "Hangzhou Spark",
+        "home": "Los Angeles Valiant"
+      },
+      "1900": {
+        "away": "Paris Eternal",
+        "home": "Seoul Dynasty"
+      },
+      "2030": {
+        "away": "San Francisco Shock",
+        "home": "Chengou Hunters"
+      }
+    }
+  },
+  "2019-06-28": {
+    "events": {
+      "1730": {
+        "away": "London Spitfire",
+        "home": "Los Angeles Valiant"
+      },
+      "1900": {
+        "away": "Toronto Defiant",
+        "home": "Los Angeles Gladiators"
+      },
+      "2030": {
+        "away": "Houston Outlaws",
+        "home": "Washington Justice"
+      }
+    }
+  },
+  "2019-06-29": {
+    "events": {
+      "1200": {
+        "away": "Dallas Fuel",
+        "home": "New York Excelsior"
+      },
+      "1330": {
+        "away": "Boston Uprising",
+        "home": "Philadelphia Fusion"
+      },
+      "1500": {
+        "away": "Florida Mayhem",
+        "home": "Hangzhou Spark"
+      },
+      "1630": {
+        "away": "Shanghai Dragons",
+        "home": "Guangzhou Charge"
+      }
+    }
+  },
+  "2019-06-30": {
+    "events": {
+      "1200": {
+        "away": "London Spitfire",
+        "home": "San Francisco Shock"
+      },
+      "1330": {
+        "away": "Houston Outlaws",
+        "home": "Toronto Defiant"
+      },
+      "1500": {
+        "away": "Los Angeles Gladiators",
+        "home": "Vancouver Titans"
+      },
+      "1630": {
+        "away": "Chengou Hunters",
+        "home": "Seoul Dynasty"
+      }
+    }
+  },
+  "2019-07-06": {
+    "events": {
+      "TBD": {
+        "away": "Florida Mayhem",
+        "home": "New York Excelsior"
+      },
+      "TBD": {
+        "away": "Philadelphia Fusion",
+        "home": "Washington Justice"
+      },
+      "TBD": {
+        "away": "Guangzhou Charge",
+        "home": "Shanghai Dragons"
+      },
+      "TBD": {
+        "away": "Toronto Defiant",
+        "home": "Atlanta Reign"
+      }
+    }
+  },
+  "2019-07-07": {
+    "events": {
+      "TBD": {
+        "away": "Philadelphia Fusion",
+        "home": "Shanghai Dragons"
+      },
+      "TBD": {
+        "away": "Washington Justice",
+        "home": "Guangzhou Charge"
+      },
+      "TBD": {
+        "away": "New York Excelsior",
+        "home": "Toronto Defiant"
+      },
+      "TBD": {
+        "away": "Florida Mayhem",
+        "home": "Atlanta Reign"
+      }
+    }
+  },
+  "2019-07-25": {
+    "events": {
+      "1600": {
+        "away": "Houston Outlaws",
+        "home": "Paris Eternal"
+      },
+      "1730": {
+        "away": "Los Angeles Gladiators",
+        "home": "New York Excelsior"
+      },
+      "1900": {
+        "away": "Guangzhou Charge",
+        "home": "Philadelphia Fusion"
+      },
+      "2030": {
+        "away": "Shanghai Dragons",
+        "home": "Vancouver Titans"
+      }
+    }
+  },
+  "2019-07-26": {
+    "events": {
+      "1600": {
+        "away": "Toronto Defiant",
+        "home": "Washington Justice"
+      },
+      "1730": {
+        "away": "Philadelphia Fusion",
+        "home": "Chengou Hunters"
+      },
+      "1900": {
+        "away": "Dallas Fuel",
+        "home": "London Spitfire"
+      },
+      "2030": {
+        "away": "Seoul Dynasty",
+        "home": "San Francisco Shock"
+      }
+    }
+  },
+  "2019-07-27": {
+    "events": {
+      "1200": {
+        "away": "Paris Eternal",
+        "home": "Los Angeles Valiant"
+      },
+      "1330": {
+        "away": "Boston Uprising",
+        "home": "Guangzhou Charge"
+      },
+      "1500": {
+        "away": "Los Angeles Gladiators",
+        "home": "Houston Outlaws"
+      },
+      "1630": {
+        "away": "Atlanta Reign",
+        "home": "Hangzhou Spark"
+      }
+    }
+  },
+  "2019-07-28": {
+    "events": {
+      "1200": {
+        "away": "London Spitfire",
+        "home": "Toronto Defiant"
+      },
+      "1330": {
+        "away": "Vancouver Titans",
+        "home": "Florida Mayhem"
+      },
+      "1500": {
+        "away": "Boston Uprising",
+        "home": "Chengou Hunters"
+      },
+      "1630": {
+        "away": "Shanghai Dragons",
+        "home": "Seoul Dynasty"
+      }
+    }
+  },
+  "2019-08-01": {
+    "events": {
+      "1600": {
+        "away": "Guangzhou Charge",
+        "home": "London Spitfire"
+      },
+      "1730": {
+        "away": "Florida Mayhem",
+        "home": "Washington Justice"
+      },
+      "1900": {
+        "away": "Shanghai Dragons",
+        "home": "Toronto Defiant"
+      },
+      "2030": {
+        "away": "Los Angeles Valiant",
+        "home": "Seoul Dynasty"
+      }
+    }
+  },
+  "2019-08-02": {
+    "events": {
+      "1600": {
+        "away": "New York Excelsior",
+        "home": "Paris Eternal"
+      },
+      "1730": {
+        "away": "Houston Outlaws",
+        "home": "Philadelphia Fusion"
+      },
+      "1900": {
+        "away": "Chengou Hunters",
+        "home": "Los Angeles Gladiators"
+      },
+      "2030": {
+        "away": "Guangzhou Charge",
+        "home": "Hangzhou Spark"
+      }
+    }
+  },
+  "2019-08-03": {
+    "events": {
+      "1200": {
+        "away": "Atlanta Reign",
+        "home": "Paris Eternal"
+      },
+      "1330": {
+        "away": "Florida Mayhem",
+        "home": "London Spitfire"
+      },
+      "1500": {
+        "away": "Dallas Fuel",
+        "home": "Los Angeles Valiant"
+      },
+      "1630": {
+        "away": "Los Angeles Gladiators",
+        "home": "San Francisco Shock"
+      }
+    }
+  },
+  "2019-08-04": {
+    "events": {
+      "1200": {
+        "away": "Philadelphia Fusion",
+        "home": "Toronto Defiant"
+      },
+      "1330": {
+        "away": "Atlanta Reign",
+        "home": "Houston Outlaws"
+      },
+      "1500": {
+        "away": "Vancouver Titans",
+        "home": "Washington Justice"
+      },
+      "1630": {
+        "away": "Chengou Hunters",
+        "home": "New York Excelsior"
+      }
+    }
+  },
+  "2019-08-08": {
+    "events": {
+      "1600": {
+        "away": "London Spitfire",
+        "home": "Vancouver Titans"
+      },
+      "1730": {
+        "away": "Paris Eternal",
+        "home": "Philadelphia Fusion"
+      },
+      "1900": {
+        "away": "Toronto Defiant",
+        "home": "Florida Mayhem"
+      },
+      "2030": {
+        "away": "Guangzhou Charge",
+        "home": "Seoul Dynasty"
+      }
+    }
+  },
+  "2019-08-09": {
+    "events": {
+      "1600": {
+        "away": "Boston Uprising",
+        "home": "Washington Justice"
+      },
+      "1730": {
+        "away": "Dallas Fuel",
+        "home": "Los Angeles Gladiators"
+      },
+      "1900": {
+        "away": "San Francisco Shock",
+        "home": "Shanghai Dragons"
+      },
+      "2030": {
+        "away": "Hangzhou Spark",
+        "home": "New York Excelsior"
+      }
+    }
+  },
+  "2019-08-10": {
+    "events": {
+      "1200": {
+        "away": "Houston Outlaws",
+        "home": "London Spitfire"
+      },
+      "1330": {
+        "away": "Seoul Dynasty",
+        "home": "Toronto Defiant"
+      },
+      "1500": {
+        "away": "Florida Mayhem",
+        "home": "Los Angeles Valiant"
+      },
+      "1630": {
+        "away": "Chengou Hunters",
+        "home": "Hangzhou Spark"
+      }
+    }
+  },
+  "2019-08-11": {
+    "events": {
+      "1200": {
+        "away": "Washington Justice",
+        "home": "Houston Outlaws"
+      },
+      "1330": {
+        "away": "Philadelphia Fusion",
+        "home": "Vancouver Titans"
+      },
+      "1500": {
+        "away": "San Francisco Shock",
+        "home": "Dallas Fuel"
+      },
+      "1630": {
+        "away": "Guangzhou Charge",
+        "home": "New York Excelsior"
+      }
+    }
+  },
+  "2019-08-15": {
+    "events": {
+      "1730": {
+        "away": "Boston Uprising",
+        "home": "Florida Mayhem"
+      },
+      "1900": {
+        "away": "Dallas Fuel",
+        "home": "Hangzhou Spark"
+      },
+      "2030": {
+        "away": "Seoul Dynasty",
+        "home": "Shanghai Dragons"
+      }
+    }
+  },
+  "2019-08-16": {
+    "events": {
+      "1730": {
+        "away": "Washington Justice",
+        "home": "Atlanta Reign"
+      },
+      "1900": {
+        "away": "Chengou Hunters",
+        "home": "San Francisco Shock"
+      },
+      "2030": {
+        "away": "Los Angeles Gladiators",
+        "home": "Hangzhou Spark"
+      }
+    }
+  },
+  "2019-08-17": {
+    "events": {
+      "1200": {
+        "away": "Paris Eternal",
+        "home": "Shanghai Dragons"
+      },
+      "1330": {
+        "away": "Los Angeles Valiant",
+        "home": "Boston Uprising"
+      },
+      "1500": {
+        "away": "Seoul Dynasty",
+        "home": "Philadelphia Fusion"
+      },
+      "1630": {
+        "away": "Chengou Hunters",
+        "home": "Houston Outlaws"
+      }
+    }
+  },
+  "2019-08-18": {
+    "events": {
+      "1200": {
+        "away": "Paris Eternal",
+        "home": "Washington Justice"
+      },
+      "1330": {
+        "away": "London Spitfire",
+        "home": "Atlanta Reign"
+      },
+      "1500": {
+        "away": "Florida Mayhem",
+        "home": "Toronto Defiant"
+      },
+      "1630": {
+        "away": "Dallas Fuel",
+        "home": "Guangzhou Charge"
+      }
+    }
+  },
+  "2019-08-24": {
+    "events": {
+      "TBD": {
+        "away": "Atlanta Reign",
+        "home": "Dallas Fuel"
+      },
+      "TBD": {
+        "away": "Boston Uprising",
+        "home": "New York Excelsior"
+      },
+      "TBD": {
+        "away": "San Francisco Shock",
+        "home": "Vancouver Titans"
+      },
+      "TBD": {
+        "away": "Los Angeles Gladiators",
+        "home": "Los Angeles Valiant"
+      }
+    }
+  },
+  "2019-08-25": {
+    "events": {
+      "TBD": {
+        "away": "Atlanta Reign",
+        "home": "Boston Uprising"
+      },
+      "TBD": {
+        "away": "New York Excelsior",
+        "home": "Toronto Defiant"
+      },
+      "TBD": {
+        "away": "Hangzhou Spark",
+        "home": "Shanghai Dragons"
+      },
+      "TBD": {
+        "away": "San Francisco Shock",
+        "home": "Los Angeles Valiant"
+      }
+    }
   }
 }
