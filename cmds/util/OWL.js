@@ -2,6 +2,39 @@ const { join } = require('path')
 const dataPath = '/home/alcha/tron/data/OWL'
 const logosPath = join(dataPath, 'Team_Logos')
 
+/**
+ * Retrieves the schedule for a given team over the 2019 schedule.
+ *
+ * @param {String} team The name of the team you wish to retrieve.
+ */
+const getTeamSchedule = team => {
+  let scheduleData = require('../../data/OWL/2019-01_Schedule.json')
+  console.log(scheduleData)
+}
+
+module.exports.teamNames = [
+  'Atlanta Reign',
+  'Boston Uprising',
+  'Chengou Hunters',
+  'Dallas Fuel',
+  'Florida Mayhem',
+  'Guangzhou Charge',
+  'Hangzhou Spark',
+  'Houston Outlaws',
+  'London Spitfire',
+  'Los Angeles Gladiators',
+  'Los Angeles Valiant',
+  'New York Excelsior',
+  'Paris Eternal',
+  'Philadelphia Fusion',
+  'San Francisco Shock',
+  'Seoul Dynasty',
+  'Shanghai Dragons',
+  'Toronto Defiant',
+  'Vancouver Titans',
+  'Washington Justice'
+]
+module.exports.getTeamSchedule = getTeamSchedule
 module.exports.schedule = require(join(dataPath, '2019-01_Schedule.json'))
 module.exports.logosPath = logosPath
 module.exports.logos = {
