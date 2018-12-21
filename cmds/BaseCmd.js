@@ -96,6 +96,13 @@ module.exports = class BaseCmd extends Command {
   }
 
   /**
+   * Sends the provided content to the provided channel. The author field is
+   * required for verifying the author (almost always Tron) has the necessary
+   * permissions to send messages in that channel. The options field accepts
+   * the options needed to send a MessageEmbed or MessageAttachment. You can
+   * get more information from the Discord.js docs.
+   *
+   * @see https://discord.js.org/#/docs/main/master/class/TextChannel?scrollTo=send
    *
    * @param {TextChannel|DMChannel} channel
    * @param {string} content
