@@ -1,18 +1,10 @@
 const { join } = require('path')
 const dataPath = '/home/alcha/tron/data/OWL'
 const logosPath = join(dataPath, 'Team_Logos')
+const scheduleData = join(dataPath, '2019-01_Schedule.json')
 
-/**
- * Retrieves the schedule for a given team over the 2019 schedule.
- *
- * @param {String} team The name of the team you wish to retrieve.
- */
-const getTeamSchedule = team => {
-  let scheduleData = require('../../data/OWL/2019-01_Schedule.json')
-  console.log(scheduleData)
-}
-
-module.exports.teamNames = [
+// #region Helper Data
+const teamNames = [
   'Atlanta Reign',
   'Boston Uprising',
   'Chengou Hunters',
@@ -34,10 +26,8 @@ module.exports.teamNames = [
   'Vancouver Titans',
   'Washington Justice'
 ]
-module.exports.getTeamSchedule = getTeamSchedule
-module.exports.schedule = require(join(dataPath, '2019-01_Schedule.json'))
-module.exports.logosPath = logosPath
-module.exports.logos = {
+
+const teamLogos = {
   reign: {
     name: 'Atlanta Reign',
     path: join(logosPath, 'Atlanta_Reign.png')
@@ -115,3 +105,75 @@ module.exports.logos = {
     path: join(logosPath, 'Washington_Justice.png')
   }
 }
+// #endregion Helper Data
+
+// #region Helper Functions
+/**
+ * Retrieves the schedule for a given team over the 2019 schedule.
+ *
+ * @param {String} team The name of the team you wish to retrieve.
+ */
+const getTeamSchedule = team => {
+  let scheduleData = require('../../data/OWL/2019-01_Schedule.json')
+  console.log(scheduleData)
+}
+
+/**
+ * Formats the team names for output as a list.
+ *
+ * @returns {String}
+ */
+const formatTeamOutput = () => {
+  let output = ''
+
+  for (let x = 0; x < teamNames.length; x++) {
+    output += `**${x})** \`${teamNames[x]}\`\n`
+  }
+
+  return output
+}
+
+/**
+ * Parses the given team arg and returns the proper value. For example, if the
+ * user does `+owl 0`, it returns the first team in the list, currently the
+ * **Atlanta Reign**. If they do `+owl Houston Outlaws`, it simply returns
+ * `Houston Outlaws`, since it's a valid team name.
+ *
+ * @param {String|Number} val The team arg to be parsed.
+ *
+ * @returns {String}
+ */
+const parseTeamArg = val => {
+  if (isNaN(val)) {
+    return val
+  } else return teamNames[val]
+}
+
+/**
+ * Validates the given team argument to ensure only valid input is provided.
+ * Valid input includes a full team name such as `Houston Outlaws`, the number
+ * of the team, such as `0` for the first team in the list, or `list` to list
+ * all of the available teams.
+ *
+ * @param {String|Number} val The team arg value to be validated.
+ *
+ * @returns {boolean|String}
+ */
+const validateTeamArg = val => {
+  if (teamNames.includes(val) ||
+      val.toLowerCase() === 'list' ||
+      (val >= 0 && val < teamNames.length)) return true
+  else return 'Please provide a valid team name, including their city, or `list` to list available team names.'
+}
+// #endregion Helper Functions
+
+// #region Module Exports
+module.exports.teamNames = teamNames
+module.exports.logosPath = logosPath
+module.exports.teamLogos = teamLogos
+module.exports.schedule = scheduleData
+module.exports.parseTeamArg = parseTeamArg
+module.exports.validateTeamArg = validateTeamArg
+module.exports.getTeamSchedule = getTeamSchedule
+module.exports.formatTeamOutput = formatTeamOutput
+// #endregion Module Exports

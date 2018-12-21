@@ -1,7 +1,5 @@
 const Command = require('../BaseCmd')
-const { logos, getTeamSchedule, teamNames } = require('../util/OWL')
-
-// const tools = new (require('../../util/Tools'))()
+const owlAid = require('../util/OWL')
 
 class OWL extends Command {
   constructor (client) {
@@ -17,8 +15,8 @@ class OWL extends Command {
           'key': 'team',
           'label': 'team',
           'prompt': 'Which team do you want information on?',
-          'validate': val => validateTeamArg(val),
-          'parse': val => parseTeamArg(val),
+          'validate': val => owlAid.validateTeamArg(val),
+          'parse': val => owlAid.parseTeamArg(val),
           'type': 'string'
         }
       ]
@@ -27,36 +25,13 @@ class OWL extends Command {
 
   async run (msg, { team }) {
     if (team.toLowerCase() === 'list') {
-      let output = 'Here is a list of all the available teams:\n\n' + formatTeamOutput()
+      let output = 'Here is a list of all the available teams:\n\n' + owlAid.formatTeamOutput()
       return Command.sendMessage(msg.channel, output, this.client.user)
     } else {
       let shortName = team.substring(team.lastIndexOf(' ') + 1).toLowerCase()
-      return Command.sendMessage(msg.channel, team, this.client.user, { files: [logos[shortName].path] })
+      return Command.sendMessage(msg.channel, team, this.client.user, { files: [owlAid.logos[shortName].path] })
     }
   }
-}
-
-const formatTeamOutput = () => {
-  let output = ''
-
-  for (let x = 0; x < teamNames.length; x++) {
-    output += `**${x})** \`${teamNames[x]}\`\n`
-  }
-
-  return output
-}
-
-const parseTeamArg = val => {
-  if (isNaN(val)) {
-    return val
-  } else return teamNames[val]
-}
-
-const validateTeamArg = val => {
-  if (teamNames.includes(val) ||
-      val.toLowerCase() === 'list' ||
-      (val >= 0 && val < teamNames.length)) return true
-  else return 'Please provide a valid team name, including their city, or `list` to list available team names.'
 }
 
 module.exports = OWL
