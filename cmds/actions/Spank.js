@@ -19,6 +19,9 @@ module.exports = class Spank extends Command {
   async run (msg, args) {
     if (msg.mentions.users.size > 0) {
       var content = `${this.getMentionedUsernames(msg)}, you've been spanked by **${msg.author.username}**. :wave:`
+      if (msg.mentions.users.find(mention => mention.id === '258162570622533635')) {
+        return msg.reply('Oooo... Harder Daddy.')
+      }
     }
 
     let image = await ioTools.getRandomImage('spank', args)
