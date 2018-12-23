@@ -1,5 +1,11 @@
 const Command = require('../BaseCmd')
-const owlAid = require('../util/OWL')
+const {
+  validateTeamArg,
+  parseTeamArg,
+  formatTeamOutput,
+  teamLogos,
+  getTeamShortName
+} = require('../util/OWL')
 
 class OWL extends Command {
   constructor (client) {
@@ -9,14 +15,14 @@ class OWL extends Command {
       memberName: 'owl',
       guildOnly: false,
       description: 'Placeholder text.',
-      examples: ['+owl', '+owl nsfw'],
+      examples: ['+owl', '+owl Houston Outlaws'],
       args: [
         {
           'key': 'team',
           'label': 'team',
           'prompt': 'Which team do you want information on?',
-          'validate': val => owlAid.validateTeamArg(val),
-          'parse': val => owlAid.parseTeamArg(val),
+          'validate': val => validateTeamArg(val),
+          'parse': val => parseTeamArg(val),
           'type': 'string'
         }
       ]
@@ -25,11 +31,11 @@ class OWL extends Command {
 
   async run (msg, { team }) {
     if (team.toLowerCase() === 'list') {
-      let output = 'Here is a list of all the available teams:\n\n' + owlAid.formatTeamOutput()
+      let output = 'Here is a list of all the available teams:\n\n' + formatTeamOutput()
       return Command.sendMessage(msg.channel, output, this.client.user)
     } else {
-      let shortName = team.substring(team.lastIndexOf(' ') + 1).toLowerCase()
-      return Command.sendMessage(msg.channel, team, this.client.user, { files: [owlAid.logos[shortName].path] })
+      let shortName = getTeamShortName(team).toLowerCase()
+      return Command.sendMessage(msg.channel, team, this.client.user, { files: teamLogos[shortName].path })
     }
   }
 }
