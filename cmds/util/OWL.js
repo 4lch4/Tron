@@ -109,6 +109,19 @@ const teamLogos = {
 
 // #region Helper Functions
 /**
+ * Gets the shortened version of the team name, which is simply the team name
+ * without the city name attached to it. Therefore, `Houston Outlaws` becomes
+ * `Outlaws`, or `New York Excelsior` becomes `Excelsior`.
+ *
+ * @param {String} team The team name you wish to get the shortened version of.
+ *
+ * @returns {String} The team name without the city name in front.
+ */
+const getTeamShortName = team => {
+  return team.substring(team.lastIndexOf(' ') + 1)
+}
+
+/**
  * Retrieves the schedule for a given team over the 2019 schedule.
  *
  * @param {String} team The name of the team you wish to retrieve.
@@ -176,4 +189,5 @@ module.exports.parseTeamArg = parseTeamArg
 module.exports.validateTeamArg = validateTeamArg
 module.exports.getTeamSchedule = getTeamSchedule
 module.exports.formatTeamOutput = formatTeamOutput
+module.exports.getTeamShortName = getTeamShortName
 // #endregion Module Exports
