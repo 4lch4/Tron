@@ -27,6 +27,14 @@ const teamNames = [
   'Washington Justice'
 ]
 
+/**
+ * Contains the path to the logo for every team in the Overwatch league. Each
+ * entry has a key that is the name of the team in lowercase and without the
+ * city name. Therefore, the `Atlanta Reign`, is available under `reign`, and
+ * the `Chengdu Hunters` is located under `hunters`. Each object also contains
+ * a name and path value, the name being the full name of the team and path
+ * being the full path to the teams logo as a png.
+ */
 const teamLogos = {
   reign: {
     name: 'Atlanta Reign',
