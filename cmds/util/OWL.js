@@ -187,16 +187,64 @@ const validateTeamArg = val => {
       (val >= 0 && val < teamNames.length)) return true
   else return 'Please provide a valid team name, including their city, or `list` to list available team names.'
 }
+
+/**
+ * A list of valid 2nd arguments, called the instruction argument, for the OWL
+ * command.
+ */
+const validInstructionArgs = [
+  'list', 'ls',
+  'schedule', 'sched',
+  'reminder', 'remind'
+]
+
+/**
+ * Validates the given type argument, usually retrieved from Discord.js-Commando
+ * when the `OWL` command is executed. The input is tested against the valid
+ * variations the command can do, such as listing a team schedule, a days
+ * schedule, reminding you when a team is playing, etc.
+ * @param {String} val The type arg to be validated.
+ */
+const validateInstructionArg = val => {
+  if (validInstructionArgs.includes(val.toLowerCase())) return true
+  else return 'Please provide a valid instruction. If you\'re unsure, you can use the `list` option to display the available options (`+owl list`).'
+}
+
+/**
+ * Parses the given instruction argument and returns it.
+ * @param {String} val The value to parse.
+ */
+const parseInstructionArg = val => {
+  val = val.toLowerCase()
+  switch (val) {
+    case 'sched':
+    case 'schedule':
+      return 'schedule'
+
+    case 'list':
+    case 'ls':
+      return 'list'
+
+    case 'remind':
+    case 'reminder':
+      return 'reminder'
+
+    default: return undefined
+  }
+}
 // #endregion Helper Functions
 
 // #region Module Exports
-module.exports.teamNames = teamNames
 module.exports.logosPath = logosPath
 module.exports.teamLogos = teamLogos
-module.exports.schedule = scheduleData
+module.exports.teamNames = teamNames
 module.exports.parseTeamArg = parseTeamArg
-module.exports.validateTeamArg = validateTeamArg
+module.exports.scheduleData = scheduleData
 module.exports.getTeamSchedule = getTeamSchedule
+module.exports.validateTeamArg = validateTeamArg
 module.exports.formatTeamOutput = formatTeamOutput
 module.exports.getTeamShortName = getTeamShortName
+module.exports.parseInstructionArg = parseInstructionArg
+module.exports.validInstructionArgs = validInstructionArgs
+module.exports.validateInstructionArg = validateInstructionArg
 // #endregion Module Exports
