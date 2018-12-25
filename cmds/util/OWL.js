@@ -181,7 +181,8 @@ const parseTeamArg = val => {
  * @returns {boolean|String}
  */
 const validateTeamArg = val => {
-  if (teamNames.includes(val) ||
+  if (isNaN(val)) var lcVal = getTeamShortName(val).toLowerCase()
+  if (teamNames.includes(val) || teamLogos[lcVal] !== undefined ||
       val.toLowerCase() === 'list' ||
       (val >= 0 && val < teamNames.length)) return true
   else return 'Please provide a valid team name, including their city, or `list` to list available team names.'
