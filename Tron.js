@@ -1,14 +1,17 @@
 const { CommandoClient, SQLiteProvider } = require('discord.js-commando')
 const CommandHelper = require('./util/db/CommandHelper')
-const tools = new (require('./util/Tools'))()
 const { sendMessage } = require('./cmds/BaseCmd')
+const {
+  queryGiphy,
+  searchForAlot,
+  sendStartupMessages,
+  initRotatingActivity
+} = new (require('./util/Tools'))()
 const config = require('./util/config.json')
 const sqlite = require('sqlite')
 const path = require('path')
 
-const timber = require('timber')
-const transport = new timber.transports.HTTPS(process.env.TIMBER_KEY)
-timber.install(transport)
+let zenCount = 0
 
 const client = new CommandoClient({
   commandPrefix: process.env.CMD_PREFIX,
@@ -39,37 +42,15 @@ client.registry
   })
 
 client.on('ready', () => {
-  let readyTime = tools.formattedUTCTime
-
-  sendMessage(client.channels.get(config.notificationChannel), `<@219270060936527873>, Tron has come online > **${readyTime}**`, client.user)
-
-  /**
-   * Rotates the activity setting on Tron every 2 minutes (120,000ms) to a
-   * random value  in config.activities. Ideally, I'd like to add information
-   * such as  current number of guilds/users we support and add it to the list
-   * of "activities" as well.
-   *
-   * When an update occurs, it is logged in the info log.
-   */
-  setInterval(function () {
-    let activities = config.activities
-    let random = tools.getRandom(0, activities.length)
-    let activity = activities[random]
-
-    console.log(`Updating activity to ${activity}`, false)
-
-    client.user.setActivity(activity)
-  }, 120000)
-
-  console.log(`Tron ${process.env.NODE_ENV.toUpperCase()} has come online > ${readyTime}`)
+  initRotatingActivity(2, client)
+  sendStartupMessages(client)
 })
 
 client.on('commandRun', (cmd, promise, msg) => {
   if (msg.guild !== null) {
-    console.log(`Running ${cmd.name} on server ${msg.guild.name} by ${msg.author.username}...`)
-    const command = new CommandHelper(msg, cmd)
-
-    command.updateUsage(cmd.name).catch(err => console.error(err))
+    new CommandHelper(msg, cmd)
+      .updateUsage(cmd.name)
+      .catch(err => console.error(err))
   }
 })
 
@@ -77,20 +58,12 @@ client.on('unknownCommand', msg => {
   if (msg.channel.id !== config.testChannel) { // Default testing channel, don't respond.
     try {
       let query = msg.content.substring(client.commandPrefix.length)
-      tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
+      queryGiphy(query, client.user.username, client.user.displayAvatarURL())
         .then(res => { if (res !== null) { sendMessage(msg.channel, '', client.user, res) } })
         .catch(console.error)
     } catch (err) { console.error(err) }
   }
 })
-
-client.on('commandError', (cmd, err) => console.error(err))
-client.on('error', err => console.error(err))
-client.on('warn', info => console.log(info))
-
-let zenCount = 0
-
-const ioTools = new (require('./util/IOTools'))()
 
 client.on('message', msg => {
   switch (msg.author.id) {
@@ -102,13 +75,12 @@ client.on('message', msg => {
       break
   }
 
-  if (msg.content.split(' ').includes('alot')) {
-    ioTools.getImage('alot.png').then(image => {
-      sendMessage(msg.channel, '', client.user, { files: [image] })
-    }).catch(console.error)
-  }
+  searchForAlot(msg, client)
 })
 
+client.on('commandError', (cmd, err) => console.error(err))
+client.on('error', err => console.error(err))
+client.on('warn', info => console.log(info))
 client.login(process.env.DISCORD_KEY)
 
 const IPC = require('./util/IPC')
