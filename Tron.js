@@ -89,10 +89,8 @@ client.on('error', err => console.error(err))
 client.on('warn', info => console.log(info))
 
 let zenCount = 0
-let volCount = 0
 
 const ioTools = new (require('./util/IOTools'))()
-const volInsults = require('./data/insults.json')
 
 client.on('message', msg => {
   switch (msg.author.id) {
