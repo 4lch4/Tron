@@ -91,21 +91,11 @@ client.on('warn', info => console.log(info))
 let zenCount = 0
 let volCount = 0
 
-const volInsults = [
-  'is lame.',
-  'smells like cheese.'
-]
-
 const ioTools = new (require('./util/IOTools'))()
+const volInsults = require('./data/insults.json')
 
 client.on('message', msg => {
   switch (msg.author.id) {
-    case '493093339663695912': // Volcano Queen
-      if (volCount === 5) {
-        volCount = 0
-        return msg.reply(volInsults[tools.getRandom(0, volInsults.length)])
-      } else volCount++
-      break
     case '150319175326236672': // Zenny
       if (zenCount === 10) {
         zenCount = 0
