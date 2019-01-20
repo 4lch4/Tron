@@ -6,6 +6,14 @@ const config = require('./util/config.json')
 const sqlite = require('sqlite')
 const path = require('path')
 
+const {
+  imageFolderExistsSync,
+  getImage,
+  getRandomImage
+} = new (require('./util/IOTools'))()
+
+let zenCount = 0
+
 const timber = require('timber')
 const transport = new timber.transports.HTTPS(process.env.TIMBER_KEY)
 timber.install(transport)
@@ -74,10 +82,10 @@ client.on('commandRun', (cmd, promise, msg) => {
 })
 
 client.on('unknownCommand', msg => {
+  let content = msg.content.substring(client.commandPrefix.length)
   if (msg.channel.id !== config.testChannel) { // Default testing channel, don't respond.
     try {
-      let query = msg.content.substring(client.commandPrefix.length)
-      tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
+      tools.queryGiphy(content, client.user.username, client.user.displayAvatarURL())
         .then(res => { if (res !== null) { sendMessage(msg.channel, '', client.user, res) } })
         .catch(console.error)
     } catch (err) { console.error(err) }
@@ -87,10 +95,6 @@ client.on('unknownCommand', msg => {
 client.on('commandError', (cmd, err) => console.error(err))
 client.on('error', err => console.error(err))
 client.on('warn', info => console.log(info))
-
-let zenCount = 0
-
-const ioTools = new (require('./util/IOTools'))()
 
 client.on('message', msg => {
   switch (msg.author.id) {
@@ -103,7 +107,7 @@ client.on('message', msg => {
   }
 
   if (msg.content.split(' ').includes('alot')) {
-    ioTools.getImage('alot.png').then(image => {
+    getImage('alot.png').then(image => {
       sendMessage(msg.channel, '', client.user, { files: [image] })
     }).catch(console.error)
   }
