@@ -24,7 +24,7 @@ class RedditTools {
       reddit.r(subreddit).sort('top').from(from).limit(limit, (err, data, res) => {
         if (err) reject(err)
 
-        if (count === 1 && data !== null) {
+        if (count === 1 && data !== undefined && data.data !== undefined) {
           const randomPost = tools.getRandom(0, data.data.children.length)
           resolve(data.data.children[randomPost].data.url)
         } else {
