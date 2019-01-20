@@ -1,4 +1,3 @@
-[![Build Status](https://img.shields.io/travis/HF-Solutions/Tron.svg?style=flat-square)](https://travis-ci.org/HF-Solutions/Tron)
 [![Standard-Js](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com/)
 [![dependencies Status](https://img.shields.io/david/HF-Solutions/Tron.svg?style=flat-square)](https://david-dm.org/Paranoid-Devs/Tron)
 [![devDependencies Status](https://img.shields.io/david/dev/HF-Solutions/Tron.svg?style=flat-square)](https://david-dm.org/HF-Solutions/Tron?type=dev)
