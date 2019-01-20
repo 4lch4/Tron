@@ -11,7 +11,7 @@ class User extends Command {
       group: 'features',
       description: 'Displays various information about the mentioned user.',
       aliases: ['userinfo', 'user-info'],
-      examples: ['+user @Alcha#2625']
+      examples: ['+user @Alcha#0042']
     })
   }
 
@@ -39,7 +39,7 @@ class User extends Command {
       },
       'author': {
         'name': 'Tron',
-        'url': 'https://paranoiddevs.com/tron',
+        'url': 'https://github.com/HF-Solutions/Tron',
         'icon_url': this.client.user.avatarURL()
       },
       'fields': generateFields(user, member)

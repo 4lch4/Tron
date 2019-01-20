@@ -15,9 +15,8 @@ class Rose extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('rose', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('rose', args)
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

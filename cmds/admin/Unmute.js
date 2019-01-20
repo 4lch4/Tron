@@ -8,7 +8,7 @@ class Unmute extends Command {
       group: 'admin',
       memberName: 'unmute',
       description: 'Unmutes the mentioned user(s) from text and voice-chat on the server.',
-      examples: ['+unmute @Alcha#2625', '+unmute @Alcha#2625 @Altcha#4829'],
+      examples: ['+unmute @Alcha#0042', '+unmute @Alcha#0042 @Altcha#4829'],
       argsType: 'multiple'
     })
   }

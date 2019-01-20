@@ -14,9 +14,8 @@ class Rawr extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('rawr', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('rawr', args)
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

@@ -11,7 +11,7 @@ module.exports = class Slap extends Command {
       memberName: 'slap',
       guildOnly: true,
       description: 'Returns a random slap gif and includes the mentioned users username.',
-      examples: ['+slap @Alcha#2625'],
+      examples: ['+slap @Alcha#0042'],
       argsType: 'multiple'
     })
   }
@@ -19,10 +19,12 @@ module.exports = class Slap extends Command {
   async run (msg, args) {
     if (msg.mentions.users.size > 0) {
       var content = `${this.getMentionedUsernames(msg)}, you've been slapped by **${msg.author.username}**. `
+      if (msg.mentions.users.find(mention => mention.id === '258162570622533635')) {
+        return msg.reply('YOU DARE TRY TO SLAP ME?! Who do you think you are?!')
+      }
     }
 
-    ioTools.getRandomImage('slap', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('slap', args)
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

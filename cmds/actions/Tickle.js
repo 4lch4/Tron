@@ -9,7 +9,7 @@ class Tickle extends Command {
       group: 'actions',
       description: 'Returns a random tickle image/gif.',
       aliases: ['tickles'],
-      examples: ['+tickle @Alcha#2625'],
+      examples: ['+tickle @Alcha#0042'],
       argsType: 'multiple'
     })
   }
@@ -19,9 +19,8 @@ class Tickle extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been tickled by **${msg.author.username}**!`
     }
 
-    ioTools.getRandomImage('tickle', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('tickle', args)
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }
 

@@ -15,11 +15,11 @@ class Quote extends Command {
   }
 
   async run (msg, args) {
-    ioTools.readDataFile('Quotes.txt').then(fileData => {
-      const fileLines = fileData.split('\n')
-      const random = tools.getRandom(0, fileLines.length)
-      msg.channel.send(fileLines[random])
-    })
+    let fileData = await ioTools.readDataFile('Quotes.txt')
+    const fileLines = fileData.split('\n')
+    const random = tools.getRandom(0, fileLines.length)
+
+    return msg.channel.send(fileLines[random])
   }
 }
 

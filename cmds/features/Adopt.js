@@ -9,7 +9,7 @@ class Adopt extends Command {
       memberName: 'adopt',
       throttling: { usages: 1, duration: 10 },
       description: 'Allows you to adopt a member of your server.',
-      examples: ['+adopt @Alcha#2625']
+      examples: ['+adopt @Alcha#0042']
     })
   }
 
@@ -31,7 +31,7 @@ class Adopt extends Command {
           msg.mentions.users.forEach(user => {
             adoption.getAdoptionsList(user, this.client).then(list => {
               msg.channel.send(list)
-            }).catch(err => console.error(err))
+            }).catch(console.error)
           })
         } else {
           adoption.getAdoptionsList(msg.author, this.client)
@@ -65,7 +65,7 @@ const adoptUser = async (msg, adoptee) => {
           // WOOT
           adoption.save().then(res => {
             msg.reply('looks like you got a yes.')
-          }).catch(err => console.error(err))
+          }).catch(console.error)
         } else {
           // Aww
           msg.reply('looks like you got a no.')

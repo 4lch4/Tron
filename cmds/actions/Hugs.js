@@ -12,7 +12,7 @@ module.exports = class Hug extends Command {
       guildOnly: true,
       aliases: ['hugs', 'cuddle', 'cuddles'],
       description: 'Returns a random love gif and if a user is mentioned, includes their name.',
-      examples: ['+hugs @Alcha#2625'],
+      examples: ['+hugs @Alcha#0042'],
       argsType: 'multiple'
     })
   }
@@ -22,8 +22,7 @@ module.exports = class Hug extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been hugged by **${msg.author.username}**. :heart:`
     }
 
-    ioTools.getRandomImage('hug', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('hug', args)
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

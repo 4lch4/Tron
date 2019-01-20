@@ -11,7 +11,7 @@ module.exports = class Love extends Command {
       memberName: 'love',
       guildOnly: true,
       description: 'Returns a random love gif and if a user is mentioned, includes their name.',
-      examples: ['+love @Alcha#2625'],
+      examples: ['+love @Alcha#0042'],
       argsType: 'multiple'
     })
   }
@@ -21,8 +21,7 @@ module.exports = class Love extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been loved by **${msg.author.username}**. :heart:`
     }
 
-    ioTools.getRandomImage('love', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('love', args)
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

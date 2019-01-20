@@ -11,7 +11,7 @@ module.exports = class Pat extends Command {
       memberName: 'pat',
       guildOnly: true,
       description: 'Returns a random pat gif and includes the mentioned users username.',
-      examples: ['+pat @Alcha#2625'],
+      examples: ['+pat @Alcha#0042'],
       argsType: 'multiple'
     })
   }
@@ -21,8 +21,7 @@ module.exports = class Pat extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you got a pat from **${msg.author.username}**.`
     }
 
-    ioTools.getRandomImage('pat', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('pat', args)
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

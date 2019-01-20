@@ -13,38 +13,27 @@ class Neko extends Command {
       guildOnly: false,
       description: 'Displays nekos of various shapes and sizes.',
       examples: ['+neko', '+neko nsfw'],
-      args: [
-        {
-          key: 'type',
-          default: 'sfw',
-          prompt: 'Would you like SFW or NSFW content?',
-          validate: val => {
-            if (val === 'sfw' || val === 'nsfw') return true
-            else return 'Please provide either `sfw` or `nsfw` for the content type.'
-          },
-          parse: val => {
-            return val.toLowerCase()
-          }
-        }
-      ]
+      args: [{
+        key: 'type',
+        default: 'sfw',
+        prompt: 'Would you like SFW or NSFW content?',
+        validate: val => {
+          if (val === 'sfw' || val === 'nsfw') return true
+          else return 'Please provide either `sfw` or `nsfw` for the content type.'
+        },
+        parse: val => val.toLowerCase()
+      }]
     })
   }
 
   async run (msg, { type }) {
     switch (type) {
-      case 'sfw':
-        getSfwNekoUrl()
-          .then(url => msg.channel.send(url))
-          .catch(err => console.error(err))
-        break
+      case 'sfw': return msg.channel.send(await getSfwNekoUrl())
 
       case 'nsfw':
         if (msg.channel.nsfw) {
-          getNsfwNekoUrl()
-            .then(url => msg.channel.send(url))
-            .catch(err => console.error(err))
+          return msg.channel.send(await getNsfwNekoUrl())
         } else return msg.reply('NSFW commands must be run in a NSFW channel.')
-        break
     }
   }
 }
@@ -52,9 +41,8 @@ class Neko extends Command {
 module.exports = Neko
 
 const getNsfwNekoUrl = async () => {
-  let imgOrGif = tools.getRandom(0, 2)
   try {
-    if (imgOrGif === 0) {
+    if (tools.getRandom(0, 2) === 0) {
       let { url } = await nekos.nsfw.neko()
       return url
     } else {
@@ -65,9 +53,8 @@ const getNsfwNekoUrl = async () => {
 }
 
 const getSfwNekoUrl = async () => {
-  let imgOrGif = tools.getRandom(0, 2)
   try {
-    if (imgOrGif === 0) {
+    if (tools.getRandom(0, 2) === 0) {
       let { url } = await nekos.sfw.neko()
       return url
     } else {

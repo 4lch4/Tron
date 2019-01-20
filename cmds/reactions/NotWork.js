@@ -9,14 +9,13 @@ class NotWork extends Command {
       group: 'reactions',
       description: 'Returns a random not working image/gif.',
       aliases: ['nowork', 'not-work', 'no-work'],
-      examples: ['+nowork', '+notwork @Alcha#2625']
+      examples: ['+nowork', '+notwork @Alcha#0042']
     })
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('not_working', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('not_working', args)
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

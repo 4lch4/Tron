@@ -11,7 +11,7 @@ module.exports = class Lick extends Command {
       memberName: 'lick',
       guildOnly: true,
       description: 'Returns a random lick gif and includes the mentioned users username.',
-      examples: ['+lick @Alcha#2625'],
+      examples: ['+lick @Alcha#0042'],
       argsType: 'multiple'
     })
   }
@@ -21,8 +21,7 @@ module.exports = class Lick extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been licked by **${msg.author.username}**. :tongue:`
     }
 
-    ioTools.getRandomImage('lick', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('lick', args)
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

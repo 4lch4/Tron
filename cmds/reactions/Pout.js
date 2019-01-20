@@ -14,9 +14,8 @@ class Pout extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('pout', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('pout', args)
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

@@ -11,7 +11,7 @@ module.exports = class Punch extends Command {
       memberName: 'punch',
       guildOnly: true,
       description: 'Returns a random punch gif and includes the mentioned users username.',
-      examples: ['+punch @Alcha#2625'],
+      examples: ['+punch @Alcha#0042'],
       argsType: 'multiple'
     })
   }
@@ -19,10 +19,12 @@ module.exports = class Punch extends Command {
   async run (msg, args) {
     if (msg.mentions.users.size > 0) {
       var content = `${this.getMentionedUsernames(msg)}, you've been punched by **${msg.author.username}**. :punch:`
+      if (msg.mentions.users.find(mention => mention.id === '258162570622533635')) {
+        return msg.reply('YOU DARE TRY TO PUNCH ME?! Who do you think you are?!')
+      }
     }
 
-    ioTools.getRandomImage('punch', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('punch', args)
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

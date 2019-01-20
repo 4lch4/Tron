@@ -139,6 +139,6 @@ const listBirthdays = (msg, client) => {
 
     content.push('```')
 
-    Command.sendMessage(msg.channel, content.join('\n'), client.user)
+    return Command.sendMessage(msg.channel, content.join('\n'), client.user)
   })
 }

@@ -57,7 +57,7 @@ module.exports = class Tools {
       var results = await giphy.search('gifs', { 'q': queryStr.escape(query) })
       var random = this.getRandom(0, results.data.length)
       if (results.data[random] === undefined) return Promise.resolve(null)
-      else var embedUrl = results.data[random].images.original.gif_url
+      else var embedUrl = results.data[random].images.original.url
 
       return Promise.resolve(new MessageEmbed()
         .setAuthor(username, avatarUrl, 'http://tronbot.info')

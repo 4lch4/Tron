@@ -11,7 +11,7 @@ module.exports = class Poke extends Command {
       memberName: 'poke',
       guildOnly: true,
       description: 'Returns a random poke gif and includes the mentioned users username.',
-      examples: ['+poke @Alcha#2625'],
+      examples: ['+poke @Alcha#0042'],
       argsType: 'multiple'
     })
   }
@@ -21,8 +21,7 @@ module.exports = class Poke extends Command {
       var content = `${this.getMentionedUsernames(msg)}, you've been poked by **${msg.author.username}**.`
     }
 
-    ioTools.getRandomImage('poke', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('poke', args)
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

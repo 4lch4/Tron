@@ -15,9 +15,8 @@ class KillMe extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('killme', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('killme', args)
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

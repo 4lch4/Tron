@@ -11,14 +11,13 @@ module.exports = class Wave extends Command {
       memberName: 'wave',
       guildOnly: true,
       description: 'Returns a random wave gif and if a user is mentioned, includes their username.',
-      examples: ['+wave @Alcha#2625'],
+      examples: ['+wave @Alcha#0042'],
       argsType: 'multiple'
     })
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('wave', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('wave', args)
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }

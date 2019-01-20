@@ -13,9 +13,8 @@ class Ami extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('ami', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('ami', args)
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

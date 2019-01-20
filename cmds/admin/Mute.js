@@ -8,7 +8,7 @@ class Mute extends Command {
       group: 'admin',
       memberName: 'mute',
       description: 'Mutes the mentioned user(s) from text and voice-chat on the server.',
-      examples: ['+mute @Alcha#2625', '+mute @Alcha#2625 @Altcha#4829'],
+      examples: ['+mute @Alcha#0042', '+mute @Alcha#0042 @Altcha#4829'],
       argsType: 'multiple'
     })
   }

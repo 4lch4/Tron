@@ -12,7 +12,7 @@ class Ship extends Command {
       group: 'features',
       memberName: 'ship',
       description: 'Ships two users as a couple.',
-      examples: ['+ship @Alcha#2625 @Aadio#1576'],
+      examples: ['+ship @Alcha#0042 @Aadio#1576'],
       args: [{
         key: 'user1',
         label: 'User 1',
@@ -36,7 +36,7 @@ class Ship extends Command {
         getShipName(msg).then(shipName => {
           const content = 'Lovely shipping!\nShip name: ' + shipName
 
-          Command.sendMessage(msg.channel, content, this.client.user, { files: [canvas.toBuffer()] })
+          return Command.sendMessage(msg.channel, content, this.client.user, { files: [canvas.toBuffer()] })
         })
       })
     }).catch(err => console.error(err))
@@ -119,10 +119,19 @@ function getShipName (msg) {
   if (users[0] !== undefined) user0 = users[0].username
   if (users[1] !== undefined) user1 = users[1].username
 
-  const combined = user0 + user1
+  let random0 = tools.getRandom(0, user0.length)
+  let random1 = tools.getRandom(0, user1.length)
+  let str0 = user0.substring(0, random0)
+  let str1 = user1.substring(0, random1)
 
-  const shuffled = shuffle(combined.split(''))
-  const randomLength = tools.getRandom(4, shuffled.length)
-  const shipName = shuffled.toString().substring(0, randomLength)
+  let shipName = `${str0}${str1}`
+
   return Promise.resolve(`**${tools.upperFirstC(shipName.replace(/,/g, ''))}**`)
+
+  // const combined = user0 + user1
+
+  // const shuffled = shuffle(combined.split(''))
+  // const randomLength = tools.getRandom(4, shuffled.length)
+  // const shipName = shuffled.toString().substring(0, randomLength)
+  // return Promise.resolve(`**${tools.upperFirstC(shipName.replace(/,/g, ''))}**`)
 }

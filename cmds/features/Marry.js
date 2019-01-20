@@ -11,7 +11,7 @@ class Marry extends Command {
       memberName: 'marry',
       throttling: { usages: 1, duration: 60 },
       description: 'Used to marry a user or display the marriages of yourself or a mentioned user.',
-      examples: ['+marry @Alcha#2625', '+marry list', '+marry list @Alcha#2625'],
+      examples: ['+marry @Alcha#0042', '+marry list', '+marry list @Alcha#0042'],
       argsType: 'multiple'
     })
   }
@@ -30,36 +30,35 @@ class Marry extends Command {
 
           if (await marriage.married()) return msg.reply('you two are already married! Whatchu tryin\' to pull? :wink:')
           else {
-            msg.channel.send(`<@${mentionedUserId}>, do you take <@${msg.author.id}>'s hand in marriage? (yes or no) :ring:`).then(m => {
-              marriage.getProposalResponse(msg.channel, mentionedUserId).then(accepted => {
-                if (accepted) {
-                  marriage.saveMarriage().then(res => {
-                    msg.channel.send(`Congratulations, <@${msg.author.id}>, you're now married to <@${mentionedUserId}>!`)
-                  }).catch(err => {
-                    msg.channel.send('There seems to have been an error.. If this continues, please contact support.')
-                    msg.channel.send(err)
-                    console.error(`${tools.formattedTime} - There was an error attempting to save a users marriages:`)
-                    console.error(err)
-                  })
-                } else {
-                  msg.channel.send(`Awww... :cry:`).then(m => {
-                    marriage.complete()
-                  })
-                }
-              }).catch(err => {
-                if (err === 'time') msg.channel.send(`Sorry <@${msg.author.id}>, looks like you won't be getting a response this time around. :cry:`)
-                else {
-                  msg.channel.send(
-                    'There was an error when trying to execute the marriage proposal.\n\n' +
-                    'Please try again and if it continues to fail, contact support.'
-                  )
-                  console.error(`${tools.formattedTime} - There was an error attempting to list a users marriages:`)
+            await msg.channel.send(`<@${mentionedUserId}>, do you take <@${msg.author.id}>'s hand in marriage? (yes or no) :ring:`)
+            marriage.getProposalResponse(msg.channel, mentionedUserId).then(accepted => {
+              if (accepted) {
+                marriage.saveMarriage().then(res => {
+                  msg.channel.send(`Congratulations, <@${msg.author.id}>, you're now married to <@${mentionedUserId}>!`)
+                }).catch(err => {
+                  msg.channel.send('There seems to have been an error.. If this continues, please contact support.')
+                  msg.channel.send(err)
+                  console.error(`${tools.formattedTime} - There was an error attempting to save a users marriages:`)
                   console.error(err)
-                }
-              })
+                })
+              } else {
+                msg.channel.send(`Awww... :cry:`).then(m => {
+                  marriage.complete()
+                })
+              }
+            }).catch(err => {
+              if (err === 'time') msg.channel.send(`Sorry <@${msg.author.id}>, looks like you won't be getting a response this time around. :cry:`)
+              else {
+                msg.channel.send(
+                  'There was an error when trying to execute the marriage proposal.\n\n' +
+                  'Please try again and if it continues to fail, contact support.'
+                )
+                console.error(`${tools.formattedTime} - There was an error attempting to list a users marriages:`)
+                console.error(err)
+              }
             })
           }
-          return
+          break
         } else if (args[0].toLowerCase() === 'list') {
           // List command executed on author
           const marriage = new Marriage(msg.author.id)
@@ -87,12 +86,10 @@ class Marry extends Command {
           }
         }
 
-        console.log(args)
         return msg.channel.send(`There seems to have been a problem.. Please contact support (\`+support\`).`)
 
       default:
-        msg.reply(`you have provided an invalid amount of arguments.`)
-        break
+        return msg.reply(`you have provided an invalid amount of arguments.`)
     }
   }
 }

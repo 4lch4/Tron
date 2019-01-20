@@ -14,9 +14,8 @@ class Alcha extends Command {
   }
 
   async run (msg, args) {
-    ioTools.getRandomImage('alcha', args).then(image => {
-      Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
-    })
+    let image = await ioTools.getRandomImage('alcha', args)
+    return Command.sendMessage(msg.channel, '', this.client.user, { files: [image] })
   }
 }
 

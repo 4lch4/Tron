@@ -8,7 +8,7 @@ class Peach extends Command {
       group: 'user',
       description: 'Returns a peach as requested by the lovely peach.',
       aliases: ['peaches'],
-      examples: ['+peach']
+      examples: ['+peach', '+peach @Alcha#0042 @Baltcha#4829']
     })
   }
 

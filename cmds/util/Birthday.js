@@ -161,7 +161,7 @@ class Birthday {
     return new Promise((resolve, reject) => {
       const collector = baseCollector(msg)
 
-      msg.reply('which user do you want to store a birthday for? Please reply with a mention of the user. (e.g. _@Alcha#2625_)')
+      msg.reply('which user do you want to store a birthday for? Please reply with a mention of the user. (e.g. _@Alcha#0042_)')
 
       collector.on('collect', m => {
         if (m.mentions.users.size === 1) {

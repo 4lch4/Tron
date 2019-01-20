@@ -11,7 +11,7 @@ module.exports = class Kick extends Command {
       memberName: 'kick',
       guildOnly: true,
       description: 'Returns a random kick gif and includes the mentioned users username.',
-      examples: ['+kick @Alcha#2625'],
+      examples: ['+kick @Alcha#0042'],
       argsType: 'multiple'
     })
   }
@@ -19,10 +19,12 @@ module.exports = class Kick extends Command {
   async run (msg, args) {
     if (msg.mentions.users.size > 0) {
       var content = `${this.getMentionedUsernames(msg)}, you've been kicked by **${msg.author.username}**.`
+      if (msg.mentions.users.find(mention => mention.id === '258162570622533635')) {
+        return msg.reply('YOU DARE TRY TO KICK ME?! Who do you think you are?!')
+      }
     }
 
-    ioTools.getRandomImage('kick', args).then(image => {
-      Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
-    }).catch(err => console.error(err))
+    let image = await ioTools.getRandomImage('kick', args)
+    return Command.sendMessage(msg.channel, content, this.client.user, { files: [image] })
   }
 }

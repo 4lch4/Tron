@@ -6,6 +6,14 @@ const config = require('./util/config.json')
 const sqlite = require('sqlite')
 const path = require('path')
 
+const {
+  imageFolderExistsSync,
+  getImage,
+  getRandomImage
+} = new (require('./util/IOTools'))()
+
+let zenCount = 0
+
 const timber = require('timber')
 const transport = new timber.transports.HTTPS(process.env.TIMBER_KEY)
 timber.install(transport)
@@ -42,7 +50,6 @@ client.on('ready', () => {
   let readyTime = tools.formattedUTCTime
 
   sendMessage(client.channels.get(config.notificationChannel), `<@219270060936527873>, Tron has come online > **${readyTime}**`, client.user)
-  // client.channels.get(config.notificationChannel).send(`<@219270060936527873>, Tron has come online > **${readyTime}**`)
 
   /**
    * Rotates the activity setting on Tron every 2 minutes (120,000ms) to a
@@ -75,12 +82,23 @@ client.on('commandRun', (cmd, promise, msg) => {
 })
 
 client.on('unknownCommand', msg => {
+  let content = msg.content.substring(client.commandPrefix.length)
   if (msg.channel.id !== config.testChannel) { // Default testing channel, don't respond.
     try {
-      let query = msg.content.substring(client.commandPrefix.length)
-      tools.queryGiphy(query, client.user.username, client.user.displayAvatarURL())
+      tools.queryGiphy(content, client.user.username, client.user.displayAvatarURL())
         .then(res => { if (res !== null) { sendMessage(msg.channel, '', client.user, res) } })
+        .catch(console.error)
     } catch (err) { console.error(err) }
+  }
+
+  if (content.split(' ').length > 1) {
+    content = content.split(' ').join('_')
+  }
+
+  if (imageFolderExistsSync(content)) {
+    getRandomImage(content).then(img => {
+      sendMessage(msg.channel, '', this.client.user, { files: [img] })
+    }).catch(err => console.error(err))
   }
 })
 
@@ -88,28 +106,20 @@ client.on('commandError', (cmd, err) => console.error(err))
 client.on('error', err => console.error(err))
 client.on('warn', info => console.log(info))
 
-let zenCount = 0
-let volCount = 0
-
-const volInsults = [
-  'is lame.',
-  'smells like cheese.'
-]
-
 client.on('message', msg => {
   switch (msg.author.id) {
-    case '493093339663695912': // Volcano Queen
-      if (volCount === 5) {
-        volCount = 0
-        return msg.reply(volInsults[tools.getRandom(0, volInsults.length)])
-      } else volCount++
-      break
     case '150319175326236672': // Zenny
       if (zenCount === 10) {
         zenCount = 0
         return msg.reply('meh.')
       } else zenCount++
       break
+  }
+
+  if (msg.content.split(' ').includes('alot')) {
+    getImage('alot.png').then(image => {
+      sendMessage(msg.channel, '', client.user, { files: [image] })
+    }).catch(console.error)
   }
 })
 
