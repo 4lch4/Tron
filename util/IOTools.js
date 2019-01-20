@@ -2,13 +2,16 @@ const download = require('image-downloader')
 
 const tools = new (require('./Tools'))()
 
-const path = require('path')
+const { join } = require('path')
 const fs = require('fs-extra')
+
+/** The path to the directory that contains all the images for Tron. */
+const imageDirPath = join(__dirname, '..', 'images')
 
 module.exports = class IOTools {
   getImagePath (filePath) {
     try {
-      const finalPath = path.join('./images', filePath)
+      const finalPath = join('./images', filePath)
       if (this.getFileSize(finalPath) < 8000000) return finalPath
       else return 'Provided file is too large to send over Discord.'
     } catch (err) {
@@ -19,7 +22,7 @@ module.exports = class IOTools {
   saveToFile (data, filename) {
     if (!data) return 'Data parameter doesn\'t contain any data.'
 
-    const finalPath = path.join('./data/filesSaved', filename)
+    const finalPath = join('data', 'filesSaved', filename)
     return fs.writeFile(finalPath, data)
       .then(res => { return finalPath })
       .catch(err => { throw err })
@@ -46,7 +49,7 @@ module.exports = class IOTools {
 
   getImage (filename) {
     return new Promise((resolve, reject) => {
-      const finalPath = path.join(__dirname, '../images', filename)
+      const finalPath = join(imageDirPath, filename)
 
       if (fs.existsSync(finalPath)) {
         if (this.getFileSize(finalPath) < 8000000) {
@@ -63,13 +66,13 @@ module.exports = class IOTools {
   }
 
   getImageFilenames (dirPath) {
-    const finalDir = path.join('./images', dirPath)
+    const finalDir = join('./images', dirPath)
     let filePaths = []
 
     return new Promise((resolve, reject) => {
       fs.readdir(finalDir).then(filenames => {
         for (let x = 0; x < filenames.length; x++) {
-          let finalPath = path.join(finalDir, filenames[x])
+          let finalPath = join(finalDir, filenames[x])
 
           if (this.getFileSize(finalPath) < 8000000) filePaths.push(finalPath)
         }
@@ -80,7 +83,7 @@ module.exports = class IOTools {
   }
 
   async readDataFile (filename) {
-    return fs.readFile(path.join(__dirname, '../data', filename), 'utf-8')
+    return fs.readFile(join(__dirname, '../data', filename), 'utf-8')
   }
 
   async readFile (filePath) {
@@ -88,7 +91,7 @@ module.exports = class IOTools {
   }
 
   async readRelativeFile (filePath) {
-    return fs.readFile(path.join(__dirname, filePath), 'utf-8')
+    return fs.readFile(join(__dirname, filePath), 'utf-8')
   }
 
   readFileSync (filePath) {
