@@ -7,8 +7,6 @@
 [![ForTheBadge](https://forthebadge.com/images/badges/fuck-it-ship-it.svg)](https://forthebadge.com)
 [![Invite_Tron](https://i.imgur.com/Z0vT2C1.png)](https://discordapp.com/oauth2/authorize?client_id=258162570622533635&scope=bot)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/HF-Solutions/Tron.svg)](https://greenkeeper.io/)
-
 # Tron
 
 ## Purpose
