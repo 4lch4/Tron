@@ -90,6 +90,16 @@ client.on('unknownCommand', msg => {
         .catch(console.error)
     } catch (err) { console.error(err) }
   }
+
+  if (content.split(' ').length > 1) {
+    content = content.split(' ').join('_')
+  }
+
+  if (imageFolderExistsSync(content)) {
+    getRandomImage(content).then(img => {
+      sendMessage(msg.channel, '', this.client.user, { files: [img] })
+    }).catch(err => console.error(err))
+  }
 })
 
 client.on('commandError', (cmd, err) => console.error(err))
