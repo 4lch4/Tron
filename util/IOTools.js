@@ -47,6 +47,21 @@ module.exports = class IOTools {
     })
   }
 
+  imageFolderExistsSync (name) {
+    try {
+      let exists = fs.existsSync(join(imageDirPath, name))
+      return exists
+    } catch (err) { console.error(err) }
+  }
+
+  imageFolderExists (name) {
+    return new Promise((resolve, reject) => {
+      try {
+        fs.exists(join(imageDirPath, name), exists => { resolve(exists) })
+      } catch (err) { reject(err) }
+    })
+  }
+
   getImage (filename) {
     return new Promise((resolve, reject) => {
       const finalPath = join(imageDirPath, filename)
