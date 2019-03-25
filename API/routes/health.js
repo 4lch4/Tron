@@ -2,7 +2,8 @@ const { noFields } = require('./shared')
 const prettyMs = require('pretty-ms')
 
 const fieldNames = {
-  'uptime': 'How long Tron has been online since the last reboot.'
+  uptime: 'How long Tron has been online since the last reboot.',
+  ping: 'The current ping of the bot WebSocketManager.'
 }
 
 /**
@@ -33,6 +34,7 @@ const handleRequest = (req, res, client) => {
 const getFieldData = (field, client) => {
   switch (field) {
     case 'uptime': return { uptime: prettyMs(client.uptime) }
+    case 'ping': return { ping: client.ws.ping }
 
     default: return 'Field Not Found'
   }
