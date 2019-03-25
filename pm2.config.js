@@ -6,6 +6,7 @@ module.exports = {
     script: './Tron.js',
     watch: false,
     env: {
+      PORT: 3030,
       NODE_ENV: 'development',
       DISCORD_KEY: config.beta.token,
       CMD_PREFIX: config.beta.prefix,
@@ -13,6 +14,7 @@ module.exports = {
       TIMBER_KEY: config.timberDev
     },
     env_production: {
+      PORT: 3000,
       NODE_ENV: 'production',
       DISCORD_KEY: config.prod.token,
       CMD_PREFIX: config.prod.prefix,
