@@ -65,21 +65,21 @@ const generateFields = (client) => {
     'inline': true
   }]
 
-  client.owners.forEach(owner => {
+  for (let x = 0; x < client.owners.length; x++) {
     fields.push({
       'name': 'Owner',
-      'value': owner.tag,
+      'value': client.owners[x].tag,
       'inline': true
     })
-  })
+  }
 
-  config.developers.forEach(dev => {
+  for (let x = 0; x < config.developers.length; x++) {
     fields.push({
       'name': 'Developer',
-      'value': dev,
+      'value': config.developers[x],
       'inline': true
     })
-  })
+  }
 
   return fields
 }

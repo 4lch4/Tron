@@ -1,22 +1,12 @@
 const { CommandoClient, SQLiteProvider } = require('discord.js-commando')
 const CommandHelper = require('./util/db/CommandHelper')
-const tools = new (require('./util/Tools'))()
 const { sendMessage } = require('./cmds/BaseCmd')
+const ioTools = new (require('./util/IOTools'))()
+const tools = new (require('./util/Tools'))()
 const config = require('./util/config.json')
 const sqlite = require('sqlite')
 const path = require('path')
-
-const {
-  imageFolderExistsSync,
-  getImage,
-  getRandomImage
-} = new (require('./util/IOTools'))()
-
 let zenCount = 0
-
-const timber = require('timber')
-const transport = new timber.transports.HTTPS(process.env.TIMBER_KEY)
-timber.install(transport)
 
 const client = new CommandoClient({
   commandPrefix: process.env.CMD_PREFIX,
@@ -24,6 +14,9 @@ const client = new CommandoClient({
   disableEveryone: true,
   unknownCommandResponse: false
 })
+
+// Initialize API Client
+require('./API/app')(client)
 
 sqlite.open(path.join(__dirname, 'data', 'settings.sqlite3')).then((db) => {
   client.setProvider(new SQLiteProvider(db))
@@ -95,8 +88,8 @@ client.on('unknownCommand', msg => {
     content = content.split(' ').join('_')
   }
 
-  if (imageFolderExistsSync(content)) {
-    getRandomImage(content).then(img => {
+  if (ioTools.imageFolderExistsSync(content)) {
+    ioTools.getRandomImage(content).then(img => {
       sendMessage(msg.channel, '', this.client.user, { files: [img] })
     }).catch(err => console.error(err))
   }
@@ -117,7 +110,7 @@ client.on('message', msg => {
   }
 
   if (msg.content.split(' ').includes('alot')) {
-    getImage('alot.png').then(image => {
+    ioTools.getImage('alot.png').then(image => {
       sendMessage(msg.channel, '', client.user, { files: [image] })
     }).catch(console.error)
   }

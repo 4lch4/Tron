@@ -38,13 +38,13 @@ module.exports = class IOTools {
     }
   }
 
-  getRandomImage (dirPath, args) {
-    return new Promise((resolve, reject) => {
-      this.getImageFilenames(dirPath).then(filenames => {
-        if (args !== undefined && filenames[args[args.length - 1]] !== undefined) resolve(filenames[args.length - 1])
-        else resolve(filenames[tools.getRandom(0, filenames.length)])
-      }).catch(err => reject(err))
-    })
+  async getRandomImage (dirPath, args) {
+    try {
+      let filenames = await this.getImageFilenames(dirPath)
+      if (args !== undefined && filenames[args[args.length - 1]] !== undefined) {
+        return filenames[args.length - 1]
+      } else return filenames[tools.getRandom(0, filenames.length)]
+    } catch (err) { return err }
   }
 
   imageFolderExistsSync (name) {
@@ -62,16 +62,14 @@ module.exports = class IOTools {
     })
   }
 
-  getImage (filename) {
-    return new Promise((resolve, reject) => {
-      const finalPath = join(imageDirPath, filename)
+  async getImage (filename) {
+    const finalPath = join(imageDirPath, filename)
 
-      if (fs.existsSync(finalPath)) {
-        if (this.getFileSize(finalPath) < 8000000) {
-          resolve(finalPath)
-        } else reject(new Error('The requested file is too large to display. (> 8mb)'))
-      } else reject(new Error('The requested file does not exist.'))
-    })
+    if (fs.existsSync(finalPath)) {
+      if (this.getFileSize(finalPath) < 8000000) {
+        return finalPath
+      } else return new Error('The requested file is too large to display. (> 8mb)')
+    } else return new Error('The requested file does not exist.')
   }
 
   getFileSize (filename) {

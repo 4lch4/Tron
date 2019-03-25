@@ -27,7 +27,7 @@ class RedditTools {
         if (count === 1 && data !== undefined && data.data !== undefined) {
           const randomPost = tools.getRandom(0, data.data.children.length)
           resolve(data.data.children[randomPost].data.url)
-        } else {
+        } else if (data !== undefined && data.data !== undefined) {
           let posts = this.selectPosts(data.data.children, count)
           resolve(posts)
         }
