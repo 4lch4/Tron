@@ -117,7 +117,10 @@ module.exports = class BaseCmd extends Command {
 
       if (author !== undefined) {
         if (canSendMessage(channel, author)) return channel.send(content, options)
-        else return Promise.resolve('You are unable to send a message to this channel.')
+        else {
+          let dmChannel = await author.createDM()
+          return dmChannel.send('You are unable to send a message to this channel.')
+        }
       } else return channel.send(content, options)
     } catch (err) {
       console.error(`An error has occured while attempting to send a message: ${err.message}`)
