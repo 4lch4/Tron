@@ -33,7 +33,9 @@ client.registry
     ['user', 'User Command Group']
   ])
   .registerDefaultGroups()
-  .registerDefaultCommands()
+  .registerDefaultCommands({
+    unknownCommand: false
+  })
   .registerCommandsIn({
     dirname: path.join(__dirname, 'cmds'),
     excludeDirs: /(util)/
@@ -71,27 +73,6 @@ client.on('commandRun', (cmd, promise, msg) => {
     const command = new CommandHelper(msg, cmd)
 
     command.updateUsage(cmd.name).catch(err => console.error(err))
-  }
-})
-
-client.on('unknownCommand', msg => {
-  let content = msg.content.substring(client.commandPrefix.length)
-  if (msg.channel.id !== config.testChannel) { // Default testing channel, don't respond.
-    try {
-      tools.queryGiphy(content, client.user.username, client.user.displayAvatarURL())
-        .then(res => { if (res !== null) { sendMessage(msg.channel, '', client.user, res) } })
-        .catch(console.error)
-    } catch (err) { console.error(err) }
-  }
-
-  if (content.split(' ').length > 1) {
-    content = content.split(' ').join('_')
-  }
-
-  if (ioTools.imageFolderExistsSync(content)) {
-    ioTools.getRandomImage(content).then(img => {
-      sendMessage(msg.channel, '', this.client.user, { files: [img] })
-    }).catch(err => console.error(err))
   }
 })
 
