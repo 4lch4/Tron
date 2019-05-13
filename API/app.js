@@ -1,13 +1,13 @@
+const { noFields } = require('./routes/shared')
 const bodyParser = require('body-parser')
-const port = 3000
 const express = require('express')
 const morgan = require('morgan')
 const app = express()
-const { noFields } = require('./routes/shared')
+const port = 3042
 
 const endpoints = {
   count: 'Various counts of data from Tron, such as command counts, the amount of users, etc.',
-  health: 'Various points of data about the current health of Tron.',
+  health: 'Various points of data about the current status/health of Tron.',
   client: 'Various points of data about the Tron client.'
 }
 
