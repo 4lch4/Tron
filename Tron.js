@@ -18,6 +18,10 @@ const client = new CommandoClient({
 // Initialize API Client
 require('./API/app')(client)
 
+const IPC = require('./util/IPC')
+const ipc = new IPC(client).ipc
+ipc.server.start()
+
 sqlite.open(path.join(__dirname, 'data', 'settings.sqlite3')).then((db) => {
   client.setProvider(new SQLiteProvider(db))
 })
@@ -98,7 +102,3 @@ client.on('message', msg => {
 })
 
 client.login(process.env.DISCORD_KEY)
-
-const IPC = require('./util/IPC')
-const ipc = new IPC(client).ipc
-ipc.server.start()
