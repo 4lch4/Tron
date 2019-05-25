@@ -45,6 +45,41 @@ class Ship extends Command {
 
 module.exports = Ship
 
+/*
+const Jimp = require('jimp')
+
+const main = async () => {
+  const imageA = await Jimp.read('image.png')
+  const imageB = await Jimp.read('image.png')
+  const imageC = await Jimp.read('image.png')
+
+  imageA.blit(imageB, 480, 0)
+  imageA.blit(imageC, 960, 0)
+
+  imageA.write('ImageOut.png', (err, img, coords) => {
+    if (err) {
+      console.error(err)
+    } else {
+      console.log('ImageOut.png has been written to disc.')
+      console.log(`img...`, img)
+      console.log(`coords...`, coords)
+    }
+  })
+}
+
+const backup = async () => {
+  const tmpImg = new Jimp(1440, 1080)
+  const image = await Jimp.read('image.png')
+
+  tmpImg.blit(image, 0, 0).blit(image, 480, 0).blit(image, 960, 0).write('imgOut.png')
+}
+
+backup().then(() => {
+  console.log('Done...')
+}).catch(console.error)
+
+*/
+
 async function getShipCanvas (images) {
   const finalCanvas = new Canvas((images.length * 128), 128)
   const ctx = finalCanvas.getContext('2d')
