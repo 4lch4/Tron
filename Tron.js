@@ -25,12 +25,12 @@ sqlite.open(path.join(__dirname, 'data', 'settings.sqlite3')).then((db) => {
 client.registry
   .registerDefaultTypes()
   .registerGroups([
-    ['actions', 'Action Command Group'],
-    ['reactions', 'Reaction Command Group'],
-    ['admin', 'Admin Command Group'],
-    ['features', 'Feature Commands'],
-    ['nsfw', 'NSFW Command Group'],
-    ['user', 'User Command Group']
+    [ 'actions', 'Action Command Group' ],
+    [ 'reactions', 'Reaction Command Group' ],
+    [ 'admin', 'Admin Command Group' ],
+    [ 'features', 'Feature Commands' ],
+    [ 'nsfw', 'NSFW Command Group' ],
+    [ 'user', 'User Command Group' ]
   ])
   .registerDefaultGroups()
   .registerDefaultCommands()
@@ -55,7 +55,7 @@ client.on('ready', () => {
   setInterval(function () {
     let activities = config.activities
     let random = tools.getRandom(0, activities.length)
-    let activity = activities[random]
+    let activity = activities[ random ]
 
     console.log(`Updating activity to ${activity}`, false)
 
@@ -111,7 +111,7 @@ client.on('message', msg => {
 
   if (msg.content.split(' ').includes('alot')) {
     ioTools.getImage('alot.png').then(image => {
-      sendMessage(msg.channel, '', client.user, { files: [image] })
+      sendMessage(msg.channel, '', client.user, { files: [ image ] })
     }).catch(console.error)
   }
 })
