@@ -2,9 +2,10 @@ const { noFields } = require('./shared')
 
 const fields = {
   'users': 'The total number of users that Tron has cached at any point.',
-  'guilds': 'The total number of guilds that Tron is a member of.',
   'emojis': 'The total number of custom emojis that Tron has access to.',
-  'owners': 'The amount of owners Tron has.'
+  'owners': 'The amount of owners Tron has.',
+  'guilds': 'The total number of guilds that Tron is a member of.',
+  'commands': 'The amount of commands Tron has available.'
 }
 
 /**
@@ -34,18 +35,11 @@ const handleRequest = (req, res, client) => {
  */
 const getFieldData = (field, client) => {
   switch (field) {
-    // Users count
     case 'users': return { users: client.users.size }
-
-    // Guilds/Servers count
-    case 'guilds':
-    case 'servers': return { guilds: client.guilds.size }
-
-    // Emoji count
     case 'emojis': return { emojis: client.emojis.size }
-
-    // Owner count
     case 'owners': return { owners: client.owners.length }
+    case 'guilds' || 'servers': return { guilds: client.guilds.size }
+    case 'commands': return { commands: client.registry.commands.size }
 
     default: return 'Field Not Found'
   }
