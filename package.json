@@ -60,7 +60,7 @@
     "strict-uri-encode": "2.0.0",
     "survaid": "github:Alcha/Survaid",
     "tumblr.js": "2.0.0",
-    "zlib-sync": "0.1.4"
+    "zlib-sync": "0.1.6"
   },
   "devDependencies": {
     "faker": "4.1.0",
