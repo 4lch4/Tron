@@ -28,7 +28,7 @@
   "dependencies": {
     "agenda": "2.0.2",
     "body-parser": "^1.18.3",
-    "bufferutil": "4.0.0",
+    "bufferutil": "4.0.2",
     "chalk": "2.4.1",
     "chance": "1.0.18",
     "coinbase": "2.0.8",
