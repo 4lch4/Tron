@@ -1,27 +1,32 @@
-const { AkairoClient, CommandHandler } = require('discord-akairo')
-const { config, bot, logger } = require('./util')
+const {
+  AkairoClient,
+  CommandHandler,
+  InhibitorHandler
+} = require('discord-akairo')
+const { join } = require('path')
+const { config, logger } = require('./util')
+
+const akairoOpts = { ownerID: config.ownerId }
+const djsOpts = { disableMentions: 'everyone' }
+const commanderOpts = {
+  directory: join(__dirname, 'commands'),
+  prefix: config.commandPrefix
+}
 
 class Tron extends AkairoClient {
   commandHandler
 
   constructor() {
-    super(bot.akairoOpts, bot.djsOpts)
+    super(akairoOpts, djsOpts)
 
-    this.commandHandler = new CommandHandler(this, bot.commandHandlerOpts)
+    this.commandHandler = new CommandHandler(this, commanderOpts)
     this.commandHandler.loadAll()
+    const inhibitorOpts = new InhibitorHandler()
   }
 }
 
-const main = async () => {
-  try {
-    const tron = new Tron()
-    return tron.login(config.discordToken)
-  } catch (err) {
-    return err
-  }
-}
-
-main()
+new Tron()
+  .login(config.discordToken)
   .then(res => {
     logger.info(res)
     logger.info('Execution complete!')
