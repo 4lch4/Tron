@@ -2,10 +2,11 @@
   "name": "tron",
   "version": "1.0.0",
   "description": "My Discord chat bot.",
-  "main": "index.js",
+  "main": "Tron.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "npm run pm2:start",
     "pm2:start": "pm2 start pm2.config.js",
+    "pm2:restart": "pm2 restart Tron && pm2 logs Tron",
     "prestart": "pnpm i"
   },
   "repository": {
