@@ -1,76 +1,44 @@
 {
   "name": "tron",
-  "displayName": "Tron",
-  "version": "1.0.10",
-  "description": "Our bot that makes socializing on our servers more entertaining.",
-  "main": "Tron.js",
+  "version": "1.0.0",
+  "description": "My Discord chat bot.",
+  "main": "index.js",
   "scripts": {
-    "fix": "standard --fix",
-    "start": "pm2 start pm2.config.js",
-    "start-prod": "pm2 start pm2.config.js --env production",
-    "test": "jest",
-    "test-full": "jest --config ./util/jest.config.js && codecov"
+    "start": "node src/index.js",
+    "prestart": "pnpm i"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HF-Solutions/Tron.git"
+    "url": "git+https://github.com/4lch4/Tron.git"
   },
-  "author": {
-    "name": "4lch4",
-    "email": "hello@4lch4.org",
-    "url": "https://hasslefree.solutions"
-  },
+  "author": "4lch4",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/4lch4/Tron/issues"
   },
-  "homepage": "https://github.com/4lch4/Tron",
+  "homepage": "https://github.com/4lch4/Tron#readme",
   "dependencies": {
-    "agenda": "2.0.2",
-    "body-parser": "^1.18.3",
-    "bufferutil": "4.0.0",
-    "chalk": "2.4.1",
-    "chance": "1.0.18",
-    "coinbase": "2.0.8",
-    "discord.js": "github:discordjs/discord.js",
-    "discord.js-commando": "github:discordjs/Commando",
-    "express": "4.16.4",
-    "fs-extra": "7.0.1",
-    "giphy-js-sdk-core": "1.0.6",
-    "human-interval": "^0.1.6",
-    "image-downloader": "3.4.2",
-    "libsodium-wrappers": "0.7.3",
-    "moment": "2.22.2",
-    "moment-timezone": "0.5.23",
-    "mongodb": "3.1.10",
-    "mongoose": "5.7.5",
-    "morgan": "^1.9.1",
-    "nekos.life": "2.0.2",
-    "node-ipc": "9.1.1",
-    "node-opus": "0.3.1",
-    "opusscript": "0.0.6",
-    "pdfkit": "0.8.3",
-    "pretty-ms": "^4.0.0",
-    "raven": "2.6.4",
-    "redwrap": "0.0.4",
-    "setimmediate": "1.0.5",
-    "settings-store": "1.4.1",
-    "shuffle-array": "1.0.1",
-    "stream-transform": "1.0.8",
-    "strict-uri-encode": "2.0.0",
-    "survaid": "github:Alcha/Survaid",
-    "tumblr.js": "2.0.0",
-    "zlib-sync": "0.1.4"
+    "bunyan": "1.8.15",
+    "discord-akairo": "8.1.0",
+    "discord.js": "12.5.1",
+    "sequelize": "6.4.0",
+    "sqlite": "4.0.19"
   },
   "devDependencies": {
-    "faker": "4.1.0",
-    "jest": "23.6.0",
-    "standard": "12.0.1"
+    "@commitlint/cli": "11.0.0",
+    "@commitlint/config-conventional": "11.0.0",
+    "husky": "4.3.8",
+    "pinst": "2.1.1",
+    "pm2": "4.5.1",
+    "prettier": "2.2.1"
   },
-  "standard": {
-    "ignore": [
-      "*.test.js"
-    ]
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   },
-  "snyk": true
+  "lint-staged": {
+    "*.js": "prettier --write"
+  }
 }
