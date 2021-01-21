@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
+    "pm2:start": "pm2 start pm2.config.js",
     "prestart": "pnpm i"
   },
   "repository": {

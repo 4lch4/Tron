@@ -1,25 +1,25 @@
-const config = require('./util/config.json')
+const settings = require('./local.settings.json')
 
 module.exports = {
-  apps: [{
-    name: 'Tron',
-    script: './Tron.js',
-    watch: false,
-    env: {
-      PORT: 3030,
-      NODE_ENV: 'development',
-      DISCORD_KEY: config.beta.token,
-      CMD_PREFIX: config.beta.prefix,
-      GIPHY_KEY: config.giphyKey,
-      TIMBER_KEY: config.timberDev
-    },
-    env_production: {
-      PORT: 3000,
-      NODE_ENV: 'production',
-      DISCORD_KEY: config.prod.token,
-      CMD_PREFIX: config.prod.prefix,
-      GIPHY_KEY: config.giphyKey,
-      TIMBER_KEY: config.timber
+  apps: [
+    {
+      name: 'Tron',
+      script: './src/index.js',
+      watch: false,
+      env: {
+        PORT: 3030,
+        NODE_ENV: 'development',
+        DISCORD_TOKEN: settings.test.discordToken,
+        COMMAND_PREFIX: settings.test.commandPrefix,
+        OWNER_ID: settings.test.ownerId
+      },
+      env_production: {
+        PORT: 3030,
+        NODE_ENV: 'production',
+        DISCORD_TOKEN: settings.prod.discordToken,
+        COMMAND_PREFIX: settings.prod.commandPrefix,
+        OWNER_ID: settings.prod.ownerId
+      }
     }
-  }]
+  ]
 }
