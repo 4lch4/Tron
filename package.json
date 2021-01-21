@@ -50,7 +50,7 @@
     "node-opus": "0.3.1",
     "opusscript": "0.0.6",
     "pdfkit": "0.8.3",
-    "pretty-ms": "^4.0.0",
+    "pretty-ms": "^7.0.1",
     "raven": "2.6.4",
     "redwrap": "0.0.4",
     "setimmediate": "1.0.5",
