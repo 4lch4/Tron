@@ -59,7 +59,7 @@
     "stream-transform": "1.0.8",
     "strict-uri-encode": "2.0.0",
     "survaid": "github:Alcha/Survaid",
-    "tumblr.js": "2.0.0",
+    "tumblr.js": "3.0.0",
     "zlib-sync": "0.1.4"
   },
   "devDependencies": {
