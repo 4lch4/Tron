@@ -1,4 +1,5 @@
 module.exports = {
   config: require('./config'),
-  logger: require('./logger')
+  logger: require('./logger'),
+  bot: require('./bot')
 }
