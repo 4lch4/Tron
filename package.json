@@ -37,7 +37,7 @@
     "express": "4.16.4",
     "fs-extra": "7.0.1",
     "giphy-js-sdk-core": "1.0.6",
-    "human-interval": "^0.1.6",
+    "human-interval": "^2.0.1",
     "image-downloader": "3.4.2",
     "libsodium-wrappers": "0.7.3",
     "moment": "2.22.2",
