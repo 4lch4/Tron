@@ -25,20 +25,7 @@
     "sqlite": "4.0.19"
   },
   "devDependencies": {
-    "@commitlint/cli": "11.0.0",
-    "@commitlint/config-conventional": "11.0.0",
-    "husky": "4.3.8",
-    "pinst": "2.1.1",
     "pm2": "4.5.1",
     "prettier": "2.2.1"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
-  "lint-staged": {
-    "*.js": "prettier --write"
   }
 }
