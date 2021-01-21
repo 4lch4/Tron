@@ -4,14 +4,13 @@
   "description": "My Discord chat bot.",
   "main": "Tron.js",
   "scripts": {
-    "start": "npm run pm2:start",
-    "restart": "npm run pm2:restart",
+    "start": "node src/Tron.js",
     "pm2:start": "pm2 start pm2.config.js",
     "pm2:restart": "pm2 restart Tron && pm2 logs Tron",
-    "prestart": "pnpm i",
     "pretty:project": "prettier --write .",
     "pretty:code": "prettier --write **/*.js",
-    "cleanup": "npm run pretty:project; rm -rf node_modules package-lock.json pnpm-lock.yaml"
+    "cleanup": "npm run pretty:project; rm -rf node_modules package-lock.json pnpm-lock.yaml",
+    "build:image": "docker build -t 4lch4/tron:latest ."
   },
   "repository": {
     "type": "git",
