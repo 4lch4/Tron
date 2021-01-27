@@ -2,6 +2,7 @@
 [![dependencies Status](https://img.shields.io/david/HF-Solutions/Tron.svg?style=flat-square)](https://david-dm.org/Paranoid-Devs/Tron)
 [![devDependencies Status](https://img.shields.io/david/dev/HF-Solutions/Tron.svg?style=flat-square)](https://david-dm.org/HF-Solutions/Tron?type=dev)
 [![GitHub license](https://img.shields.io/github/license/HF-Solutions/Tron.svg?style=flat-square)](https://github.com/HF-Solutions/Tron/blob/master/LICENSE)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F4lch4%2FTron.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2F4lch4%2FTron?ref=badge_shield)
 
 [![ForTheBadge](https://forthebadge.com/images/badges/fuck-it-ship-it.svg)](https://forthebadge.com)
 [![Invite_Tron](https://i.imgur.com/Z0vT2C1.png)](https://discordapp.com/oauth2/authorize?client_id=258162570622533635&scope=bot)
@@ -37,3 +38,6 @@ before cloning the repo, running `npm i -y; npm start`, and hoping for the best:
 [1]: ./util/config_sample.json
 [2]: https://github.com/Automattic/node-canvas/wiki/Installation---Windows
 [3]: https://github.com/Automattic/node-canvas
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2F4lch4%2FTron.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2F4lch4%2FTron?ref=badge_large)
