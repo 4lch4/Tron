@@ -2,7 +2,7 @@ const config = require('./util/config.json')
 
 module.exports = {
   apps: [{
-    name: 'Tron',
+    name: 'Porita',
     script: './Tron.js',
     watch: false,
     env: {
