@@ -1,5 +1,5 @@
 node_modules/
-local.settings.json
 pnpm-lock.yaml
 logs/
 dist
+local/prod.env
