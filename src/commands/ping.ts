@@ -1,5 +1,5 @@
 import { Message, MessageContent } from 'eris'
-import { BaseCommand } from '../util'
+import { BaseCommand } from '../lib'
 
 export class Ping extends BaseCommand {
   constructor() {

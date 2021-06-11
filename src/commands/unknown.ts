@@ -1,6 +1,5 @@
 import { CommandClient, Message, PossiblyUncachedTextableChannel } from 'eris'
-// import { writeJSON } from 'fs-extra'
-import { getRandomNumber, Giphy } from '../util'
+import { getRandomNumber, Giphy } from '../lib'
 
 export async function unknown(
   tron: CommandClient,

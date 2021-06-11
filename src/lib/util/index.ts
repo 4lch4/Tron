@@ -1,6 +1,7 @@
-export * from './BaseCommand'
+export * from '../BaseCommand'
 export * from './bot'
 export * from './config'
+export * from './DateFormatter'
 export * from './giphy'
 export * from './logger'
 
