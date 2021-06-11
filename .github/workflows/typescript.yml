@@ -38,6 +38,12 @@ jobs:
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
+
+      - uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+
     # -
     #   name: Build and push Docker images
     #   uses: docker/build-push-action@v2.5.0
