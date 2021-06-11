@@ -38,8 +38,8 @@ jobs:
             "OWNER_ID=${{ secrets.OWNER_ID }}"
             "GIPHY_TOKEN=${{ secrets.GIPHY_TOKEN }}"
           tags: |
-            4lch4/tron:${{ steps.date.outputs.date }}.${{github.run_number}}
-            4lch4/tron:latest
+            "ghcr.io/4lch4/tron:${{ steps.date.outputs.date }}.${{github.run_number}}"
+            "ghcr.io/4lch4/tron:latest"
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
