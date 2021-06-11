@@ -28,56 +28,16 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d%H%M')"
 
-      - name: Insert Discord Token
-        id: insert_discord_token
-        uses: jacobtomlinson/gha-find-replace@master
-        with:
-          find: \$\(DISCORD_TOKEN\)
-          replace: "${{ secrets.DISCORD_TOKEN }}"
-
-      - name: Insert Command Prefix
-        id: insert_command_prefix
-        uses: jacobtomlinson/gha-find-replace@master
-        with:
-          find: \$\(COMMAND_PREFIX\)
-          replace: "${{ secrets.COMMAND_PREFIX }}"
-
-      - name: Insert Owner ID
-        id: insert_owner_id
-        uses: jacobtomlinson/gha-find-replace@master
-        with:
-          find: \$\(OWNER_ID\)
-          replace: "${{ secrets.OWNER_ID }}"
-
-      - name: Insert Giphy Token
-        id: insert_giphy_token
-        uses: jacobtomlinson/gha-find-replace@master
-        with:
-          find: \$\(GIPHY_TOKEN\)
-          replace: "${{ secrets.GIPHY_TOKEN }}"
-
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           push: true
           tags: |
-            "ghcr.io/4lch4/tron:${{ steps.date.outputs.date }}.${{github.run_number}}"
+            "ghcr.io/4lch4/tron:${{ steps.date.outputs.date }}"
             "ghcr.io/4lch4/tron:latest"
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
-
-      - name: Discord Token Output
-        run: echo ${{ steps.insert_discord_token.outputs.modifiedFiles }}
-
-      - name: Command Prefix Output
-        run: echo ${{ steps.insert_command_prefix.outputs.modifiedFiles }}
-
-      - name: Owner ID Output
-        run: echo ${{ steps.insert_owner_id.outputs.modifiedFiles }}
-
-      - name: Giphy Token Output
-        run: echo ${{ steps.insert_giphy_token.outputs.modifiedFiles }}
     # -
     #   name: Build and push Docker images
     #   uses: docker/build-push-action@v2.5.0
