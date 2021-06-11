@@ -28,15 +28,38 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d%H%M')"
 
+      - name: Insert Discord Token
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "$(DISCORD_TOKEN)"
+          replace: "${{ secrets.DISCORD_TOKEN }}"
+          include: 'Dockerfile'
+
+      - name: Insert Command Prefix
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "$(COMMAND_PREFIX)"
+          replace: "${{ secrets.COMMAND_PREFIX }}"
+          include: 'Dockerfile'
+
+      - name: Insert Owner ID
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "$(OWNER_ID)"
+          replace: "${{ secrets.OWNER_ID }}"
+          include: 'Dockerfile'
+
+      - name: Insert Giphy Token
+        uses: jacobtomlinson/gha-find-replace@master
+        with:
+          find: "$(GIPHY_TOKEN)"
+          replace: "${{ secrets.GIPHY_TOKEN }}"
+          include: 'Dockerfile'
+
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           push: true
-          secrets: |
-            "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}"
-            "COMMAND_PREFIX=${{ secrets.COMMAND_PREFIX }}"
-            "OWNER_ID=${{ secrets.OWNER_ID }}"
-            "GIPHY_TOKEN=${{ secrets.GIPHY_TOKEN }}"
           tags: |
             "ghcr.io/4lch4/tron:${{ steps.date.outputs.date }}.${{github.run_number}}"
             "ghcr.io/4lch4/tron:latest"
