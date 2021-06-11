@@ -4,7 +4,7 @@ WORKDIR /bot
 
 COPY . .
 
-RUN npm i
+RUN npm ci
 RUN npm run build
 
 EXPOSE 3030
