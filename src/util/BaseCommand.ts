@@ -1,4 +1,4 @@
-import { CommandOptions, Message } from 'eris'
+import { CommandOptions, Message, MessageContent } from 'eris'
 
 export abstract class BaseCommand {
   label: string
@@ -9,5 +9,5 @@ export abstract class BaseCommand {
     this.opts = opts
   }
 
-  abstract execute(msg: Message, args: string[]): void
+  abstract execute(msg: Message, args: string[]): Promise<MessageContent>
 }
