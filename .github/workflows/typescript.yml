@@ -32,6 +32,11 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
+          secrets: |
+            "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}"
+            "COMMAND_PREFIX=${{ secrets.COMMAND_PREFIX }}"
+            "OWNER_ID=${{ secrets.OWNER_ID }}"
+            "GIPHY_TOKEN=${{ secrets.GIPHY_TOKEN }}"
           tags: |
             4lch4/tron:${{ steps.date.outputs.date }}.${{github.run_number}}
             4lch4/tron:latest
