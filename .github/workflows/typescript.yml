@@ -32,33 +32,29 @@ jobs:
         id: insert_discord_token
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: "$(DISCORD_TOKEN)"
+          find: \$\(DISCORD_TOKEN\)
           replace: "${{ secrets.DISCORD_TOKEN }}"
-          include: 'Dockerfile'
 
       - name: Insert Command Prefix
         id: insert_command_prefix
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: "$(COMMAND_PREFIX)"
+          find: \$\(COMMAND_PREFIX\)
           replace: "${{ secrets.COMMAND_PREFIX }}"
-          include: 'Dockerfile'
 
       - name: Insert Owner ID
         id: insert_owner_id
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: "$(OWNER_ID)"
+          find: \$\(OWNER_ID\)
           replace: "${{ secrets.OWNER_ID }}"
-          include: 'Dockerfile'
 
       - name: Insert Giphy Token
         id: insert_giphy_token
         uses: jacobtomlinson/gha-find-replace@master
         with:
-          find: "$(GIPHY_TOKEN)"
+          find: \$\(GIPHY_TOKEN\)
           replace: "${{ secrets.GIPHY_TOKEN }}"
-          include: 'Dockerfile'
 
       - name: Build and push
         uses: docker/build-push-action@v2
