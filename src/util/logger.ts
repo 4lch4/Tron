@@ -1,6 +1,6 @@
-const { createLogger } = require('bunyan')
+import { createLogger } from 'bunyan'
 
-const logger = createLogger({
+export const logger = createLogger({
   name: 'Tron',
   streams: [
     { stream: process.stdout, level: 'debug', name: 'Debug' },
@@ -8,5 +8,3 @@ const logger = createLogger({
     { stream: process.stderr, level: 'fatal', name: 'Fatal' }
   ]
 })
-
-module.exports = logger
