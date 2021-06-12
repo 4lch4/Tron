@@ -1,3 +1,5 @@
+[![TypeScript CI](https://github.com/4lch4/Tron/actions/workflows/typescript.yml/badge.svg)](https://github.com/4lch4/Tron/actions/workflows/typescript.yml)
+
 # Tron
 
 Tron is a bot that is primarily used with Discord. It has a number of commands that make chatting a
