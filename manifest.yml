@@ -1,13 +1,7 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: '${{ secrets.APP_NAMESPACE }}'
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: '${{ secrets.APP_NAME }}'
-  namespace: '${{ secrets.APP_NAMESPACE }}'
 spec:
   replicas: 1
   selector:
@@ -46,7 +40,6 @@ kind: Service
 apiVersion: v1
 metadata:
   name: '${{ secrets.APP_NAME }}'
-  namespace: '${{ secrets.APP_NAMESPACE }}'
   labels:
     app: '${{ secrets.APP_NAME }}'
 spec:
