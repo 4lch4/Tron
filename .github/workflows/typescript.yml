@@ -25,49 +25,56 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: |
-            "${{ secrets.IMAGE_NAME }}:${{env.GITHUB_RUN_ID}}"
-            "${{ secrets.IMAGE_NAME }}:latest"
+      - name: Set BUILD_TAG Variable
+        id: buildTag
+        run: echo "BUILD_TAG=::$(date +'%Y%m%d')" >> $GITHUB_ENV
 
-      - name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+      - name: Echo BUILD_TAG
+        run: echo ${{env.BUILD_TAG}}
 
-      - uses: sarisia/actions-status-discord@v1
-        if: always()
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+      # - name: Build and push
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     push: true
+      #     tags: |
+      #       "${{ secrets.IMAGE_NAME }}:${{env.GITHUB_RUN_ID}}"
+      #       "${{ secrets.IMAGE_NAME }}:latest"
 
-  release-manifest:
-    name: Release Kubernetes Manifest
-    needs: 'build-image'
-    runs-on: ubuntu-20.04
+      # - name: Image digest
+      #   run: echo ${{ steps.docker_build.outputs.digest }}
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      # - uses: sarisia/actions-status-discord@v1
+      #   if: always()
+      #   with:
+      #     webhook: ${{ secrets.DISCORD_WEBHOOK }}
 
-      - name: Replace tokens
-        uses: cschleiden/replace-tokens@v1.0
-        with:
-          files: manifest.yml
+  # release-manifest:
+  #   name: Release Kubernetes Manifest
+  #   needs: 'build-image'
+  #   runs-on: ubuntu-20.04
 
-      - name: Kubernetes set context
-        uses: Azure/k8s-set-context@v1.1
-        with:
-          method: kubeconfig
-          kubeconfig: '{{ secrets.KUBE_CONFIG }}'
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v2
 
-      - name: Deploy to Kubernetes cluster
-        uses: Azure/k8s-deploy@v1.3
-        with:
-          manifests: manifest.yml
-          action: deploy
+  #     - name: Replace tokens
+  #       uses: cschleiden/replace-tokens@v1.0
+  #       with:
+  #         files: manifest.yml
 
-      - uses: sarisia/actions-status-discord@v1
-        if: always()
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+  #     - name: Kubernetes set context
+  #       uses: Azure/k8s-set-context@v1.1
+  #       with:
+  #         method: kubeconfig
+  #         kubeconfig: '{{ secrets.KUBE_CONFIG }}'
+
+  #     - name: Deploy to Kubernetes cluster
+  #       uses: Azure/k8s-deploy@v1.3
+  #       with:
+  #         manifests: manifest.yml
+  #         action: deploy
+
+  #     - uses: sarisia/actions-status-discord@v1
+  #       if: always()
+  #       with:
+  #         webhook: ${{ secrets.DISCORD_WEBHOOK }}
