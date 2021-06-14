@@ -1,10 +1,14 @@
-name: TypeScript CI
+name: Tron Prod Build & Release
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
+
   pull_request:
-    branches: [main, develop]
+    branches: [main]
+
+env:
+  APP_NAMESPACE: tron-beta
 
 jobs:
   build-image:
@@ -66,7 +70,7 @@ jobs:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
       - name: Deploy to Kubernetes cluster
-        run: kubectl apply -f ./manifest.yml --namespace=${{ secrets.APP_NAMESPACE }}
+        run: kubectl apply -f ./manifest.yml --namespace ${{ env.APP_NAMESPACE }}
         # uses: Azure/k8s-deploy@v1.3
         # with:
         #   manifests: manifest.yml
