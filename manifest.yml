@@ -1,28 +1,28 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: '#{APP_NAMESPACE}#'
+  name: '${{ secrets.APP_NAMESPACE }}'
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: '#{APP_NAME}#'
-  namespace: '#{APP_NAMESPACE}#'
+  name: '${{ secrets.APP_NAME }}'
+  namespace: '${{ secrets.APP_NAMESPACE }}'
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: '#{APP_NAME}#'
+      app: '${{ secrets.APP_NAME }}'
   template:
     metadata:
       labels:
-        app: '#{APP_NAME}#'
+        app: '${{ secrets.APP_NAME }}'
     spec:
       imagePullSecrets:
-        - name: '#{IMAGE_PULL_SECRET}#'
+        - name: '${{ secrets.IMAGE_PULL_SECRET }}'
       containers:
-        - name: '#{APP_NAME}#'
-          image: '#{IMAGE_NAME}#:#{GITHUB_RUN_ID}#'
+        - name: '${{ secrets.APP_NAME }}'
+          image: '${{ secrets.IMAGE_NAME }}:${{ env.BUILD_TAG }}'
           resources:
             limits:
               cpu: '600m'
@@ -32,27 +32,27 @@ spec:
               memory: '250Mi'
           env:
             - name: DISCORD_TOKEN
-              value: '#{DISCORD_TOKEN}#'
+              value: '${{ secrets.DISCORD_TOKEN }}'
             - name: GIPHY_TOKEN
-              value: '#{GIPHY_TOKEN}#'
+              value: '${{ secrets.GIPHY_TOKEN }}'
             - name: COMMAND_PREFIX
-              value: '#{COMMAND_PREFIX}#'
+              value: '${{ secrets.COMMAND_PREFIX }}'
             - name: OWNER_ID
-              value: '#{OWNER_ID}#'
+              value: '${{ secrets.OWNER_ID }}'
           ports:
             - containerPort: 3030
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: '#{APP_NAME}#'
-  namespace: '#{APP_NAMESPACE}#'
+  name: '${{ secrets.APP_NAME }}'
+  namespace: '${{ secrets.APP_NAMESPACE }}'
   labels:
-    app: '#{APP_NAME}#'
+    app: '${{ secrets.APP_NAME }}'
 spec:
   type: ClusterIP
   ports:
     - port: 3030
       name: web
   selector:
-    app: '#{APP_NAME}#'
+    app: '${{ secrets.APP_NAME }}'
