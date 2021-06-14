@@ -22,7 +22,7 @@ spec:
         - name: '#{IMAGE_PULL_SECRET}#'
       containers:
         - name: '#{APP_NAME}#'
-          image: '#{IMAGE_NAME}#:${{BUILD_TAG}}'
+          image: '#{IMAGE_NAME}#:#{GITHUB_RUN_ID}#'
           resources:
             limits:
               cpu: '600m'

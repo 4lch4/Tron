@@ -25,16 +25,12 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set BUILD_TAG Variable
-        id: date
-        run: echo "::set-env name=BUILD_TAG::$(date +'%Y%m%d')"
-
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           push: true
           tags: |
-            "${{ env.IMAGE_NAME }}:${{ env.BUILD_TAG }}"
+            "${{ env.IMAGE_NAME }}:${{ env.GITHUB_RUN_ID }}"
             "${{ env.IMAGE_NAME }}:latest"
 
       - name: Image digest
