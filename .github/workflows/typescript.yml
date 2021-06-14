@@ -6,20 +6,7 @@ on:
   pull_request:
     branches: [main, develop]
 
-env:
-  IMAGE_NAME: '${{ secrets.IMAGE_NAME }}'
-  BUILD_ID: '$GITHUB_RUN_ID'
-
 jobs:
-  display-variables:
-    name: Display Safe ENV Variables
-    runs-on: ubuntu-20.04
-
-    steps:
-      - run: echo $GITHUB_RUN_ID
-      - run: echo ${{ env.BUILD_ID }}
-      - run: echo ${{ env.IMAGE_NAME }}
-
   build-image:
     name: Build & Push Docker Image
     needs: display-variables
@@ -44,7 +31,7 @@ jobs:
         with:
           push: true
           tags: |
-            "${{ secrets.IMAGE_NAME }}:${{ env.GITHUB_RUN_ID }}"
+            "${{ secrets.IMAGE_NAME }}:$GITHUB_RUN_ID"
             "${{ secrets.IMAGE_NAME }}:latest"
 
       - name: Image digest
