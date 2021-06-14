@@ -9,7 +9,6 @@ on:
 jobs:
   build-image:
     name: Build & Push Docker Image
-    needs: display-variables
     runs-on: ubuntu-20.04
 
     steps:
