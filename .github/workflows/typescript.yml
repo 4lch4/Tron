@@ -30,7 +30,7 @@ jobs:
         with:
           push: true
           tags: |
-            "${{ secrets.IMAGE_NAME }}:$GITHUB_RUN_ID"
+            "${{ secrets.IMAGE_NAME }}:${{GITHUB_RUN_ID}}"
             "${{ secrets.IMAGE_NAME }}:latest"
 
       - name: Image digest
