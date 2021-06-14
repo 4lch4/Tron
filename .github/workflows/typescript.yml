@@ -40,11 +40,6 @@ jobs:
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
 
-      - uses: sarisia/actions-status-discord@v1
-        if: always()
-        with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK }}
-
   release-manifest:
     name: Release Kubernetes Manifest
     needs: 'build-image'
@@ -63,7 +58,7 @@ jobs:
         uses: Azure/k8s-set-context@v1.1
         with:
           method: kubeconfig
-          kubeconfig: '{{ secrets.KUBE_CONFIG }}'
+          kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
       - name: Deploy to Kubernetes cluster
         uses: Azure/k8s-deploy@v1.3
