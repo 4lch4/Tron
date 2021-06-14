@@ -49,8 +49,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Replace tokens
-        uses: cschleiden/replace-tokens@v1.0
+      - name: 4lch4/Replace Tokens
+        uses: 4lch4/replace-tokens@v1.1.0
         with:
           files: manifest.yml
 
