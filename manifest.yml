@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: '#{APP_NAMESPACE}#'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '#{APP_NAME}#'
+  namespace: '#{APP_NAMESPACE}#'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: '#{APP_NAME}#'
+  template:
+    metadata:
+      labels:
+        app: '#{APP_NAME}#'
+    spec:
+      imagePullSecrets:
+        - name: '#{IMAGE_PULL_SECRET}#'
+      containers:
+        - name: '#{APP_NAME}#'
+          image: '#{IMAGE_NAME}#:${{BUILD_TAG}}'
+          resources:
+            limits:
+              cpu: '600m'
+              memory: '750Mi'
+            requests:
+              cpu: '200m'
+              memory: '250Mi'
+          env:
+            - name: DISCORD_TOKEN
+              value: '#{DISCORD_TOKEN}#'
+            - name: GIPHY_TOKEN
+              value: '#{GIPHY_TOKEN}#'
+            - name: COMMAND_PREFIX
+              value: '#{COMMAND_PREFIX}#'
+            - name: OWNER_ID
+              value: '#{OWNER_ID}#'
+          ports:
+            - containerPort: 3030
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: '#{APP_NAME}#'
+  namespace: '#{APP_NAMESPACE}#'
+  labels:
+    app: '#{APP_NAME}#'
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3030
+      name: web
+  selector:
+    app: '#{APP_NAME}#'
