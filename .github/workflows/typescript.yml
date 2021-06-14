@@ -27,54 +27,51 @@ jobs:
 
       - name: Set BUILD_TAG Variable
         id: buildTag
-        run: echo "BUILD_TAG=::$(date +'%Y%m%d')" >> $GITHUB_ENV
+        run: echo "BUILD_TAG=$(date +'%Y%m%d')" >> $GITHUB_ENV
 
-      - name: Echo BUILD_TAG
-        run: echo ${{env.BUILD_TAG}}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: |
+            "${{ secrets.IMAGE_NAME }}:${{ env.BUILD_TAG }}"
+            "${{ secrets.IMAGE_NAME }}:latest"
 
-      # - name: Build and push
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     push: true
-      #     tags: |
-      #       "${{ secrets.IMAGE_NAME }}:${{env.GITHUB_RUN_ID}}"
-      #       "${{ secrets.IMAGE_NAME }}:latest"
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
 
-      # - name: Image digest
-      #   run: echo ${{ steps.docker_build.outputs.digest }}
+      - uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
 
-      # - uses: sarisia/actions-status-discord@v1
-      #   if: always()
-      #   with:
-      #     webhook: ${{ secrets.DISCORD_WEBHOOK }}
+  release-manifest:
+    name: Release Kubernetes Manifest
+    needs: 'build-image'
+    runs-on: ubuntu-20.04
 
-  # release-manifest:
-  #   name: Release Kubernetes Manifest
-  #   needs: 'build-image'
-  #   runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v2
+      - name: Replace tokens
+        uses: cschleiden/replace-tokens@v1.0
+        with:
+          files: manifest.yml
 
-  #     - name: Replace tokens
-  #       uses: cschleiden/replace-tokens@v1.0
-  #       with:
-  #         files: manifest.yml
+      - name: Kubernetes set context
+        uses: Azure/k8s-set-context@v1.1
+        with:
+          method: kubeconfig
+          kubeconfig: '{{ secrets.KUBE_CONFIG }}'
 
-  #     - name: Kubernetes set context
-  #       uses: Azure/k8s-set-context@v1.1
-  #       with:
-  #         method: kubeconfig
-  #         kubeconfig: '{{ secrets.KUBE_CONFIG }}'
+      - name: Deploy to Kubernetes cluster
+        uses: Azure/k8s-deploy@v1.3
+        with:
+          manifests: manifest.yml
+          action: deploy
 
-  #     - name: Deploy to Kubernetes cluster
-  #       uses: Azure/k8s-deploy@v1.3
-  #       with:
-  #         manifests: manifest.yml
-  #         action: deploy
-
-  #     - uses: sarisia/actions-status-discord@v1
-  #       if: always()
-  #       with:
-  #         webhook: ${{ secrets.DISCORD_WEBHOOK }}
+      - uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
