@@ -64,6 +64,9 @@ jobs:
         uses: Azure/k8s-deploy@v1.3
         with:
           manifests: manifest.yml
+          images: ${{ secrets.IMAGE_NAME }}:${{ env.BUILD_TAG }}
+          imagePullSecrets: ${{ secrets.IMAGE_PULL_SECRET }}
+          namespace: ${{ secrets.APP_NAMESPACE }}
           action: deploy
 
       - uses: sarisia/actions-status-discord@v1
