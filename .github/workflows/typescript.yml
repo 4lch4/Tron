@@ -30,8 +30,8 @@ jobs:
         with:
           push: true
           tags: |
-            "${{ env.IMAGE_NAME }}:${{ env.GITHUB_RUN_ID }}"
-            "${{ env.IMAGE_NAME }}:latest"
+            "${{ secrets.IMAGE_NAME }}:${{ env.GITHUB_RUN_ID }}"
+            "${{ secrets.IMAGE_NAME }}:latest"
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
