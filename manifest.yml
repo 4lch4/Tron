@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: '#{ secrets.APP_NAME }#'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: '#{ secrets.APP_NAME }#'
+  template:
+    metadata:
+      labels:
+        app: '#{ secrets.APP_NAME }#'
+    spec:
+      imagePullSecrets:
+        - name: '#{ secrets.IMAGE_PULL_SECRET }#'
+      containers:
+        - name: '#{ secrets.APP_NAME }#'
+          image: '#{ secrets.IMAGE_NAME }#:#{ env.BUILD_TAG }#'
+          resources:
+            limits:
+              cpu: '600m'
+              memory: '750Mi'
+            requests:
+              cpu: '200m'
+              memory: '250Mi'
+          env:
+            - name: DISCORD_TOKEN
+              value: '#{ secrets.DISCORD_TOKEN }#'
+            - name: GIPHY_TOKEN
+              value: '#{ secrets.GIPHY_TOKEN }#'
+            - name: COMMAND_PREFIX
+              value: '#{ secrets.COMMAND_PREFIX }#'
+            - name: OWNER_ID
+              value: '#{ secrets.OWNER_ID }#'
+          ports:
+            - containerPort: 3030
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: '#{ secrets.APP_NAME }#'
+  labels:
+    app: '#{ secrets.APP_NAME }#'
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3030
+      name: web
+  selector:
+    app: '#{ secrets.APP_NAME }#'

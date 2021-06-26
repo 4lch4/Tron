@@ -1,0 +1,9 @@
+node_modules
+.gitignore
+.prettierrc
+local.settings.json
+pm2.config.js
+pnpm-lock.yaml
+README.md
+logs
+dist
