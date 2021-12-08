@@ -64,7 +64,7 @@ jobs:
         id: install
 
       - name: Kubernetes set context
-        uses: Azure/k8s-set-context@v1.1
+        uses: Azure/k8s-set-context@v2
         with:
           method: kubeconfig
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
