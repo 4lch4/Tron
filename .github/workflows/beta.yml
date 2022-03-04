@@ -60,7 +60,7 @@ jobs:
           files: manifest.yml
 
       - name: Install Kubectl
-        uses: azure/setup-kubectl@v1
+        uses: azure/setup-kubectl@v2.1
         id: install
 
       - name: Kubernetes set context
