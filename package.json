@@ -35,7 +35,7 @@
     "giphy-api": "^2.0.1",
     "giphy-js-sdk-core": "^1.0.6",
     "node-fetch": "^2.6.1",
-    "sequelize": "6.4.0",
+    "sequelize": "6.28.2",
     "sqlite": "4.0.19"
   },
   "devDependencies": {
