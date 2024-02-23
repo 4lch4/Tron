@@ -39,7 +39,7 @@
     "sqlite": "4.0.19"
   },
   "devDependencies": {
-    "@types/bunyan": "^1.8.6",
+    "@types/bunyan": "^1.8.8",
     "@types/giphy-api": "^2.0.2",
     "@types/ws": "^7.4.4",
     "pm2": "4.5.1",
